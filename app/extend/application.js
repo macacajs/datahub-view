@@ -1,3 +1,5 @@
+'use strict';
+
 const render = require('../../lib/render');
 
 module.exports = {
