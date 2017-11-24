@@ -53,6 +53,7 @@ export default class DataInfo extends React.Component {
 
   componentWillReceiveProps(props) {
     const currentData = props.currentData
+    console.log('currentData.currentScene', currentData.currentScene)
     this.setState({
       scenes: currentData && currentData.scenes,
       params: currentData && currentData.params,
@@ -70,6 +71,10 @@ export default class DataInfo extends React.Component {
       alert('场景名称已存在！')
       return;
     }
+    if (!this.state.addingScene) {
+      alert('场景名不能为空！');
+      return;
+    }
     const newScene = {
       name: this.state.addingScene,
       data: '{}',
@@ -80,11 +85,15 @@ export default class DataInfo extends React.Component {
     const newData = [...this.state.scenes, newScene]
     this.setState({
       scenes: newData,
+      currentScene: this.state.addingScene,
+      modalInfoData: '',
+      _modalInfoData: '',
     })
     this.props.handleAsynSecType('scenes', newData);
+    this.props.handleAsynSecType('currentScene', this.state.addingScene);
   }
 
-  handleAddScene = (e) => {
+  handleAddSceneChange = (e) => {
     this.setState({
       addingScene: e.target.value,
     });
@@ -93,18 +102,35 @@ export default class DataInfo extends React.Component {
   onConfirmRemoveScene = (index) => {
     const newData = [...this.state.scenes];
     newData.splice(index, 1);
-    this.setState({
-      scenes: newData
-    });
+    if (this.state.scenes[index].name === this.state.currentScene && this.state.scenes.length > 0) {
+      if (index > 0) {
+        this.setState({
+          scenes: newData,
+          currentScene: this.state.scenes[0].name,
+        });
+        this.props.handleAsynSecType('currentScene', this.state.scenes[0].name);
+      } else if (this.state.scenes.length > 1) {
+        this.setState({
+          scenes: newData,
+          currentScene: this.state.scenes[1].name,
+        });
+        this.props.handleAsynSecType('currentScene', this.state.scenes[1].name);
+      }
+    } else {
+      this.setState({
+        scenes: newData,
+      });
+    }
     this.props.handleAsynSecType('scenes', newData);
   }
 
   showModal = (index) => {
+    console.log(JSON.stringify(JSON.parse(this.state.scenes[index].data), null ,2))
     this.setState({
       modalVisible: true,
       modalInfoTitle: this.state.scenes[index].name,
       modalInfoData: JSON.stringify(JSON.parse(this.state.scenes[index].data), null ,2),
-      _modalInfoData: this.state.scenes[index].data,
+      _modalInfoData: JSON.stringify(JSON.parse(this.state.scenes[index].data), null ,2),
     });
   }
 
@@ -199,7 +225,7 @@ export default class DataInfo extends React.Component {
             <div className="mock-address">
               <span>接口名：</span>
               <a target="_blank" href={apiHref}>
-                <span className="project-api">{`${this.state.pathname} / ${this.state.currentScene}`}</span>
+                <span className="project-api">{`${this.state.pathname} / ${this.state.currentScene || 'default'}`}</span>
               </a>
             </div>
             <div>
@@ -226,7 +252,7 @@ export default class DataInfo extends React.Component {
             <h1>场景管理</h1>
             <div>
               <div className="add-input">
-                <Input style={{ width: "200px" }} placeholder="输入场景名" onChange={this.handleAddScene.bind(this)} />
+                <Input style={{ width: "200px" }} placeholder="输入场景名" onChange={this.handleAddSceneChange.bind(this)} />
                 <Button type="primary" onClick={this.handleAdd.bind(this)}>新增场景</Button>
               </div>
               <RadioGroup name="radiogroup" value={this.state.currentScene} onChange={this.handleSceneChange.bind(this)}>
