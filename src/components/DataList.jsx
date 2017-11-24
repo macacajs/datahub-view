@@ -59,7 +59,11 @@ export default class DataList extends React.Component {
   handleModalOk = (e) => {
     const index = _.findIndex(this.state.apis, o => o.pathname === this.state.modalTitle)
     if (index !== -1) {
-      alert('接口名称已存在！')
+      alert('接口名称已存在！');
+      return;
+    }
+    if (!this.state.modalTitle || !this.state.modalDescription) {
+      alert('接口名称和描述不能为空！');
       return;
     }
     const addAPI = {

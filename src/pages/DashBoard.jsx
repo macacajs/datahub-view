@@ -7,7 +7,9 @@ import {
   Modal,
   Form,
   Input,
+  Popconfirm,
   Row,
+  Icon,
 } from 'antd';
 
 import './DashBoard.less';
@@ -15,6 +17,63 @@ import './DashBoard.less';
 const request = require('../common/fetch');
 
 const FormItem = Form.Item;
+
+class EditableCell extends React.Component {
+  state = {
+    value: this.props.value,
+    editable: false,
+  }
+
+  handleChange = (e) => {
+    const value = e.target.value;
+    this.setState({ value });
+  }
+
+  check = () => {
+    this.setState({ editable: false });
+    if (this.props.onChange) {
+      this.props.setProjectId();
+      this.props.onChange(this.state.value);
+    }
+  }
+
+  edit = () => {
+    this.setState({ editable: true });
+  }
+
+  render() {
+    const { value, editable } = this.state;
+    return (
+      <div className="editable-cell">
+        {
+          editable ?
+            <div className="editable-cell-input-wrapper">
+              <Input
+                value={value}
+                style={{ width: '200px' }}
+                onChange={this.handleChange}
+                onPressEnter={this.check}
+              />
+              <Icon
+                type="check"
+                className="editable-cell-icon-check"
+                onClick={this.check}
+              />
+            </div>
+            :
+            <div className="editable-cell-text-wrapper">
+              {value || ' '}
+              <Icon
+                type="edit"
+                className="editable-cell-icon"
+                onClick={this.edit}
+              />
+            </div>
+        }
+      </div>
+    );
+  }
+}
 
 const CollectionCreateForm = Form.create()((props) => {
   const {
@@ -39,14 +98,14 @@ const CollectionCreateForm = Form.create()((props) => {
       <Form layout="vertical">
         <FormItem label="项目名称">
           {getFieldDecorator('identifer', {
-            rules: [{ required: true, message: '请输入不为空的中文或者数字', pattern: /^[A-Za-z0-9]+$/ }],
+            rules: [{ required: true, message: '请输入不为字母或者数字', pattern: /^[A-Za-z0-9]+$/ }],
           })(
             <Input />
           )}
         </FormItem>
         <FormItem label="项目描述">
           {getFieldDecorator('description', {
-            rules: [{ required: true, message: '请输入不为空的中文或者数字', pattern: /^[A-Za-z0-9]+$/}],
+            rules: [{ required: true, message: '请输入不为空的中文或者数字'}],
           })(
             <Input />
           )}
@@ -59,6 +118,7 @@ const CollectionCreateForm = Form.create()((props) => {
 export default class DashBoard extends React.Component {
   constructor(props) {
     super(props);
+    this.projectId = '';
     this.state = {
       context: window.context,
       visible: false,
@@ -138,16 +198,37 @@ export default class DashBoard extends React.Component {
     this.updateProjects();
   }
 
+  onCellChange(value) {
+    request('/api/project', 'POST', {
+      identifer: this.projectId,
+      description: value,
+    }).then((res) => {
+      console.log('res', res)
+    });
+  }
+
+  setProjectId(record) {
+    this.projectId = record.identifer
+  }
+
   render() {
     const columns = [{
       title: '项目ID',
       dataIndex: 'identifer',
+      width: '20%',
       key: 'identifer',
       render: text => <a href={`/project/${text}`}>{text}</a>,
     }, {
       title: '描述',
       dataIndex: 'description',
       key: 'description',
+      render: (text, record) => (
+        <EditableCell
+          value={text}
+          setProjectId={this.setProjectId.bind(this, record)}
+          onChange={this.onCellChange.bind(this)}
+        />
+      ),
     }, {
       title: '操作',
       dataIndex: 'operation',
@@ -155,7 +236,9 @@ export default class DashBoard extends React.Component {
       width: '100px',
       render: (text, record, index)=> {
         return (
-          <Button type="primary" className="project-delete-button" onClick={this.handleDelete.bind(this, index)}>删除</Button>
+          <Popconfirm title="确定删除？" onConfirm={this.handleDelete.bind(this, index)} okText="确定" cancelText="取消">
+            <Button type="primary" className="project-delete-button">删除</Button>
+          </Popconfirm>
         );
       }
     }];
