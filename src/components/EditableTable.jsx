@@ -90,6 +90,7 @@ export default class EditableTable extends React.Component {
     }];
     this.cacheData = data.map(item => ({ ...item }));
   }
+
   renderColumns(text, record, column) {
     return (
       <EditableCell
@@ -99,6 +100,7 @@ export default class EditableTable extends React.Component {
       />
     );
   }
+
   handleChange(value, key, column) {
     const newData = [...this.state.data];
     const target = newData.filter(item => key === item.key)[0];
@@ -107,6 +109,7 @@ export default class EditableTable extends React.Component {
       this.setState({ data: newData });
     }
   }
+
   _guid() {
     return 'xxxxxxxxxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
       const r = Math.random() * 16 | 0;
@@ -114,12 +117,14 @@ export default class EditableTable extends React.Component {
       return v.toString(16);
     });
   }
+
   onDelete(key) {
     const dataSource = [...this.state.data];
     const allParams = dataSource.filter(item => item.key !== key)
     this.setState({ data: allParams });
     tihs.props.onParamsChange(allParams)
   }
+
   handleAdd() {
     const data = [...this.state.data];
     const newData = {
@@ -135,6 +140,7 @@ export default class EditableTable extends React.Component {
       data: allParams,
     });
   }
+
   edit(key) {
     const newData = [...this.state.data];
     const target = newData.filter(item => key === item.key)[0];
@@ -143,9 +149,11 @@ export default class EditableTable extends React.Component {
       this.setState({ data: newData });
     }
   }
+
   save(key) {
     const allParams = [...this.state.data];
     const target = allParams.filter(item => key === item.key)[0];
+
     if (target) {
       delete target.editable;
       this.setState({
@@ -155,6 +163,7 @@ export default class EditableTable extends React.Component {
     }
     this.props.onParamsChange(allParams);
   }
+
   cancel(key) {
     const newData = [...this.state.data];
     const target = newData.filter(item => key === item.key)[0];
@@ -166,6 +175,7 @@ export default class EditableTable extends React.Component {
       });
     }
   }
+
   render() {
     return (
       <div className="editabletable">

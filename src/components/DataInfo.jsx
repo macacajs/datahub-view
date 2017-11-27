@@ -125,12 +125,12 @@ export default class DataInfo extends React.Component {
   }
 
   showModal = (index) => {
-    console.log(JSON.stringify(JSON.parse(this.state.scenes[index].data), null ,2))
+    const str = JSON.stringify(JSON.parse(this.state.scenes[index].data), null, 2)
     this.setState({
       modalVisible: true,
       modalInfoTitle: this.state.scenes[index].name,
-      modalInfoData: JSON.stringify(JSON.parse(this.state.scenes[index].data), null ,2),
-      _modalInfoData: JSON.stringify(JSON.parse(this.state.scenes[index].data), null ,2),
+      modalInfoData: str.trim(),
+      _modalInfoData: str.trim(),
     });
   }
 
