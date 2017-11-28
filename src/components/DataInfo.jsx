@@ -54,7 +54,7 @@ export default class DataInfo extends React.Component {
 
   componentWillReceiveProps(props) {
     const currentData = props.currentData
-    console.log('currentData.currentScene', currentData.currentScene)
+    if (!currentData) return
     this.setState({
       scenes: currentData && currentData.scenes,
       params: currentData && currentData.params,

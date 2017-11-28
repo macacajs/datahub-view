@@ -17,6 +17,8 @@ const {
 } = Layout;
 
 import DataList from '../components/DataList';
+import RealTime from '../components/RealTime';
+import RealTimeDetail from '../components/RealTimeDetail';
 import DataInfo from '../components/DataInfo';
 
 const projectId = location.pathname.replace('/project/', '');
@@ -26,9 +28,14 @@ export default class Project extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      contentViewType: 'api', // display api content by default
       data: [],
       currentIndex: 0,
-    }
+
+      REALTIME_MAXLINE: 10,
+      realTimeDataList: [],
+      realTimeIndex: 0,
+    };
   }
 
   componentDidMount() {
@@ -44,11 +51,20 @@ export default class Project extends React.Component {
         })
       }
     });
+    this.initRealTimeDataList ();
+  }
+
+  initRealTimeDataList() {
     const pageConfig = window.pageConfig;
     const host = `http://${location.hostname}:${pageConfig.socket.port}`;
     const socket = io(host);
     socket.on('test event', (data) => {
       console.log(data);
+      const newData = [ ...this.state.realTimeDataList ].slice(0, this.state.REALTIME_MAXLINE - 1);
+      newData.unshift(data);
+      this.setState({
+        realTimeDataList: newData,
+      })
     });
   }
 
@@ -103,7 +119,15 @@ export default class Project extends React.Component {
 
   handleApiClick(index) {
     this.setState({
+      contentViewType: 'api',
       currentIndex: index,
+    });
+  }
+
+  selectRealTimeItem(index) {
+    this.setState({
+      contentViewType: 'realTime',
+      realTimeIndex: index,
     });
   }
 
@@ -129,22 +153,31 @@ export default class Project extends React.Component {
               />
             </TabPane>
             <TabPane tab="实时快照" key="2">
-              Coming soon.
+              <RealTime
+                realTimeDataList={this.state.realTimeDataList}
+                onSelect={this.selectRealTimeItem.bind(this)}
+               />
             </TabPane>
           </Tabs>
         </Sider>
         <Content>
           {
-            this.state.data.length > 0
+            this.state.contentViewType === 'api'
             && <DataInfo
               currentData={this.state.data[this.state.currentIndex]}
               handleAsynSecType={this.asynSecType.bind(this)}
             />
           }
           {
+            this.state.contentViewType === 'realTime'
+            && <RealTimeDetail
+              data={this.state.realTimeDataList[this.state.realTimeIndex]}
+            />
+          }
+          {/* {
             this.state.data.length < 1
             && <h1 style={{ margin: '50px', textAlign: 'center' }}>请添加接口</h1>
-          }
+          } */}
         </Content>
       </Layout>
     );
