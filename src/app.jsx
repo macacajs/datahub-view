@@ -33,6 +33,15 @@ class App extends React.Component {
         return <DashBoard />;
       case 'project':
         return <Project />;
+      default:
+        return (
+          <div>
+            <h2>macaca-datahub version: { window.pageConfig.version }</h2>
+
+            <h2>datahub-view version: { pkg.version }</h2>
+
+          </div>
+        );
     }
   }
 
