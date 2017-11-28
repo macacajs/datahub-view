@@ -32,7 +32,6 @@ class EditableCell extends React.Component {
   check = () => {
     this.setState({ editable: false });
     if (this.props.onChange) {
-      this.props.setProjectId();
       this.props.onChange(this.state.value);
     }
   }
@@ -118,7 +117,6 @@ const CollectionCreateForm = Form.create()((props) => {
 export default class DashBoard extends React.Component {
   constructor(props) {
     super(props);
-    this.projectId = '';
     this.state = {
       context: window.context,
       visible: false,
@@ -198,17 +196,13 @@ export default class DashBoard extends React.Component {
     this.updateProjects();
   }
 
-  onCellChange(value) {
+  onCellChange(value, projectId) {
     request('/api/project', 'POST', {
-      identifer: this.projectId,
+      identifer: projectId,
       description: value,
     }).then((res) => {
       console.log('res', res)
     });
-  }
-
-  setProjectId(record) {
-    this.projectId = record.identifer
   }
 
   render() {
@@ -225,8 +219,7 @@ export default class DashBoard extends React.Component {
       render: (text, record) => (
         <EditableCell
           value={text}
-          setProjectId={this.setProjectId.bind(this, record)}
-          onChange={this.onCellChange.bind(this)}
+          onChange={value => this.onCellChange(value, record.identifer)}
         />
       ),
     }, {

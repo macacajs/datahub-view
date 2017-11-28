@@ -40,6 +40,7 @@ export default class DataInfo extends React.Component {
       modalInfoTitle: '',
       modalInfoData: '',
       _modalInfoData: '', // 用来校验与保存
+      proxyUrl: currentData && currentData.proxyUrl,
       scenes: currentData && currentData.scenes,
       params: currentData && currentData.params,
       method: currentData && currentData.method,
@@ -191,7 +192,7 @@ export default class DataInfo extends React.Component {
     this.props.handleAsynSecType('description', e.target.value);
   }
 
-  delayChange = (value) => {
+  delayChange = value => {
     value = parseInt(value, 10);
     this.setState({
       delay: value,
@@ -199,7 +200,22 @@ export default class DataInfo extends React.Component {
     this.props.handleAsynSecType('delay', value);
   }
 
-  handleParamsChange = (params) => {
+  handleProxyChange = e => {
+    this.setState({
+      proxyUrl: e.target.value,
+    });
+  }
+
+  handleAddProxyUrl = e => {
+    const urlReg = /^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*$/i;
+    if (urlReg.test(this.state.proxyUrl)) {
+      this.props.handleAsynSecType('proxyUrl', this.state.proxyUrl);
+    } else {
+      alert('请输入URL！')
+    }
+  }
+
+  handleParamsChange = params => {
     this.setState({
       params: params,
     });
@@ -300,7 +316,8 @@ export default class DataInfo extends React.Component {
           </section>
           <section className="data-proxy">
             <h1>代理配置</h1>
-            <p>Comming soon.</p>
+            <Input style={{ width: "385px" }} placeholder="输入代理链接" value={this.state.proxyUrl} onChange={this.handleProxyChange.bind(this)} />
+            <Button type="primary" onClick={this.handleAddProxyUrl.bind(this)}>添加代理</Button>
           </section>
           <section className="params-doc">
             <h1>字段说明</h1>

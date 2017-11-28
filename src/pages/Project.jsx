@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import io from 'socket.io-client';
 
 const request = require('../common/fetch');
 import {
@@ -18,7 +19,7 @@ const {
 import DataList from '../components/DataList';
 import DataInfo from '../components/DataInfo';
 
-const projectId = location.pathname.replace('/project/', '')
+const projectId = location.pathname.replace('/project/', '');
 
 export default class Project extends React.Component {
 
@@ -33,7 +34,6 @@ export default class Project extends React.Component {
   componentDidMount() {
     const projectId = location.pathname.replace('/project/', '')
     request(`/api/data/${projectId}`, 'GET').then((res) => {
-      console.log('query', res)
       res.data.forEach(item => {
         item.params = JSON.parse(item.params);
         item.scenes = JSON.parse(item.scenes);
@@ -43,7 +43,13 @@ export default class Project extends React.Component {
           data: res.data,
         })
       }
-    })
+    });
+    const pageConfig = window.pageConfig;
+    const host = `http://${location.hostname}:${pageConfig.socket.port}`;
+    const socket = io(host);
+    socket.on('test event', (data) => {
+      console.log(data);
+    });
   }
 
   addApi(allData, newApi) {
@@ -58,7 +64,7 @@ export default class Project extends React.Component {
         })
         console.log('添加／更新接口成功');
       }
-    })
+    });
   }
 
   deleteApi(allData, newApi) {
