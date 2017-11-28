@@ -201,10 +201,14 @@ export default class DataInfo extends React.Component {
   }
 
   handleProxyChange = e => {
+    const value = e.target.value
     this.setState({
-      proxyUrl: e.target.value,
+      proxyUrl: value,
     });
-  }
+    if (value === '') {
+      this.props.handleAsynSecType('proxyUrl', value);
+    }
+ }
 
   handleAddProxyUrl = e => {
     const urlReg = /^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*$/i;
