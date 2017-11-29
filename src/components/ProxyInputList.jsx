@@ -29,16 +29,18 @@ class DynamicFieldSet extends Component {
   }
 
   componentWillReceiveProps = (props) => { // TODO input onchange will fire componentWillReceiveProps，hack by flag
-    if (props.proxyUrl && !isServerData) {
+    if (props.proxyContent && !isServerData) {
       isServerData = true;
-      const origin = JSON.parse(props.proxyUrl);
-      uuid += origin.originKeys[origin.originKeys.length - 1]
+      const origin = JSON.parse(props.proxyContent);
+      const lastKey = origin.originKeys[origin.originKeys.length - 1]
+      if (lastKey) {
+        uuid += lastKey
+      }
       this.setState(origin);
     }
   }
 
   remove = (k) => {
-    const { form } = this.props;
     const newKeys = this.state.originKeys.filter(key => key !== k);
     if (k == this.state.currentProxyIndex) {
       this.setState({
@@ -54,11 +56,17 @@ class DynamicFieldSet extends Component {
 
   add = () => {
     uuid++;
-    const { form } = this.props;
     const newKeys = this.state.originKeys.concat(uuid);
-    this.setState({
-      originKeys: newKeys,
-    })
+    if (this.state.originKeys.length) {
+      this.setState({
+        originKeys: newKeys,
+      })
+    } else {
+      this.setState({
+        originKeys: newKeys,
+        currentProxyIndex: newKeys[0],
+      })
+    }
   }
 
   onCheckboxChange = e => {

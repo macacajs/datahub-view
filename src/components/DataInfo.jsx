@@ -41,7 +41,7 @@ export default class DataInfo extends React.Component {
       modalInfoTitle: '',
       modalInfoData: '',
       _modalInfoData: '', // 用来校验与保存
-      proxyUrl: currentData && currentData.proxyUrl,
+      proxyContent: currentData && currentData.proxyContent,
       scenes: currentData && currentData.scenes,
       params: currentData && currentData.params,
       method: currentData && currentData.method,
@@ -57,7 +57,7 @@ export default class DataInfo extends React.Component {
     const currentData = props.currentData
     if (!currentData) return
     this.setState({
-      proxyUrl: currentData && currentData.proxyUrl,
+      proxyContent: currentData && currentData.proxyContent,
       scenes: currentData && currentData.scenes,
       params: currentData && currentData.params,
       method: currentData && currentData.method,
@@ -204,9 +204,9 @@ export default class DataInfo extends React.Component {
 
   handleProxyChange = value => {
     this.setState({
-      proxyUrl: value,
+      proxyContent: value,
     });
-    this.props.handleAsynSecType('proxyUrl', value);
+    this.props.handleAsynSecType('proxyContent', value);
  }
 
   handleParamsChange = params => {
@@ -312,7 +312,7 @@ export default class DataInfo extends React.Component {
             <h1>代理配置</h1>
             <ProxyInputList
               onChangeProxy={this.handleProxyChange.bind(this)}
-              proxyUrl={this.state.proxyUrl}
+              proxyContent={this.state.proxyContent}
             />
           </section>
           <section className="params-doc">
