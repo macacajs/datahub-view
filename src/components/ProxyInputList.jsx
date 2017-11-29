@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React, { Component } from 'react';
 import {
   Form,
@@ -8,6 +7,7 @@ import {
   Button,
   Checkbox
 } from 'antd';
+
 import './ProxyInputList.less';
 
 const FormItem = Form.Item;
@@ -19,9 +19,9 @@ class DynamicFieldSet extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      useProxy: false, // 是否使用代理
-      currentProxyIndex: 1, // 当前选中的代理地址
-      proxies: [], // 当前备选代理地址
+      useProxy: false,
+      currentProxyIndex: 1,
+      proxies: [],
       originKeys: [],
       isErrorInput: {},
     };
@@ -41,16 +41,16 @@ class DynamicFieldSet extends Component {
         currentProxyIndex: 1,
         proxies: [],
         originKeys: [],
-      })
+      });
     }
   }
 
   remove = (k) => {
     const newKeys = this.state.originKeys.filter(key => key !== k);
     const index = this.state.originKeys.indexOf(k);
-    const newPorxies = [].concat(this.state.proxies)
+    const newPorxies = [].concat(this.state.proxies);
     newPorxies.splice(index, 1);
-    if (k == this.state.currentProxyIndex) {
+    if (k === this.state.currentProxyIndex) {
       this.setState({
         originKeys: newKeys,
         proxies: newPorxies,
@@ -72,27 +72,27 @@ class DynamicFieldSet extends Component {
       this.setState({
         originKeys: newKeys,
         proxies: newProxies,
-      })
+      });
     } else {
       this.setState({
         originKeys: newKeys,
         proxies: newProxies,
         currentProxyIndex: newKeys[0],
-      })
+      });
     }
   }
 
   onCheckboxChange = e => {
     this.setState({
       useProxy: e.target.checked,
-    })
+    });
     const result = {
       proxies: this.state.proxies,
       useProxy: e.target.checked,
       originKeys: this.state.originKeys,
       currentProxyIndex: this.state.currentProxyIndex,
-    }
-    this.props.onChangeProxy(JSON.stringify(result))
+    };
+    this.props.onChangeProxy(JSON.stringify(result));
 
   }
 
@@ -105,7 +105,7 @@ class DynamicFieldSet extends Component {
   handleSubmit = e => {
     e.preventDefault();
     const urlReg = /^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*$/i;
-    for(var i = 0; i < this.state.proxies.length; i++) {
+    for (var i = 0; i < this.state.proxies.length; i++) {
       const proxy = this.state.proxies[i];
       this.state.isErrorInput[i] = 'ok';
       const isErrorInput = JSON.parse(JSON.stringify(this.state.isErrorInput));
@@ -123,16 +123,16 @@ class DynamicFieldSet extends Component {
       useProxy: this.state.useProxy,
       originKeys: this.state.originKeys,
       currentProxyIndex: this.state.currentProxyIndex,
-    }
-    this.props.onChangeProxy(JSON.stringify(result))
+    };
+    this.props.onChangeProxy(JSON.stringify(result));
   }
 
   proxyInputChange = (e, index) => {
-    const originProxies = [].concat(this.state.proxies)
-    originProxies[index] = e.target.value
+    const originProxies = [].concat(this.state.proxies);
+    originProxies[index] = e.target.value;
     this.setState({
       proxies: originProxies,
-    })
+    });
   }
 
   render() {

@@ -40,7 +40,7 @@ export default class DataInfo extends React.Component {
       modalVisible: false,
       modalInfoTitle: '',
       modalInfoData: '',
-      _modalInfoData: '', // 用来校验与保存
+      _modalInfoData: '',
       proxyContent: currentData && currentData.proxyContent,
       scenes: currentData && currentData.scenes,
       params: currentData && currentData.params,
@@ -54,8 +54,10 @@ export default class DataInfo extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    const currentData = props.currentData
-    if (!currentData) return
+    const currentData = props.currentData;
+    if (!currentData) {
+      return;
+    }
     this.setState({
       proxyContent: currentData && currentData.proxyContent,
       scenes: currentData && currentData.scenes,
@@ -65,13 +67,13 @@ export default class DataInfo extends React.Component {
       pathname: currentData && currentData.pathname,
       currentScene: currentData && currentData.currentScene,
       description: currentData && currentData.description,
-    })
+    });
   }
 
   handleAdd = () => {
     const index = _.findIndex(this.state.scenes, o => o.name === this.state.addingScene)
     if (index !== -1) {
-      alert('场景名称已存在！')
+      alert('场景名称已存在！');
       return;
     }
     if (!this.state.addingScene) {
@@ -85,7 +87,7 @@ export default class DataInfo extends React.Component {
     if (!this.state.scenes) {
       this.state.scenes = []
     }
-    const newData = [...this.state.scenes, newScene]
+    const newData = [...this.state.scenes, newScene];
     this.setState({
       scenes: newData,
       currentScene: this.state.addingScene,
