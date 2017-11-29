@@ -73,11 +73,11 @@ export default class Project extends React.Component {
       pathname: newApi.pathname,
       description: newApi.description,
     }).then((res) => {
-      console.log('update', res)
+      console.log('update', res);
       if (res.success) {
         this.setState({
           data: allData
-        })
+        });
         console.log('添加／更新接口成功');
       }
     });
@@ -89,7 +89,7 @@ export default class Project extends React.Component {
       if (res.success) {
         this.setState({
           data: allData,
-        }),
+        });
         console.log('添加／更新接口成功');
       }
     });
@@ -111,7 +111,7 @@ export default class Project extends React.Component {
       if (res.success) {
         this.setState({
           data: apis,
-        })
+        });
         console.log('更新数据成功');
       }
     });
