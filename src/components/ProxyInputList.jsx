@@ -86,6 +86,14 @@ class DynamicFieldSet extends Component {
     this.setState({
       useProxy: e.target.checked,
     })
+    const result = {
+      proxies: this.state.proxies,
+      useProxy: e.target.checked,
+      originKeys: this.state.originKeys,
+      currentProxyIndex: this.state.currentProxyIndex,
+    }
+    this.props.onChangeProxy(JSON.stringify(result))
+
   }
 
   onRadioChange = e => {
@@ -176,10 +184,10 @@ class DynamicFieldSet extends Component {
       <Form onSubmit={this.handleSubmit} className="proxyInputList">
       <FormItem {...formItemLayout}>
         <Checkbox checked={this.state.useProxy} onChange={this.onCheckboxChange}>是否使用代理</Checkbox>
-        <Button type="dashed" onClick={this.add} style={{ width: '160px' }}>
+        <Button size="small" type="dashed" onClick={this.add} style={{ width: '80px', marginLeft: '200px' }}>
           <Icon type="plus" />添加代理
         </Button>
-        <Button type="primary" htmlType="submit" style={{ width: '160px' }}>提交</Button>
+        <Button size="small" type="primary" htmlType="submit" style={{ width: '45px' }}>提交</Button>
       </FormItem>
 
       <RadioGroup onChange={this.onRadioChange} value={this.state.currentProxyIndex}>
