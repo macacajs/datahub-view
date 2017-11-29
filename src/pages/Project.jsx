@@ -18,8 +18,8 @@ const {
 
 import DataList from '../components/DataList';
 import RealTime from '../components/RealTime';
-import RealTimeDetail from '../components/RealTimeDetail';
 import DataInfo from '../components/DataInfo';
+import RealTimeDetail from '../components/RealTimeDetail';
 
 const projectId = location.pathname.replace('/project/', '');
 
