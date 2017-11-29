@@ -22,6 +22,7 @@ import {
 require('codemirror/mode/javascript/javascript');
 
 import EditableTable from './EditableTable'
+import ProxyInputList from './ProxyInputList'
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -56,6 +57,7 @@ export default class DataInfo extends React.Component {
     const currentData = props.currentData
     if (!currentData) return
     this.setState({
+      proxyUrl: currentData && currentData.proxyUrl,
       scenes: currentData && currentData.scenes,
       params: currentData && currentData.params,
       method: currentData && currentData.method,
@@ -200,24 +202,12 @@ export default class DataInfo extends React.Component {
     this.props.handleAsynSecType('delay', value);
   }
 
-  handleProxyChange = e => {
-    const value = e.target.value
+  handleProxyChange = value => {
     this.setState({
       proxyUrl: value,
     });
-    if (value === '') {
-      this.props.handleAsynSecType('proxyUrl', value);
-    }
+    this.props.handleAsynSecType('proxyUrl', value);
  }
-
-  handleAddProxyUrl = e => {
-    const urlReg = /^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*$/i;
-    if (urlReg.test(this.state.proxyUrl)) {
-      this.props.handleAsynSecType('proxyUrl', this.state.proxyUrl);
-    } else {
-      alert('请输入URL！')
-    }
-  }
 
   handleParamsChange = params => {
     this.setState({
@@ -291,7 +281,7 @@ export default class DataInfo extends React.Component {
                 }
               </RadioGroup>
               <Modal
-                width='80%'
+                width="80%"
                 title={`scene: ${this.state.modalInfoTitle}`}
                 visible={this.state.modalVisible}
                 onOk={this.handleModalOk}
@@ -320,8 +310,10 @@ export default class DataInfo extends React.Component {
           </section>
           <section className="data-proxy">
             <h1>代理配置</h1>
-            <Input style={{ width: "385px" }} placeholder="输入代理链接" value={this.state.proxyUrl} onChange={this.handleProxyChange.bind(this)} />
-            <Button type="primary" onClick={this.handleAddProxyUrl.bind(this)}>添加代理</Button>
+            <ProxyInputList
+              onChangeProxy={this.handleProxyChange.bind(this)}
+              proxyUrl={this.state.proxyUrl}
+            />
           </section>
           <section className="params-doc">
             <h1>字段说明</h1>

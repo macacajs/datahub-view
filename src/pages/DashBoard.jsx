@@ -152,7 +152,6 @@ export default class DashBoard extends React.Component {
 
       request('/api/project', 'POST', values)
         .then((res) => {
-          console.log('res', res)
           form.resetFields();
           this.setState({
             visible: false,

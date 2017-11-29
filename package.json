@@ -15,7 +15,8 @@
     "url": "git://github.com/macacajs/datahub-view.git"
   },
   "dependencies": {
-    "koa-static-cache": "^5.1.1"
+    "koa-static-cache": "^5.1.1",
+    "lodash": "^4.17.4"
   },
   "devDependencies": {
     "antd": "^2.13.8",
