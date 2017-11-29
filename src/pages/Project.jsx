@@ -58,7 +58,7 @@ export default class Project extends React.Component {
     const pageConfig = window.pageConfig;
     const host = `http://${location.hostname}:${pageConfig.socket.port}`;
     const socket = io(host);
-    socket.on('test event', (data) => {
+    socket.on('push data', (data) => {
       console.log(data);
       const newData = [ ...this.state.realTimeDataList ].slice(0, this.state.REALTIME_MAXLINE - 1);
       newData.unshift(data);
