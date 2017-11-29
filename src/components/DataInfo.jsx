@@ -22,6 +22,7 @@ import {
 require('codemirror/mode/javascript/javascript');
 
 import EditableTable from './EditableTable'
+import ProxyInputList from './ProxyInputList'
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -39,7 +40,8 @@ export default class DataInfo extends React.Component {
       modalVisible: false,
       modalInfoTitle: '',
       modalInfoData: '',
-      _modalInfoData: '', // 用来校验与保存
+      _modalInfoData: '',
+      proxyContent: currentData && currentData.proxyContent,
       scenes: currentData && currentData.scenes,
       params: currentData && currentData.params,
       method: currentData && currentData.method,
@@ -52,9 +54,12 @@ export default class DataInfo extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    const currentData = props.currentData
-    console.log('currentData.currentScene', currentData.currentScene)
+    const currentData = props.currentData;
+    if (!currentData) {
+      return;
+    }
     this.setState({
+      proxyContent: currentData && currentData.proxyContent,
       scenes: currentData && currentData.scenes,
       params: currentData && currentData.params,
       method: currentData && currentData.method,
@@ -62,13 +67,13 @@ export default class DataInfo extends React.Component {
       pathname: currentData && currentData.pathname,
       currentScene: currentData && currentData.currentScene,
       description: currentData && currentData.description,
-    })
+    });
   }
 
   handleAdd = () => {
     const index = _.findIndex(this.state.scenes, o => o.name === this.state.addingScene)
     if (index !== -1) {
-      alert('场景名称已存在！')
+      alert('场景名称已存在！');
       return;
     }
     if (!this.state.addingScene) {
@@ -82,7 +87,7 @@ export default class DataInfo extends React.Component {
     if (!this.state.scenes) {
       this.state.scenes = []
     }
-    const newData = [...this.state.scenes, newScene]
+    const newData = [...this.state.scenes, newScene];
     this.setState({
       scenes: newData,
       currentScene: this.state.addingScene,
@@ -191,7 +196,7 @@ export default class DataInfo extends React.Component {
     this.props.handleAsynSecType('description', e.target.value);
   }
 
-  delayChange = (value) => {
+  delayChange = value => {
     value = parseInt(value, 10);
     this.setState({
       delay: value,
@@ -199,7 +204,14 @@ export default class DataInfo extends React.Component {
     this.props.handleAsynSecType('delay', value);
   }
 
-  handleParamsChange = (params) => {
+  handleProxyChange = value => {
+    this.setState({
+      proxyContent: value,
+    });
+    this.props.handleAsynSecType('proxyContent', value);
+ }
+
+  handleParamsChange = params => {
     this.setState({
       params: params,
     });
@@ -271,7 +283,7 @@ export default class DataInfo extends React.Component {
                 }
               </RadioGroup>
               <Modal
-                width='80%'
+                width="80%"
                 title={`scene: ${this.state.modalInfoTitle}`}
                 visible={this.state.modalVisible}
                 onOk={this.handleModalOk}
@@ -300,7 +312,10 @@ export default class DataInfo extends React.Component {
           </section>
           <section className="data-proxy">
             <h1>代理配置</h1>
-            <p>Comming soon.</p>
+            <ProxyInputList
+              onChangeProxy={this.handleProxyChange.bind(this)}
+              proxyContent={this.state.proxyContent}
+            />
           </section>
           <section className="params-doc">
             <h1>字段说明</h1>

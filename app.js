@@ -1,7 +1,8 @@
 'use strict';
 
-const serve = require('koa-static');
+const staticCache = require('koa-static-cache');
 
 module.exports = app => {
-  app.use(serve(__dirname));
+  app.use(staticCache('/dist/js'));
+  app.use(staticCache('/dist/css'));
 };

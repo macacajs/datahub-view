@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import io from 'socket.io-client';
 
 const request = require('../common/fetch');
 import {
@@ -16,24 +17,30 @@ const {
 } = Layout;
 
 import DataList from '../components/DataList';
+import RealTime from '../components/RealTime';
 import DataInfo from '../components/DataInfo';
+import RealTimeDetail from '../components/RealTimeDetail';
 
-const projectId = location.pathname.replace('/project/', '')
+const projectId = location.pathname.replace('/project/', '');
 
 export default class Project extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
+      contentViewType: 'api', // display api content by default
       data: [],
       currentIndex: 0,
-    }
+
+      REALTIME_MAXLINE: 10,
+      realTimeDataList: [],
+      realTimeIndex: 0,
+    };
   }
 
   componentDidMount() {
     const projectId = location.pathname.replace('/project/', '')
     request(`/api/data/${projectId}`, 'GET').then((res) => {
-      console.log('query', res)
       res.data.forEach(item => {
         item.params = JSON.parse(item.params);
         item.scenes = JSON.parse(item.scenes);
@@ -43,7 +50,22 @@ export default class Project extends React.Component {
           data: res.data,
         })
       }
-    })
+    });
+    this.initRealTimeDataList ();
+  }
+
+  initRealTimeDataList() {
+    const pageConfig = window.pageConfig;
+    const host = `http://${location.hostname}:${pageConfig.socket.port}`;
+    const socket = io(host);
+    socket.on('push data', (data) => {
+      console.log(data);
+      const newData = [ ...this.state.realTimeDataList ].slice(0, this.state.REALTIME_MAXLINE - 1);
+      newData.unshift(data);
+      this.setState({
+        realTimeDataList: newData,
+      })
+    });
   }
 
   addApi(allData, newApi) {
@@ -51,14 +73,14 @@ export default class Project extends React.Component {
       pathname: newApi.pathname,
       description: newApi.description,
     }).then((res) => {
-      console.log('update', res)
+      console.log('update', res);
       if (res.success) {
         this.setState({
           data: allData
-        })
+        });
         console.log('添加／更新接口成功');
       }
-    })
+    });
   }
 
   deleteApi(allData, newApi) {
@@ -67,7 +89,7 @@ export default class Project extends React.Component {
       if (res.success) {
         this.setState({
           data: allData,
-        }),
+        });
         console.log('添加／更新接口成功');
       }
     });
@@ -89,7 +111,7 @@ export default class Project extends React.Component {
       if (res.success) {
         this.setState({
           data: apis,
-        })
+        });
         console.log('更新数据成功');
       }
     });
@@ -97,7 +119,15 @@ export default class Project extends React.Component {
 
   handleApiClick(index) {
     this.setState({
+      contentViewType: 'api',
       currentIndex: index,
+    });
+  }
+
+  selectRealTimeItem(index) {
+    this.setState({
+      contentViewType: 'realTime',
+      realTimeIndex: index,
     });
   }
 
@@ -123,22 +153,31 @@ export default class Project extends React.Component {
               />
             </TabPane>
             <TabPane tab="实时快照" key="2">
-              Coming soon.
+              <RealTime
+                realTimeDataList={this.state.realTimeDataList}
+                onSelect={this.selectRealTimeItem.bind(this)}
+               />
             </TabPane>
           </Tabs>
         </Sider>
         <Content>
           {
-            this.state.data.length > 0
+            this.state.contentViewType === 'api'
             && <DataInfo
               currentData={this.state.data[this.state.currentIndex]}
               handleAsynSecType={this.asynSecType.bind(this)}
             />
           }
           {
+            this.state.contentViewType === 'realTime'
+            && <RealTimeDetail
+              data={this.state.realTimeDataList[this.state.realTimeIndex]}
+            />
+          }
+          {/* {
             this.state.data.length < 1
             && <h1 style={{ margin: '50px', textAlign: 'center' }}>请添加接口</h1>
-          }
+          } */}
         </Content>
       </Layout>
     );
