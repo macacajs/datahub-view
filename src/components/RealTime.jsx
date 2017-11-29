@@ -6,6 +6,7 @@ import {
   Badge,
 } from 'antd';
 import io from 'socket.io-client';
+
 import './realTime.less';
 
 export default class RealTime extends React.Component {
@@ -25,13 +26,23 @@ export default class RealTime extends React.Component {
   }
 
   render() {
-    const { realTimeDataList } = this.state;
+    const {
+      realTimeDataList
+    } = this.state;
     const statusBadge = status => {
       status = String(status);
-      if (status.startsWith('2')) return 'success';
-      if (status.startsWith('3')) return 'warning';
-      if (status.startsWith('4')) return 'error';
-      if (status.startsWith('5')) return 'error';
+      if (status.startsWith('2')) {
+        return 'success';
+      }
+      if (status.startsWith('3')){
+        return 'warning';
+      }
+      if (status.startsWith('4')) {
+        return 'error';
+      }
+      if (status.startsWith('5')) {
+        return 'error';
+      }
       return 'default';
     };
     return (
