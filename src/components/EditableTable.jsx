@@ -4,7 +4,6 @@ import React from 'react';
 import {
   Table,
   Input,
-  Icon,
   Button,
   Popconfirm
 } from 'antd';
@@ -18,7 +17,7 @@ for (let i = 0; i < 3; i++) {
     field: '字段名',
     require: 'false',
     type: 'String',
-    description: '描述',
+    description: '描述'
   });
 }
 
@@ -45,22 +44,22 @@ export default class EditableTable extends React.Component {
       title: '字段',
       dataIndex: 'field',
       width: '20%',
-      render: (text, record) => this.renderColumns(text, record, 'field'),
+      render: (text, record) => this.renderColumns(text, record, 'field')
     }, {
       title: '类型',
       dataIndex: 'type',
       width: '15%',
-      render: (text, record) => this.renderColumns(text, record, 'type'),
+      render: (text, record) => this.renderColumns(text, record, 'type')
     }, {
       title: '必选',
       dataIndex: 'require',
       width: '10%',
-      render: (text, record) => this.renderColumns(text, record, 'require'),
+      render: (text, record) => this.renderColumns(text, record, 'require')
     }, {
       title: '说明',
       dataIndex: 'description',
       width: '45%',
-      render: (text, record) => this.renderColumns(text, record, 'description'),
+      render: (text, record) => this.renderColumns(text, record, 'description')
     }, {
       title: '操作',
       dataIndex: 'operation',
@@ -69,24 +68,23 @@ export default class EditableTable extends React.Component {
         return (
           <div className="editable-row-operations">
             {
-              editable ?
-                <span>
+              editable
+                ? <span>
                   <a onClick={() => this.save(record.key)}>保存</a>
                   <Popconfirm title="确定取消?" onConfirm={() => this.cancel(record.key)}>
                     <a>取消</a>
                   </Popconfirm>
                 </span>
-                :
-                <span>
+                : <span>
                   <a onClick={() => this.edit(record.key)}>编辑</a>
                   <Popconfirm title="确定删除？" onConfirm={() => this.onDelete(record.key)}>
                     <a>删除</a>
                   </Popconfirm>
                 </span>
-              }
+            }
           </div>
         );
-      },
+      }
     }];
     this.cacheData = data.map(item => ({ ...item }));
   }
@@ -120,9 +118,9 @@ export default class EditableTable extends React.Component {
 
   onDelete(key) {
     const dataSource = [...this.state.data];
-    const allParams = dataSource.filter(item => item.key !== key)
+    const allParams = dataSource.filter(item => item.key !== key);
     this.setState({ data: allParams });
-    tihs.props.onParamsChange(allParams)
+    this.props.onParamsChange(allParams);
   }
 
   handleAdd() {
@@ -133,11 +131,11 @@ export default class EditableTable extends React.Component {
       field: '',
       require: '',
       type: '',
-      description: '',
+      description: ''
     };
-    const allParams = [...data, newData]
+    const allParams = [...data, newData];
     this.setState({
-      data: allParams,
+      data: allParams
     });
   }
 
@@ -157,7 +155,7 @@ export default class EditableTable extends React.Component {
     if (target) {
       delete target.editable;
       this.setState({
-        data: allParams,
+        data: allParams
       });
       this.cacheData = allParams.map(item => ({ ...item }));
     }
@@ -171,7 +169,7 @@ export default class EditableTable extends React.Component {
       Object.assign(target, this.cacheData.filter(item => key === item.key)[0]);
       delete target.editable;
       this.setState({
-        data: newData,
+        data: newData
       });
     }
   }

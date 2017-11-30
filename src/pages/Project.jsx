@@ -3,28 +3,26 @@
 import React from 'react';
 import io from 'socket.io-client';
 
-const request = require('../common/fetch');
 import {
   Layout,
-  Tabs,
+  Tabs
 } from 'antd';
-const TabPane = Tabs.TabPane;
-const {
-  Header,
-  Footer,
-  Sider,
-  Content,
-} = Layout;
 
 import DataList from '../components/DataList';
 import RealTime from '../components/RealTime';
 import DataInfo from '../components/DataInfo';
 import RealTimeDetail from '../components/RealTimeDetail';
 
+const request = require('../common/fetch');
+const TabPane = Tabs.TabPane;
+const {
+  Sider,
+  Content
+} = Layout;
+
 const projectId = location.pathname.replace('/project/', '');
 
 export default class Project extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -34,24 +32,24 @@ export default class Project extends React.Component {
 
       REALTIME_MAXLINE: 10,
       realTimeDataList: [],
-      realTimeIndex: 0,
+      realTimeIndex: 0
     };
   }
 
   componentDidMount() {
-    const projectId = location.pathname.replace('/project/', '')
+    const projectId = location.pathname.replace('/project/', '');
     request(`/api/data/${projectId}`, 'GET').then((res) => {
       res.data.forEach(item => {
         item.params = JSON.parse(item.params);
         item.scenes = JSON.parse(item.scenes);
-      })
+      });
       if (res.success) {
         this.setState({
-          data: res.data,
-        })
+          data: res.data
+        });
       }
     });
-    this.initRealTimeDataList ();
+    this.initRealTimeDataList();
   }
 
   initRealTimeDataList() {
@@ -63,15 +61,15 @@ export default class Project extends React.Component {
       const newData = [ ...this.state.realTimeDataList ].slice(0, this.state.REALTIME_MAXLINE - 1);
       newData.unshift(data);
       this.setState({
-        realTimeDataList: newData,
-      })
+        realTimeDataList: newData
+      });
     });
   }
 
   addApi(allData, newApi) {
     request(`/api/data/${projectId}`, 'POST', {
       pathname: newApi.pathname,
-      description: newApi.description,
+      description: newApi.description
     }).then((res) => {
       console.log('update', res);
       if (res.success) {
@@ -88,7 +86,7 @@ export default class Project extends React.Component {
       console.log('delete', res);
       if (res.success) {
         this.setState({
-          data: allData,
+          data: allData
         });
         console.log('添加／更新接口成功');
       }
@@ -102,15 +100,15 @@ export default class Project extends React.Component {
     console.log('apis', apis);
     const currentPathname = this.state.data[this.state.currentIndex].pathname;
     if (data instanceof Object) {
-      data = JSON.stringify(data)
+      data = JSON.stringify(data);
     }
     request(`/api/data/${projectId}/${currentPathname}`, 'POST', {
-      [type]: data,
+      [type]: data
     }).then((res) => {
-      console.log('update', res)
+      console.log('update', res);
       if (res.success) {
         this.setState({
-          data: apis,
+          data: apis
         });
         console.log('更新数据成功');
       }
@@ -120,14 +118,14 @@ export default class Project extends React.Component {
   handleApiClick(index) {
     this.setState({
       contentViewType: 'api',
-      currentIndex: index,
+      currentIndex: index
     });
   }
 
   selectRealTimeItem(index) {
     this.setState({
       contentViewType: 'realTime',
-      realTimeIndex: index,
+      realTimeIndex: index
     });
   }
 
@@ -138,7 +136,7 @@ export default class Project extends React.Component {
           background: 'none',
           borderRight: '1px solid #eee',
           marginRight: '20px',
-          paddingRight: '20px',
+          paddingRight: '20px'
         }}>
           <Tabs
             defaultActiveKey="1"
@@ -156,21 +154,21 @@ export default class Project extends React.Component {
               <RealTime
                 realTimeDataList={this.state.realTimeDataList}
                 onSelect={this.selectRealTimeItem.bind(this)}
-               />
+              />
             </TabPane>
           </Tabs>
         </Sider>
         <Content>
           {
-            this.state.contentViewType === 'api'
-            && <DataInfo
+            this.state.contentViewType === 'api' &&
+            <DataInfo
               currentData={this.state.data[this.state.currentIndex]}
               handleAsynSecType={this.asynSecType.bind(this)}
             />
           }
           {
-            this.state.contentViewType === 'realTime'
-            && <RealTimeDetail
+            this.state.contentViewType === 'realTime' &&
+            <RealTimeDetail
               data={this.state.realTimeDataList[this.state.realTimeIndex]}
             />
           }

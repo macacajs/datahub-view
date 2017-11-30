@@ -1,6 +1,6 @@
 'use strict';
 
-import './DataInfo.less'
+import './DataInfo.less';
 import 'codemirror/lib/codemirror.css';
 
 import _ from 'lodash';
@@ -17,24 +17,21 @@ import {
   Popconfirm,
   Breadcrumb,
   InputNumber,
-  Checkbox,
+  Checkbox
 } from 'antd';
-require('codemirror/mode/javascript/javascript');
 
-import EditableTable from './EditableTable'
-import ProxyInputList from './ProxyInputList'
+import EditableTable from './EditableTable';
+import ProxyInputList from './ProxyInputList';
+
+require('codemirror/mode/javascript/javascript');
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
-const {
-  TextArea
-} = Input;
 
 export default class DataInfo extends React.Component {
-
   constructor(props) {
     super(props);
-    const currentData = props.currentData
+    const currentData = props.currentData;
     this.state = {
       addingScene: '',
       modalVisible: false,
@@ -49,8 +46,8 @@ export default class DataInfo extends React.Component {
       pathname: currentData && currentData.pathname,
       description: currentData && currentData.description,
       currentScene: currentData && currentData.currentScene,
-      cursorPos: null,
-    }
+      cursorPos: null
+    };
   }
 
   componentWillReceiveProps(props) {
@@ -66,12 +63,12 @@ export default class DataInfo extends React.Component {
       delay: currentData && currentData.delay,
       pathname: currentData && currentData.pathname,
       currentScene: currentData && currentData.currentScene,
-      description: currentData && currentData.description,
+      description: currentData && currentData.description
     });
   }
 
-  handleAdd = () => {
-    const index = _.findIndex(this.state.scenes, o => o.name === this.state.addingScene)
+  handleAdd() {
+    const index = _.findIndex(this.state.scenes, o => o.name === this.state.addingScene);
     if (index !== -1) {
       alert('场景名称已存在！');
       return;
@@ -82,138 +79,140 @@ export default class DataInfo extends React.Component {
     }
     const newScene = {
       name: this.state.addingScene,
-      data: '{}',
-    }
+      data: '{}'
+    };
     if (!this.state.scenes) {
-      this.state.scenes = []
+      this.setState({
+        scenes: []
+      });
     }
     const newData = [...this.state.scenes, newScene];
     this.setState({
       scenes: newData,
       currentScene: this.state.addingScene,
       modalInfoData: '',
-      _modalInfoData: '',
-    })
+      _modalInfoData: ''
+    });
     this.props.handleAsynSecType('scenes', newData);
     this.props.handleAsynSecType('currentScene', this.state.addingScene);
   }
 
-  handleAddSceneChange = (e) => {
+  handleAddSceneChange(e) {
     this.setState({
-      addingScene: e.target.value,
+      addingScene: e.target.value
     });
   }
 
-  onConfirmRemoveScene = (index) => {
+  onConfirmRemoveScene(index) {
     const newData = [...this.state.scenes];
     newData.splice(index, 1);
     if (this.state.scenes[index].name === this.state.currentScene && this.state.scenes.length > 0) {
       if (index > 0) {
         this.setState({
           scenes: newData,
-          currentScene: this.state.scenes[0].name,
+          currentScene: this.state.scenes[0].name
         });
         this.props.handleAsynSecType('currentScene', this.state.scenes[0].name);
       } else if (this.state.scenes.length > 1) {
         this.setState({
           scenes: newData,
-          currentScene: this.state.scenes[1].name,
+          currentScene: this.state.scenes[1].name
         });
         this.props.handleAsynSecType('currentScene', this.state.scenes[1].name);
       }
     } else {
       this.setState({
-        scenes: newData,
+        scenes: newData
       });
     }
     this.props.handleAsynSecType('scenes', newData);
   }
 
-  showModal = (index) => {
-    const str = JSON.stringify(JSON.parse(this.state.scenes[index].data), null, 2)
+  showModal(index) {
+    const str = JSON.stringify(JSON.parse(this.state.scenes[index].data), null, 2);
     this.setState({
       modalVisible: true,
       modalInfoTitle: this.state.scenes[index].name,
       modalInfoData: str.trim(),
-      _modalInfoData: str.trim(),
+      _modalInfoData: str.trim()
     });
   }
 
-  handleModalOk = (e) => {
+  handleModalOk(e) {
     try {
-      JSON.parse(this.state._modalInfoData)
+      JSON.parse(this.state._modalInfoData);
     } catch (e) {
-      console.log('invalid json string')
+      console.log('invalid json string');
       return;
     }
     const index = _.findIndex(this.state.scenes, o => o.name === this.state.modalInfoTitle);
     const updateScene = {
       name: this.state.modalInfoTitle,
-      data: this.state._modalInfoData,
+      data: this.state._modalInfoData
     };
     const newData = [...this.state.scenes];
     newData.splice(index, 1, updateScene);
     this.setState({
       modalVisible: false,
-      scenes: newData,
+      scenes: newData
     });
     this.props.handleAsynSecType('scenes', newData);
   }
 
-  handleModalCancel = () => {
+  handleModalCancel() {
     this.setState({
-      modalVisible: false,
+      modalVisible: false
     });
   }
 
-  modalTextAreaChange = (editor, data, value) => {
+  modalTextAreaChange(editor, data, value) {
     this.setState({
-      _modalInfoData: value,
+      _modalInfoData: value
     });
   }
 
-  handleOptionChange = (value) => {
+  handleOptionChange(value) {
     this.setState({
-      method: value,
+      method: value
     });
     this.props.handleAsynSecType('method', value);
   }
 
-  handleSceneChange = (e) => {
+  handleSceneChange(e) {
     this.setState({
-      currentScene: e.target.value,
+      currentScene: e.target.value
     });
     this.props.handleAsynSecType('currentScene', e.target.value);
   }
 
-  handleDescriptionChange = (e) => {
+  handleDescriptionChange(e) {
     this.setState({
-      description: e.target.value,
+      description: e.target.value
     });
   }
 
-  handleDescriptionBlur = (e) => {
+  handleDescriptionBlur(e) {
     this.props.handleAsynSecType('description', e.target.value);
   }
 
-  delayChange = value => {
+  delayChange(value) {
     value = parseInt(value, 10);
     this.setState({
-      delay: value,
+      delay: value
     });
     this.props.handleAsynSecType('delay', value);
   }
 
-  handleProxyChange = value => {
+  handleProxyChange(value) {
     this.setState({
-      proxyContent: value,
+      proxyContent: value
     });
     this.props.handleAsynSecType('proxyContent', value);
- }
+  }
 
-  handleParamsChange = params => {
+  handleParamsChange(params) {
     this.setState({
-      params: params,
+      params: params
     });
     this.props.handleAsynSecType('params', params);
   }
@@ -264,7 +263,7 @@ export default class DataInfo extends React.Component {
             <h1>场景管理</h1>
             <div>
               <div className="add-input">
-                <Input style={{ width: "200px" }} placeholder="输入场景名" onChange={this.handleAddSceneChange.bind(this)} />
+                <Input style={{ width: '200px' }} placeholder="输入场景名" onChange={this.handleAddSceneChange.bind(this)} />
                 <Button type="primary" onClick={this.handleAdd.bind(this)}>新增场景</Button>
               </div>
               <RadioGroup name="radiogroup" value={this.state.currentScene} onChange={this.handleSceneChange.bind(this)}>
@@ -278,7 +277,7 @@ export default class DataInfo extends React.Component {
                           <Button type="danger" size="small" >删除</Button>
                         </Popconfirm>
                       </Radio>
-                    )
+                    );
                   })
                 }
               </RadioGroup>
@@ -303,7 +302,7 @@ export default class DataInfo extends React.Component {
                     smartIndent: true,
                     textWrapping: false,
                     lineWrapping: true,
-                    autofocus: true,
+                    autofocus: true
                   }}
                   onChange={this.modalTextAreaChange.bind(this)}
                 />

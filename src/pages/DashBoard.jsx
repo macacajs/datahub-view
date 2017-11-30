@@ -24,19 +24,19 @@ class EditableCell extends React.Component {
     editable: false,
   }
 
-  handleChange = (e) => {
+  handleChange(e) {
     const value = e.target.value;
     this.setState({ value });
   }
 
-  check = () => {
+  check() {
     this.setState({ editable: false });
     if (this.props.onChange) {
       this.props.onChange(this.state.value);
     }
   }
 
-  edit = () => {
+  edit() {
     this.setState({ editable: true });
   }
 

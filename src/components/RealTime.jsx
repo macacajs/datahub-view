@@ -3,25 +3,23 @@
 import React from 'react';
 import {
   Row,
-  Badge,
+  Badge
 } from 'antd';
-import io from 'socket.io-client';
 
 import './realTime.less';
 
 export default class RealTime extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      realTimeDataList: [],
+      realTimeDataList: []
     };
   }
 
   componentWillReceiveProps(props) {
-    const realTimeDataList = props.realTimeDataList
+    const realTimeDataList = props.realTimeDataList;
     this.setState({
-      realTimeDataList,
+      realTimeDataList
     });
   }
 
@@ -34,7 +32,7 @@ export default class RealTime extends React.Component {
       if (status.startsWith('2')) {
         return 'success';
       }
-      if (status.startsWith('3')){
+      if (status.startsWith('3')) {
         return 'warning';
       }
       if (status.startsWith('4')) {
@@ -69,6 +67,6 @@ export default class RealTime extends React.Component {
           })
         }
       </div>
-    )
+    );
   }
 };

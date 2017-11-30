@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Breadcrumb,
+  Breadcrumb
 } from 'antd';
 
 import './realTimeDetail.less';
@@ -13,7 +13,7 @@ export default class RealTimeDetail extends React.Component {
   }
 
   renderHeaders({ headers }) {
-    console.log('renderHeaders', headers)
+    console.log('renderHeaders', headers);
     return Object.keys(headers).map(key => {
       return (
         <div key={key}>
@@ -25,19 +25,18 @@ export default class RealTimeDetail extends React.Component {
   }
 
   renderBody({ body }) {
-    console.log('renderBody', body)
+    console.log('renderBody', body);
     return (
       <div>
         {JSON.stringify(body)}
       </div>
-    )
+    );
   }
 
   render() {
     const {
       req,
-      res,
-      date,
+      res
     } = this.props.data;
     return (
       <div className="real-time-detail">
@@ -62,6 +61,6 @@ export default class RealTimeDetail extends React.Component {
           </div>
         </section>
       </div>
-    )
+    );
   }
 }

@@ -7,22 +7,23 @@ import {
   Modal,
   Popconfirm,
   Row,
-  Col,
+  Col
 } from 'antd';
+import _ from 'lodash';
+
+import './DataList.less';
+
 const Search = Input.Search;
 
-import './DataList.less'
-
 export default class DataList extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       modalVisible: false,
       modalTitle: '',
       modalDescription: '',
-      apis: props.apis,
-    }
+      apis: props.apis
+    };
   }
 
   componentDidMount() {
@@ -30,9 +31,9 @@ export default class DataList extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    const apis = props.apis
+    const apis = props.apis;
     this.setState({
-      apis,
+      apis
     });
   }
 
@@ -40,24 +41,24 @@ export default class DataList extends React.Component {
     this.setState({
       modalVisible: true,
       modalTitle: '',
-      modalDescription: '',
+      modalDescription: ''
     });
   }
 
   modalTitleChange(e) {
     this.setState({
-      modalTitle: e.target.value,
+      modalTitle: e.target.value
     });
   }
 
   modalDescriptionChange(e) {
     this.setState({
-      modalDescription: e.target.value,
+      modalDescription: e.target.value
     });
   }
 
-  handleModalOk = (e) => {
-    const index = _.findIndex(this.state.apis, o => o.pathname === this.state.modalTitle)
+  handleModalOk(e) {
+    const index = _.findIndex(this.state.apis, o => o.pathname === this.state.modalTitle);
     if (index !== -1) {
       alert('接口名称已存在！');
       return;
@@ -68,29 +69,29 @@ export default class DataList extends React.Component {
     }
     const addAPI = {
       pathname: this.state.modalTitle,
-      description: this.state.modalDescription,
+      description: this.state.modalDescription
     };
     const newData = [...this.state.apis, addAPI];
     this.setState({
-      modalVisible: false,
+      modalVisible: false
     });
     this.props.handleAddApi(newData, addAPI);
   }
 
-  handleModalCancel = () => {
+  handleModalCancel() {
     this.setState({
-      modalVisible: false,
+      modalVisible: false
     });
   }
 
-  onConfirmRemoveApi = (index) => {
+  onConfirmRemoveApi(index) {
     const newData = [...this.state.apis];
     const deleteApi = newData.splice(index, 1)[0];
     console.log('deleteApi', deleteApi);
     this.props.handleDeleteApi(newData, deleteApi);
   }
 
-  handleApiClick = (index) => {
+  handleApiClick(index) {
     this.props.handleApiClick(index);
     const lists = document.querySelectorAll('.datalist li');
     [].slice.call(lists).forEach((item, i) => {
@@ -98,11 +99,10 @@ export default class DataList extends React.Component {
       if (i === index) {
         item.setAttribute('class', 'clicked');
       }
-    })
+    });
   }
 
   render() {
-    const stats = this.props.stats;
     return (
       <div className="datalist">
         <Row>
@@ -117,7 +117,7 @@ export default class DataList extends React.Component {
           <Col span={8} push={1}>
             <Button type="primary" onClick={this.handleAdd.bind(this)}>添加接口</Button>
           </Col>
-          </Row>
+        </Row>
         <ul>
           {
             this.state.apis && this.state.apis.map((api, index) => {
@@ -143,15 +143,15 @@ export default class DataList extends React.Component {
           onOk={this.handleModalOk}
           onCancel={this.handleModalCancel}
         >
-        <Input
-          placeholder="请输入接口名"
-          onChange={this.modalTitleChange.bind(this)}
-          value={this.state.modalTitle} />
-        <Input
-          placeholder="请输入接口描述"
-          style={{ marginTop: '10px' }}
-          onChange={this.modalDescriptionChange.bind(this)}
-          value={this.state.modalDescription} />
+          <Input
+            placeholder="请输入接口名"
+            onChange={this.modalTitleChange.bind(this)}
+            value={this.state.modalTitle} />
+          <Input
+            placeholder="请输入接口描述"
+            style={{ marginTop: '10px' }}
+            onChange={this.modalDescriptionChange.bind(this)}
+            value={this.state.modalDescription} />
         </Modal>
       </div>
     );
