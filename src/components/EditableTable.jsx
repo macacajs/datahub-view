@@ -11,26 +11,85 @@ import {
 import './EditableTable.less';
 
 const data = [];
-for (let i = 0; i < 3; i++) {
-  data.push({
-    key: i.toString(),
-    field: '字段名',
-    require: 'false',
-    type: 'String',
-    description: '描述'
-  });
-}
+
+const obj = [{
+  field: 'name',
+  type: 'string',
+  require: true,
+  description: 'description1',
+  children: [
+    {
+      field: 'name2',
+      type: 'string',
+      require: false,
+      description: 'description2',
+      children: [
+        {
+          field: 'name4',
+          type: 'string',
+          require: false,
+          description: 'description4'
+        },
+        {
+          field: 'name6',
+          type: 'string',
+          require: false,
+          description: 'description4'
+        }
+      ]
+    }, {
+      field: 'name3',
+      type: 'string',
+      require: false,
+      description: 'description3',
+      children: [
+      ]
+    }
+  ]
+}];
+
+const genList = (data) => {
+  const res = [];
+  let level = -1;
+
+  const walker = (data) => {
+    level++;
+    data.forEach(item => {
+      const {
+        field,
+        type,
+        require,
+        description,
+        children
+      } = item;
+      res.push({
+        field,
+        type,
+        require,
+        description,
+        level,
+        key: `${level}-${field}`
+      });
+
+      if (children) {
+        walker(children);
+        level--;
+      }
+    });
+    return res;
+  };
+  return walker(data);
+};
 
 const EditableCell = ({
-  editable,
   value,
-  onChange
+  level
 }) => (
   <div>
-    {editable
-      ? <Input style={{ margin: '-5px 0' }} value={value} onChange={e => onChange(e.target.value)} />
-      : value
-    }
+    <span
+      dangerouslySetInnerHTML={{__html: value}}
+      style={{ marginLeft: `${level * 20}px` }}>
+    </span>
   </div>
 );
 
@@ -38,7 +97,7 @@ export default class EditableTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: props.params
+      data: genList(obj)
     };
     this.columns = [{
       title: '字段',
@@ -51,7 +110,7 @@ export default class EditableTable extends React.Component {
       width: '15%',
       render: (text, record) => this.renderColumns(text, record, 'type')
     }, {
-      title: '必选',
+      title: '必须',
       dataIndex: 'require',
       width: '10%',
       render: (text, record) => this.renderColumns(text, record, 'require')
@@ -60,31 +119,6 @@ export default class EditableTable extends React.Component {
       dataIndex: 'description',
       width: '45%',
       render: (text, record) => this.renderColumns(text, record, 'description')
-    }, {
-      title: '操作',
-      dataIndex: 'operation',
-      render: (text, record) => {
-        const { editable } = record;
-        return (
-          <div className="editable-row-operations">
-            {
-              editable
-                ? <span>
-                  <a onClick={() => this.save(record.key)}>保存</a>
-                  <Popconfirm title="确定取消?" onConfirm={() => this.cancel(record.key)}>
-                    <a>取消</a>
-                  </Popconfirm>
-                </span>
-                : <span>
-                  <a onClick={() => this.edit(record.key)}>编辑</a>
-                  <Popconfirm title="确定删除？" onConfirm={() => this.onDelete(record.key)}>
-                    <a>删除</a>
-                  </Popconfirm>
-                </span>
-            }
-          </div>
-        );
-      }
     }];
     this.cacheData = data.map(item => ({ ...item }));
   }
@@ -92,20 +126,10 @@ export default class EditableTable extends React.Component {
   renderColumns(text, record, column) {
     return (
       <EditableCell
-        editable={record.editable}
+        level={column === 'field' ? record.level : 0}
         value={text}
-        onChange={value => this.handleChange(value, record.key, column)}
       />
     );
-  }
-
-  handleChange(value, key, column) {
-    const newData = [...this.state.data];
-    const target = newData.filter(item => key === item.key)[0];
-    if (target) {
-      target[column] = value;
-      this.setState({ data: newData });
-    }
   }
 
   _guid() {
@@ -114,13 +138,6 @@ export default class EditableTable extends React.Component {
       const v = c === 'x' ? r : (r & 0x3 | 0x8);
       return v.toString(16);
     });
-  }
-
-  onDelete(key) {
-    const dataSource = [...this.state.data];
-    const allParams = dataSource.filter(item => item.key !== key);
-    this.setState({ data: allParams });
-    this.props.onParamsChange(allParams);
   }
 
   handleAdd() {
@@ -137,41 +154,6 @@ export default class EditableTable extends React.Component {
     this.setState({
       data: allParams
     });
-  }
-
-  edit(key) {
-    const newData = [...this.state.data];
-    const target = newData.filter(item => key === item.key)[0];
-    if (target) {
-      target.editable = true;
-      this.setState({ data: newData });
-    }
-  }
-
-  save(key) {
-    const allParams = [...this.state.data];
-    const target = allParams.filter(item => key === item.key)[0];
-
-    if (target) {
-      delete target.editable;
-      this.setState({
-        data: allParams
-      });
-      this.cacheData = allParams.map(item => ({ ...item }));
-    }
-    this.props.onParamsChange(allParams);
-  }
-
-  cancel(key) {
-    const newData = [...this.state.data];
-    const target = newData.filter(item => key === item.key)[0];
-    if (target) {
-      Object.assign(target, this.cacheData.filter(item => key === item.key)[0]);
-      delete target.editable;
-      this.setState({
-        data: newData
-      });
-    }
   }
 
   render() {
