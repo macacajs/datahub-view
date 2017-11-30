@@ -9,6 +9,7 @@ import {
   UnControlled as CodeMirror
 } from 'react-codemirror2';
 import {
+  Alert,
   Button,
   Select,
   Radio,
@@ -28,6 +29,21 @@ require('codemirror/mode/javascript/javascript');
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 
+const defaultCodeMirrorOptions = {
+  mode: 'javascript',
+  theme: 'default',
+  indentUnit: 2,
+  tabSize: 2,
+  lineNumbers: true,
+  styleActiveLine: true,
+  indentWithTabs: true,
+  matchBrackets: true,
+  smartIndent: true,
+  textWrapping: false,
+  lineWrapping: true,
+  autofocus: true
+};
+
 export default class DataInfo extends React.Component {
   constructor(props) {
     super(props);
@@ -38,9 +54,13 @@ export default class DataInfo extends React.Component {
       modalInfoTitle: '',
       modalInfoData: '',
       _modalInfoData: '',
+      schemaModalVisible: false,
+      schemaJSONParseError: false,
+      _schemaData: '',
       proxyContent: currentData && currentData.proxyContent,
       scenes: currentData && currentData.scenes,
-      params: currentData && currentData.params,
+      schemaData: [],
+      enableSchemaValidate: false,
       method: currentData && currentData.method,
       delay: currentData && currentData.delay,
       pathname: currentData && currentData.pathname,
@@ -55,10 +75,15 @@ export default class DataInfo extends React.Component {
     if (!currentData) {
       return;
     }
+    let schemaContent = {}
+    if (currentData && currentData.params) {
+      schemaContent = JSON.parse(currentData.params)
+    }
     this.setState({
       proxyContent: currentData && currentData.proxyContent,
       scenes: currentData && currentData.scenes,
-      params: currentData && currentData.params,
+      schemaData: schemaContent.schemaData,
+      enableSchemaValidate: schemaContent.enableSchemaValidate,
       method: currentData && currentData.method,
       delay: currentData && currentData.delay,
       pathname: currentData && currentData.pathname,
@@ -210,11 +235,43 @@ export default class DataInfo extends React.Component {
     this.props.handleAsynSecType('proxyContent', value);
   }
 
-  handleParamsChange(params) {
+  editSchema() {
+    const schemaData = this.state.schemaData || '[]';
     this.setState({
-      params: params
+      schemaModalVisible: true,
+      schemaData: schemaData,
+      _schemaData: JSON.stringify(schemaData, null, 2).trim(),
     });
-    this.props.handleAsynSecType('params', params);
+  }
+
+  schemaModalTextAreaChange(editor, data, value) {
+    this.setState({
+      schemaData: JSON.parse(value),
+    });
+  }
+
+  confirmSchameModal() {
+    const { schemaData } = this.state
+    try {
+      this.setState({
+        schemaModalVisible: false,
+      });
+      this.props.handleAsynSecType('params', JSON.stringify({
+        enableSchemaValidate: false,
+        schemaData,
+      }));
+    } catch (e) {
+      this.setState({
+        schemaJSONParseError: true,
+      });
+    }
+  }
+
+  cancelSchameModal() {
+    this.setState({
+      schemaModalVisible: false,
+      schemaJSONParseError: false,
+    });
   }
 
   render() {
@@ -293,22 +350,23 @@ export default class DataInfo extends React.Component {
               >
                 <CodeMirror
                   value={this.state.modalInfoData}
-                  options={{
-                    mode: 'javascript',
-                    theme: 'default',
-                    indentUnit: 2,
-                    tabSize: 2,
-                    lineNumbers: true,
-                    styleActiveLine: true,
-                    indentWithTabs: true,
-                    matchBrackets: true,
-                    smartIndent: true,
-                    textWrapping: false,
-                    lineWrapping: true,
-                    autofocus: true
-                  }}
+                  options={{ ...defaultCodeMirrorOptions }}
                   onChange={this.modalTextAreaChange.bind(this)}
                 />
+              </Modal>
+              <Modal
+                width="80%"
+                title="schame"
+                visible={this.state.schemaModalVisible}
+                onOk={this.confirmSchameModal.bind(this)}
+                onCancel={this.cancelSchameModal.bind(this)}
+              >
+                <CodeMirror
+                  value={this.state._schemaData}
+                  options={{ ...defaultCodeMirrorOptions }}
+                  onChange={this.schemaModalTextAreaChange.bind(this)}
+                />
+                {this.state.schemaJSONParseError && <Alert style={{marginTop: '20px'}} message="JSON 格式错误" type="warning" />}
               </Modal>
             </div>
           </section>
@@ -322,9 +380,10 @@ export default class DataInfo extends React.Component {
           <section className="params-doc">
             <h1>字段说明</h1>
             <Checkbox> 是否开启 schema 校验 </Checkbox>
+            <Button size="small" type="primary" className="edit-schema" onClick={this.editSchema.bind(this)}>编辑 schema </Button>
             <EditableTable
-              onParamsChange={this.handleParamsChange.bind(this)}
-              params={this.state.params}/>
+              className="schema-table"
+              schemaData={this.state.schemaData}/>
           </section>
         </content>
       </div>

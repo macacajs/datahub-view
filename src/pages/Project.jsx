@@ -40,7 +40,7 @@ export default class Project extends React.Component {
     const projectId = location.pathname.replace('/project/', '');
     request(`/api/data/${projectId}`, 'GET').then((res) => {
       res.data.forEach(item => {
-        item.params = JSON.parse(item.params);
+        item.params = item.params;
         item.scenes = JSON.parse(item.scenes);
       });
       if (res.success) {

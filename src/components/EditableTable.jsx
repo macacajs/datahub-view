@@ -95,7 +95,7 @@ export default class EditableTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: genList(obj)
+      data: [],
     };
     this.columns = [{
       title: '字段',
@@ -155,9 +155,10 @@ export default class EditableTable extends React.Component {
   }
 
   render() {
+    const data = genList(this.props.schemaData || []);
     return (
       <div className="editabletable">
-        <Table bordered dataSource={this.state.data} columns={this.columns} />
+        <Table bordered dataSource={data} columns={this.columns} />
         <Button type="primary" className="editable-add-btn" onClick={this.handleAdd.bind(this)}>新增字段</Button>
       </div>
     );
