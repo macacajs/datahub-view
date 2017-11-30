@@ -285,8 +285,8 @@ export default class DataInfo extends React.Component {
                 width="80%"
                 title={`scene: ${this.state.modalInfoTitle}`}
                 visible={this.state.modalVisible}
-                onOk={this.handleModalOk}
-                onCancel={this.handleModalCancel}
+                onOk={this.handleModalOk.bind(this)}
+                onCancel={this.handleModalCancel.bind(this)}
               >
                 <CodeMirror
                   value={this.state.modalInfoData}

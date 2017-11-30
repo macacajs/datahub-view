@@ -3,9 +3,7 @@
 import React from 'react';
 import {
   Table,
-  Input,
-  Button,
-  Popconfirm
+  Button
 } from 'antd';
 
 import './EditableTable.less';

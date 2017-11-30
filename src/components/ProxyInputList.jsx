@@ -183,16 +183,16 @@ class DynamicFieldSet extends Component {
       );
     });
     return (
-      <Form onSubmit={this.handleSubmit} className="proxyInputList">
+      <Form onSubmit={this.handleSubmit.bind(this)} className="proxyInputList">
         <FormItem {...formItemLayout}>
-          <Checkbox checked={this.state.useProxy} onChange={this.onCheckboxChange}>是否使用代理</Checkbox>
-          <Button size="small" type="dashed" onClick={this.add} style={{ width: '80px', marginLeft: '200px' }}>
+          <Checkbox checked={this.state.useProxy} onChange={this.onCheckboxChange.bind(this)}>是否使用代理</Checkbox>
+          <Button size="small" type="dashed" onClick={this.add.bind(this)} style={{ width: '80px', marginLeft: '200px' }}>
             <Icon type="plus" />添加代理
           </Button>
           <Button size="small" type="primary" htmlType="submit" style={{ width: '45px' }}>提交</Button>
         </FormItem>
 
-        <RadioGroup onChange={this.onRadioChange} value={this.state.currentProxyIndex}>
+        <RadioGroup onChange={this.onRadioChange.bind(this)} value={this.state.currentProxyIndex}>
           {formItems}
         </RadioGroup>
       </Form>
