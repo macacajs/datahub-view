@@ -227,6 +227,9 @@ export default class DataInfo extends React.Component {
             <a href="/dashboard">我的项目</a>
           </Breadcrumb.Item>
           <Breadcrumb.Item>
+            { this.state.description ? this.state.description : this.state.pathname }
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>
             项目配置
           </Breadcrumb.Item>
         </Breadcrumb>
