@@ -119,7 +119,7 @@ export default class EditableTable extends React.Component {
     const data = genList(this.props.schemaData || []);
     return (
       <div className="editabletable">
-        <Table bordered dataSource={data} columns={this.columns} />
+        <Table size="small" bordered dataSource={data} columns={this.columns} />
         <Button type="primary" className="editable-add-btn" onClick={this.handleAdd.bind(this)}>新增字段</Button>
       </div>
     );
