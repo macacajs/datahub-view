@@ -8,6 +8,7 @@ import {
 } from 'antd';
 
 import Project from './pages/Project';
+import Document from './pages/Document';
 import DashBoard from './pages/DashBoard';
 
 import './app.less';
@@ -27,6 +28,8 @@ class App extends React.Component {
         return <DashBoard />;
       case 'project':
         return <Project />;
+      case 'doc':
+        return <Document />;
       default:
         return (
           <div style={{textAlign: 'center'}}>

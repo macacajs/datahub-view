@@ -21,7 +21,7 @@ const {
   Content
 } = Layout;
 
-const projectId = location.pathname.replace('/project/', '');
+const projectId = window.pageConfig.projectId;
 
 export default class Project extends React.Component {
   constructor(props) {
@@ -38,7 +38,6 @@ export default class Project extends React.Component {
   }
 
   componentDidMount() {
-    const projectId = location.pathname.replace('/project/', '');
     request(`/api/data/${projectId}`, 'GET').then((res) => {
       res.data.forEach(item => {
         item.params = item.params;

@@ -2,8 +2,7 @@
 
 import React from 'react';
 import {
-  Table,
-  Button
+  Table
 } from 'antd';
 
 import './EditableTable.less';
@@ -118,10 +117,7 @@ export default class EditableTable extends React.Component {
   render() {
     const data = genList(this.props.schemaData || []);
     return (
-      <div className="editabletable">
-        <Table size="small" bordered dataSource={data} columns={this.columns} />
-        <Button type="primary" className="editable-add-btn" onClick={this.handleAdd.bind(this)}>新增字段</Button>
-      </div>
+      <Table size="small" pagination={false} bordered dataSource={data} columns={this.columns} />
     );
   }
 }

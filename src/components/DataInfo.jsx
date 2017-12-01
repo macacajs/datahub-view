@@ -386,14 +386,14 @@ export default class DataInfo extends React.Component {
             />
           </section>
           <section className="params-doc">
-            <h1>字段说明</h1>
+            <h1>字段描述</h1>
             <Checkbox
               checked={this.state.enableSchemaValidate}
               onChange={this.toggleSchemaValidate.bind(this)}
             >
-              是否开启 schema 校验
+              是否开启校验
             </Checkbox>
-            <Button size="small" type="primary" className="edit-schema" onClick={this.editSchema.bind(this)}>编辑 schema </Button>
+            <Button size="small" type="primary" onClick={this.editSchema.bind(this)}>编辑</Button>
             <EditableTable
               className="schema-table"
               schemaData={this.state.schemaData}/>
