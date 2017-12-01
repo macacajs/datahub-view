@@ -4,29 +4,23 @@ import React from 'react';
 import ReactDom from 'react-dom';
 
 import {
-  Affix,
   Layout
 } from 'antd';
-
-const {
-  Header,
-  Footer,
-  Content,
-} = Layout;
 
 import Project from './pages/Project';
 import DashBoard from './pages/DashBoard';
 
-const pkg = require('../package.json');
-
 import './app.less';
 
+const {
+  Header,
+  Footer,
+  Content
+} = Layout;
+
+const pkg = require('../package.json');
+
 class App extends React.Component {
-
-  constructor(props) {
-    super(props);
-  }
-
   pageRouter() {
     switch (this.props.pageConfig.pageId) {
       case 'dashboard':
@@ -35,22 +29,25 @@ class App extends React.Component {
         return <Project />;
       default:
         return (
-          <div>
+          <div style={{textAlign: 'center'}}>
             <h2>macaca-datahub version: { window.pageConfig.version }</h2>
 
             <h2>datahub-view version: { pkg.version }</h2>
-
+            <a href="/dashboard">
+              <button>Go Now</button>
+            </a>
           </div>
         );
     }
   }
 
   render() {
-
     return (
       <Layout>
-        <Header className="header" style={{ height: '60px'}}>
-          <h1>DataHub</h1>
+        <Header className="header" style={{height: '60px'}}>
+          <a href="/">
+            <h1>DataHub</h1>
+          </a>
         </Header>
         <Content>
           { this.pageRouter() }
@@ -65,7 +62,7 @@ class App extends React.Component {
 
 App.defaultProps = {
   context: window.context,
-  pageConfig: window.pageConfig,
+  pageConfig: window.pageConfig
 };
 
 if (window.pageConfig) {

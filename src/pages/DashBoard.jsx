@@ -9,7 +9,7 @@ import {
   Input,
   Popconfirm,
   Row,
-  Icon,
+  Icon
 } from 'antd';
 
 import './DashBoard.less';
@@ -19,24 +19,29 @@ const request = require('../common/fetch');
 const FormItem = Form.Item;
 
 class EditableCell extends React.Component {
-  state = {
-    value: this.props.value,
-    editable: false,
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: this.props.value,
+      editable: false
+    };
   }
 
-  handleChange = (e) => {
+  handleChange(e) {
     const value = e.target.value;
-    this.setState({ value });
+    this.setState({
+      value
+    });
   }
 
-  check = () => {
+  check() {
     this.setState({ editable: false });
     if (this.props.onChange) {
       this.props.onChange(this.state.value);
     }
   }
 
-  edit = () => {
+  edit() {
     this.setState({ editable: true });
   }
 
@@ -45,8 +50,8 @@ class EditableCell extends React.Component {
     return (
       <div className="editable-cell">
         {
-          editable ?
-            <div className="editable-cell-input-wrapper">
+          editable
+            ? <div className="editable-cell-input-wrapper">
               <Input
                 value={value}
                 style={{ width: '200px' }}
@@ -59,8 +64,7 @@ class EditableCell extends React.Component {
                 onClick={this.check}
               />
             </div>
-            :
-            <div className="editable-cell-text-wrapper">
+            : <div className="editable-cell-text-wrapper">
               {value || ' '}
               <Icon
                 type="edit"
@@ -97,14 +101,14 @@ const CollectionCreateForm = Form.create()((props) => {
       <Form layout="vertical">
         <FormItem label="项目名称">
           {getFieldDecorator('identifer', {
-            rules: [{ required: true, message: '请输入不为字母或者数字', pattern: /^[A-Za-z0-9]+$/ }],
+            rules: [{ required: true, message: '请输入不为字母或者数字', pattern: /^[A-Za-z0-9]+$/ }]
           })(
             <Input />
           )}
         </FormItem>
         <FormItem label="项目描述">
           {getFieldDecorator('description', {
-            rules: [{ required: true, message: '请输入不为空的中文或者数字'}],
+            rules: [{required: true, message: '请输入不为空的中文或者数字'}]
           })(
             <Input />
           )}
@@ -121,19 +125,19 @@ export default class DashBoard extends React.Component {
       context: window.context,
       visible: false,
       loading: false,
-      listData: [],
+      listData: []
     };
   }
 
   showModal() {
     this.setState({
-      visible: true,
+      visible: true
     });
   }
 
   handleCancel() {
     this.setState({
-      visible: false,
+      visible: false
     });
   }
 
@@ -145,7 +149,7 @@ export default class DashBoard extends React.Component {
       }
 
       this.setState({
-        loading: true,
+        loading: true
       });
 
       console.log('Received values of form: ', values);
@@ -170,7 +174,7 @@ export default class DashBoard extends React.Component {
       identifer: this.state.listData[key].identifer
     }).then((res) => {
       console.log(res);
-      if(res.success) {
+      if (res.success) {
         this.updateProjects();
       }
     });
@@ -186,9 +190,9 @@ export default class DashBoard extends React.Component {
         item.key = index;
       });
       this.setState({
-        listData: res,
+        listData: res
       });
-    })
+    });
   }
 
   componentWillMount() {
@@ -198,9 +202,9 @@ export default class DashBoard extends React.Component {
   onCellChange(value, projectId) {
     request('/api/project', 'POST', {
       identifer: projectId,
-      description: value,
+      description: value
     }).then((res) => {
-      console.log('res', res)
+      console.log('res', res);
     });
   }
 
@@ -210,7 +214,7 @@ export default class DashBoard extends React.Component {
       dataIndex: 'identifer',
       width: '20%',
       key: 'identifer',
-      render: text => <a href={`/project/${text}`}>{text}</a>,
+      render: text => <a href={`/project/${text}`}>{text}</a>
     }, {
       title: '描述',
       dataIndex: 'description',
@@ -220,13 +224,13 @@ export default class DashBoard extends React.Component {
           value={text}
           onChange={value => this.onCellChange(value, record.identifer)}
         />
-      ),
+      )
     }, {
       title: '操作',
       dataIndex: 'operation',
       key: 'operation',
       width: '100px',
-      render: (text, record, index)=> {
+      render: (text, record, index) => {
         return (
           <Popconfirm title="确定删除？" onConfirm={this.handleDelete.bind(this, index)} okText="确定" cancelText="取消">
             <Button type="primary" className="project-delete-button">删除</Button>
