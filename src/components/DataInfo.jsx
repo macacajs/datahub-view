@@ -1,13 +1,13 @@
 'use strict';
 
 import './DataInfo.less';
-import 'codemirror/lib/codemirror.css';
 
-import _ from 'lodash';
 import React from 'react';
+
 import {
   UnControlled as CodeMirror
 } from 'react-codemirror2';
+
 import {
   Alert,
   Button,
@@ -18,18 +18,21 @@ import {
   Popconfirm,
   Breadcrumb,
   InputNumber,
-  Checkbox
+  Checkbox,
+  Tooltip
 } from 'antd';
 
-import EditableTable from './EditableTable';
+import _ from '../common/helper';
+import CustomTable from './CustomTable';
 import ProxyInputList from './ProxyInputList';
 
-require('codemirror/mode/javascript/javascript');
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/mode/javascript/javascript';
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 
-const defaultCodeMirrorOptions = {
+const codeMirrorOptions = {
   mode: 'javascript',
   theme: 'default',
   indentUnit: 2,
@@ -48,6 +51,7 @@ export default class DataInfo extends React.Component {
   constructor(props) {
     super(props);
     const currentData = props.currentData;
+
     this.state = {
       addingScene: '',
       modalVisible: false,
@@ -72,13 +76,17 @@ export default class DataInfo extends React.Component {
 
   componentWillReceiveProps(props) {
     const currentData = props.currentData;
+
     if (!currentData) {
       return;
     }
+
     let schemaContent = {};
+
     if (currentData && currentData.params) {
       schemaContent = JSON.parse(currentData.params);
     }
+
     this.setState({
       proxyContent: currentData && currentData.proxyContent,
       scenes: currentData && currentData.scenes,
@@ -94,10 +102,12 @@ export default class DataInfo extends React.Component {
 
   handleAdd() {
     const index = _.findIndex(this.state.scenes, o => o.name === this.state.addingScene);
+
     if (index !== -1) {
       alert('场景名称已存在！');
       return;
     }
+
     if (!this.state.addingScene) {
       alert('场景名不能为空！');
       return;
@@ -106,6 +116,7 @@ export default class DataInfo extends React.Component {
       name: this.state.addingScene,
       data: '{}'
     };
+
     if (!this.state.scenes) {
       this.setState({
         scenes: []
@@ -131,7 +142,8 @@ export default class DataInfo extends React.Component {
   onConfirmRemoveScene(index) {
     const newData = [...this.state.scenes];
     newData.splice(index, 1);
-    if (this.state.scenes[index].name === this.state.currentScene && this.state.scenes.length > 0) {
+
+    if (this.state.scenes[index].name === this.state.currentScene && this.state.scenes.length) {
       if (index > 0) {
         this.setState({
           scenes: newData,
@@ -283,13 +295,14 @@ export default class DataInfo extends React.Component {
   }
 
   render() {
-    const projectId = location.pathname.replace('/project/', '');
+    const projectId = window.pageConfig.projectId;
     const apiHref = `http://${location.host}/data/${projectId}/${this.state.pathname}`;
+
     return (
       <div className="datainfo">
         <Breadcrumb>
           <Breadcrumb.Item>
-            <a href="/dashboard">我的项目</a>
+            <a href="/dashboard">所有项目</a>
           </Breadcrumb.Item>
           <Breadcrumb.Item>
             { this.state.description ? this.state.description : this.state.pathname }
@@ -301,10 +314,17 @@ export default class DataInfo extends React.Component {
         <content>
           <section className="base-info">
             <h1>接口配置</h1>
+            <a href={`/doc/${projectId}`} target="_blank">
+              <Button className="right-button" type="primary">接口文档</Button>
+            </a>
             <div className="mock-address">
               <span>接口名：</span>
               <a target="_blank" href={apiHref}>
-                <span className="project-api">{`${this.state.pathname} / ${this.state.currentScene || 'default'}`}</span>
+                <Tooltip placement="top" title={`场景：${this.state.currentScene || 'default'}`}>
+                  <span className="project-api">
+                    {`${this.state.pathname}`} | {`${this.state.currentScene || 'default'}`}
+                  </span>
+                </Tooltip>
               </a>
             </div>
             <div>
@@ -358,7 +378,7 @@ export default class DataInfo extends React.Component {
               >
                 <CodeMirror
                   value={this.state.modalInfoData}
-                  options={{ ...defaultCodeMirrorOptions }}
+                  options={{ ...codeMirrorOptions }}
                   onChange={this.modalTextAreaChange.bind(this)}
                 />
               </Modal>
@@ -371,7 +391,7 @@ export default class DataInfo extends React.Component {
               >
                 <CodeMirror
                   value={JSON.stringify(this.state.schemaData, null, 2)}
-                  options={{ ...defaultCodeMirrorOptions }}
+                  options={{ ...codeMirrorOptions }}
                   onChange={this.schemaModalTextAreaChange.bind(this)}
                 />
                 {this.state.schemaJSONParseError && <Alert style={{marginTop: '20px'}} message="JSON 格式错误" type="warning" />}
@@ -386,17 +406,18 @@ export default class DataInfo extends React.Component {
             />
           </section>
           <section className="params-doc">
-            <h1>字段说明</h1>
+            <h1>字段描述</h1>
             <Checkbox
               checked={this.state.enableSchemaValidate}
               onChange={this.toggleSchemaValidate.bind(this)}
             >
-              是否开启 schema 校验
+              是否开启校验
             </Checkbox>
-            <Button size="small" type="primary" className="edit-schema" onClick={this.editSchema.bind(this)}>编辑 schema </Button>
-            <EditableTable
+            <Button size="small" type="primary" onClick={this.editSchema.bind(this)}>编辑</Button>
+            <CustomTable
               className="schema-table"
-              schemaData={this.state.schemaData}/>
+              schemaData={this.state.schemaData}
+            />
           </section>
         </content>
       </div>

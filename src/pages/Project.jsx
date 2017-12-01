@@ -21,7 +21,7 @@ const {
   Content
 } = Layout;
 
-const projectId = location.pathname.replace('/project/', '');
+const projectId = window.pageConfig.projectId;
 
 export default class Project extends React.Component {
   constructor(props) {
@@ -38,7 +38,6 @@ export default class Project extends React.Component {
   }
 
   componentDidMount() {
-    const projectId = location.pathname.replace('/project/', '');
     request(`/api/data/${projectId}`, 'GET').then((res) => {
       res.data.forEach(item => {
         item.params = item.params;
@@ -95,10 +94,8 @@ export default class Project extends React.Component {
   }
 
   asynSecType(type, data) {
-    console.log('data', data);
     const apis = [...this.state.data];
     apis[this.state.currentIndex][type] = data;
-    console.log('apis', apis);
     const currentPathname = this.state.data[this.state.currentIndex].pathname;
     if (data instanceof Object) {
       data = JSON.stringify(data);

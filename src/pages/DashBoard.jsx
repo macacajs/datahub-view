@@ -9,12 +9,13 @@ import {
   Input,
   Popconfirm,
   Row,
+  Col,
   Icon
 } from 'antd';
 
 import './DashBoard.less';
 
-const request = require('../common/fetch');
+import request from '../common/fetch';
 
 const FormItem = Form.Item;
 
@@ -241,19 +242,23 @@ export default class DashBoard extends React.Component {
 
     return (
       <div className="dashboard">
-        <Row className="dashboard-toolbar-row" type="flex" justify="end">
-          <Button type="primary" className="dashboard-add-button" onClick={this.showModal.bind(this)}>添加项目</Button>
+        <Row type="flex" justify="center">
+          <Col span="20">
+            <Button type="primary" className="dashboard-add-button" onClick={this.showModal.bind(this)}>
+              添加项目
+            </Button>
+          </Col>
+          <Col span="20">
+            <Table columns={columns} dataSource={this.state.listData} size="middle" className="dashboard-table"/>
+          </Col>
+          <CollectionCreateForm
+            ref={this.saveFormRef.bind(this)}
+            visible={this.state.visible}
+            onCancel={this.handleCancel.bind(this)}
+            onCreate={this.handleCreate.bind(this)}
+            loading={this.state.loading}
+          />
         </Row>
-        <Row className="dashboard-table-row" type="flex" justify="center">
-          <Table columns={columns} dataSource={this.state.listData} size="middle" className="dashboard-table"/>
-        </Row>
-        <CollectionCreateForm
-          ref={this.saveFormRef.bind(this)}
-          visible={this.state.visible}
-          onCancel={this.handleCancel.bind(this)}
-          onCreate={this.handleCreate.bind(this)}
-          loading={this.state.loading}
-        />
       </div>
     );
   }
