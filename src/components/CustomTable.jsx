@@ -5,42 +5,11 @@ import {
   Table
 } from 'antd';
 
-import './EditableTable.less';
+import _ from '../common/helper';
 
-const genList = (data) => {
-  const res = [];
-  let level = -1;
+import './CustomTable.less';
 
-  const walker = (data) => {
-    level++;
-    data.forEach(item => {
-      const {
-        field,
-        type,
-        require,
-        description,
-        children
-      } = item;
-      res.push({
-        field,
-        type,
-        require,
-        description,
-        level,
-        key: `${level}-${field}`
-      });
-
-      if (children) {
-        walker(children);
-        level--;
-      }
-    });
-    return res;
-  };
-  return walker(data);
-};
-
-const EditableCell = ({
+const TableCell = ({
   value,
   level
 }) => (
@@ -83,39 +52,15 @@ export default class EditableTable extends React.Component {
 
   renderColumns(text, record, column) {
     return (
-      <EditableCell
+      <TableCell
         level={column === 'field' ? record.level : 0}
         value={text}
       />
     );
   }
 
-  _guid() {
-    return 'xxxxxxxxxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-      const r = Math.random() * 16 | 0;
-      const v = c === 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
-  }
-
-  handleAdd() {
-    const data = [...this.state.data];
-    const newData = {
-      key: this._guid(),
-      editable: true,
-      field: '',
-      require: '',
-      type: '',
-      description: ''
-    };
-    const allParams = [...data, newData];
-    this.setState({
-      data: allParams
-    });
-  }
-
   render() {
-    const data = genList(this.props.schemaData || []);
+    const data = _.genList(this.props.schemaData || []);
     return (
       <Table size="small" pagination={false} bordered dataSource={data} columns={this.columns} />
     );

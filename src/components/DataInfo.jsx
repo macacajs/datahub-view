@@ -1,13 +1,13 @@
 'use strict';
 
 import './DataInfo.less';
-import 'codemirror/lib/codemirror.css';
 
-import _ from 'lodash';
 import React from 'react';
+
 import {
   UnControlled as CodeMirror
 } from 'react-codemirror2';
+
 import {
   Alert,
   Button,
@@ -19,18 +19,20 @@ import {
   Breadcrumb,
   InputNumber,
   Checkbox,
-  Tooltip,
+  Tooltip
 } from 'antd';
 
-import EditableTable from './EditableTable';
+import _ from '../common/helper';
+import CustomTable from './CustomTable';
 import ProxyInputList from './ProxyInputList';
 
-require('codemirror/mode/javascript/javascript');
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/mode/javascript/javascript';
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 
-const defaultCodeMirrorOptions = {
+const codeMirrorOptions = {
   mode: 'javascript',
   theme: 'default',
   indentUnit: 2,
@@ -142,7 +144,6 @@ export default class DataInfo extends React.Component {
     newData.splice(index, 1);
 
     if (this.state.scenes[index].name === this.state.currentScene && this.state.scenes.length) {
-
       if (index > 0) {
         this.setState({
           scenes: newData,
@@ -313,6 +314,9 @@ export default class DataInfo extends React.Component {
         <content>
           <section className="base-info">
             <h1>接口配置</h1>
+            <a href={`/doc/${projectId}`} target="_blank">
+              <Button className="right-button" type="primary">接口文档</Button>
+            </a>
             <div className="mock-address">
               <span>接口名：</span>
               <a target="_blank" href={apiHref}>
@@ -374,7 +378,7 @@ export default class DataInfo extends React.Component {
               >
                 <CodeMirror
                   value={this.state.modalInfoData}
-                  options={{ ...defaultCodeMirrorOptions }}
+                  options={{ ...codeMirrorOptions }}
                   onChange={this.modalTextAreaChange.bind(this)}
                 />
               </Modal>
@@ -387,7 +391,7 @@ export default class DataInfo extends React.Component {
               >
                 <CodeMirror
                   value={JSON.stringify(this.state.schemaData, null, 2)}
-                  options={{ ...defaultCodeMirrorOptions }}
+                  options={{ ...codeMirrorOptions }}
                   onChange={this.schemaModalTextAreaChange.bind(this)}
                 />
                 {this.state.schemaJSONParseError && <Alert style={{marginTop: '20px'}} message="JSON 格式错误" type="warning" />}
@@ -410,9 +414,10 @@ export default class DataInfo extends React.Component {
               是否开启校验
             </Checkbox>
             <Button size="small" type="primary" onClick={this.editSchema.bind(this)}>编辑</Button>
-            <EditableTable
+            <CustomTable
               className="schema-table"
-              schemaData={this.state.schemaData}/>
+              schemaData={this.state.schemaData}
+            />
           </section>
         </content>
       </div>

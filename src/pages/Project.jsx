@@ -94,10 +94,8 @@ export default class Project extends React.Component {
   }
 
   asynSecType(type, data) {
-    console.log('data', data);
     const apis = [...this.state.data];
     apis[this.state.currentIndex][type] = data;
-    console.log('apis', apis);
     const currentPathname = this.state.data[this.state.currentIndex].pathname;
     if (data instanceof Object) {
       data = JSON.stringify(data);
