@@ -251,14 +251,13 @@ export default class DataInfo extends React.Component {
   }
 
   confirmSchameModal() {
-    const { schemaNewData } = this.state;
     try {
-      const newData = JSON.parse(schemaNewData);
+      const newData = JSON.parse(this.state.schemaNewData);
       this.setState({
         schemaModalVisible: false
       });
       this.props.handleAsynSecType('params', JSON.stringify({
-        enableSchemaValidate: false,
+        enableSchemaValidate: this.state.enableSchemaValidate,
         schemaData: newData
       }));
     } catch (e) {
@@ -266,6 +265,13 @@ export default class DataInfo extends React.Component {
         schemaJSONParseError: true
       });
     }
+  }
+
+  toggleSchemaValidate(e) {
+    this.props.handleAsynSecType('params', JSON.stringify({
+      enableSchemaValidate: e.target.checked,
+      schemaData: this.state.schemaData
+    }));
   }
 
   cancelSchameModal() {
@@ -381,7 +387,12 @@ export default class DataInfo extends React.Component {
           </section>
           <section className="params-doc">
             <h1>字段说明</h1>
-            <Checkbox> 是否开启 schema 校验 </Checkbox>
+            <Checkbox
+              checked={this.state.enableSchemaValidate}
+              onChange={this.toggleSchemaValidate.bind(this)}
+            >
+              是否开启 schema 校验
+            </Checkbox>
             <Button size="small" type="primary" className="edit-schema" onClick={this.editSchema.bind(this)}>编辑 schema </Button>
             <EditableTable
               className="schema-table"
