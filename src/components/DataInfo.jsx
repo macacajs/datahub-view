@@ -18,7 +18,8 @@ import {
   Popconfirm,
   Breadcrumb,
   InputNumber,
-  Checkbox
+  Checkbox,
+  Tooltip,
 } from 'antd';
 
 import EditableTable from './EditableTable';
@@ -48,6 +49,7 @@ export default class DataInfo extends React.Component {
   constructor(props) {
     super(props);
     const currentData = props.currentData;
+
     this.state = {
       addingScene: '',
       modalVisible: false,
@@ -72,13 +74,17 @@ export default class DataInfo extends React.Component {
 
   componentWillReceiveProps(props) {
     const currentData = props.currentData;
+
     if (!currentData) {
       return;
     }
+
     let schemaContent = {};
+
     if (currentData && currentData.params) {
       schemaContent = JSON.parse(currentData.params);
     }
+
     this.setState({
       proxyContent: currentData && currentData.proxyContent,
       scenes: currentData && currentData.scenes,
@@ -94,10 +100,12 @@ export default class DataInfo extends React.Component {
 
   handleAdd() {
     const index = _.findIndex(this.state.scenes, o => o.name === this.state.addingScene);
+
     if (index !== -1) {
       alert('场景名称已存在！');
       return;
     }
+
     if (!this.state.addingScene) {
       alert('场景名不能为空！');
       return;
@@ -106,6 +114,7 @@ export default class DataInfo extends React.Component {
       name: this.state.addingScene,
       data: '{}'
     };
+
     if (!this.state.scenes) {
       this.setState({
         scenes: []
@@ -131,7 +140,9 @@ export default class DataInfo extends React.Component {
   onConfirmRemoveScene(index) {
     const newData = [...this.state.scenes];
     newData.splice(index, 1);
-    if (this.state.scenes[index].name === this.state.currentScene && this.state.scenes.length > 0) {
+
+    if (this.state.scenes[index].name === this.state.currentScene && this.state.scenes.length) {
+
       if (index > 0) {
         this.setState({
           scenes: newData,
@@ -283,13 +294,14 @@ export default class DataInfo extends React.Component {
   }
 
   render() {
-    const projectId = location.pathname.replace('/project/', '');
+    const projectId = window.pageConfig.projectId;
     const apiHref = `http://${location.host}/data/${projectId}/${this.state.pathname}`;
+
     return (
       <div className="datainfo">
         <Breadcrumb>
           <Breadcrumb.Item>
-            <a href="/dashboard">我的项目</a>
+            <a href="/dashboard">所有项目</a>
           </Breadcrumb.Item>
           <Breadcrumb.Item>
             { this.state.description ? this.state.description : this.state.pathname }
@@ -304,7 +316,11 @@ export default class DataInfo extends React.Component {
             <div className="mock-address">
               <span>接口名：</span>
               <a target="_blank" href={apiHref}>
-                <span className="project-api">{`${this.state.pathname} / ${this.state.currentScene || 'default'}`}</span>
+                <Tooltip placement="top" title={`场景：${this.state.currentScene || 'default'}`}>
+                  <span className="project-api">
+                    {`${this.state.pathname}`} | {`${this.state.currentScene || 'default'}`}
+                  </span>
+                </Tooltip>
               </a>
             </div>
             <div>

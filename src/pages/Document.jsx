@@ -3,7 +3,7 @@
 import React from 'react';
 
 import {
-  Layout,
+  Layout
 } from 'antd';
 
 const request = require('../common/fetch');
