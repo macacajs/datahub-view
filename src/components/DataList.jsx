@@ -129,7 +129,7 @@ export default class DataList extends React.Component {
                   </div>
                   <div className="right">
                     <Popconfirm title="确定删除？" onConfirm={this.onConfirmRemoveApi.bind(this, index)} okText="确定" cancelText="取消">
-                      <Button>删除</Button>
+                      <Button type="danger">删除</Button>
                     </Popconfirm>
                   </div>
                 </li>
