@@ -29,7 +29,9 @@ class EditableCell extends React.Component {
 
   handleChange(e) {
     const value = e.target.value;
-    this.setState({ value });
+    this.setState({
+      value
+    });
   }
 
   check() {

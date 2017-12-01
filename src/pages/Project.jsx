@@ -14,6 +14,7 @@ import DataInfo from '../components/DataInfo';
 import RealTimeDetail from '../components/RealTimeDetail';
 
 const request = require('../common/fetch');
+
 const TabPane = Tabs.TabPane;
 const {
   Sider,
