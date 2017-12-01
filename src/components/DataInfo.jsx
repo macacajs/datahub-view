@@ -56,11 +56,11 @@ export default class DataInfo extends React.Component {
       _modalInfoData: '',
       schemaModalVisible: false,
       schemaJSONParseError: false,
-      _schemaData: '',
-      proxyContent: currentData && currentData.proxyContent,
-      scenes: currentData && currentData.scenes,
+      schemaNewData: '',
       schemaData: [],
       enableSchemaValidate: false,
+      proxyContent: currentData && currentData.proxyContent,
+      scenes: currentData && currentData.scenes,
       method: currentData && currentData.method,
       delay: currentData && currentData.delay,
       pathname: currentData && currentData.pathname,
@@ -75,9 +75,9 @@ export default class DataInfo extends React.Component {
     if (!currentData) {
       return;
     }
-    let schemaContent = {}
+    let schemaContent = {};
     if (currentData && currentData.params) {
-      schemaContent = JSON.parse(currentData.params)
+      schemaContent = JSON.parse(currentData.params);
     }
     this.setState({
       proxyContent: currentData && currentData.proxyContent,
@@ -236,33 +236,34 @@ export default class DataInfo extends React.Component {
   }
 
   editSchema() {
-    const schemaData = this.state.schemaData || '[]';
     this.setState({
       schemaModalVisible: true,
-      schemaData: schemaData,
-      _schemaData: JSON.stringify(schemaData, null, 2).trim(),
+      schemaJSONParseError: false,
+      schemaNewData: JSON.stringify(this.state.schemaData, null, 2)
     });
   }
 
   schemaModalTextAreaChange(editor, data, value) {
     this.setState({
-      schemaData: JSON.parse(value),
+      schemaNewData: value.trim(),
+      schemaJSONParseError: false
     });
   }
 
   confirmSchameModal() {
-    const { schemaData } = this.state
+    const { schemaNewData } = this.state;
     try {
+      const newData = JSON.parse(schemaNewData);
       this.setState({
-        schemaModalVisible: false,
+        schemaModalVisible: false
       });
       this.props.handleAsynSecType('params', JSON.stringify({
         enableSchemaValidate: false,
-        schemaData,
+        schemaData: newData
       }));
     } catch (e) {
       this.setState({
-        schemaJSONParseError: true,
+        schemaJSONParseError: true
       });
     }
   }
@@ -271,6 +272,7 @@ export default class DataInfo extends React.Component {
     this.setState({
       schemaModalVisible: false,
       schemaJSONParseError: false,
+      schemaNewData: ''
     });
   }
 
@@ -362,7 +364,7 @@ export default class DataInfo extends React.Component {
                 onCancel={this.cancelSchameModal.bind(this)}
               >
                 <CodeMirror
-                  value={this.state._schemaData}
+                  value={JSON.stringify(this.state.schemaData, null, 2)}
                   options={{ ...defaultCodeMirrorOptions }}
                   onChange={this.schemaModalTextAreaChange.bind(this)}
                 />

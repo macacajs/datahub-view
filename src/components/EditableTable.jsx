@@ -8,44 +8,6 @@ import {
 
 import './EditableTable.less';
 
-const data = [];
-
-const obj = [{
-  field: 'name',
-  type: 'string',
-  require: true,
-  description: 'description1',
-  children: [
-    {
-      field: 'name2',
-      type: 'string',
-      require: false,
-      description: 'description2',
-      children: [
-        {
-          field: 'name4',
-          type: 'string',
-          require: false,
-          description: 'description4'
-        },
-        {
-          field: 'name6',
-          type: 'string',
-          require: false,
-          description: 'description4'
-        }
-      ]
-    }, {
-      field: 'name3',
-      type: 'string',
-      require: false,
-      description: 'description3',
-      children: [
-      ]
-    }
-  ]
-}];
-
 const genList = (data) => {
   const res = [];
   let level = -1;
@@ -95,7 +57,7 @@ export default class EditableTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
+      data: []
     };
     this.columns = [{
       title: '字段',
@@ -118,7 +80,6 @@ export default class EditableTable extends React.Component {
       width: '45%',
       render: (text, record) => this.renderColumns(text, record, 'description')
     }];
-    this.cacheData = data.map(item => ({ ...item }));
   }
 
   renderColumns(text, record, column) {
