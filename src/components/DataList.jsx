@@ -22,7 +22,8 @@ export default class DataList extends React.Component {
       modalVisible: false,
       modalTitle: '',
       modalDescription: '',
-      apis: props.apis
+      apis: props.apis,
+      currentIndex: 0
     };
   }
 
@@ -87,18 +88,13 @@ export default class DataList extends React.Component {
   onConfirmRemoveApi(index) {
     const newData = [...this.state.apis];
     const deleteApi = newData.splice(index, 1)[0];
-    console.log('deleteApi', deleteApi);
     this.props.handleDeleteApi(newData, deleteApi);
   }
 
   handleApiClick(index) {
     this.props.handleApiClick(index);
-    const lists = document.querySelectorAll('.datalist li');
-    [].slice.call(lists).forEach((item, i) => {
-      item.setAttribute('class', '');
-      if (i === index) {
-        item.setAttribute('class', 'clicked');
-      }
+    this.setState({
+      currentIndex: index
     });
   }
 
@@ -122,7 +118,7 @@ export default class DataList extends React.Component {
           {
             this.state.apis && this.state.apis.map((api, index) => {
               return (
-                <li key={index} onClick={this.handleApiClick.bind(this, index)}>
+                <li className={this.state.currentIndex === index ? 'clicked' : ''} key={index} onClick={this.handleApiClick.bind(this, index)}>
                   <div className="left">
                     <h3>{api.pathname}</h3>
                     <p>{api.description}</p>
