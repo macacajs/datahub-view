@@ -70,7 +70,8 @@ export default class DataInfo extends React.Component {
       pathname: currentData && currentData.pathname,
       description: currentData && currentData.description,
       currentScene: currentData && currentData.currentScene,
-      cursorPos: null
+      cursorPos: null,
+      sceneError: null,
     };
   }
 
@@ -104,14 +105,29 @@ export default class DataInfo extends React.Component {
     const index = _.findIndex(this.state.scenes, o => o.name === this.state.addingScene);
 
     if (index !== -1) {
-      alert('场景名称已存在！');
+      this.setState({
+        sceneError: {
+          message: '场景名称已存在！',
+          type: 'error'
+        }
+      })
       return;
     }
 
     if (!this.state.addingScene) {
-      alert('场景名不能为空！');
+      this.setState({
+        sceneError: {
+          message: '场景名不能为空！',
+          type: 'error'
+        }
+      })
       return;
     }
+
+    this.setState({
+      sceneError: null
+    })
+
     const newScene = {
       name: this.state.addingScene,
       data: '{}'
@@ -352,7 +368,8 @@ export default class DataInfo extends React.Component {
             <div>
               <div className="add-input">
                 <Input style={{ width: '200px' }} placeholder="输入场景名" onChange={this.handleAddSceneChange.bind(this)} />
-                <Button type="primary" onClick={this.handleAdd.bind(this)}>新增场景</Button>
+                <Button style={{ marginBottom: `${this.state.sceneError ? '10px' : '0'}` }} type="primary" onClick={this.handleAdd.bind(this)}>新增场景</Button>
+                {this.state.sceneError ? <Alert message={this.state.sceneError.message} type={this.state.sceneError.type} showIcon /> : null}
               </div>
               <RadioGroup name="radiogroup" value={this.state.currentScene} onChange={this.handleSceneChange.bind(this)}>
                 {

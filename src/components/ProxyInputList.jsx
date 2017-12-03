@@ -4,6 +4,7 @@ import {
   Input,
   Icon,
   Radio,
+  Alert,
   Button,
   Checkbox
 } from 'antd';
@@ -22,7 +23,8 @@ class DynamicFieldSet extends Component {
       currentProxyIndex: 1,
       proxies: [],
       originKeys: [],
-      isErrorInput: {}
+      isErrorInput: {},
+      proxyUrlError: null,
     };
   }
 
@@ -114,10 +116,23 @@ class DynamicFieldSet extends Component {
         this.setState({
           isErrorInput
         });
-        alert(`proxy url: ${proxy} is invalid`);
+        this.setState({
+          proxyUrlError: {
+            message: `proxy url: ${proxy} is invalid`,
+            type: 'error'
+          }
+        })
         return;
+      } else {
+        isErrorInput[i] = 'ok';
+        this.setState({
+          isErrorInput
+        });
       }
     }
+    this.setState({
+      proxyUrlError: null
+    })
     const result = {
       proxies: this.state.proxies,
       useProxy: this.state.useProxy,
@@ -197,6 +212,7 @@ class DynamicFieldSet extends Component {
         <RadioGroup onChange={this.onRadioChange.bind(this)} value={this.state.currentProxyIndex}>
           {formItems}
         </RadioGroup>
+        {this.state.proxyUrlError ? <Alert message={this.state.proxyUrlError.message} type={this.state.proxyUrlError.type} showIcon /> : null}
       </Form>
     );
   }
