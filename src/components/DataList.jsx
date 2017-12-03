@@ -68,7 +68,7 @@ export default class DataList extends React.Component {
           message: '接口名称已存在！',
           type: 'error'
         }
-      })
+      });
       return;
     }
     if (!this.state.modalTitle || !this.state.modalDescription) {
@@ -77,7 +77,7 @@ export default class DataList extends React.Component {
           message: '接口名称和描述不能为空！',
           type: 'error'
         }
-      })
+      });
       return;
     }
     this.setState({
@@ -85,7 +85,7 @@ export default class DataList extends React.Component {
         message: '添加成功',
         type: 'success'
       }
-    })
+    });
     const addAPI = {
       pathname: this.state.modalTitle,
       description: this.state.modalDescription

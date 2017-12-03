@@ -71,7 +71,7 @@ export default class DataInfo extends React.Component {
       description: currentData && currentData.description,
       currentScene: currentData && currentData.currentScene,
       cursorPos: null,
-      sceneError: null,
+      sceneError: null
     };
   }
 
@@ -110,7 +110,7 @@ export default class DataInfo extends React.Component {
           message: '场景名称已存在！',
           type: 'error'
         }
-      })
+      });
       return;
     }
 
@@ -120,13 +120,13 @@ export default class DataInfo extends React.Component {
           message: '场景名不能为空！',
           type: 'error'
         }
-      })
+      });
       return;
     }
 
     this.setState({
       sceneError: null
-    })
+    });
 
     const newScene = {
       name: this.state.addingScene,

@@ -24,7 +24,7 @@ class DynamicFieldSet extends Component {
       proxies: [],
       originKeys: [],
       isErrorInput: {},
-      proxyUrlError: null,
+      proxyUrlError: null
     };
   }
 
@@ -121,7 +121,7 @@ class DynamicFieldSet extends Component {
             message: `proxy url: ${proxy} is invalid`,
             type: 'error'
           }
-        })
+        });
         return;
       } else {
         isErrorInput[i] = 'ok';
@@ -132,7 +132,7 @@ class DynamicFieldSet extends Component {
     }
     this.setState({
       proxyUrlError: null
-    })
+    });
     const result = {
       proxies: this.state.proxies,
       useProxy: this.state.useProxy,
