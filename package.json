@@ -51,6 +51,7 @@
     "should": "^11.1.2",
     "socket.io": "^2.0.4",
     "style-loader": "^0.18.2",
+    "type-detect": "^4.0.5",
     "webpack": "^3.5.5",
     "webpack-dev-server": "^2.7.1",
     "whatwg-fetch": "^2.0.3"

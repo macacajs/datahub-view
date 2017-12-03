@@ -415,6 +415,7 @@ export default class DataInfo extends React.Component {
             </Checkbox>
             <Button size="small" type="primary" onClick={this.editSchema.bind(this)}>编辑</Button>
             <CustomTable
+              type="schema"
               className="schema-table"
               schemaData={this.state.schemaData}
             />

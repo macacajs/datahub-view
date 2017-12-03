@@ -98,8 +98,15 @@ export default class Document extends React.Component {
         <h3>{description}</h3>
         <h1>Schema 描述</h1>
         <CustomTable
+          type="schema"
           className="schema-table"
           schemaData={schemaData}
+        />
+        <h1>字段描述</h1>
+        <CustomTable
+          type="api"
+          className="schema-table"
+          schemaData={scenesData}
         />
         <h1>场景数据</h1>
         <Tabs
