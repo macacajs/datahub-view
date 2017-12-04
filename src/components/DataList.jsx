@@ -11,7 +11,11 @@ import {
   Col
 } from 'antd';
 import _ from 'lodash';
-import { FormattedMessage, injectIntl } from 'react-intl';
+
+import {
+  FormattedMessage,
+  injectIntl
+} from 'react-intl';
 
 import './DataList.less';
 

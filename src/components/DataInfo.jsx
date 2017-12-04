@@ -1,9 +1,11 @@
 'use strict';
 
-import './DataInfo.less';
-
 import React from 'react';
-import { FormattedMessage, injectIntl } from 'react-intl';
+
+import {
+  FormattedMessage,
+  injectIntl
+} from 'react-intl';
 
 import {
   UnControlled as CodeMirror
@@ -29,6 +31,8 @@ import ProxyInputList from './ProxyInputList';
 
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/javascript/javascript';
+
+import './DataInfo.less';
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -442,6 +446,7 @@ class DataInfo extends React.Component {
             </Checkbox>
             <Button size="small" type="primary" onClick={this.editSchema.bind(this)}><FormattedMessage id='common.edit' /></Button>
             <CustomTable
+              type="schema"
               className="schema-table"
               schemaData={this.state.schemaData}
             />

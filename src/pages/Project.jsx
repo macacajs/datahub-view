@@ -2,7 +2,10 @@
 
 import React from 'react';
 import io from 'socket.io-client';
-import { injectIntl } from 'react-intl';
+
+import {
+  injectIntl
+} from 'react-intl';
 
 import {
   Layout,

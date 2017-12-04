@@ -1,6 +1,9 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React, {
+  Component
+} from 'react';
+
 import {
   Table,
   Button,
@@ -12,7 +15,11 @@ import {
   Col,
   Icon
 } from 'antd';
-import { FormattedMessage, injectIntl } from 'react-intl';
+
+import {
+  FormattedMessage,
+  injectIntl
+} from 'react-intl';
 
 import './DashBoard.less';
 

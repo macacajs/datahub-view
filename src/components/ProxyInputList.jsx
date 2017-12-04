@@ -1,4 +1,9 @@
-import React, { Component } from 'react';
+'use strict';
+
+import React, {
+  Component
+} from 'react';
+
 import {
   Form,
   Input,
@@ -9,8 +14,12 @@ import {
   Checkbox
 } from 'antd';
 
+import {
+  FormattedMessage,
+  injectIntl
+} from 'react-intl';
+
 import './ProxyInputList.less';
-import { FormattedMessage, injectIntl } from 'react-intl';
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;

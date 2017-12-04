@@ -1,10 +1,16 @@
+'use strict';
+
 import React from 'react';
+
 import {
   Breadcrumb
 } from 'antd';
 
+import {
+  FormattedMessage
+} from 'react-intl';
+
 import './realTimeDetail.less';
-import { FormattedMessage } from 'react-intl';
 
 export default class RealTimeDetail extends React.Component {
   constructor(props) {

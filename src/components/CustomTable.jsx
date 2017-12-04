@@ -4,18 +4,28 @@ import React from 'react';
 import {
   Table
 } from 'antd';
-import { injectIntl } from 'react-intl';
+
+import {
+  injectIntl
+} from 'react-intl';
 
 import _ from '../common/helper';
 
 import './CustomTable.less';
 
+const columnStyleMap = {
+  type: 'capitalize',
+  require: ''
+};
+
 const TableCell = ({
   value,
-  level
+  level,
+  column
 }) => (
   <div>
     <span
+      className={ columnStyleMap[column] || '' }
       dangerouslySetInnerHTML={{__html: value}}
       style={{ marginLeft: `${level * 20}px` }}>
     </span>
@@ -57,12 +67,23 @@ class EditableTable extends React.Component {
       <TableCell
         level={column === 'field' ? record.level : 0}
         value={text}
+        column={column}
       />
     );
   }
 
+  getDataList() {
+    if (this.props.type === 'schema') {
+      return _.genSchemaList(this.props.schemaData || []);
+    } else if (this.props.type === 'api') {
+      return _.genApiList(this.props.schemaData || []);
+    } else {
+      return [];
+    }
+  }
+
   render() {
-    const data = _.genList(this.props.schemaData || []);
+    let data = this.getDataList();
     return (
       <Table size="small" pagination={false} bordered dataSource={data} columns={this.columns} />
     );

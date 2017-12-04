@@ -3,7 +3,10 @@
 import React from 'react';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/javascript/javascript';
-import { FormattedMessage } from 'react-intl';
+
+import {
+  FormattedMessage
+} from 'react-intl';
 
 import {
   Layout,
@@ -84,14 +87,9 @@ export default class Document extends React.Component {
       method,
       description,
       pathname,
-      params,
       scenes
     } = currentData;
-    const paramsData = JSON.parse(params);
     const scenesData = JSON.parse(scenes);
-    const {
-      schemaData
-    } = paramsData;
 
     return (
       <div className="document">
@@ -99,8 +97,9 @@ export default class Document extends React.Component {
         <h3>{description}</h3>
         <h1><FormattedMessage id='document.schemaDes' /></h1>
         <CustomTable
+          type="api"
           className="schema-table"
-          schemaData={schemaData}
+          schemaData={scenesData}
         />
         <h1><FormattedMessage id='document.sceneData' /></h1>
         <Tabs
