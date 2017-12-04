@@ -43,10 +43,10 @@ export default class RealTimeDetail extends React.Component {
       <div className="real-time-detail">
         <Breadcrumb>
           <Breadcrumb.Item>
-            <a href="/dashboard"><FormattedMessage id='realtimeProject_myProject' /></a>
+            <a href="/dashboard"><FormattedMessage id='realtimeProject.myProject' /></a>
           </Breadcrumb.Item>
           <Breadcrumb.Item>
-            <FormattedMessage id='realtimeProject_detailPhoto' />
+            <FormattedMessage id='realtimeProject.detailPhoto' />
           </Breadcrumb.Item>
         </Breadcrumb>
         <section className="request">

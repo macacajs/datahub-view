@@ -30,22 +30,22 @@ class EditableTable extends React.Component {
     };
 
     this.columns = [{
-      title: this.props.intl.formatMessage({id: 'fieldDes_field'}),
+      title: this.props.intl.formatMessage({id: 'fieldDes.field'}),
       dataIndex: 'field',
       width: '20%',
       render: (text, record) => this.renderColumns(text, record, 'field')
     }, {
-      title: this.props.intl.formatMessage({id: 'fieldDes_type'}),
+      title: this.props.intl.formatMessage({id: 'fieldDes.type'}),
       dataIndex: 'type',
       width: '15%',
       render: (text, record) => this.renderColumns(text, record, 'type')
     }, {
-      title: this.props.intl.formatMessage({id: 'fieldDes_require'}),
+      title: this.props.intl.formatMessage({id: 'fieldDes.require'}),
       dataIndex: 'require',
       width: '10%',
       render: (text, record) => this.renderColumns(text, record, 'require')
     }, {
-      title: this.props.intl.formatMessage({id: 'fieldDes_description'}),
+      title: this.props.intl.formatMessage({id: 'fieldDes.description'}),
       dataIndex: 'description',
       width: '45%',
       render: (text, record) => this.renderColumns(text, record, 'description')

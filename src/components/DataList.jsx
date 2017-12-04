@@ -66,7 +66,7 @@ class DataList extends React.Component {
     if (index !== -1) {
       this.setState({
         errorAlert: {
-          message: this.props.intl.formatMessage({id: 'apiConfig_existError'}),
+          message: this.props.intl.formatMessage({id: 'apiConfig.existError'}),
           type: 'error'
         }
       });
@@ -75,7 +75,7 @@ class DataList extends React.Component {
     if (!this.state.modalTitle || !this.state.modalDescription) {
       this.setState({
         errorAlert: {
-          message: this.props.intl.formatMessage({id: 'apiConfig_nullError'}),
+          message: this.props.intl.formatMessage({id: 'apiConfig.nullError'}),
           type: 'error'
         }
       });
@@ -83,7 +83,7 @@ class DataList extends React.Component {
     }
     this.setState({
       errorAlert: {
-        message: this.props.intl.formatMessage({id: 'apiConfig_addSuccess'}),
+        message: this.props.intl.formatMessage({id: 'apiConfig.addSuccess'}),
         type: 'success'
       }
     });
@@ -131,7 +131,7 @@ class DataList extends React.Component {
           </Col>
           <Col span={8} push={1}>
             <Button type="primary" onClick={this.handleAdd.bind(this)}>
-              <FormattedMessage id='apiList_addApi' />
+              <FormattedMessage id='apiList.addApi' />
             </Button>
           </Col>
         </Row>
@@ -145,9 +145,9 @@ class DataList extends React.Component {
                     <p>{api.description}</p>
                   </div>
                   <div className="right">
-                    <Popconfirm title={this.props.intl.formatMessage({id: 'common_deleteTip'})} onConfirm={this.onConfirmRemoveApi.bind(this, index)} okText={this.props.intl.formatMessage({id: 'common_confirm'})} cancelText={this.props.intl.formatMessage({id: 'common_cancel'})}>
+                    <Popconfirm title={this.props.intl.formatMessage({id: 'common.deleteTip'})} onConfirm={this.onConfirmRemoveApi.bind(this, index)} okText={this.props.intl.formatMessage({id: 'common.confirm'})} cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}>
                       <Button type="danger">
-                        <FormattedMessage id='common_delete' />
+                        <FormattedMessage id='common.delete' />
                       </Button>
                     </Popconfirm>
                   </div>
@@ -157,17 +157,17 @@ class DataList extends React.Component {
           }
         </ul>
         <Modal
-          title={this.props.intl.formatMessage({id: 'apiList_addApi'})}
+          title={this.props.intl.formatMessage({id: 'apiList.addApi'})}
           visible={this.state.modalVisible}
           onOk={this.handleModalOk.bind(this)}
           onCancel={this.handleModalCancel.bind(this)}
         >
           <Input
-            placeholder={this.props.intl.formatMessage({id: 'apiList_apiNameInput'})}
+            placeholder={this.props.intl.formatMessage({id: 'apiList.apiNameInput'})}
             onChange={this.modalTitleChange.bind(this)}
             value={this.state.modalTitle} />
           <Input
-            placeholder={this.props.intl.formatMessage({id: 'apiList_apiDesInput'})}
+            placeholder={this.props.intl.formatMessage({id: 'apiList.apiDesInput'})}
             style={{ margin: '10px 0' }}
             onChange={this.modalDescriptionChange.bind(this)}
             value={this.state.modalDescription} />

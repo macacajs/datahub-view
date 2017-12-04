@@ -184,7 +184,7 @@ class DynamicFieldSet extends Component {
                   this.proxyInputChange(e, index);
                 }}
                 disabled={!this.state.useProxy}
-                placeholder={this.props.intl.formatMessage({id: 'proxyConfig_inputTip'})}
+                placeholder={this.props.intl.formatMessage({id: 'proxyConfig.inputTip'})}
                 style={{ width: '355px', marginRight: 8 }}
               />
               <Button
@@ -193,7 +193,7 @@ class DynamicFieldSet extends Component {
                 type="danger"
                 disabled={!this.state.useProxy}
                 onClick={() => this.remove(k)}>
-                <FormattedMessage id='common_delete' />
+                <FormattedMessage id='common.delete' />
               </Button>
             </div>
           </FormItem>
@@ -204,12 +204,12 @@ class DynamicFieldSet extends Component {
       <Form onSubmit={this.handleSubmit.bind(this)} className="proxyInputList">
         <FormItem {...formItemLayout}>
           <Checkbox checked={this.state.useProxy} onChange={this.onCheckboxChange.bind(this)}>
-            <FormattedMessage id='proxyConfig_isUseProxy' />
+            <FormattedMessage id='proxyConfig.isUseProxy' />
           </Checkbox>
           <Button size="small" type="dashed" onClick={this.add.bind(this)} style={{ width: '90px', marginLeft: '200px' }}>
-            <Icon type="plus" /><FormattedMessage id='proxyConfig_addProxy' />
+            <Icon type="plus" /><FormattedMessage id='proxyConfig.addProxy' />
           </Button>
-          <Button size="small" type="primary" htmlType="submit" style={{ width: '55px' }}><FormattedMessage id='common_submite' /></Button>
+          <Button size="small" type="primary" htmlType="submit" style={{ width: '55px' }}><FormattedMessage id='common.submite' /></Button>
         </FormItem>
 
         <RadioGroup onChange={this.onRadioChange.bind(this)} value={this.state.currentProxyIndex}>

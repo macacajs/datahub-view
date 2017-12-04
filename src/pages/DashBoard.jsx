@@ -96,24 +96,24 @@ class CollectionForm extends Component {
     return (
       <Modal
         visible={visible}
-        title={this.props.intl.formatMessage({id: 'dashboard_modalTile'})}
+        title={this.props.intl.formatMessage({id: 'dashboard.modalTile'})}
         okText="Create"
         onCancel={onCancel}
         onOk={onCreate}
-        cancelText={this.props.intl.formatMessage({id: 'common_cancel'})}
+        cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}
         confirmLoading={loading}
       >
         <Form layout="vertical">
-          <FormItem label={formatMessage({id: 'dashboard_modalName'})}>
+          <FormItem label={formatMessage({id: 'dashboard.modalName'})}>
             {getFieldDecorator('identifer', {
-              rules: [{ required: true, message: formatMessage({id: 'dashboard_modalNameTip'}), pattern: /^[A-Za-z0-9]+$/ }]
+              rules: [{ required: true, message: formatMessage({id: 'dashboard.modalNameTip'}), pattern: /^[A-Za-z0-9]+$/ }]
             })(
               <Input />
             )}
           </FormItem>
-          <FormItem label={formatMessage({id: 'dashboard_modalDescription'})}>
+          <FormItem label={formatMessage({id: 'dashboard.modalDescription'})}>
             {getFieldDecorator('description', {
-              rules: [{required: true, message: formatMessage({id: 'dashboard_modalDescriptionTip'})}]
+              rules: [{required: true, message: formatMessage({id: 'dashboard.modalDescriptionTip'})}]
             })(
               <Input />
             )}
@@ -218,13 +218,13 @@ class DashBoard extends React.Component {
 
   render() {
     const columns = [{
-      title: this.props.intl.formatMessage({id: 'dashboard_tableId'}),
+      title: this.props.intl.formatMessage({id: 'dashboard.tableId'}),
       dataIndex: 'identifer',
       width: '20%',
       key: 'identifer',
       render: text => <a href={`/project/${text}`}>{text}</a>
     }, {
-      title: this.props.intl.formatMessage({id: 'dashboard_tableDescription'}),
+      title: this.props.intl.formatMessage({id: 'dashboard.tableDescription'}),
       dataIndex: 'description',
       key: 'description',
       render: (text, record) => (
@@ -234,14 +234,14 @@ class DashBoard extends React.Component {
         />
       )
     }, {
-      title: this.props.intl.formatMessage({id: 'dashboard_tableOperation'}),
+      title: this.props.intl.formatMessage({id: 'dashboard.tableOperation'}),
       dataIndex: 'operation',
       key: 'operation',
       width: '100px',
       render: (text, record, index) => {
         return (
-          <Popconfirm title={this.props.intl.formatMessage({id: 'common_deleteTip'})} onConfirm={this.handleDelete.bind(this, index)} okText={this.props.intl.formatMessage({id: 'common_confirm'})} cancelText={this.props.intl.formatMessage({id: 'common_cancel'})}>
-            <Button type="primary" className="project-delete-button"><FormattedMessage id='common_delete' /></Button>
+          <Popconfirm title={this.props.intl.formatMessage({id: 'common.deleteTip'})} onConfirm={this.handleDelete.bind(this, index)} okText={this.props.intl.formatMessage({id: 'common.confirm'})} cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}>
+            <Button type="primary" className="project-delete-button"><FormattedMessage id='common.delete' /></Button>
           </Popconfirm>
         );
       }
@@ -252,7 +252,7 @@ class DashBoard extends React.Component {
         <Row type="flex" justify="center">
           <Col span="20">
             <Button type="primary" className="dashboard-add-button" onClick={this.showModal.bind(this)}>
-              <FormattedMessage id='dashboard_tableAdd' />
+              <FormattedMessage id='dashboard.tableAdd' />
             </Button>
           </Col>
           <Col span="20">

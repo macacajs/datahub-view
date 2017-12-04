@@ -108,7 +108,7 @@ class DataInfo extends React.Component {
     if (index !== -1) {
       this.setState({
         sceneError: {
-          message: this.props.intl.formatMessage({id: 'sceneMng_existError'}),
+          message: this.props.intl.formatMessage({id: 'sceneMng.existError'}),
           type: 'error'
         }
       });
@@ -118,7 +118,7 @@ class DataInfo extends React.Component {
     if (!this.state.addingScene) {
       this.setState({
         sceneError: {
-          message: this.props.intl.formatMessage({id: 'sceneMng_nullError'}),
+          message: this.props.intl.formatMessage({id: 'sceneMng.nullError'}),
           type: 'error'
         }
       });
@@ -318,25 +318,25 @@ class DataInfo extends React.Component {
       <div className="datainfo">
         <Breadcrumb>
           <Breadcrumb.Item>
-            <a href="/dashboard"><FormattedMessage id='topNav_allProject' /></a>
+            <a href="/dashboard"><FormattedMessage id='topNav.allProject' /></a>
           </Breadcrumb.Item>
           <Breadcrumb.Item>
             { this.state.description ? this.state.description : this.state.pathname }
           </Breadcrumb.Item>
           <Breadcrumb.Item>
-            <FormattedMessage id='topNav_projectConfig' />
+            <FormattedMessage id='topNav.projectConfig' />
           </Breadcrumb.Item>
         </Breadcrumb>
         <content>
           <section className="base-info">
-            <h1><FormattedMessage id='apiConfig_title' /></h1>
+            <h1><FormattedMessage id='apiConfig.title' /></h1>
             <a href={`/doc/${projectId}`} target="_blank">
-              <Button className="right-button" type="primary"><FormattedMessage id='apiConfig_apiDoc' /></Button>
+              <Button className="right-button" type="primary"><FormattedMessage id='apiConfig.apiDoc' /></Button>
             </a>
             <div className="mock-address">
-              <span><FormattedMessage id='apiConfig_name' /></span>
+              <span><FormattedMessage id='apiConfig.name' /></span>
               <a target="_blank" href={apiHref}>
-                <Tooltip placement="top" title={`${this.props.intl.formatMessage({id: 'sceneMng_sceneName'})}：${this.state.currentScene || 'default'}`}>
+                <Tooltip placement="top" title={`${this.props.intl.formatMessage({id: 'sceneMng.sceneName'})}：${this.state.currentScene || 'default'}`}>
                   <span className="project-api">
                     {`${this.state.pathname}`} | {`${this.state.currentScene || 'default'}`}
                   </span>
@@ -344,7 +344,7 @@ class DataInfo extends React.Component {
               </a>
             </div>
             <div>
-              <span><FormattedMessage id='apiConfig_HTTP' /></span>
+              <span><FormattedMessage id='apiConfig.HTTP' /></span>
               <Select defaultValue={this.state.method} value={this.state.method} style={{ width: 120, marginLeft: 10 }} onChange={this.handleOptionChange.bind(this)}>
                 <Option value="ALL">ALL</Option>
                 <Option value="GET">GET</Option>
@@ -355,21 +355,21 @@ class DataInfo extends React.Component {
               </Select>
             </div>
             <div className="api-description">
-              <span><FormattedMessage id='apiConfig_apiDescription' /></span>
+              <span><FormattedMessage id='apiConfig.apiDescription' /></span>
               <Input className="des-content" onBlur={this.handleDescriptionBlur.bind(this)} onChange={this.handleDescriptionChange.bind(this)} value={this.state.description}></Input>
             </div>
             <div className="api-delay">
-              <span><FormattedMessage id='apiConfig_apiDelay' /></span>
-              <InputNumber min={0} max={5} defaultValue={0} onChange={this.delayChange} /> <FormattedMessage id='apiConfig_second' />
+              <span><FormattedMessage id='apiConfig.apiDelay' /></span>
+              <InputNumber min={0} max={5} defaultValue={0} onChange={this.delayChange} /> <FormattedMessage id='apiConfig.second' />
             </div>
           </section>
           <section className="data-scene">
-            <h1><FormattedMessage id='sceneMng_title' /></h1>
+            <h1><FormattedMessage id='sceneMng.title' /></h1>
             <div>
               <div className="add-input">
-                <Input style={{ width: '200px' }} placeholder={<FormattedMessage id='sceneMng_inputTip' />} onChange={this.handleAddSceneChange.bind(this)} />
+                <Input style={{ width: '200px' }} placeholder={<FormattedMessage id='sceneMng.inputTip' />} onChange={this.handleAddSceneChange.bind(this)} />
                 <Button style={{ marginBottom: `${this.state.sceneError ? '10px' : '0'}` }} type="primary" onClick={this.handleAdd.bind(this)}>
-                  <FormattedMessage id='sceneMng_addSceneBtn' />
+                  <FormattedMessage id='sceneMng.addSceneBtn' />
                 </Button>
                 {this.state.sceneError ? <Alert message={this.state.sceneError.message} type={this.state.sceneError.type} showIcon /> : null}
               </div>
@@ -380,11 +380,11 @@ class DataInfo extends React.Component {
                       <Radio value={scene.name} key={scene.name}>
                         <span>{ scene.name }</span>
                         <Button size="small" onClick={this.showModal.bind(this, index)}>
-                          <FormattedMessage id='common_look' />
+                          <FormattedMessage id='common.look' />
                         </Button>
-                        <Popconfirm title={<FormattedMessage id='common_deleteTip' />} onConfirm={this.onConfirmRemoveScene.bind(this, index)} okText={<FormattedMessage id='common_confirm' />} cancelText={<FormattedMessage id='common_cancel' />}>
+                        <Popconfirm title={<FormattedMessage id='common.deleteTip' />} onConfirm={this.onConfirmRemoveScene.bind(this, index)} okText={<FormattedMessage id='common.confirm' />} cancelText={<FormattedMessage id='common.cancel' />}>
                           <Button type="danger" size="small" >
-                            <FormattedMessage id='common_delete' />
+                            <FormattedMessage id='common.delete' />
                           </Button>
                         </Popconfirm>
                       </Radio>
@@ -397,8 +397,8 @@ class DataInfo extends React.Component {
                 title={`scene: ${this.state.modalInfoTitle}`}
                 visible={this.state.modalVisible}
                 onOk={this.handleModalOk.bind(this)}
-                cancelText={this.props.intl.formatMessage({id: 'common_cancel'})}
-                okText={this.props.intl.formatMessage({id: 'common_cancel'})}
+                cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}
+                okText={this.props.intl.formatMessage({id: 'common.cancel'})}
                 onCancel={this.handleModalCancel.bind(this)}
               >
                 <CodeMirror
@@ -412,8 +412,8 @@ class DataInfo extends React.Component {
                 title="schame"
                 visible={this.state.schemaModalVisible}
                 onOk={this.confirmSchameModal.bind(this)}
-                cancelText={this.props.intl.formatMessage({id: 'common_cancel'})}
-                okText={this.props.intl.formatMessage({id: 'common_cancel'})}
+                cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}
+                okText={this.props.intl.formatMessage({id: 'common.cancel'})}
                 onCancel={this.cancelSchameModal.bind(this)}
               >
                 <CodeMirror
@@ -426,21 +426,21 @@ class DataInfo extends React.Component {
             </div>
           </section>
           <section className="data-proxy">
-            <h1><FormattedMessage id='proxyConfig_title' /></h1>
+            <h1><FormattedMessage id='proxyConfig.title' /></h1>
             <ProxyInputList
               onChangeProxy={this.handleProxyChange.bind(this)}
               proxyContent={this.state.proxyContent}
             />
           </section>
           <section className="params-doc">
-            <h1><FormattedMessage id='fieldDes_title' /></h1>
+            <h1><FormattedMessage id='fieldDes.title' /></h1>
             <Checkbox
               checked={this.state.enableSchemaValidate}
               onChange={this.toggleSchemaValidate.bind(this)}
             >
-              <FormattedMessage id='fieldDes_isUseCheck' />
+              <FormattedMessage id='fieldDes.isUseCheck' />
             </Checkbox>
-            <Button size="small" type="primary" onClick={this.editSchema.bind(this)}><FormattedMessage id='common_edit' /></Button>
+            <Button size="small" type="primary" onClick={this.editSchema.bind(this)}><FormattedMessage id='common.edit' /></Button>
             <CustomTable
               className="schema-table"
               schemaData={this.state.schemaData}

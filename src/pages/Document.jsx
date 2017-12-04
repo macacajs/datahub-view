@@ -97,12 +97,12 @@ export default class Document extends React.Component {
       <div className="document">
         <h1><span className={`method-${method.toLowerCase()}`}>{method}</span>  /{pathname}</h1>
         <h3>{description}</h3>
-        <h1><FormattedMessage id='document_schemaDes' /></h1>
+        <h1><FormattedMessage id='document.schemaDes' /></h1>
         <CustomTable
           className="schema-table"
           schemaData={schemaData}
         />
-        <h1><FormattedMessage id='document_sceneData' /></h1>
+        <h1><FormattedMessage id='document.sceneData' /></h1>
         <Tabs
           defaultActiveKey="tab-0"
           type="card"

@@ -141,7 +141,7 @@ class Project extends React.Component {
             defaultActiveKey="1"
             animated={false}
           >
-            <TabPane tab={this.props.intl.formatMessage({id: 'project_apiList'})} key="1">
+            <TabPane tab={this.props.intl.formatMessage({id: 'project.apiList'})} key="1">
               <DataList
                 apis={this.state.data}
                 handleAddApi={this.addApi.bind(this)}
@@ -149,7 +149,7 @@ class Project extends React.Component {
                 handleApiClick={this.handleApiClick.bind(this)}
               />
             </TabPane>
-            <TabPane tab={this.props.intl.formatMessage({id: 'project_realtimeList'})} key="2">
+            <TabPane tab={this.props.intl.formatMessage({id: 'project.realtimeList'})} key="2">
               <RealTime
                 realTimeDataList={this.state.realTimeDataList}
                 onSelect={this.selectRealTimeItem.bind(this)}
