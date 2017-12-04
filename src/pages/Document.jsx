@@ -5,6 +5,10 @@ import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/javascript/javascript';
 
 import {
+  FormattedMessage
+} from 'react-intl';
+
+import {
   Layout,
   Tabs
 } from 'antd';
@@ -83,32 +87,21 @@ export default class Document extends React.Component {
       method,
       description,
       pathname,
-      params,
       scenes
     } = currentData;
-    const paramsData = JSON.parse(params);
     const scenesData = JSON.parse(scenes);
-    const {
-      schemaData
-    } = paramsData;
 
     return (
       <div className="document">
         <h1><span className={`method-${method.toLowerCase()}`}>{method}</span>  /{pathname}</h1>
         <h3>{description}</h3>
-        <h1>Schema 描述</h1>
-        <CustomTable
-          type="schema"
-          className="schema-table"
-          schemaData={schemaData}
-        />
-        <h1>字段描述</h1>
+        <h1><FormattedMessage id='document.schemaDes' /></h1>
         <CustomTable
           type="api"
           className="schema-table"
           schemaData={scenesData}
         />
-        <h1>场景数据</h1>
+        <h1><FormattedMessage id='document.sceneData' /></h1>
         <Tabs
           defaultActiveKey="tab-0"
           type="card"

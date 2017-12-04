@@ -1,12 +1,23 @@
-import React, { Component } from 'react';
+'use strict';
+
+import React, {
+  Component
+} from 'react';
+
 import {
   Form,
   Input,
   Icon,
   Radio,
+  Alert,
   Button,
   Checkbox
 } from 'antd';
+
+import {
+  FormattedMessage,
+  injectIntl
+} from 'react-intl';
 
 import './ProxyInputList.less';
 
@@ -22,7 +33,8 @@ class DynamicFieldSet extends Component {
       currentProxyIndex: 1,
       proxies: [],
       originKeys: [],
-      isErrorInput: {}
+      isErrorInput: {},
+      proxyUrlError: null
     };
   }
 
@@ -114,10 +126,23 @@ class DynamicFieldSet extends Component {
         this.setState({
           isErrorInput
         });
-        alert(`proxy url: ${proxy} is invalid`);
+        this.setState({
+          proxyUrlError: {
+            message: `proxy url: ${proxy} is invalid`,
+            type: 'error'
+          }
+        });
         return;
+      } else {
+        isErrorInput[i] = 'ok';
+        this.setState({
+          isErrorInput
+        });
       }
     }
+    this.setState({
+      proxyUrlError: null
+    });
     const result = {
       proxies: this.state.proxies,
       useProxy: this.state.useProxy,
@@ -168,7 +193,7 @@ class DynamicFieldSet extends Component {
                   this.proxyInputChange(e, index);
                 }}
                 disabled={!this.state.useProxy}
-                placeholder="请填写代理地址"
+                placeholder={this.props.intl.formatMessage({id: 'proxyConfig.inputTip'})}
                 style={{ width: '355px', marginRight: 8 }}
               />
               <Button
@@ -177,7 +202,7 @@ class DynamicFieldSet extends Component {
                 type="danger"
                 disabled={!this.state.useProxy}
                 onClick={() => this.remove(k)}>
-              删除
+                <FormattedMessage id='common.delete' />
               </Button>
             </div>
           </FormItem>
@@ -187,20 +212,23 @@ class DynamicFieldSet extends Component {
     return (
       <Form onSubmit={this.handleSubmit.bind(this)} className="proxyInputList">
         <FormItem {...formItemLayout}>
-          <Checkbox checked={this.state.useProxy} onChange={this.onCheckboxChange.bind(this)}>是否使用代理</Checkbox>
-          <Button size="small" type="dashed" onClick={this.add.bind(this)} style={{ width: '80px', marginLeft: '200px' }}>
-            <Icon type="plus" />添加代理
+          <Checkbox checked={this.state.useProxy} onChange={this.onCheckboxChange.bind(this)}>
+            <FormattedMessage id='proxyConfig.isUseProxy' />
+          </Checkbox>
+          <Button size="small" type="dashed" onClick={this.add.bind(this)} style={{ width: '90px', marginLeft: '200px' }}>
+            <Icon type="plus" /><FormattedMessage id='proxyConfig.addProxy' />
           </Button>
-          <Button size="small" type="primary" htmlType="submit" style={{ width: '45px' }}>提交</Button>
+          <Button size="small" type="primary" htmlType="submit" style={{ width: '55px' }}><FormattedMessage id='common.submite' /></Button>
         </FormItem>
 
         <RadioGroup onChange={this.onRadioChange.bind(this)} value={this.state.currentProxyIndex}>
           {formItems}
         </RadioGroup>
+        {this.state.proxyUrlError ? <Alert message={this.state.proxyUrlError.message} type={this.state.proxyUrlError.type} showIcon /> : null}
       </Form>
     );
   }
 }
 
-const ProxyInputList = Form.create()(DynamicFieldSet);
+const ProxyInputList = Form.create()(injectIntl(DynamicFieldSet));
 export default ProxyInputList;

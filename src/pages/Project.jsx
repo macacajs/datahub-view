@@ -4,6 +4,10 @@ import React from 'react';
 import io from 'socket.io-client';
 
 import {
+  injectIntl
+} from 'react-intl';
+
+import {
   Layout,
   Tabs
 } from 'antd';
@@ -23,7 +27,7 @@ const {
 
 const projectId = window.pageConfig.projectId;
 
-export default class Project extends React.Component {
+class Project extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -76,7 +80,7 @@ export default class Project extends React.Component {
         this.setState({
           data: allData
         });
-        console.log('添加／更新接口成功');
+        console.log('update api success');
       }
     });
   }
@@ -88,7 +92,7 @@ export default class Project extends React.Component {
         this.setState({
           data: allData
         });
-        console.log('添加／更新接口成功');
+        console.log('delete api success');
       }
     });
   }
@@ -108,7 +112,7 @@ export default class Project extends React.Component {
         this.setState({
           data: apis
         });
-        console.log('更新数据成功');
+        console.log('update api success');
       }
     });
   }
@@ -140,7 +144,7 @@ export default class Project extends React.Component {
             defaultActiveKey="1"
             animated={false}
           >
-            <TabPane tab="接口列表" key="1">
+            <TabPane tab={this.props.intl.formatMessage({id: 'project.apiList'})} key="1">
               <DataList
                 apis={this.state.data}
                 handleAddApi={this.addApi.bind(this)}
@@ -148,7 +152,7 @@ export default class Project extends React.Component {
                 handleApiClick={this.handleApiClick.bind(this)}
               />
             </TabPane>
-            <TabPane tab="实时快照" key="2">
+            <TabPane tab={this.props.intl.formatMessage({id: 'project.realtimeList'})} key="2">
               <RealTime
                 realTimeDataList={this.state.realTimeDataList}
                 onSelect={this.selectRealTimeItem.bind(this)}
@@ -179,3 +183,5 @@ export default class Project extends React.Component {
     );
   }
 }
+
+export default injectIntl(Project);

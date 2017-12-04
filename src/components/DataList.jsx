@@ -7,15 +7,21 @@ import {
   Modal,
   Popconfirm,
   Row,
+  Alert,
   Col
 } from 'antd';
 import _ from 'lodash';
+
+import {
+  FormattedMessage,
+  injectIntl
+} from 'react-intl';
 
 import './DataList.less';
 
 const Search = Input.Search;
 
-export default class DataList extends React.Component {
+class DataList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,7 +29,8 @@ export default class DataList extends React.Component {
       modalTitle: '',
       modalDescription: '',
       apis: props.apis,
-      currentIndex: 0
+      currentIndex: 0,
+      errorAlert: null
     };
   }
 
@@ -61,13 +68,29 @@ export default class DataList extends React.Component {
   handleModalOk(e) {
     const index = _.findIndex(this.state.apis, o => o.pathname === this.state.modalTitle);
     if (index !== -1) {
-      alert('接口名称已存在！');
+      this.setState({
+        errorAlert: {
+          message: this.props.intl.formatMessage({id: 'apiConfig.existError'}),
+          type: 'error'
+        }
+      });
       return;
     }
     if (!this.state.modalTitle || !this.state.modalDescription) {
-      alert('接口名称和描述不能为空！');
+      this.setState({
+        errorAlert: {
+          message: this.props.intl.formatMessage({id: 'apiConfig.nullError'}),
+          type: 'error'
+        }
+      });
       return;
     }
+    this.setState({
+      errorAlert: {
+        message: this.props.intl.formatMessage({id: 'apiConfig.addSuccess'}),
+        type: 'success'
+      }
+    });
     const addAPI = {
       pathname: this.state.modalTitle,
       description: this.state.modalDescription
@@ -111,7 +134,9 @@ export default class DataList extends React.Component {
             />
           </Col>
           <Col span={8} push={1}>
-            <Button type="primary" onClick={this.handleAdd.bind(this)}>添加接口</Button>
+            <Button type="primary" onClick={this.handleAdd.bind(this)}>
+              <FormattedMessage id='apiList.addApi' />
+            </Button>
           </Col>
         </Row>
         <ul>
@@ -124,8 +149,10 @@ export default class DataList extends React.Component {
                     <p>{api.description}</p>
                   </div>
                   <div className="right">
-                    <Popconfirm title="确定删除？" onConfirm={this.onConfirmRemoveApi.bind(this, index)} okText="确定" cancelText="取消">
-                      <Button type="danger">删除</Button>
+                    <Popconfirm title={this.props.intl.formatMessage({id: 'common.deleteTip'})} onConfirm={this.onConfirmRemoveApi.bind(this, index)} okText={this.props.intl.formatMessage({id: 'common.confirm'})} cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}>
+                      <Button type="danger">
+                        <FormattedMessage id='common.delete' />
+                      </Button>
                     </Popconfirm>
                   </div>
                 </li>
@@ -134,22 +161,25 @@ export default class DataList extends React.Component {
           }
         </ul>
         <Modal
-          title="添加接口"
+          title={this.props.intl.formatMessage({id: 'apiList.addApi'})}
           visible={this.state.modalVisible}
-          onOk={this.handleModalOk}
-          onCancel={this.handleModalCancel}
+          onOk={this.handleModalOk.bind(this)}
+          onCancel={this.handleModalCancel.bind(this)}
         >
           <Input
-            placeholder="请输入接口名"
+            placeholder={this.props.intl.formatMessage({id: 'apiList.apiNameInput'})}
             onChange={this.modalTitleChange.bind(this)}
             value={this.state.modalTitle} />
           <Input
-            placeholder="请输入接口描述"
-            style={{ marginTop: '10px' }}
+            placeholder={this.props.intl.formatMessage({id: 'apiList.apiDesInput'})}
+            style={{ margin: '10px 0' }}
             onChange={this.modalDescriptionChange.bind(this)}
             value={this.state.modalDescription} />
+          {this.state.errorAlert && this.state.errorAlert.message ? <Alert message={this.state.errorAlert.message} type={this.state.errorAlert.type} showIcon /> : null}
         </Modal>
       </div>
     );
   }
 }
+
+export default injectIntl(DataList);

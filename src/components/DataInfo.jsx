@@ -1,8 +1,11 @@
 'use strict';
 
-import './DataInfo.less';
-
 import React from 'react';
+
+import {
+  FormattedMessage,
+  injectIntl
+} from 'react-intl';
 
 import {
   UnControlled as CodeMirror
@@ -29,6 +32,8 @@ import ProxyInputList from './ProxyInputList';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/javascript/javascript';
 
+import './DataInfo.less';
+
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 
@@ -47,7 +52,7 @@ const codeMirrorOptions = {
   autofocus: true
 };
 
-export default class DataInfo extends React.Component {
+class DataInfo extends React.Component {
   constructor(props) {
     super(props);
     const currentData = props.currentData;
@@ -70,7 +75,8 @@ export default class DataInfo extends React.Component {
       pathname: currentData && currentData.pathname,
       description: currentData && currentData.description,
       currentScene: currentData && currentData.currentScene,
-      cursorPos: null
+      cursorPos: null,
+      sceneError: null
     };
   }
 
@@ -104,14 +110,29 @@ export default class DataInfo extends React.Component {
     const index = _.findIndex(this.state.scenes, o => o.name === this.state.addingScene);
 
     if (index !== -1) {
-      alert('场景名称已存在！');
+      this.setState({
+        sceneError: {
+          message: this.props.intl.formatMessage({id: 'sceneMng.existError'}),
+          type: 'error'
+        }
+      });
       return;
     }
 
     if (!this.state.addingScene) {
-      alert('场景名不能为空！');
+      this.setState({
+        sceneError: {
+          message: this.props.intl.formatMessage({id: 'sceneMng.nullError'}),
+          type: 'error'
+        }
+      });
       return;
     }
+
+    this.setState({
+      sceneError: null
+    });
+
     const newScene = {
       name: this.state.addingScene,
       data: '{}'
@@ -297,30 +318,29 @@ export default class DataInfo extends React.Component {
   render() {
     const projectId = window.pageConfig.projectId;
     const apiHref = `http://${location.host}/data/${projectId}/${this.state.pathname}`;
-
     return (
       <div className="datainfo">
         <Breadcrumb>
           <Breadcrumb.Item>
-            <a href="/dashboard">所有项目</a>
+            <a href="/dashboard"><FormattedMessage id='topNav.allProject' /></a>
           </Breadcrumb.Item>
           <Breadcrumb.Item>
             { this.state.description ? this.state.description : this.state.pathname }
           </Breadcrumb.Item>
           <Breadcrumb.Item>
-            项目配置
+            <FormattedMessage id='topNav.projectConfig' />
           </Breadcrumb.Item>
         </Breadcrumb>
         <content>
           <section className="base-info">
-            <h1>接口配置</h1>
+            <h1><FormattedMessage id='apiConfig.title' /></h1>
             <a href={`/doc/${projectId}`} target="_blank">
-              <Button className="right-button" type="primary">接口文档</Button>
+              <Button className="right-button" type="primary"><FormattedMessage id='apiConfig.apiDoc' /></Button>
             </a>
             <div className="mock-address">
-              <span>接口名：</span>
+              <span><FormattedMessage id='apiConfig.name' /></span>
               <a target="_blank" href={apiHref}>
-                <Tooltip placement="top" title={`场景：${this.state.currentScene || 'default'}`}>
+                <Tooltip placement="top" title={`${this.props.intl.formatMessage({id: 'sceneMng.sceneName'})}：${this.state.currentScene || 'default'}`}>
                   <span className="project-api">
                     {`${this.state.pathname}`} | {`${this.state.currentScene || 'default'}`}
                   </span>
@@ -328,7 +348,7 @@ export default class DataInfo extends React.Component {
               </a>
             </div>
             <div>
-              <span>HTTP Method:</span>
+              <span><FormattedMessage id='apiConfig.HTTP' /></span>
               <Select defaultValue={this.state.method} value={this.state.method} style={{ width: 120, marginLeft: 10 }} onChange={this.handleOptionChange.bind(this)}>
                 <Option value="ALL">ALL</Option>
                 <Option value="GET">GET</Option>
@@ -339,20 +359,23 @@ export default class DataInfo extends React.Component {
               </Select>
             </div>
             <div className="api-description">
-              <span>接口说明：</span>
+              <span><FormattedMessage id='apiConfig.apiDescription' /></span>
               <Input className="des-content" onBlur={this.handleDescriptionBlur.bind(this)} onChange={this.handleDescriptionChange.bind(this)} value={this.state.description}></Input>
             </div>
             <div className="api-delay">
-              <span>接口延迟：</span>
-              <InputNumber min={0} max={5} defaultValue={0} onChange={this.delayChange} /> 秒
+              <span><FormattedMessage id='apiConfig.apiDelay' /></span>
+              <InputNumber min={0} max={5} defaultValue={0} onChange={this.delayChange} /> <FormattedMessage id='apiConfig.second' />
             </div>
           </section>
           <section className="data-scene">
-            <h1>场景管理</h1>
+            <h1><FormattedMessage id='sceneMng.title' /></h1>
             <div>
               <div className="add-input">
-                <Input style={{ width: '200px' }} placeholder="输入场景名" onChange={this.handleAddSceneChange.bind(this)} />
-                <Button type="primary" onClick={this.handleAdd.bind(this)}>新增场景</Button>
+                <Input style={{ width: '200px' }} placeholder={<FormattedMessage id='sceneMng.inputTip' />} onChange={this.handleAddSceneChange.bind(this)} />
+                <Button style={{ marginBottom: `${this.state.sceneError ? '10px' : '0'}` }} type="primary" onClick={this.handleAdd.bind(this)}>
+                  <FormattedMessage id='sceneMng.addSceneBtn' />
+                </Button>
+                {this.state.sceneError ? <Alert message={this.state.sceneError.message} type={this.state.sceneError.type} showIcon /> : null}
               </div>
               <RadioGroup name="radiogroup" value={this.state.currentScene} onChange={this.handleSceneChange.bind(this)}>
                 {
@@ -360,9 +383,13 @@ export default class DataInfo extends React.Component {
                     return (
                       <Radio value={scene.name} key={scene.name}>
                         <span>{ scene.name }</span>
-                        <Button size="small" onClick={this.showModal.bind(this, index)}>查看</Button>
-                        <Popconfirm title="确定删除？" onConfirm={this.onConfirmRemoveScene.bind(this, index)} okText="确定" cancelText="取消">
-                          <Button type="danger" size="small" >删除</Button>
+                        <Button size="small" onClick={this.showModal.bind(this, index)}>
+                          <FormattedMessage id='common.look' />
+                        </Button>
+                        <Popconfirm title={<FormattedMessage id='common.deleteTip' />} onConfirm={this.onConfirmRemoveScene.bind(this, index)} okText={<FormattedMessage id='common.confirm' />} cancelText={<FormattedMessage id='common.cancel' />}>
+                          <Button type="danger" size="small" >
+                            <FormattedMessage id='common.delete' />
+                          </Button>
                         </Popconfirm>
                       </Radio>
                     );
@@ -374,6 +401,8 @@ export default class DataInfo extends React.Component {
                 title={`scene: ${this.state.modalInfoTitle}`}
                 visible={this.state.modalVisible}
                 onOk={this.handleModalOk.bind(this)}
+                cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}
+                okText={this.props.intl.formatMessage({id: 'common.cancel'})}
                 onCancel={this.handleModalCancel.bind(this)}
               >
                 <CodeMirror
@@ -387,6 +416,8 @@ export default class DataInfo extends React.Component {
                 title="schame"
                 visible={this.state.schemaModalVisible}
                 onOk={this.confirmSchameModal.bind(this)}
+                cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}
+                okText={this.props.intl.formatMessage({id: 'common.cancel'})}
                 onCancel={this.cancelSchameModal.bind(this)}
               >
                 <CodeMirror
@@ -399,21 +430,21 @@ export default class DataInfo extends React.Component {
             </div>
           </section>
           <section className="data-proxy">
-            <h1>代理配置</h1>
+            <h1><FormattedMessage id='proxyConfig.title' /></h1>
             <ProxyInputList
               onChangeProxy={this.handleProxyChange.bind(this)}
               proxyContent={this.state.proxyContent}
             />
           </section>
           <section className="params-doc">
-            <h1>字段描述</h1>
+            <h1><FormattedMessage id='fieldDes.title' /></h1>
             <Checkbox
               checked={this.state.enableSchemaValidate}
               onChange={this.toggleSchemaValidate.bind(this)}
             >
-              是否开启校验
+              <FormattedMessage id='fieldDes.isUseCheck' />
             </Checkbox>
-            <Button size="small" type="primary" onClick={this.editSchema.bind(this)}>编辑</Button>
+            <Button size="small" type="primary" onClick={this.editSchema.bind(this)}><FormattedMessage id='common.edit' /></Button>
             <CustomTable
               type="schema"
               className="schema-table"
@@ -425,3 +456,5 @@ export default class DataInfo extends React.Component {
     );
   }
 }
+
+export default injectIntl(DataInfo);
