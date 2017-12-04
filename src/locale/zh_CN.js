@@ -1,5 +1,4 @@
 const zhCN = {
-  hello: '你好，子楼！',
   common_delete: '删除',
   common_look: '查看',
   common_cancel: '取消',

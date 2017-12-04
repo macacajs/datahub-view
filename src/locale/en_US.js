@@ -1,5 +1,4 @@
 const enUS = {
-  hello: 'hello, ziv！',
   common_delete: 'delete',
   common_look: 'look',
   common_cancel: 'cancel',
