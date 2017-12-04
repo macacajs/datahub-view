@@ -118,9 +118,18 @@ class CollectionForm extends Component {
               <Input />
             )}
           </FormItem>
-          <FormItem label={formatMessage({id: 'dashboard.modalDescription'})}>
+          <FormItem label={formatMessage({
+            id: 'dashboard.modalDescription'
+          })}>
             {getFieldDecorator('description', {
-              rules: [{required: true, message: formatMessage({id: 'dashboard.modalDescriptionTip'})}]
+              rules: [
+                {
+                  required: true,
+                  message: formatMessage({
+                    id: 'dashboard.modalDescriptionTip'
+                  })
+                }
+              ]
             })(
               <Input />
             )}
