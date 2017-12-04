@@ -3,6 +3,7 @@
 import './DataInfo.less';
 
 import React from 'react';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
 import {
   UnControlled as CodeMirror
@@ -47,7 +48,7 @@ const codeMirrorOptions = {
   autofocus: true
 };
 
-export default class DataInfo extends React.Component {
+class DataInfo extends React.Component {
   constructor(props) {
     super(props);
     const currentData = props.currentData;
@@ -107,7 +108,7 @@ export default class DataInfo extends React.Component {
     if (index !== -1) {
       this.setState({
         sceneError: {
-          message: '场景名称已存在！',
+          message: this.props.intl.formatMessage({id: 'sceneMng_existError'}),
           type: 'error'
         }
       });
@@ -117,7 +118,7 @@ export default class DataInfo extends React.Component {
     if (!this.state.addingScene) {
       this.setState({
         sceneError: {
-          message: '场景名不能为空！',
+          message: this.props.intl.formatMessage({id: 'sceneMng_nullError'}),
           type: 'error'
         }
       });
@@ -313,30 +314,29 @@ export default class DataInfo extends React.Component {
   render() {
     const projectId = window.pageConfig.projectId;
     const apiHref = `http://${location.host}/data/${projectId}/${this.state.pathname}`;
-
     return (
       <div className="datainfo">
         <Breadcrumb>
           <Breadcrumb.Item>
-            <a href="/dashboard">所有项目</a>
+            <a href="/dashboard"><FormattedMessage id='topNav_allProject' /></a>
           </Breadcrumb.Item>
           <Breadcrumb.Item>
             { this.state.description ? this.state.description : this.state.pathname }
           </Breadcrumb.Item>
           <Breadcrumb.Item>
-            项目配置
+            <FormattedMessage id='topNav_projectConfig' />
           </Breadcrumb.Item>
         </Breadcrumb>
         <content>
           <section className="base-info">
-            <h1>接口配置</h1>
+            <h1><FormattedMessage id='apiConfig_title' /></h1>
             <a href={`/doc/${projectId}`} target="_blank">
-              <Button className="right-button" type="primary">接口文档</Button>
+              <Button className="right-button" type="primary"><FormattedMessage id='apiConfig_apiDoc' /></Button>
             </a>
             <div className="mock-address">
-              <span>接口名：</span>
+              <span><FormattedMessage id='apiConfig_name' /></span>
               <a target="_blank" href={apiHref}>
-                <Tooltip placement="top" title={`场景：${this.state.currentScene || 'default'}`}>
+                <Tooltip placement="top" title={`${this.props.intl.formatMessage({id: 'sceneMng_sceneName'})}：${this.state.currentScene || 'default'}`}>
                   <span className="project-api">
                     {`${this.state.pathname}`} | {`${this.state.currentScene || 'default'}`}
                   </span>
@@ -344,7 +344,7 @@ export default class DataInfo extends React.Component {
               </a>
             </div>
             <div>
-              <span>HTTP Method:</span>
+              <span><FormattedMessage id='apiConfig_HTTP' /></span>
               <Select defaultValue={this.state.method} value={this.state.method} style={{ width: 120, marginLeft: 10 }} onChange={this.handleOptionChange.bind(this)}>
                 <Option value="ALL">ALL</Option>
                 <Option value="GET">GET</Option>
@@ -355,20 +355,22 @@ export default class DataInfo extends React.Component {
               </Select>
             </div>
             <div className="api-description">
-              <span>接口说明：</span>
+              <span><FormattedMessage id='apiConfig_apiDescription' /></span>
               <Input className="des-content" onBlur={this.handleDescriptionBlur.bind(this)} onChange={this.handleDescriptionChange.bind(this)} value={this.state.description}></Input>
             </div>
             <div className="api-delay">
-              <span>接口延迟：</span>
-              <InputNumber min={0} max={5} defaultValue={0} onChange={this.delayChange} /> 秒
+              <span><FormattedMessage id='apiConfig_apiDelay' /></span>
+              <InputNumber min={0} max={5} defaultValue={0} onChange={this.delayChange} /> <FormattedMessage id='apiConfig_second' />
             </div>
           </section>
           <section className="data-scene">
-            <h1>场景管理</h1>
+            <h1><FormattedMessage id='sceneMng_title' /></h1>
             <div>
               <div className="add-input">
-                <Input style={{ width: '200px' }} placeholder="输入场景名" onChange={this.handleAddSceneChange.bind(this)} />
-                <Button style={{ marginBottom: `${this.state.sceneError ? '10px' : '0'}` }} type="primary" onClick={this.handleAdd.bind(this)}>新增场景</Button>
+                <Input style={{ width: '200px' }} placeholder={<FormattedMessage id='sceneMng_inputTip' />} onChange={this.handleAddSceneChange.bind(this)} />
+                <Button style={{ marginBottom: `${this.state.sceneError ? '10px' : '0'}` }} type="primary" onClick={this.handleAdd.bind(this)}>
+                  <FormattedMessage id='sceneMng_addSceneBtn' />
+                </Button>
                 {this.state.sceneError ? <Alert message={this.state.sceneError.message} type={this.state.sceneError.type} showIcon /> : null}
               </div>
               <RadioGroup name="radiogroup" value={this.state.currentScene} onChange={this.handleSceneChange.bind(this)}>
@@ -377,9 +379,13 @@ export default class DataInfo extends React.Component {
                     return (
                       <Radio value={scene.name} key={scene.name}>
                         <span>{ scene.name }</span>
-                        <Button size="small" onClick={this.showModal.bind(this, index)}>查看</Button>
-                        <Popconfirm title="确定删除？" onConfirm={this.onConfirmRemoveScene.bind(this, index)} okText="确定" cancelText="取消">
-                          <Button type="danger" size="small" >删除</Button>
+                        <Button size="small" onClick={this.showModal.bind(this, index)}>
+                          <FormattedMessage id='common_look' />
+                        </Button>
+                        <Popconfirm title={<FormattedMessage id='common_deleteTip' />} onConfirm={this.onConfirmRemoveScene.bind(this, index)} okText={<FormattedMessage id='common_confirm' />} cancelText={<FormattedMessage id='common_cancel' />}>
+                          <Button type="danger" size="small" >
+                            <FormattedMessage id='common_delete' />
+                          </Button>
                         </Popconfirm>
                       </Radio>
                     );
@@ -391,6 +397,8 @@ export default class DataInfo extends React.Component {
                 title={`scene: ${this.state.modalInfoTitle}`}
                 visible={this.state.modalVisible}
                 onOk={this.handleModalOk.bind(this)}
+                cancelText={this.props.intl.formatMessage({id: 'common_cancel'})}
+                okText={this.props.intl.formatMessage({id: 'common_cancel'})}
                 onCancel={this.handleModalCancel.bind(this)}
               >
                 <CodeMirror
@@ -404,6 +412,8 @@ export default class DataInfo extends React.Component {
                 title="schame"
                 visible={this.state.schemaModalVisible}
                 onOk={this.confirmSchameModal.bind(this)}
+                cancelText={this.props.intl.formatMessage({id: 'common_cancel'})}
+                okText={this.props.intl.formatMessage({id: 'common_cancel'})}
                 onCancel={this.cancelSchameModal.bind(this)}
               >
                 <CodeMirror
@@ -416,21 +426,21 @@ export default class DataInfo extends React.Component {
             </div>
           </section>
           <section className="data-proxy">
-            <h1>代理配置</h1>
+            <h1><FormattedMessage id='proxyConfig_title' /></h1>
             <ProxyInputList
               onChangeProxy={this.handleProxyChange.bind(this)}
               proxyContent={this.state.proxyContent}
             />
           </section>
           <section className="params-doc">
-            <h1>字段描述</h1>
+            <h1><FormattedMessage id='fieldDes_title' /></h1>
             <Checkbox
               checked={this.state.enableSchemaValidate}
               onChange={this.toggleSchemaValidate.bind(this)}
             >
-              是否开启校验
+              <FormattedMessage id='fieldDes_isUseCheck' />
             </Checkbox>
-            <Button size="small" type="primary" onClick={this.editSchema.bind(this)}>编辑</Button>
+            <Button size="small" type="primary" onClick={this.editSchema.bind(this)}><FormattedMessage id='common_edit' /></Button>
             <CustomTable
               className="schema-table"
               schemaData={this.state.schemaData}
@@ -441,3 +451,5 @@ export default class DataInfo extends React.Component {
     );
   }
 }
+
+export default injectIntl(DataInfo);

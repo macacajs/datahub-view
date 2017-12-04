@@ -4,6 +4,7 @@ import React from 'react';
 import {
   Table
 } from 'antd';
+import { injectIntl } from 'react-intl';
 
 import _ from '../common/helper';
 
@@ -21,29 +22,30 @@ const TableCell = ({
   </div>
 );
 
-export default class EditableTable extends React.Component {
+class EditableTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       data: []
     };
+
     this.columns = [{
-      title: '字段',
+      title: this.props.intl.formatMessage({id: 'fieldDes_field'}),
       dataIndex: 'field',
       width: '20%',
       render: (text, record) => this.renderColumns(text, record, 'field')
     }, {
-      title: '类型',
+      title: this.props.intl.formatMessage({id: 'fieldDes_type'}),
       dataIndex: 'type',
       width: '15%',
       render: (text, record) => this.renderColumns(text, record, 'type')
     }, {
-      title: '必须',
+      title: this.props.intl.formatMessage({id: 'fieldDes_require'}),
       dataIndex: 'require',
       width: '10%',
       render: (text, record) => this.renderColumns(text, record, 'require')
     }, {
-      title: '说明',
+      title: this.props.intl.formatMessage({id: 'fieldDes_description'}),
       dataIndex: 'description',
       width: '45%',
       render: (text, record) => this.renderColumns(text, record, 'description')
@@ -66,3 +68,5 @@ export default class EditableTable extends React.Component {
     );
   }
 }
+
+export default injectIntl(EditableTable);

@@ -4,6 +4,7 @@ import {
 } from 'antd';
 
 import './realTimeDetail.less';
+import { FormattedMessage } from 'react-intl';
 
 export default class RealTimeDetail extends React.Component {
   constructor(props) {
@@ -42,10 +43,10 @@ export default class RealTimeDetail extends React.Component {
       <div className="real-time-detail">
         <Breadcrumb>
           <Breadcrumb.Item>
-            <a href="/dashboard">我的项目</a>
+            <a href="/dashboard"><FormattedMessage id='realtimeProject_myProject' /></a>
           </Breadcrumb.Item>
           <Breadcrumb.Item>
-            快照详情
+            <FormattedMessage id='realtimeProject_detailPhoto' />
           </Breadcrumb.Item>
         </Breadcrumb>
         <section className="request">

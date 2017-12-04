@@ -10,6 +10,7 @@ import {
 } from 'antd';
 
 import './ProxyInputList.less';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -183,7 +184,7 @@ class DynamicFieldSet extends Component {
                   this.proxyInputChange(e, index);
                 }}
                 disabled={!this.state.useProxy}
-                placeholder="请填写代理地址"
+                placeholder={this.props.intl.formatMessage({id: 'proxyConfig_inputTip'})}
                 style={{ width: '355px', marginRight: 8 }}
               />
               <Button
@@ -192,7 +193,7 @@ class DynamicFieldSet extends Component {
                 type="danger"
                 disabled={!this.state.useProxy}
                 onClick={() => this.remove(k)}>
-              删除
+                <FormattedMessage id='common_delete' />
               </Button>
             </div>
           </FormItem>
@@ -202,11 +203,13 @@ class DynamicFieldSet extends Component {
     return (
       <Form onSubmit={this.handleSubmit.bind(this)} className="proxyInputList">
         <FormItem {...formItemLayout}>
-          <Checkbox checked={this.state.useProxy} onChange={this.onCheckboxChange.bind(this)}>是否使用代理</Checkbox>
-          <Button size="small" type="dashed" onClick={this.add.bind(this)} style={{ width: '80px', marginLeft: '200px' }}>
-            <Icon type="plus" />添加代理
+          <Checkbox checked={this.state.useProxy} onChange={this.onCheckboxChange.bind(this)}>
+            <FormattedMessage id='proxyConfig_isUseProxy' />
+          </Checkbox>
+          <Button size="small" type="dashed" onClick={this.add.bind(this)} style={{ width: '90px', marginLeft: '200px' }}>
+            <Icon type="plus" /><FormattedMessage id='proxyConfig_addProxy' />
           </Button>
-          <Button size="small" type="primary" htmlType="submit" style={{ width: '45px' }}>提交</Button>
+          <Button size="small" type="primary" htmlType="submit" style={{ width: '55px' }}><FormattedMessage id='common_submite' /></Button>
         </FormItem>
 
         <RadioGroup onChange={this.onRadioChange.bind(this)} value={this.state.currentProxyIndex}>
@@ -218,5 +221,5 @@ class DynamicFieldSet extends Component {
   }
 }
 
-const ProxyInputList = Form.create()(DynamicFieldSet);
+const ProxyInputList = Form.create()(injectIntl(DynamicFieldSet));
 export default ProxyInputList;

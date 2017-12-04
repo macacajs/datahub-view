@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react';
+import React, { Component } from 'react';
 import {
   Table,
   Button,
@@ -12,6 +12,7 @@ import {
   Col,
   Icon
 } from 'antd';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
 import './DashBoard.less';
 
@@ -79,47 +80,53 @@ class EditableCell extends React.Component {
   }
 }
 
-const CollectionCreateForm = Form.create()((props) => {
-  const {
-    visible,
-    onCancel,
-    onCreate,
-    form,
-    loading
-  } = props;
-  const {
-    getFieldDecorator
-  } = form;
-  return (
-    <Modal
-      visible={visible}
-      title="创建新的项目"
-      okText="Create"
-      onCancel={onCancel}
-      onOk={onCreate}
-      confirmLoading={loading}
-    >
-      <Form layout="vertical">
-        <FormItem label="项目名称">
-          {getFieldDecorator('identifer', {
-            rules: [{ required: true, message: '请输入不为字母或者数字', pattern: /^[A-Za-z0-9]+$/ }]
-          })(
-            <Input />
-          )}
-        </FormItem>
-        <FormItem label="项目描述">
-          {getFieldDecorator('description', {
-            rules: [{required: true, message: '请输入不为空的中文或者数字'}]
-          })(
-            <Input />
-          )}
-        </FormItem>
-      </Form>
-    </Modal>
-  );
-});
+class CollectionForm extends Component {
+  render() {
+    const {
+      visible,
+      onCancel,
+      onCreate,
+      form,
+      loading
+    } = this.props;
+    const {
+      getFieldDecorator
+    } = form;
+    const formatMessage = this.props.intl.formatMessage;
+    return (
+      <Modal
+        visible={visible}
+        title={this.props.intl.formatMessage({id: 'dashboard_modalTile'})}
+        okText="Create"
+        onCancel={onCancel}
+        onOk={onCreate}
+        cancelText={this.props.intl.formatMessage({id: 'common_cancel'})}
+        confirmLoading={loading}
+      >
+        <Form layout="vertical">
+          <FormItem label={formatMessage({id: 'dashboard_modalName'})}>
+            {getFieldDecorator('identifer', {
+              rules: [{ required: true, message: formatMessage({id: 'dashboard_modalNameTip'}), pattern: /^[A-Za-z0-9]+$/ }]
+            })(
+              <Input />
+            )}
+          </FormItem>
+          <FormItem label={formatMessage({id: 'dashboard_modalDescription'})}>
+            {getFieldDecorator('description', {
+              rules: [{required: true, message: formatMessage({id: 'dashboard_modalDescriptionTip'})}]
+            })(
+              <Input />
+            )}
+          </FormItem>
+        </Form>
+      </Modal>
+    );
+  }
+}
 
-export default class DashBoard extends React.Component {
+const CollectionCreateForm = Form.create()(injectIntl(CollectionForm));
+
+class DashBoard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -211,13 +218,13 @@ export default class DashBoard extends React.Component {
 
   render() {
     const columns = [{
-      title: '项目ID',
+      title: this.props.intl.formatMessage({id: 'dashboard_tableId'}),
       dataIndex: 'identifer',
       width: '20%',
       key: 'identifer',
       render: text => <a href={`/project/${text}`}>{text}</a>
     }, {
-      title: '描述',
+      title: this.props.intl.formatMessage({id: 'dashboard_tableDescription'}),
       dataIndex: 'description',
       key: 'description',
       render: (text, record) => (
@@ -227,14 +234,14 @@ export default class DashBoard extends React.Component {
         />
       )
     }, {
-      title: '操作',
+      title: this.props.intl.formatMessage({id: 'dashboard_tableOperation'}),
       dataIndex: 'operation',
       key: 'operation',
       width: '100px',
       render: (text, record, index) => {
         return (
-          <Popconfirm title="确定删除？" onConfirm={this.handleDelete.bind(this, index)} okText="确定" cancelText="取消">
-            <Button type="primary" className="project-delete-button">删除</Button>
+          <Popconfirm title={this.props.intl.formatMessage({id: 'common_deleteTip'})} onConfirm={this.handleDelete.bind(this, index)} okText={this.props.intl.formatMessage({id: 'common_confirm'})} cancelText={this.props.intl.formatMessage({id: 'common_cancel'})}>
+            <Button type="primary" className="project-delete-button"><FormattedMessage id='common_delete' /></Button>
           </Popconfirm>
         );
       }
@@ -245,7 +252,7 @@ export default class DashBoard extends React.Component {
         <Row type="flex" justify="center">
           <Col span="20">
             <Button type="primary" className="dashboard-add-button" onClick={this.showModal.bind(this)}>
-              添加项目
+              <FormattedMessage id='dashboard_tableAdd' />
             </Button>
           </Col>
           <Col span="20">
@@ -263,3 +270,5 @@ export default class DashBoard extends React.Component {
     );
   }
 }
+
+export default injectIntl(DashBoard);

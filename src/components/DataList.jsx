@@ -11,12 +11,13 @@ import {
   Col
 } from 'antd';
 import _ from 'lodash';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
 import './DataList.less';
 
 const Search = Input.Search;
 
-export default class DataList extends React.Component {
+class DataList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -65,7 +66,7 @@ export default class DataList extends React.Component {
     if (index !== -1) {
       this.setState({
         errorAlert: {
-          message: '接口名称已存在！',
+          message: this.props.intl.formatMessage({id: 'apiConfig_existError'}),
           type: 'error'
         }
       });
@@ -74,7 +75,7 @@ export default class DataList extends React.Component {
     if (!this.state.modalTitle || !this.state.modalDescription) {
       this.setState({
         errorAlert: {
-          message: '接口名称和描述不能为空！',
+          message: this.props.intl.formatMessage({id: 'apiConfig_nullError'}),
           type: 'error'
         }
       });
@@ -82,7 +83,7 @@ export default class DataList extends React.Component {
     }
     this.setState({
       errorAlert: {
-        message: '添加成功',
+        message: this.props.intl.formatMessage({id: 'apiConfig_addSuccess'}),
         type: 'success'
       }
     });
@@ -129,7 +130,9 @@ export default class DataList extends React.Component {
             />
           </Col>
           <Col span={8} push={1}>
-            <Button type="primary" onClick={this.handleAdd.bind(this)}>添加接口</Button>
+            <Button type="primary" onClick={this.handleAdd.bind(this)}>
+              <FormattedMessage id='apiList_addApi' />
+            </Button>
           </Col>
         </Row>
         <ul>
@@ -142,8 +145,10 @@ export default class DataList extends React.Component {
                     <p>{api.description}</p>
                   </div>
                   <div className="right">
-                    <Popconfirm title="确定删除？" onConfirm={this.onConfirmRemoveApi.bind(this, index)} okText="确定" cancelText="取消">
-                      <Button type="danger">删除</Button>
+                    <Popconfirm title={this.props.intl.formatMessage({id: 'common_deleteTip'})} onConfirm={this.onConfirmRemoveApi.bind(this, index)} okText={this.props.intl.formatMessage({id: 'common_confirm'})} cancelText={this.props.intl.formatMessage({id: 'common_cancel'})}>
+                      <Button type="danger">
+                        <FormattedMessage id='common_delete' />
+                      </Button>
                     </Popconfirm>
                   </div>
                 </li>
@@ -152,17 +157,17 @@ export default class DataList extends React.Component {
           }
         </ul>
         <Modal
-          title="添加接口"
+          title={this.props.intl.formatMessage({id: 'apiList_addApi'})}
           visible={this.state.modalVisible}
           onOk={this.handleModalOk.bind(this)}
           onCancel={this.handleModalCancel.bind(this)}
         >
           <Input
-            placeholder="请输入接口名"
+            placeholder={this.props.intl.formatMessage({id: 'apiList_apiNameInput'})}
             onChange={this.modalTitleChange.bind(this)}
             value={this.state.modalTitle} />
           <Input
-            placeholder="请输入接口描述"
+            placeholder={this.props.intl.formatMessage({id: 'apiList_apiDesInput'})}
             style={{ margin: '10px 0' }}
             onChange={this.modalDescriptionChange.bind(this)}
             value={this.state.modalDescription} />
@@ -172,3 +177,5 @@ export default class DataList extends React.Component {
     );
   }
 }
+
+export default injectIntl(DataList);

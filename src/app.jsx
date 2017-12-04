@@ -2,6 +2,12 @@
 
 import React from 'react';
 import ReactDom from 'react-dom';
+import { addLocaleData, IntlProvider } from 'react-intl';
+import 'intl';
+import zhCN from './locale/zh_CN';
+import enUS from './locale/en_US';
+import zh from 'react-intl/locale-data/zh';
+import en from 'react-intl/locale-data/en';
 
 import {
   Layout
@@ -12,6 +18,8 @@ import Document from './pages/Document';
 import DashBoard from './pages/DashBoard';
 
 import './app.less';
+
+addLocaleData([...en, ...zh]);
 
 const {
   Header,
@@ -68,8 +76,38 @@ App.defaultProps = {
   pageConfig: window.pageConfig
 };
 
+const chooseLocale = () => {
+  let result = {
+    locale: 'zh-CN',
+    messages: zhCN
+  };
+  switch (window.navigator.language.split('_')[0]) {
+    case 'en-US':
+      result = {
+        locale: 'en-US',
+        messages: enUS
+      };
+      break;
+    case 'zh-CN':
+      result = {
+        locale: 'zh-CN',
+        messages: zhCN
+      };
+      break;
+  }
+  return result;
+};
+
 if (window.pageConfig) {
-  ReactDom.render(<App />, document.querySelector('#app'));
+  const lang = chooseLocale();
+  ReactDom.render(
+    <IntlProvider
+      locale={lang.locale}
+      messages={lang.messages}
+    >
+      <App />
+    </IntlProvider>,
+    document.querySelector('#app'));
 } else {
   document.querySelector('#app').innerHTML = 'please set page config';
 }
