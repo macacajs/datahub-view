@@ -88,7 +88,7 @@ export default class Document extends React.Component {
       description,
       pathname,
       scenes,
-      params,
+      params
     } = currentData;
     const scenesData = JSON.parse(scenes);
     const paramsData = JSON.parse(params);
