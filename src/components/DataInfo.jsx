@@ -71,7 +71,7 @@ class DataInfo extends React.Component {
       proxyContent: currentData && currentData.proxyContent,
       scenes: currentData && currentData.scenes,
       method: currentData && currentData.method,
-      delay: currentData && currentData.delay,
+      delay: (currentData && currentData.delay) || 0,
       pathname: currentData && currentData.pathname,
       description: currentData && currentData.description,
       currentScene: currentData && currentData.currentScene,
@@ -99,7 +99,7 @@ class DataInfo extends React.Component {
       schemaData: schemaContent.schemaData,
       enableSchemaValidate: schemaContent.enableSchemaValidate,
       method: currentData && currentData.method,
-      delay: currentData && currentData.delay,
+      delay: (currentData && currentData.delay) || 0,
       pathname: currentData && currentData.pathname,
       currentScene: currentData && currentData.currentScene,
       description: currentData && currentData.description
@@ -364,7 +364,7 @@ class DataInfo extends React.Component {
             </div>
             <div className="api-delay">
               <span><FormattedMessage id='apiConfig.apiDelay' /></span>
-              <InputNumber min={0} max={5} defaultValue={0} onChange={this.delayChange} /> <FormattedMessage id='apiConfig.second' />
+              <InputNumber min={0} max={5} value={parseInt(this.state.delay, 10)} onChange={this.delayChange.bind(this)} /> <FormattedMessage id='apiConfig.second' />
             </div>
           </section>
           <section className="data-scene">
@@ -402,7 +402,7 @@ class DataInfo extends React.Component {
                 visible={this.state.modalVisible}
                 onOk={this.handleModalOk.bind(this)}
                 cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}
-                okText={this.props.intl.formatMessage({id: 'common.cancel'})}
+                okText={this.props.intl.formatMessage({id: 'common.confirm'})}
                 onCancel={this.handleModalCancel.bind(this)}
               >
                 <CodeMirror
@@ -417,7 +417,7 @@ class DataInfo extends React.Component {
                 visible={this.state.schemaModalVisible}
                 onOk={this.confirmSchameModal.bind(this)}
                 cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}
-                okText={this.props.intl.formatMessage({id: 'common.cancel'})}
+                okText={this.props.intl.formatMessage({id: 'common.confirm'})}
                 onCancel={this.cancelSchameModal.bind(this)}
               >
                 <CodeMirror
