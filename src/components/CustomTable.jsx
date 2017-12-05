@@ -76,7 +76,7 @@ class EditableTable extends React.Component {
     if (this.props.type === 'schema') {
       return _.genSchemaList(this.props.schemaData || []);
     } else if (this.props.type === 'api') {
-      return _.genApiList(this.props.schemaData || []);
+      return _.genApiList(this.props.schemaData || [], this.props.paramsData || []);
     } else {
       return [];
     }

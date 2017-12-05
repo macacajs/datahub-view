@@ -3,7 +3,7 @@ import typeDetect from 'type-detect';
 
 const _ = lodash.merge({}, lodash);
 
-_.genSchemaList = (data) => {
+const genSchemaList = (data) => {
   const res = [];
   let level = -1;
 
@@ -36,11 +36,22 @@ _.genSchemaList = (data) => {
   return walker(data);
 };
 
+_.genSchemaList = genSchemaList;
+
 _.typeof = typeDetect;
 
-// TODO support ArrayObject
-_.genApiList = (data) => {
-  const json = JSON.parse(data[0].data);
+_.genApiList = (schemaData, paramsData) => {
+  const paramsMap = _.groupBy(genSchemaList(paramsData.schemaData), 'level');
+  const json = {};
+  schemaData.forEach(item => {
+    const o = JSON.parse(item.data);
+    _.mergeWith(json, o, (obj, src) => {
+      if (_.isArray(obj)) {
+        return obj.concat(src);
+      }
+    });
+  });
+
   const res = [];
   let level = -1;
 
@@ -51,12 +62,25 @@ _.genApiList = (data) => {
 
     keys.forEach(key => {
       const value = data[key];
-      res.push({
+      const map = {
         field: key,
         type: typeDetect(value),
         level,
         key: `${level}-${key}`
-      });
+      };
+
+      const paramsList = paramsMap[level];
+
+      if (paramsList && paramsList.length) {
+        paramsList.forEach(item => {
+          if (item.field === map.field) {
+            map.description = item.description;
+            map.require = item.require;
+          }
+        });
+      }
+
+      res.push(map);
 
       if (_.isPlainObject(value)) {
         const keys = Object.keys(value);
@@ -64,15 +88,31 @@ _.genApiList = (data) => {
           walker(value);
           level--;
         }
-      } else if (_.isArray(value) && value.length) {
-        const json = value[0];
+      } else if (_.isArray(value)) {
+        if (!value.length) {
+          return;
+        }
 
-        if (_.isPlainObject(json)) {
-          const keys = Object.keys(json);
-          if (keys.length) {
-            walker(value);
-            level--;
-          }
+        const first = value[0];
+
+        if (_.isObject(first)) {
+          const json = {};
+          value.forEach(item => {
+            if (!_.isObject(first)) {
+              console.log(`data ignore`, first);
+              return;
+            }
+            _.mergeWith(json, item, (obj, src) => {
+              if (_.isArray(obj)) {
+                return obj.concat(src);
+              }
+            });
+          });
+          res[res.length - 1].type = `${res[res.length - 1].type}<{${typeDetect(first)}}>`;
+          walker(json);
+          level--;
+        } else {
+          res[res.length - 1].type = `${res[res.length - 1].type}<{${typeDetect(first)}}>`;
         }
       }
     });
