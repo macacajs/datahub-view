@@ -104,10 +104,11 @@ class Project extends React.Component {
     if (data instanceof Object) {
       data = JSON.stringify(data);
     }
+    console.log('type', type);
+    console.log('data', data);
     request(`/api/data/${projectId}/${currentPathname}`, 'POST', {
       [type]: data
     }).then((res) => {
-      console.log('update', res);
       if (res.success) {
         this.setState({
           data: apis

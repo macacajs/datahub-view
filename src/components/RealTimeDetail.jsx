@@ -34,9 +34,9 @@ export default class RealTimeDetail extends React.Component {
   renderBody({ body }) {
     console.log('renderBody', body);
     return (
-      <div>
-        {JSON.stringify(body)}
-      </div>
+      <pre>
+        {JSON.stringify(body, {}, 2)}
+      </pre>
     );
   }
 

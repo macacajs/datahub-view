@@ -187,7 +187,7 @@ class DataInfo extends React.Component {
   }
 
   showModal(index) {
-    const str = JSON.stringify(JSON.parse(this.state.scenes[index].data), null, 2);
+    const str = JSON.stringify(this.state.scenes[index].data, null, 2);
     this.setState({
       modalVisible: true,
       modalInfoTitle: this.state.scenes[index].name,
@@ -206,8 +206,9 @@ class DataInfo extends React.Component {
     const index = _.findIndex(this.state.scenes, o => o.name === this.state.modalInfoTitle);
     const updateScene = {
       name: this.state.modalInfoTitle,
-      data: this.state._modalInfoData
+      data: JSON.parse(this.state._modalInfoData)
     };
+    console.log('updateScene', updateScene.data);
     const newData = [...this.state.scenes];
     newData.splice(index, 1, updateScene);
     this.setState({
@@ -371,7 +372,7 @@ class DataInfo extends React.Component {
             <h1><FormattedMessage id='sceneMng.title' /></h1>
             <div>
               <div className="add-input">
-                <Input style={{ width: '200px' }} placeholder={<FormattedMessage id='sceneMng.inputTip' />} onChange={this.handleAddSceneChange.bind(this)} />
+                <Input style={{ width: '200px' }} placeholder={this.props.intl.formatMessage({id: 'sceneMng.inputTip'})} onChange={this.handleAddSceneChange.bind(this)} />
                 <Button style={{ marginBottom: `${this.state.sceneError ? '10px' : '0'}` }} type="primary" onClick={this.handleAdd.bind(this)}>
                   <FormattedMessage id='sceneMng.addSceneBtn' />
                 </Button>
