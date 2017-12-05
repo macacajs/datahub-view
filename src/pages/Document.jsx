@@ -87,19 +87,26 @@ export default class Document extends React.Component {
       method,
       description,
       pathname,
-      scenes
+      scenes,
+      params,
     } = currentData;
     const scenesData = JSON.parse(scenes);
+    const paramsData = JSON.parse(params);
 
     return (
       <div className="document">
-        <h1><span className={`method-${method.toLowerCase()}`}>{method}</span>  /{pathname}</h1>
+        <h1>
+          <span className={`method-${method.toLowerCase()}`}>
+            {method}
+          </span>  /{pathname}
+        </h1>
         <h3>{description}</h3>
         <h1><FormattedMessage id='document.schemaDes' /></h1>
         <CustomTable
           type="api"
           className="schema-table"
           schemaData={scenesData}
+          paramsData={paramsData}
         />
         <h1><FormattedMessage id='document.sceneData' /></h1>
         <Tabs

@@ -3,7 +3,7 @@ import typeDetect from 'type-detect';
 
 const _ = lodash.merge({}, lodash);
 
-_.genSchemaList = (data) => {
+const genSchemaList = (data) => {
   const res = [];
   let level = -1;
 
@@ -36,11 +36,14 @@ _.genSchemaList = (data) => {
   return walker(data);
 };
 
+_.genSchemaList = genSchemaList;
+
 _.typeof = typeDetect;
 
-_.genApiList = (data) => {
+_.genApiList = (schemaData, paramsData) => {
+  const paramsMap = _.groupBy(genSchemaList(paramsData.schemaData), 'level');
   const json = {};
-  data.forEach(item => {
+  schemaData.forEach(item => {
     const o = JSON.parse(item.data);
     _.mergeWith(json, o, (obj, src) => {
       if (_.isArray(obj)) {
@@ -59,12 +62,25 @@ _.genApiList = (data) => {
 
     keys.forEach(key => {
       const value = data[key];
-      res.push({
+      const map = {
         field: key,
         type: typeDetect(value),
         level,
         key: `${level}-${key}`
-      });
+      };
+
+      const paramsList = paramsMap[level];
+
+      if (paramsList && paramsList.length) {
+        paramsList.forEach(item => {
+          if (item.field === map.field) {
+            map.description = item.description;
+            map.require = item.require;
+          }
+        });
+      }
+
+      res.push(map);
 
       if (_.isPlainObject(value)) {
         const keys = Object.keys(value);
