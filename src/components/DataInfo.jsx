@@ -322,13 +322,13 @@ class DataInfo extends React.Component {
       <div className="datainfo">
         <Breadcrumb>
           <Breadcrumb.Item>
-            <a href="/dashboard"><FormattedMessage id='topNav.allProject' /></a>
+            <a href="/dashboard"><FormattedMessage id="topNav.allProject" /></a>
           </Breadcrumb.Item>
           <Breadcrumb.Item>
             { this.state.description ? this.state.description : this.state.pathname }
           </Breadcrumb.Item>
           <Breadcrumb.Item>
-            <FormattedMessage id='topNav.projectConfig' />
+            <FormattedMessage id="topNav.projectConfig" />
           </Breadcrumb.Item>
         </Breadcrumb>
         <content>
