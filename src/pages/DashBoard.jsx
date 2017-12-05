@@ -17,8 +17,8 @@ import {
 } from 'antd';
 
 import {
-  FormattedMessage,
-  injectIntl
+  injectIntl,
+  FormattedMessage
 } from 'react-intl';
 
 import './DashBoard.less';

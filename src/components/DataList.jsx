@@ -13,8 +13,8 @@ import {
 import _ from 'lodash';
 
 import {
-  FormattedMessage,
-  injectIntl
+  injectIntl,
+  FormattedMessage
 } from 'react-intl';
 
 import './DataList.less';

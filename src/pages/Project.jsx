@@ -4,12 +4,12 @@ import React from 'react';
 import io from 'socket.io-client';
 
 import {
-  injectIntl
+  injectIntl,
 } from 'react-intl';
 
 import {
   Layout,
-  Tabs
+  Tabs,
 } from 'antd';
 
 import DataList from '../components/DataList';
@@ -17,7 +17,7 @@ import RealTime from '../components/RealTime';
 import DataInfo from '../components/DataInfo';
 import RealTimeDetail from '../components/RealTimeDetail';
 
-const request = require('../common/fetch');
+import request from '../common/fetch';
 
 const TabPane = Tabs.TabPane;
 const {

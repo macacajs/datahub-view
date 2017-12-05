@@ -1,9 +1,14 @@
 'use strict';
 
+import 'intl';
 import React from 'react';
 import ReactDom from 'react-dom';
-import { addLocaleData, IntlProvider } from 'react-intl';
-import 'intl';
+
+import {
+  addLocaleData,
+  IntlProvider
+} from 'react-intl';
+
 import zhCN from './locale/zh_CN';
 import enUS from './locale/en_US';
 import zh from 'react-intl/locale-data/zh';
@@ -19,7 +24,10 @@ import DashBoard from './pages/DashBoard';
 
 import './app.less';
 
-addLocaleData([...en, ...zh]);
+addLocaleData([
+  ...en,
+  ...zh
+]);
 
 const {
   Header,
