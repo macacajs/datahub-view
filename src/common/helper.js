@@ -38,9 +38,17 @@ _.genSchemaList = (data) => {
 
 _.typeof = typeDetect;
 
-// TODO support ArrayObject
 _.genApiList = (data) => {
-  const json = JSON.parse(data[0].data);
+  const json = {};
+  data.forEach(item => {
+    const o = JSON.parse(item.data);
+    _.mergeWith(json, o, (obj, src) => {
+      if (_.isArray(obj)) {
+        return obj.concat(src);
+      }
+    });
+  });
+
   const res = [];
   let level = -1;
 
@@ -64,15 +72,31 @@ _.genApiList = (data) => {
           walker(value);
           level--;
         }
-      } else if (_.isArray(value) && value.length) {
-        const json = value[0];
+      } else if (_.isArray(value)) {
+        if (!value.length) {
+          return;
+        }
 
-        if (_.isPlainObject(json)) {
-          const keys = Object.keys(json);
-          if (keys.length) {
-            walker(value);
-            level--;
-          }
+        const first = value[0];
+
+        if (_.isObject(first)) {
+          const json = {};
+          value.forEach(item => {
+            if (!_.isObject(first)) {
+              console.log(`data ignore`, first);
+              return;
+            }
+            _.mergeWith(json, item, (obj, src) => {
+              if (_.isArray(obj)) {
+                return obj.concat(src);
+              }
+            });
+          });
+          res[res.length - 1].type = `${res[res.length - 1].type}<{${typeDetect(first)}}>`;
+          walker(json);
+          level--;
+        } else {
+          res[res.length - 1].type = `${res[res.length - 1].type}<{${typeDetect(first)}}>`;
         }
       }
     });
