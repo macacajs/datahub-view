@@ -3,8 +3,8 @@
 import React from 'react';
 
 import {
-  FormattedMessage,
-  injectIntl
+  injectIntl,
+  FormattedMessage
 } from 'react-intl';
 
 import {
@@ -18,11 +18,11 @@ import {
   Radio,
   Input,
   Modal,
+  Checkbox,
+  Tooltip,
   Popconfirm,
   Breadcrumb,
-  InputNumber,
-  Checkbox,
-  Tooltip
+  InputNumber
 } from 'antd';
 
 import _ from '../common/helper';

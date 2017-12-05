@@ -4,6 +4,8 @@ import React, {
   Component
 } from 'react';
 
+import isURL from 'validator/lib/isURL';
+
 import {
   Form,
   Input,
@@ -114,14 +116,14 @@ class DynamicFieldSet extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const urlReg = /^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*$/i;
+
     for (var i = 0; i < this.state.proxies.length; i++) {
       const proxy = this.state.proxies[i];
       this.setState({
         [this.state.isErrorInput[i]]: 'ok'
       });
       const isErrorInput = JSON.parse(JSON.stringify(this.state.isErrorInput));
-      if (!urlReg.test(proxy)) {
+      if (!isURL(proxy)) {
         isErrorInput[i] = 'error';
         this.setState({
           isErrorInput

@@ -4,12 +4,12 @@ import React from 'react';
 import io from 'socket.io-client';
 
 import {
-  injectIntl,
+  injectIntl
 } from 'react-intl';
 
 import {
   Layout,
-  Tabs,
+  Tabs
 } from 'antd';
 
 import DataList from '../components/DataList';

@@ -113,7 +113,15 @@ class CollectionForm extends Component {
         <Form layout="vertical">
           <FormItem label={formatMessage({id: 'dashboard.modalName'})}>
             {getFieldDecorator('identifer', {
-              rules: [{ required: true, message: formatMessage({id: 'dashboard.modalNameTip'}), pattern: /^[A-Za-z0-9]+$/ }]
+              rules: [
+                {
+                  required: true,
+                  message: formatMessage({
+                    id: 'dashboard.modalNameTip'
+                  }),
+                  pattern: /^[A-Za-z0-9]+$/
+                }
+              ]
             })(
               <Input />
             )}

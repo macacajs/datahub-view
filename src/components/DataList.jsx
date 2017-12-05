@@ -5,10 +5,10 @@ import {
   Input,
   Button,
   Modal,
-  Popconfirm,
   Row,
   Alert,
-  Col
+  Col,
+  Popconfirm
 } from 'antd';
 import _ from 'lodash';
 
@@ -161,17 +161,23 @@ class DataList extends React.Component {
           }
         </ul>
         <Modal
-          title={this.props.intl.formatMessage({id: 'apiList.addApi'})}
+          title={this.props.intl.formatMessage({
+            id: 'apiList.addApi'
+          })}
           visible={this.state.modalVisible}
           onOk={this.handleModalOk.bind(this)}
           onCancel={this.handleModalCancel.bind(this)}
         >
           <Input
-            placeholder={this.props.intl.formatMessage({id: 'apiList.apiNameInput'})}
+            placeholder={this.props.intl.formatMessage({
+              id: 'apiList.apiNameInput'
+            })}
             onChange={this.modalTitleChange.bind(this)}
             value={this.state.modalTitle} />
           <Input
-            placeholder={this.props.intl.formatMessage({id: 'apiList.apiDesInput'})}
+            placeholder={this.props.intl.formatMessage({
+              id: 'apiList.apiDesInput'
+            })}
             style={{ margin: '10px 0' }}
             onChange={this.modalDescriptionChange.bind(this)}
             value={this.state.modalDescription} />
