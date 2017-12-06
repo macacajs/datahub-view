@@ -54,6 +54,9 @@ _.isChineseChar = str => {
 };
 
 _.genApiList = (schemaData, paramsData) => {
+  if (!paramsData.schemaData) {
+    return [];
+  }
   const paramsMap = _.groupBy(genSchemaList(paramsData.schemaData), 'level');
   const json = {};
   schemaData.forEach(item => {
