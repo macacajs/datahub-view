@@ -127,7 +127,7 @@ export default class Document extends React.Component {
           <TabPane tab={item.name} key={`tab-${index}`}>
 
             <CodeMirror
-              value={JSON.stringify(JSON.parse(item.data), null, 2)}
+              value={JSON.stringify(item.data, null, 2)}
               options={{ ...codeMirrorOptions }}
               onChange={() => {}}
               viewportMargin={Infinity}
