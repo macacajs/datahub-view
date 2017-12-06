@@ -3,6 +3,14 @@ import typeDetect from 'type-detect';
 
 const _ = lodash.merge({}, lodash);
 
+_.guid = () => {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : r & 0x3 | 0x8;
+    return v.toString(16);
+  });
+};
+
 const genSchemaList = (data) => {
   const res = [];
   let level = -1;
@@ -23,7 +31,7 @@ const genSchemaList = (data) => {
         require,
         description,
         level,
-        key: `${level}-${field}`
+        key: `${_.guid()}`
       });
 
       if (children) {
@@ -50,7 +58,7 @@ _.genApiList = (schemaData, paramsData) => {
   const json = {};
   schemaData.forEach(item => {
     try {
-      const o = JSON.parse(item.data);
+      const o = item.data;
       _.mergeWith(json, o, (obj, src) => {
         if (_.isArray(obj)) {
           return obj.concat(src);
@@ -75,7 +83,7 @@ _.genApiList = (schemaData, paramsData) => {
         field: key,
         type: typeDetect(value),
         level,
-        key: `${level}-${key}`
+        key: `${_.guid()}`
       };
 
       const paramsList = paramsMap[level];
