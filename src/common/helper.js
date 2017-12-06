@@ -40,6 +40,11 @@ _.genSchemaList = genSchemaList;
 
 _.typeof = typeDetect;
 
+_.isChineseChar = str => {
+  var reg = /[\u4E00-\u9FA5\uF900-\uFA2D]/;
+  return reg.test(str);
+};
+
 _.genApiList = (schemaData, paramsData) => {
   const paramsMap = _.groupBy(genSchemaList(paramsData.schemaData), 'level');
   const json = {};

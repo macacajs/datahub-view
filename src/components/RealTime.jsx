@@ -9,24 +9,10 @@ import {
 import './realTime.less';
 
 export default class RealTime extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      realTimeDataList: []
-    };
-  }
-
-  componentWillReceiveProps(props) {
-    const realTimeDataList = props.realTimeDataList;
-    this.setState({
-      realTimeDataList
-    });
-  }
-
   render() {
     const {
       realTimeDataList
-    } = this.state;
+    } = this.props;
     const statusBadge = status => {
       status = String(status);
       if (status.startsWith('2')) {
@@ -48,7 +34,7 @@ export default class RealTime extends React.Component {
         {
           realTimeDataList.map((data, index) => {
             return (
-              <Row key={index} className="real-time-line" onClick={this.props.onSelect.bind(this, index)}>
+              <Row key={index} className={`real-time-line ${index === this.props.realTimeIndex ? 'clicked' : ''}`} onClick={this.props.onSelect.bind(this, index)}>
                 <div>
                   <b className={`real-time-method ${data.req.method.toLowerCase()}`}>
                     {data.req.method}
