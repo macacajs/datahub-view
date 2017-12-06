@@ -64,13 +64,13 @@ class EditableCell extends React.Component {
               <Input
                 value={value}
                 style={{ width: '200px' }}
-                onChange={this.handleChange}
-                onPressEnter={this.check}
+                onChange={this.handleChange.bind(this)}
+                onPressEnter={this.check.bind(this)}
               />
               <Icon
                 type="check"
                 className="editable-cell-icon-check"
-                onClick={this.check}
+                onClick={this.check.bind(this)}
               />
             </div>
             : <div className="editable-cell-text-wrapper">
@@ -78,7 +78,7 @@ class EditableCell extends React.Component {
               <Icon
                 type="edit"
                 className="editable-cell-icon"
-                onClick={this.edit}
+                onClick={this.edit.bind(this)}
               />
             </div>
         }
