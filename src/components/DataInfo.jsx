@@ -145,7 +145,7 @@ class DataInfo extends React.Component {
 
     const newScene = {
       name: this.state.addingScene,
-      data: '{}'
+      data: {}
     };
 
     if (!this.state.scenes) {

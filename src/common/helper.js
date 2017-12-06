@@ -49,12 +49,16 @@ _.genApiList = (schemaData, paramsData) => {
   const paramsMap = _.groupBy(genSchemaList(paramsData.schemaData), 'level');
   const json = {};
   schemaData.forEach(item => {
-    const o = JSON.parse(item.data);
-    _.mergeWith(json, o, (obj, src) => {
-      if (_.isArray(obj)) {
-        return obj.concat(src);
-      }
-    });
+    try {
+      const o = JSON.parse(item.data);
+      _.mergeWith(json, o, (obj, src) => {
+        if (_.isArray(obj)) {
+          return obj.concat(src);
+        }
+      });
+    } catch (e) {
+      console.log(e.message);
+    }
   });
 
   const res = [];
