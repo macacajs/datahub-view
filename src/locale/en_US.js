@@ -49,7 +49,7 @@ const enUS = {
 
   'realtimeProject.myProject': 'my project',
   'realtimeProject.detailPhoto': 'detail snapshot',
-  'realtimeProject.saveToScene': 'save',
+  'realtimeProject.saveToScene': 'save to scene list',
   'realtimeProject.inputPlacehold': 'please input scene name',
   'realtimeProject.chineseError': 'please input non-chinese characters',
   'realtimeProject.nullError': 'please add project or api',

@@ -182,7 +182,7 @@ class RealTimeDetail extends React.Component {
         <section className="response">
           <div className="response-body">
             <span style={{ fontSize: '2em', fontWeight: '500', marginRight: '10px' }}>Body</span>
-            <Button type="primary" style={{ verticalAlign: 'super' }} onClick={this.showModal.bind(this)}>
+            <Button type="primary" style={{ verticalAlign: 'super', float: 'right', }} onClick={this.showModal.bind(this)}>
               <FormattedMessage id='realtimeProject.saveToScene' />
             </Button>
             <Modal
