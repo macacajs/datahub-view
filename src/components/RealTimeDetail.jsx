@@ -52,14 +52,14 @@ class RealTimeDetail extends React.Component {
 
   renderBody({ body }) {
     // console.log('renderBody', body);
-    let result = null
+    let result = null;
     if (typeof body === 'object') {
-      result = JSON.stringify(body, {}, 2)
+      result = JSON.stringify(body, {}, 2);
     } else {
       try {
-        result = JSON.stringify(JSON.parse(body), {}, 2)
+        result = JSON.stringify(JSON.parse(body), {}, 2);
       } catch (e) {
-        result = body
+        result = body;
       }
     }
     return (

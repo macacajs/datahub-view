@@ -43,7 +43,7 @@ class Project extends React.Component {
 
   componentDidMount() {
     request(`/api/data/${projectId}`, 'GET').then((res) => {
-      console.log('res', res)
+      console.log('res', res);
       res.data.forEach(item => {
         item.params = item.params;
         item.scenes = JSON.parse(item.scenes);
