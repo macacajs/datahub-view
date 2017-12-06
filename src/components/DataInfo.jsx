@@ -119,6 +119,16 @@ class DataInfo extends React.Component {
       return;
     }
 
+    if (_.isChineseChar(this.state.addingScene)) {
+      this.setState({
+        sceneError: {
+          message: this.props.intl.formatMessage({id: 'realtimeProject.chineseError'}),
+          type: 'error'
+        }
+      });
+      return;
+    }
+
     if (!this.state.addingScene) {
       this.setState({
         sceneError: {

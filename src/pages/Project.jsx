@@ -43,6 +43,7 @@ class Project extends React.Component {
 
   componentDidMount() {
     request(`/api/data/${projectId}`, 'GET').then((res) => {
+      console.log('res', res)
       res.data.forEach(item => {
         item.params = item.params;
         item.scenes = JSON.parse(item.scenes);
@@ -61,7 +62,7 @@ class Project extends React.Component {
     const host = `http://${location.hostname}:${pageConfig.socket.port}`;
     const socket = io(host);
     socket.on('push data', (data) => {
-      console.log(data);
+      console.log('socket', data);
       const newData = [ ...this.state.realTimeDataList ].slice(0, this.state.REALTIME_MAXLINE - 1);
       newData.unshift(data);
       this.setState({
@@ -97,10 +98,14 @@ class Project extends React.Component {
     });
   }
 
-  asynSecType(type, data) {
+  asynSecType(type, data, index) {
     const apis = [...this.state.data];
-    apis[this.state.currentIndex][type] = data;
-    const currentPathname = this.state.data[this.state.currentIndex].pathname;
+    let apiIndex = this.state.currentIndex;
+    if (typeof index === 'number') {
+      apiIndex = index;
+    }
+    apis[apiIndex][type] = data;
+    const currentPathname = this.state.data[apiIndex].pathname;
     if (data instanceof Object) {
       data = JSON.stringify(data);
     }
@@ -125,6 +130,21 @@ class Project extends React.Component {
     });
   }
 
+  tabOnChange(key) {
+    if (key === 'realtimesnapshot' && this.state.realTimeDataList.length > 0) {
+      console.log('this.state.realTimeDataList', this.state.realTimeDataList);
+      this.setState({
+        contentViewType: 'realTime',
+        realTimeIndex: 0
+      });
+    } else if (key === 'apilist' && this.state.data.length > 0) {
+      this.setState({
+        contentViewType: 'api',
+        currentIndex: 0
+      });
+    }
+  }
+
   selectRealTimeItem(index) {
     this.setState({
       contentViewType: 'realTime',
@@ -142,10 +162,11 @@ class Project extends React.Component {
           paddingRight: '20px'
         }}>
           <Tabs
-            defaultActiveKey="1"
+            defaultActiveKey="apilist"
+            onChange={this.tabOnChange.bind(this)}
             animated={false}
           >
-            <TabPane tab={this.props.intl.formatMessage({id: 'project.apiList'})} key="1">
+            <TabPane tab={this.props.intl.formatMessage({id: 'project.apiList'})} key="apilist">
               <DataList
                 apis={this.state.data}
                 handleAddApi={this.addApi.bind(this)}
@@ -153,9 +174,10 @@ class Project extends React.Component {
                 handleApiClick={this.handleApiClick.bind(this)}
               />
             </TabPane>
-            <TabPane tab={this.props.intl.formatMessage({id: 'project.realtimeList'})} key="2">
+            <TabPane tab={this.props.intl.formatMessage({id: 'project.realtimeList'})} key="realtimesnapshot">
               <RealTime
                 realTimeDataList={this.state.realTimeDataList}
+                realTimeIndex={this.state.realTimeIndex || 0}
                 onSelect={this.selectRealTimeItem.bind(this)}
               />
             </TabPane>
@@ -172,6 +194,8 @@ class Project extends React.Component {
           {
             this.state.contentViewType === 'realTime' &&
             <RealTimeDetail
+              handleAsynSecType={this.asynSecType.bind(this)}
+              apis={this.state.data}
               data={this.state.realTimeDataList[this.state.realTimeIndex]}
             />
           }
