@@ -141,4 +141,72 @@ _.genApiList = (schemaData, paramsData) => {
   return walker(json);
 };
 
+_.modifySchema = (index, data, value, item, key) => {
+  const res = data;
+  let level = -1;
+
+  const walker = (data) => {
+    level++;
+    data.forEach(each => {
+      if (item['field'] === each['field'] && item['level'] === level) {
+        key === 'require' ? each[key] = value === 'true' : each[key] = value;
+      }
+      if (each.children) {
+        walker(each.children);
+        level--;
+      }
+    });
+  }
+  walker(res)
+  return res;
+};
+
+_.addSchema = (index, data, item) => {
+  const res = data;
+  let level = -1;
+
+  const walker = (data) => {
+    level++;
+    data.forEach((each, index) => {
+      if (level === item['level'] && item['field'] === each['field']) {
+        let defaultNode = {
+          field: 'default',
+          type: 'default',
+          require: true,
+          description: 'default',
+        };
+        each.children ? each.children.push(defaultNode) : each.children = [defaultNode];
+      }
+      if (each.children) {
+        walker(each.children);
+        level--;
+      }
+    });
+  }
+
+  walker(res);
+  return res;
+};
+
+_.deleteSchema = (index, data, item) => {
+  const res = data;
+  let level = -1;
+
+  const walker = (data) => {
+    level++;
+    data.forEach((each, index) => {
+      if (level === item['level'] && item['field'] === each['field']) {
+        data.splice(index, 1);
+      }
+      if (each && each.children) {
+        walker(each.children);
+        level--;
+      }
+    });
+  }
+
+  walker(res);
+  return res;
+};
+
 module.exports = _;

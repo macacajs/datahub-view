@@ -46,6 +46,7 @@ const zhCN = {
   'fieldDes.type': '类型',
   'fieldDes.require': '必须',
   'fieldDes.description': '说明',
+  'fieldDes.operation': '操作',
 
   'realtimeProject.myProject': '我的项目',
   'realtimeProject.detailPhoto': '详情快照',
