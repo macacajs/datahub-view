@@ -46,6 +46,7 @@ const enUS = {
   'fieldDes.type': 'type',
   'fieldDes.require': 'require',
   'fieldDes.description': 'description',
+  'fieldDes.operation': 'operation',
 
   'realtimeProject.myProject': 'my project',
   'realtimeProject.detailPhoto': 'detail snapshot',

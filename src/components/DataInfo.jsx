@@ -294,7 +294,7 @@ class DataInfo extends React.Component {
     });
   }
 
-  confirmSchameModal() {
+  confirmSchameModal(data) {
     try {
       const newData = JSON.parse(this.state.schemaNewData);
       this.setState({
@@ -324,6 +324,20 @@ class DataInfo extends React.Component {
       schemaJSONParseError: false,
       schemaNewData: ''
     });
+  }
+
+  onSetSchameData(data) {
+    this.setState({
+      schemaData: data,
+      schemaNewData: JSON.stringify(data, null, 2)
+    });
+    try {
+      this.props.handleAsynSecType('params', JSON.stringify({
+        enableSchemaValidate: this.state.enableSchemaValidate,
+        schemaData: data
+      }));
+    } catch (e) {
+    }
   }
 
   render() {
@@ -460,6 +474,7 @@ class DataInfo extends React.Component {
               type="schema"
               className="schema-table"
               schemaData={this.state.schemaData}
+              onChange={this.onSetSchameData.bind(this)}
             />
           </section>
         </content>
