@@ -28,11 +28,11 @@ const columnStyleMap = {
   // column
 // }) => (
   // <div>
-    // <span
-      // className={ columnStyleMap[column] || '' }
-      // dangerouslySetInnerHTML={{__html: value}}
-      // style={{ marginLeft: `${level * 20}px` }}>
-    // </span>
+// <span
+// className={ columnStyleMap[column] || '' }
+// dangerouslySetInnerHTML={{__html: value}}
+// style={{ marginLeft: `${level * 20}px` }}>
+// </span>
   // </div>
 // );
 
@@ -88,9 +88,9 @@ class EditableAddDeleteCell extends React.Component {
               />
             </div>
             : <div className="editable-cell-text-wrapper"
-                onMouseEnter={this.onTrigger.bind(this, true)}
-                onMouseLeave={this.onTrigger.bind(this, false)}
-              >
+              onMouseEnter={this.onTrigger.bind(this, true)}
+              onMouseLeave={this.onTrigger.bind(this, false)}
+            >
               <span
                 className={ columnStyleMap[this.props.column] || '' }
                 dangerouslySetInnerHTML={{__html: value}}
@@ -190,7 +190,7 @@ class EditableTable extends React.Component {
     this.setState({
       editing: false,
       editingCell: {}
-    })
+    });
   }
 
   edit(index, column) {
@@ -200,7 +200,7 @@ class EditableTable extends React.Component {
         index: index,
         column: column
       }
-    })
+    });
   }
 
   renderColumns(text, record, column, index) {

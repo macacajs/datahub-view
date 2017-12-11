@@ -156,8 +156,8 @@ _.modifySchema = (index, data, value, item, key) => {
         level--;
       }
     });
-  }
-  walker(res)
+  };
+  walker(res);
   return res;
 };
 
@@ -173,7 +173,7 @@ _.addSchema = (index, data, item) => {
           field: 'default',
           type: 'default',
           require: true,
-          description: 'default',
+          description: 'default'
         };
         each.children ? each.children.push(defaultNode) : each.children = [defaultNode];
       }
@@ -182,7 +182,7 @@ _.addSchema = (index, data, item) => {
         level--;
       }
     });
-  }
+  };
 
   walker(res);
   return res;
@@ -203,7 +203,7 @@ _.deleteSchema = (index, data, item) => {
         level--;
       }
     });
-  }
+  };
 
   walker(res);
   return res;
