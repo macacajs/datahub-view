@@ -22,20 +22,6 @@ const columnStyleMap = {
   require: ''
 };
 
-// const TableCell = ({
-  // value,
-  // level,
-  // column
-// }) => (
-  // <div>
-// <span
-// className={ columnStyleMap[column] || '' }
-// dangerouslySetInnerHTML={{__html: value}}
-// style={{ marginLeft: `${level * 20}px` }}>
-// </span>
-  // </div>
-// );
-
 class EditableAddDeleteCell extends React.Component {
   constructor(props) {
     super(props);

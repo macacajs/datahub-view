@@ -147,12 +147,12 @@ _.modifySchema = (index, data, value, item, key) => {
 
   const walker = (data) => {
     level++;
-    data.forEach(each => {
-      if (item['field'] === each['field'] && item['level'] === level) {
-        key === 'require' ? each[key] = value === 'true' : each[key] = value;
+    data.forEach(current => {
+      if (item['field'] === current['field'] && item['level'] === level) {
+        key === 'require' ? current[key] = value === 'true' : current[key] = value;
       }
-      if (each.children) {
-        walker(each.children);
+      if (current.children) {
+        walker(current.children);
         level--;
       }
     });
@@ -167,18 +167,18 @@ _.addSchema = (index, data, item) => {
 
   const walker = (data) => {
     level++;
-    data.forEach((each, index) => {
-      if (level === item['level'] && item['field'] === each['field']) {
+    data.forEach((current, index) => {
+      if (level === item['level'] && item['field'] === current['field']) {
         let defaultNode = {
           field: 'default',
           type: 'default',
           require: true,
           description: 'default'
         };
-        each.children ? each.children.push(defaultNode) : each.children = [defaultNode];
+        current.children ? current.children.push(defaultNode) : current.children = [defaultNode];
       }
-      if (each.children) {
-        walker(each.children);
+      if (current.children) {
+        walker(current.children);
         level--;
       }
     });
@@ -194,12 +194,12 @@ _.deleteSchema = (index, data, item) => {
 
   const walker = (data) => {
     level++;
-    data.forEach((each, index) => {
-      if (level === item['level'] && item['field'] === each['field']) {
+    data.forEach((current, index) => {
+      if (level === item['level'] && item['field'] === current['field']) {
         data.splice(index, 1);
       }
-      if (each && each.children) {
-        walker(each.children);
+      if (current && current.children) {
+        walker(current.children);
         level--;
       }
     });
