@@ -21,14 +21,14 @@ const genSchemaList = (data) => {
       const {
         field,
         type,
-        require,
+        required,
         description,
         children
       } = item;
       res.push({
         field,
         type,
-        require,
+        required,
         description,
         level,
         key: `${_.guid()}`
@@ -95,7 +95,7 @@ _.genApiList = (schemaData, paramsData) => {
         paramsList.forEach(item => {
           if (item.field === map.field) {
             map.description = item.description;
-            map.require = item.require;
+            map.required = item.required;
           }
         });
       }
@@ -149,7 +149,7 @@ _.modifySchema = (index, data, value, item, key) => {
     level++;
     data.forEach(current => {
       if (item['field'] === current['field'] && item['level'] === level) {
-        key === 'require' ? current[key] = value === 'true' : current[key] = value;
+        key === 'required' ? current[key] = value === 'true' : current[key] = value;
       }
       if (current.children) {
         walker(current.children);
@@ -172,7 +172,7 @@ _.addSchema = (index, data, item) => {
         let defaultNode = {
           field: 'default',
           type: 'default',
-          require: true,
+          required: true,
           description: 'default'
         };
         current.children ? current.children.push(defaultNode) : current.children = [defaultNode];

@@ -19,7 +19,7 @@ import './CustomTable.less';
 
 const columnStyleMap = {
   type: 'capitalize',
-  require: ''
+  required: ''
 };
 
 class EditableAddDeleteCell extends React.Component {
@@ -115,8 +115,8 @@ class EditableTable extends React.Component {
       width: '15%',
       render: (text, record, index) => this.renderColumns(text, record, 'type', index)
     }, {
-      title: this.props.intl.formatMessage({id: 'fieldDes.require'}),
-      dataIndex: 'require',
+      title: this.props.intl.formatMessage({id: 'fieldDes.required'}),
+      dataIndex: 'required',
       width: '10%',
       render: (text, record, index) => this.renderColumns(text, record, 'require', index)
     }, {

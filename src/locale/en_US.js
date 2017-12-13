@@ -44,7 +44,7 @@ const enUS = {
   'fieldDes.isUseCheck': 'use verify?',
   'fieldDes.field': 'field',
   'fieldDes.type': 'type',
-  'fieldDes.require': 'require',
+  'fieldDes.required': 'required',
   'fieldDes.description': 'description',
   'fieldDes.operation': 'operation',
 
