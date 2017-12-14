@@ -6,7 +6,8 @@ import {
   Icon,
   Input,
   Button,
-  Popconfirm
+  Popconfirm,
+  Checkbox
 } from 'antd';
 
 import {
@@ -119,12 +120,16 @@ class EditableTable extends React.Component {
     }, {
       title: this.props.intl.formatMessage({id: 'fieldDes.require'}),
       dataIndex: 'require',
-      width: '10%',
-      render: (text, record, index) => this.renderColumns(text, record, 'require', index)
+      width: '5%',
+      render: (text, record, index) => {
+        return (
+          <Checkbox checked={ text } onChange={e => this.modify(e.target.checked, index, 'require', record)}></Checkbox>
+        );
+      }
     }, {
       title: this.props.intl.formatMessage({id: 'fieldDes.description'}),
       dataIndex: 'description',
-      width: '35%',
+      width: '40%',
       render: (text, record, index) => this.renderColumns(text, record, 'description', index)
     }, {
       title: this.props.intl.formatMessage({id: 'fieldDes.operation'}),
