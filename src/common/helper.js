@@ -166,7 +166,7 @@ _.operateSchema = (type, { item, data, index, key, value }) => {
           }
           case 'modify': {
             if (item['field'] === current['field']) {
-              key === 'require' ? current[key] = value === 'true' : current[key] = value;
+              current[key] = value;
             }
             break;
           }
