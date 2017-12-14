@@ -73,7 +73,9 @@ class EditableAddDeleteCell extends React.Component {
                 onClick={this.check.bind(this)}
               />
             </div>
-            : <div className="editable-cell-text-wrapper"
+            : <div
+              className="editable-cell-text-wrapper"
+              style={{ minHeight: `5px` }}
               onMouseEnter={this.onTrigger.bind(this, true)}
               onMouseLeave={this.onTrigger.bind(this, false)}
             >
@@ -158,30 +160,28 @@ class EditableTable extends React.Component {
 
   plus(index, record) {
     let data = this.props.schemaData || [];
-    const res = _.addSchema(index, data, record);
+    const res = _.operateSchema('add', { index, data });
     this.props.onChange(res);
   }
 
   minus(index, record) {
     let data = this.props.schemaData || [];
-    const res = _.deleteSchema(index, data, record);
+    const res = _.operateSchema('delete', { index, data });
     this.props.onChange(res);
   }
 
   modify(value, index, column, record) {
     let data = this.props.schemaData || [];
-    const res = _.modifySchema(index, data, value, record, column);
+    const res = _.operateSchema('modify', { item: record, data, index, key: column, value });
     this.props.onChange(res);
 
     this.setState({
-      editing: false,
       editingCell: {}
     });
   }
 
   edit(index, column) {
     this.setState({
-      editing: true,
       editingCell: {
         index: index,
         column: column
