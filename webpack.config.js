@@ -1,13 +1,26 @@
 'use strict';
 
+const fs = require('fs');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const pkg = require('./package');
 
+const isProduction = process.env.NODE_ENV === 'production';
+
+class WebpackAfterAllPlugin {
+  apply(compiler) {
+    compiler.plugin('done', (compilation) => {
+      setTimeout(() => {
+        fs.writeFileSync(path.join(__dirname, '.ready'), '');
+      }, 1000);
+    });
+  }
+}
+
 module.exports = {
 
-  devtool: process.env.NODE_ENV === 'production' ? false : '#source-map',
+  devtool: isProduction ? false : '#source-map',
 
   entry: {
     [pkg.name]: path.join(__dirname, 'src', 'app')
@@ -33,7 +46,7 @@ module.exports = {
           options: {
             presets: [
               'react',
-              'es2015',
+              'env',
               'latest',
               'stage-2'
             ],
@@ -47,6 +60,15 @@ module.exports = {
               ]
             ]
           }
+        }
+      }, isProduction ? {} : {
+        test: /\.js[x]?$/,
+        enforce: 'post',
+        exclude: /node_modules/,
+        loader: 'istanbul-instrumenter-loader',
+        query: {
+          esModules: true,
+          coverageVariable: '__macaca_coverage__'
         }
       }, {
         test: /\.json$/,
@@ -67,6 +89,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new ExtractTextPlugin(`${pkg.name}.css`)
+    new ExtractTextPlugin(`${pkg.name}.css`),
+    new WebpackAfterAllPlugin()
   ]
 };

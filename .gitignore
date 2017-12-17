@@ -4,8 +4,11 @@ node_modules
 package-lock.json
 npm-debug.log
 .idea/*
+.ready
 Thumbs.db
 coverage/
+reports/
+screenshots/
 .project
 build/
 logs/
