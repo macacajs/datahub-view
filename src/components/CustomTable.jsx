@@ -52,6 +52,9 @@ class EditableAddDeleteCell extends React.Component {
   }
 
   onTrigger(value) {
+    if (this.props.disabled) {
+      return
+    }
     this.setState({ showEditableIcon: !!value });
   }
 
@@ -123,7 +126,11 @@ class EditableTable extends React.Component {
       width: '5%',
       render: (text, record, index) => {
         return (
-          <Checkbox checked={ text } onChange={e => this.modify(e.target.checked, index, 'require', record)}></Checkbox>
+          <Checkbox
+            checked={ text }
+            onChange={e => this.modify(e.target.checked, index, 'require', record)}
+            disabled={!!this.props.disabled}
+          ></Checkbox>
         );
       }
     }, {
@@ -140,6 +147,7 @@ class EditableTable extends React.Component {
           <Button
             size="small"
             onClick={this.plus.bind(this, index, record)}
+            disabled={!!this.props.disabled}
           >
             <Icon
               type="plus"
@@ -151,6 +159,7 @@ class EditableTable extends React.Component {
             <Button
               size="small"
               style={{ marginLeft: `3px` }}
+              disabled={!!this.props.disabled}
             >
               <Icon
                 type="minus"
@@ -203,6 +212,7 @@ class EditableTable extends React.Component {
         onConfirm={value => this.modify(value, index, column, record)}
         onEdit={() => this.edit(index, column)}
         editable={ this.state.editingCell.index === index && this.state.editingCell.column === column}
+        disabled={!!this.props.disabled}
       />
     );
   }
