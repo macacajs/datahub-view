@@ -53,7 +53,7 @@ class EditableAddDeleteCell extends React.Component {
 
   onTrigger(value) {
     if (this.props.disabled) {
-      return
+      return;
     }
     this.setState({ showEditableIcon: !!value });
   }
