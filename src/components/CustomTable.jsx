@@ -6,7 +6,8 @@ import {
   Icon,
   Input,
   Button,
-  Popconfirm
+  Popconfirm,
+  Checkbox
 } from 'antd';
 
 import {
@@ -51,6 +52,9 @@ class EditableAddDeleteCell extends React.Component {
   }
 
   onTrigger(value) {
+    if (this.props.disabled) {
+      return;
+    }
     this.setState({ showEditableIcon: !!value });
   }
 
@@ -73,7 +77,9 @@ class EditableAddDeleteCell extends React.Component {
                 onClick={this.check.bind(this)}
               />
             </div>
-            : <div className="editable-cell-text-wrapper"
+            : <div
+              className="editable-cell-text-wrapper"
+              style={{ minHeight: `5px` }}
               onMouseEnter={this.onTrigger.bind(this, true)}
               onMouseLeave={this.onTrigger.bind(this, false)}
             >
@@ -115,14 +121,22 @@ class EditableTable extends React.Component {
       width: '15%',
       render: (text, record, index) => this.renderColumns(text, record, 'type', index)
     }, {
-      title: this.props.intl.formatMessage({id: 'fieldDes.required'}),
-      dataIndex: 'required',
-      width: '10%',
-      render: (text, record, index) => this.renderColumns(text, record, 'require', index)
+      title: this.props.intl.formatMessage({id: 'fieldDes.require'}),
+      dataIndex: 'require',
+      width: '5%',
+      render: (text, record, index) => {
+        return (
+          <Checkbox
+            checked={ text }
+            onChange={e => this.modify(e.target.checked, index, 'require', record)}
+            disabled={this.props.disabled}
+          ></Checkbox>
+        );
+      }
     }, {
       title: this.props.intl.formatMessage({id: 'fieldDes.description'}),
       dataIndex: 'description',
-      width: '35%',
+      width: '40%',
       render: (text, record, index) => this.renderColumns(text, record, 'description', index)
     }, {
       title: this.props.intl.formatMessage({id: 'fieldDes.operation'}),
@@ -133,6 +147,7 @@ class EditableTable extends React.Component {
           <Button
             size="small"
             onClick={this.plus.bind(this, index, record)}
+            disabled={this.props.disabled}
           >
             <Icon
               type="plus"
@@ -144,6 +159,7 @@ class EditableTable extends React.Component {
             <Button
               size="small"
               style={{ marginLeft: `3px` }}
+              disabled={this.props.disabled}
             >
               <Icon
                 type="minus"
@@ -158,30 +174,28 @@ class EditableTable extends React.Component {
 
   plus(index, record) {
     let data = this.props.schemaData || [];
-    const res = _.addSchema(index, data, record);
+    const res = _.operateSchema('add', { index, data });
     this.props.onChange(res);
   }
 
   minus(index, record) {
     let data = this.props.schemaData || [];
-    const res = _.deleteSchema(index, data, record);
+    const res = _.operateSchema('delete', { index, data });
     this.props.onChange(res);
   }
 
   modify(value, index, column, record) {
     let data = this.props.schemaData || [];
-    const res = _.modifySchema(index, data, value, record, column);
+    const res = _.operateSchema('modify', { item: record, data, index, key: column, value });
     this.props.onChange(res);
 
     this.setState({
-      editing: false,
       editingCell: {}
     });
   }
 
   edit(index, column) {
     this.setState({
-      editing: true,
       editingCell: {
         index: index,
         column: column
@@ -198,6 +212,7 @@ class EditableTable extends React.Component {
         onConfirm={value => this.modify(value, index, column, record)}
         onEdit={() => this.edit(index, column)}
         editable={ this.state.editingCell.index === index && this.state.editingCell.column === column}
+        disabled={this.props.disabled}
       />
     );
   }

@@ -3,8 +3,11 @@ node_modules
 .travis.yml
 Makefile
 coverage/
+reports/
+screenshots/
 logs/
 src/
+.ready
 *.tgz
 *.sw*
 *.un~

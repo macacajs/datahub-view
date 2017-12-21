@@ -141,70 +141,42 @@ _.genApiList = (schemaData, paramsData) => {
   return walker(json);
 };
 
-_.modifySchema = (index, data, value, item, key) => {
+_.operateSchema = (type, { item, data, index, key, value }) => {
   const res = data;
-  let level = -1;
+  let count = -1;
 
-  const walker = (data) => {
-    level++;
-    data.forEach(current => {
-      if (item['field'] === current['field'] && item['level'] === level) {
-        key === 'required' ? current[key] = value === 'true' : current[key] = value;
+  const walker = data => {
+    data.forEach((current, currentIndex) => {
+      count++;
+      if (index === count) {
+        switch (type) {
+          case 'add': {
+            let defaultNode = {
+              field: 'default',
+              type: 'default',
+              require: true,
+              description: 'default'
+            };
+            current.children ? current.children.push(defaultNode) : current.children = [defaultNode];
+            break;
+          }
+          case 'delete': {
+            data.splice(currentIndex, 1);
+            break;
+          }
+          case 'modify': {
+            if (item['field'] === current['field']) {
+              current[key] = value;
+            }
+            break;
+          }
+        }
       }
       if (current.children) {
         walker(current.children);
-        level--;
       }
     });
   };
-  walker(res);
-  return res;
-};
-
-_.addSchema = (index, data, item) => {
-  const res = data;
-  let level = -1;
-
-  const walker = (data) => {
-    level++;
-    data.forEach((current, index) => {
-      if (level === item['level'] && item['field'] === current['field']) {
-        let defaultNode = {
-          field: 'default',
-          type: 'default',
-          required: true,
-          description: 'default'
-        };
-        current.children ? current.children.push(defaultNode) : current.children = [defaultNode];
-      }
-      if (current.children) {
-        walker(current.children);
-        level--;
-      }
-    });
-  };
-
-  walker(res);
-  return res;
-};
-
-_.deleteSchema = (index, data, item) => {
-  const res = data;
-  let level = -1;
-
-  const walker = (data) => {
-    level++;
-    data.forEach((current, index) => {
-      if (level === item['level'] && item['field'] === current['field']) {
-        data.splice(index, 1);
-      }
-      if (current && current.children) {
-        walker(current.children);
-        level--;
-      }
-    });
-  };
-
   walker(res);
   return res;
 };

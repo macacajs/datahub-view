@@ -11,6 +11,18 @@ import {
   UnControlled as CodeMirror
 } from 'react-codemirror2';
 
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/addon/fold/foldcode';
+import 'codemirror/addon/fold/foldgutter';
+import 'codemirror/addon/comment/comment';
+import 'codemirror/addon/fold/brace-fold';
+import 'codemirror/addon/fold/comment-fold';
+import 'codemirror/addon/edit/matchbrackets';
+import 'codemirror/addon/edit/closebrackets';
+import 'codemirror/addon/fold/foldgutter.css';
+import 'codemirror/mode/javascript/javascript';
+import 'codemirror/addon/selection/active-line';
+
 import {
   Alert,
   Button,
@@ -29,9 +41,6 @@ import _ from '../common/helper';
 import CustomTable from './CustomTable';
 import ProxyInputList from './ProxyInputList';
 
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/mode/javascript/javascript';
-
 import './DataInfo.less';
 
 const Option = Select.Option;
@@ -43,13 +52,20 @@ const codeMirrorOptions = {
   indentUnit: 2,
   tabSize: 2,
   lineNumbers: true,
-  styleActiveLine: true,
   indentWithTabs: true,
   matchBrackets: true,
   smartIndent: true,
   textWrapping: false,
   lineWrapping: true,
-  autofocus: true
+  autofocus: true,
+  autoCloseBrackets: true,
+  autoCloseTags: true,
+  foldGutter: true,
+  styleActiveLine: true,
+  gutters: [
+    'CodeMirror-linenumbers',
+    'CodeMirror-foldgutter'
+  ]
 };
 
 class DataInfo extends React.Component {

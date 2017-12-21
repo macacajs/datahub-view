@@ -107,6 +107,7 @@ export default class Document extends React.Component {
           className="schema-table"
           schemaData={scenesData}
           paramsData={paramsData}
+          disabled={true}
         />
         <h1><FormattedMessage id='document.sceneData' /></h1>
         <Tabs
