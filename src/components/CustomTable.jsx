@@ -121,14 +121,14 @@ class EditableTable extends React.Component {
       width: '15%',
       render: (text, record, index) => this.renderColumns(text, record, 'type', index)
     }, {
-      title: this.props.intl.formatMessage({id: 'fieldDes.require'}),
-      dataIndex: 'require',
+      title: this.props.intl.formatMessage({id: 'fieldDes.required'}),
+      dataIndex: 'required',
       width: '5%',
       render: (text, record, index) => {
         return (
           <Checkbox
             checked={ text }
-            onChange={e => this.modify(e.target.checked, index, 'require', record)}
+            onChange={e => this.modify(e.target.checked, index, 'required', record)}
             disabled={this.props.disabled}
           ></Checkbox>
         );
