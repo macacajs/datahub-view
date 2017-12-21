@@ -21,14 +21,14 @@ const genSchemaList = (data) => {
       const {
         field,
         type,
-        require,
+        required,
         description,
         children
       } = item;
       res.push({
         field,
         type,
-        require,
+        required,
         description,
         level,
         key: `${_.guid()}`
@@ -95,7 +95,7 @@ _.genApiList = (schemaData, paramsData) => {
         paramsList.forEach(item => {
           if (item.field === map.field) {
             map.description = item.description;
-            map.require = item.require;
+            map.required = item.required;
           }
         });
       }

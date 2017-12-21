@@ -44,7 +44,7 @@ const zhCN = {
   'fieldDes.isUseCheck': '是否开启校验',
   'fieldDes.field': '字段',
   'fieldDes.type': '类型',
-  'fieldDes.require': '必须',
+  'fieldDes.required': '必须',
   'fieldDes.description': '说明',
   'fieldDes.operation': '操作',
 

@@ -20,7 +20,7 @@ import './CustomTable.less';
 
 const columnStyleMap = {
   type: 'capitalize',
-  require: ''
+  required: ''
 };
 
 class EditableAddDeleteCell extends React.Component {
