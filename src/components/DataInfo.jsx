@@ -310,7 +310,7 @@ class DataInfo extends React.Component {
     });
   }
 
-  confirmSchameModal(data) {
+  confirmSchemaModal(data) {
     try {
       const newData = JSON.parse(this.state.schemaNewData);
       this.setState({
@@ -334,7 +334,7 @@ class DataInfo extends React.Component {
     }));
   }
 
-  cancelSchameModal() {
+  cancelSchemaModal() {
     this.setState({
       schemaModalVisible: false,
       schemaJSONParseError: false,
@@ -342,7 +342,7 @@ class DataInfo extends React.Component {
     });
   }
 
-  onSetSchameData(data) {
+  onSetSchemaData(data) {
     this.setState({
       schemaData: data,
       schemaNewData: JSON.stringify(data, null, 2)
@@ -454,12 +454,12 @@ class DataInfo extends React.Component {
               </Modal>
               <Modal
                 width="80%"
-                title="schame"
+                title="schema"
                 visible={this.state.schemaModalVisible}
-                onOk={this.confirmSchameModal.bind(this)}
+                onOk={this.confirmSchemaModal.bind(this)}
                 cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}
                 okText={this.props.intl.formatMessage({id: 'common.confirm'})}
-                onCancel={this.cancelSchameModal.bind(this)}
+                onCancel={this.cancelSchemaModal.bind(this)}
               >
                 <CodeMirror
                   value={JSON.stringify(this.state.schemaData, null, 2)}
@@ -490,7 +490,7 @@ class DataInfo extends React.Component {
               type="schema"
               className="schema-table"
               schemaData={this.state.schemaData}
-              onChange={this.onSetSchameData.bind(this)}
+              onChange={this.onSetSchemaData.bind(this)}
             />
           </section>
         </content>
