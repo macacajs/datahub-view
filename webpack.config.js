@@ -40,36 +40,8 @@ module.exports = {
     loaders: [
       {
         test: /\.js[x]?$/,
-        exclude: /(node_modules)/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              'react',
-              'env',
-              'latest',
-              'stage-2'
-            ],
-            plugins: [
-              [
-                'import',
-                {
-                  libraryName: 'antd',
-                  style: 'css'
-                }
-              ]
-            ]
-          }
-        }
-      }, isProduction ? {} : {
-        test: /\.js[x]?$/,
-        enforce: 'post',
         exclude: /node_modules/,
-        loader: 'istanbul-instrumenter-loader',
-        query: {
-          esModules: true,
-          coverageVariable: '__macaca_coverage__'
-        }
+        loader: 'babel-loader'
       }, {
         test: /\.json$/,
         loader: 'json-loader'

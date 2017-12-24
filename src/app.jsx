@@ -29,11 +29,9 @@ addLocaleData([
   ...zh
 ]);
 
-const {
-  Header,
-  Footer,
-  Content
-} = Layout;
+const Header = Layout.Header;
+const Footer = Layout.Footer;
+const Content = Layout.Content;
 
 const pkg = require('../package.json');
 
