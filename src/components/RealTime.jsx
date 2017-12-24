@@ -6,7 +6,7 @@ import {
   Badge
 } from 'antd';
 
-import './realTime.less';
+import './RealTime.less';
 
 export default class RealTime extends React.Component {
   render() {

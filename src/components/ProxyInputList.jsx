@@ -217,7 +217,7 @@ class DynamicFieldSet extends Component {
           <Checkbox checked={this.state.useProxy} onChange={this.onCheckboxChange.bind(this)}>
             <FormattedMessage id='proxyConfig.isUseProxy' />
           </Checkbox>
-          <Button size="small" type="dashed" onClick={this.add.bind(this)} style={{ width: '90px', marginLeft: '200px' }}>
+          <Button size="small" type="dashed" onClick={this.add.bind(this)} style={{ marginLeft: '200px' }}>
             <Icon type="plus" /><FormattedMessage id='proxyConfig.addProxy' />
           </Button>
           <Button size="small" type="primary" htmlType="submit" style={{ width: '55px' }}><FormattedMessage id='common.submite' /></Button>

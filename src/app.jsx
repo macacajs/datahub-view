@@ -15,6 +15,7 @@ import zh from 'react-intl/locale-data/zh';
 import en from 'react-intl/locale-data/en';
 
 import {
+  Button,
   Layout
 } from 'antd';
 
@@ -51,7 +52,7 @@ class App extends React.Component {
 
             <h2>datahub-view version: { pkg.version }</h2>
             <a href="/dashboard">
-              <button>Go Now</button>
+              <Button>Go Now</Button>
             </a>
           </div>
         );

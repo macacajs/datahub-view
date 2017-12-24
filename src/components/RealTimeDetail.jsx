@@ -17,7 +17,7 @@ import {
   FormattedMessage
 } from 'react-intl';
 
-import './realTimeDetail.less';
+import './RealTimeDetail.less';
 
 class RealTimeDetail extends React.Component {
   constructor(props) {
