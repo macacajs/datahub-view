@@ -22,10 +22,8 @@ import CustomTable from '../components/CustomTable';
 
 import './Document.less';
 
-const {
-  Sider,
-  Content
-} = Layout;
+const Sider = Layout.Sider;
+const Content = Layout.Content;
 
 const codeMirrorOptions = {
   mode: 'javascript',

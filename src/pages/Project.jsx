@@ -20,10 +20,8 @@ import RealTimeDetail from '../components/RealTimeDetail';
 import request from '../common/fetch';
 
 const TabPane = Tabs.TabPane;
-const {
-  Sider,
-  Content
-} = Layout;
+const Sider = Layout.Sider;
+const Content = Layout.Content;
 
 const projectId = window.pageConfig.projectId;
 
