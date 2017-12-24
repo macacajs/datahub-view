@@ -32,8 +32,8 @@ describe('test/datahub-view.test.js', () => {
 
     it('page render should be ok', () => {
       return driver
-        .get(BASE_URL)
-        .sleep(5000);
+        .getUrl(BASE_URL)
+        .sleep(1000);
     });
 
   });

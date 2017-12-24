@@ -1,22 +1,11 @@
 'use strict';
 
-const fs = require('fs');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const pkg = require('./package');
 
 const isProduction = process.env.NODE_ENV === 'production';
-
-class WebpackAfterAllPlugin {
-  apply(compiler) {
-    compiler.plugin('done', (compilation) => {
-      setTimeout(() => {
-        fs.writeFileSync(path.join(__dirname, '.ready'), '');
-      }, 1000);
-    });
-  }
-}
 
 module.exports = {
 
@@ -61,7 +50,6 @@ module.exports = {
     ]
   },
   plugins: [
-    new ExtractTextPlugin(`${pkg.name}.css`),
-    new WebpackAfterAllPlugin()
+    new ExtractTextPlugin(`${pkg.name}.css`)
   ]
 };

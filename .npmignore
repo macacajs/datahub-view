@@ -7,7 +7,6 @@ reports/
 screenshots/
 logs/
 src/
-.ready
 *.tgz
 *.sw*
 *.un~
