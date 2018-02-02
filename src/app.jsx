@@ -47,12 +47,17 @@ class App extends React.Component {
         return <Document />;
       default:
         return (
-          <div style={{textAlign: 'center'}}>
-            <h2>macaca-datahub version: { window.pageConfig.version }</h2>
-
-            <h2>datahub-view version: { pkg.version }</h2>
-            <a href="/dashboard">
-              <Button>Go Now</Button>
+          <div className="index-content">
+            <p>macaca-datahub version: { window.pageConfig.version }</p>
+            <p>datahub-view version: { pkg.version }</p>
+            <a className="go-btn" href="/dashboard">
+              <Button
+                type="primary"
+                icon="rocket"
+                size="large"
+                ghost
+              >Go Now
+              </Button>
             </a>
           </div>
         );
@@ -62,7 +67,7 @@ class App extends React.Component {
   render () {
     return (
       <Layout>
-        <Header className="header" style={{height: '60px'}}>
+        <Header>
           <a href="/">
             <h1>DataHub</h1>
           </a>

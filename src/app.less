@@ -4,23 +4,32 @@ body {
   font-family: "ProximaNova-Light", "Avenir Next", -apple-system-body, "Helvetica Neue", "Helvetica", sans-serif;
 }
 
-.header {
-  h1 {
-    line-height: 60px;
-    margin-left: 48px;
-  }
-}
-
-/************************
-* cover antd style
-*************************/
-
 .ant-layout {
   background: #fff;
 }
 
+.ant-layout-header {
+  z-index: 999;
+  width: 100%;
+  height: 10vh;
+  background: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: 0 3px 0 @bg-color;
+  padding: 0;
+  h1 {
+    margin: 0 0 0 48px;
+    line-height: 10vh;
+  }
+}
+
+.ant-layout-content {
+  min-height: 80vh;
+}
+
 .ant-layout-footer {
-  padding: 50px 0;
+  height: 10vh;
+  line-height: 10vh;
+  padding: 0;
   text-align: center;
   background-color: @bg-color;
   letter-spacing: 1px;
@@ -29,22 +38,15 @@ body {
   }
 }
 
-.ant-layout-header {
-  z-index: 999;
-  width: 100%;
-  height: 100px;
-  line-height: 100px;
-  margin: 0 auto;
-  background: #fff;
-  border-bottom: 1px solid #e0e0e0;
-  box-shadow: 0 3px 0 @bg-color;
-  padding: 0;
-}
-
 .ant-modal-body {
   padding: 0;
 }
 
 .ant-tabs-bar {
   margin: 0;
+}
+
+.index-content {
+  text-align: center;
+  padding-top: 4vh;
 }
