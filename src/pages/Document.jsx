@@ -5,16 +5,16 @@ import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/javascript/javascript';
 
 import {
-  FormattedMessage
+  FormattedMessage,
 } from 'react-intl';
 
 import {
   Layout,
-  Tabs
+  Tabs,
 } from 'antd';
 
 import {
-  UnControlled as CodeMirror
+  UnControlled as CodeMirror,
 } from 'react-codemirror2';
 
 import request from '../common/fetch';
@@ -37,7 +37,7 @@ const codeMirrorOptions = {
   smartIndent: true,
   textWrapping: false,
   lineWrapping: true,
-  readOnly: true
+  readOnly: true,
 };
 
 const TabPane = Tabs.TabPane;
@@ -45,15 +45,15 @@ const TabPane = Tabs.TabPane;
 const projectId = window.pageConfig.projectId;
 
 export default class Document extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       list: [],
-      slectedIndex: 0
+      slectedIndex: 0,
     };
   }
 
-  componentDidMount() {
+  componentDidMount () {
     request(`/api/data/${projectId}`, 'GET')
       .then((res) => {
         if (res.success) {
@@ -62,19 +62,19 @@ export default class Document extends React.Component {
       });
   }
 
-  handleInitData(data) {
+  handleInitData (data) {
     this.setState({
-      list: data
+      list: data,
     });
   }
 
-  selectApiClick(index) {
+  selectApiClick (index) {
     this.setState({
-      slectedIndex: index
+      slectedIndex: index,
     });
   }
 
-  renderDocument() {
+  renderDocument () {
     const currentData = this.state.list[this.state.slectedIndex];
 
     if (!currentData) {
@@ -86,7 +86,7 @@ export default class Document extends React.Component {
       description,
       pathname,
       scenes,
-      params
+      params,
     } = currentData;
     const scenesData = JSON.parse(scenes);
     const paramsData = JSON.parse(params);
@@ -119,7 +119,7 @@ export default class Document extends React.Component {
     );
   }
 
-  renderScene(list) {
+  renderScene (list) {
     return (
       list.map((item, index) => {
         return (
@@ -137,14 +137,14 @@ export default class Document extends React.Component {
     );
   }
 
-  render() {
+  render () {
     return (
       <Layout style={{ padding: '0 20px', marginTop: '10px' }}>
         <Sider width="300" style={{
           background: 'none',
           borderRight: '1px solid #eee',
           marginRight: '20px',
-          paddingRight: '20px'
+          paddingRight: '20px',
         }}>
           <div className="datalist">
             <ul>

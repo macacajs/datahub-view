@@ -7,11 +7,11 @@ import {
   Input,
   Button,
   Popconfirm,
-  Checkbox
+  Checkbox,
 } from 'antd';
 
 import {
-  injectIntl
+  injectIntl,
 } from 'react-intl';
 
 import _ from '../common/helper';
@@ -20,45 +20,45 @@ import './CustomTable.less';
 
 const columnStyleMap = {
   type: 'capitalize',
-  required: ''
+  required: '',
 };
 
 class EditableAddDeleteCell extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       value: props.value,
-      showEditableIcon: false
+      showEditableIcon: false,
     };
   }
 
-  handleChange(e) {
+  handleChange (e) {
     const value = e.target.value;
     this.setState({
-      value
+      value,
     });
   }
 
-  check() {
+  check () {
     if (this.props.onConfirm) {
       this.props.onConfirm(this.state.value);
     }
   }
 
-  edit() {
+  edit () {
     if (this.props.onEdit) {
       this.props.onEdit();
     }
   }
 
-  onTrigger(value) {
+  onTrigger (value) {
     if (this.props.disabled) {
       return;
     }
     this.setState({ showEditableIcon: !!value });
   }
 
-  render() {
+  render () {
     const { value, showEditableIcon } = this.state;
     return (
       <div className="editable-cell">
@@ -67,7 +67,7 @@ class EditableAddDeleteCell extends React.Component {
             ? <div className="editable-cell-input-wrapper">
               <Input
                 value={value}
-                style={{ width: `70%` }}
+                style={{ width: '70%' }}
                 onChange={this.handleChange.bind(this)}
                 onPressEnter={this.check.bind(this)}
               />
@@ -79,7 +79,7 @@ class EditableAddDeleteCell extends React.Component {
             </div>
             : <div
               className="editable-cell-text-wrapper"
-              style={{ minHeight: `5px` }}
+              style={{ minHeight: '5px' }}
               onMouseEnter={this.onTrigger.bind(this, true)}
               onMouseLeave={this.onTrigger.bind(this, false)}
             >
@@ -103,23 +103,23 @@ class EditableAddDeleteCell extends React.Component {
 };
 
 class EditableTable extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       data: [],
-      editingCell: {}
+      editingCell: {},
     };
 
     this.columns = [{
       title: this.props.intl.formatMessage({id: 'fieldDes.field'}),
       dataIndex: 'field',
       width: '20%',
-      render: (text, record, index) => this.renderColumns(text, record, 'field', index)
+      render: (text, record, index) => this.renderColumns(text, record, 'field', index),
     }, {
       title: this.props.intl.formatMessage({id: 'fieldDes.type'}),
       dataIndex: 'type',
       width: '15%',
-      render: (text, record, index) => this.renderColumns(text, record, 'type', index)
+      render: (text, record, index) => this.renderColumns(text, record, 'type', index),
     }, {
       title: this.props.intl.formatMessage({id: 'fieldDes.required'}),
       dataIndex: 'required',
@@ -132,12 +132,12 @@ class EditableTable extends React.Component {
             disabled={this.props.disabled}
           ></Checkbox>
         );
-      }
+      },
     }, {
       title: this.props.intl.formatMessage({id: 'fieldDes.description'}),
       dataIndex: 'description',
       width: '40%',
-      render: (text, record, index) => this.renderColumns(text, record, 'description', index)
+      render: (text, record, index) => this.renderColumns(text, record, 'description', index),
     }, {
       title: this.props.intl.formatMessage({id: 'fieldDes.operation'}),
       dataIndex: 'operation',
@@ -158,7 +158,7 @@ class EditableTable extends React.Component {
           <Popconfirm title={this.props.intl.formatMessage({id: 'common.deleteTip'})} onConfirm={this.minus.bind(this, index, record)} okText={this.props.intl.formatMessage({id: 'common.confirm'})} cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}>
             <Button
               size="small"
-              style={{ marginLeft: `3px` }}
+              style={{ marginLeft: '3px' }}
               disabled={this.props.disabled}
             >
               <Icon
@@ -168,42 +168,42 @@ class EditableTable extends React.Component {
             </Button>
           </Popconfirm>
         </div>
-      )
+      ),
     }];
   }
 
-  plus(index, record) {
-    let data = this.props.schemaData || [];
+  plus (index, record) {
+    const data = this.props.schemaData || [];
     const res = _.operateSchema('add', { index, data });
     this.props.onChange(res);
   }
 
-  minus(index, record) {
-    let data = this.props.schemaData || [];
+  minus (index, record) {
+    const data = this.props.schemaData || [];
     const res = _.operateSchema('delete', { index, data });
     this.props.onChange(res);
   }
 
-  modify(value, index, column, record) {
-    let data = this.props.schemaData || [];
+  modify (value, index, column, record) {
+    const data = this.props.schemaData || [];
     const res = _.operateSchema('modify', { item: record, data, index, key: column, value });
     this.props.onChange(res);
 
     this.setState({
-      editingCell: {}
+      editingCell: {},
     });
   }
 
-  edit(index, column) {
+  edit (index, column) {
     this.setState({
       editingCell: {
         index: index,
-        column: column
-      }
+        column: column,
+      },
     });
   }
 
-  renderColumns(text, record, column, index) {
+  renderColumns (text, record, column, index) {
     return (
       <EditableAddDeleteCell
         level={column === 'field' ? record.level : 0}
@@ -211,24 +211,26 @@ class EditableTable extends React.Component {
         column={column}
         onConfirm={value => this.modify(value, index, column, record)}
         onEdit={() => this.edit(index, column)}
-        editable={ this.state.editingCell.index === index && this.state.editingCell.column === column}
+        editable={ this.state.editingCell.index === index &&
+          this.state.editingCell.column === column}
         disabled={this.props.disabled}
       />
     );
   }
 
-  getDataList() {
+  getDataList () {
     if (this.props.type === 'schema') {
       return _.genSchemaList(this.props.schemaData || []);
     } else if (this.props.type === 'api') {
-      return _.genApiList(this.props.schemaData || [], this.props.paramsData || []);
+      return _.genApiList(this.props.schemaData || [],
+        this.props.paramsData || []);
     } else {
       return [];
     }
   }
 
-  render() {
-    let data = this.getDataList();
+  render () {
+    const data = this.getDataList();
     return (
       <Table size="small" pagination={false} bordered dataSource={data} columns={this.columns} />
     );

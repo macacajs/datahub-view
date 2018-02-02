@@ -23,7 +23,7 @@ const genSchemaList = (data) => {
         type,
         required,
         description,
-        children
+        children,
       } = item;
       res.push({
         field,
@@ -31,7 +31,7 @@ const genSchemaList = (data) => {
         required,
         description,
         level,
-        key: `${_.guid()}`
+        key: `${_.guid()}`,
       });
 
       if (children) {
@@ -49,7 +49,7 @@ _.genSchemaList = genSchemaList;
 _.typeof = typeDetect;
 
 _.isChineseChar = str => {
-  var reg = /[\u4E00-\u9FA5\uF900-\uFA2D]/;
+  const reg = /[\u4E00-\u9FA5\uF900-\uFA2D]/;
   return reg.test(str);
 };
 
@@ -86,7 +86,7 @@ _.genApiList = (schemaData, paramsData) => {
         field: key,
         type: typeDetect(value),
         level,
-        key: `${_.guid()}`
+        key: `${_.guid()}`,
       };
 
       const paramsList = paramsMap[level];
@@ -119,7 +119,7 @@ _.genApiList = (schemaData, paramsData) => {
           const json = {};
           value.forEach(item => {
             if (!_.isObject(first)) {
-              console.log(`data ignore`, first);
+              console.log('data ignore', first);
               return;
             }
             _.mergeWith(json, item, (obj, src) => {
@@ -151,13 +151,14 @@ _.operateSchema = (type, { item, data, index, key, value }) => {
       if (index === count) {
         switch (type) {
           case 'add': {
-            let defaultNode = {
+            const defaultNode = {
               field: 'default',
               type: 'default',
               require: true,
-              description: 'default'
+              description: 'default',
             };
-            current.children ? current.children.push(defaultNode) : current.children = [defaultNode];
+            current.children ? current.children.push(defaultNode)
+              : current.children = [defaultNode];
             break;
           }
           case 'delete': {

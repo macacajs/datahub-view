@@ -1,50 +1,50 @@
 import 'whatwg-fetch';
 
 const verbs = {
-  GET(url, params) {
+  GET (url, params) {
     return fetch(params ? `${url}?${params}` : url, {
-      credentials: 'same-origin'
+      credentials: 'same-origin',
     });
   },
 
-  POST(url, params) {
+  POST (url, params) {
     return fetch(url, {
       method: 'POST',
       credentials: 'same-origin',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: params
+      body: params,
     });
   },
 
-  DELETE(url, params) {
+  DELETE (url, params) {
     return fetch(url, {
       method: 'DELETE',
       credentials: 'same-origin',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: params
+      body: params,
     });
   },
 
-  PATCH(url, params) {
+  PATCH (url, params) {
     return fetch(url, {
       method: 'PATCH',
       credentials: 'same-origin',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: params
+      body: params,
     });
-  }
+  },
 };
 
-function serialize(obj) {
-  let s = [];
+function serialize (obj) {
+  const s = [];
 
-  for (let item in obj) {
+  for (const item in obj) {
     const k = encodeURIComponent(item);
     const v = encodeURIComponent(obj[item] == null ? '' : obj[item]);
     s.push(`${k}=${v}`);

@@ -5,12 +5,12 @@ import {
   platform,
   isExistedFile,
   uuid,
-  mkdir
+  mkdir,
 } from 'xutil';
 import path from 'path';
 import wd from 'macaca-wd';
 import {
-  appendToContext
+  appendToContext,
 } from 'macaca-reporter';
 import Coverage from 'macaca-coverage';
 
@@ -18,7 +18,7 @@ const {
   collector,
   Reporter,
 } = Coverage({
-  runtime: 'web'
+  runtime: 'web',
 });
 
 const cwd = process.cwd();
@@ -28,7 +28,7 @@ wd.addPromiseChainMethod('initWindow', function (options = {}) {
     .init(Object.assign({
       platformName: 'desktop',
       browserName: 'electron',
-      deviceScaleFactor: 2
+      deviceScaleFactor: 2,
     }, options))
     .setWindowSize(options.width, options.height);
 });
@@ -88,7 +88,7 @@ wd.addPromiseChainMethod('coverage', function (context) {
       collector.add(__coverage__);
       reporter.addAll([
         'html',
-        'lcov'
+        'lcov',
       ]);
       return new Promise(resolve => {
         reporter.write(collector, true, () => {
@@ -123,7 +123,7 @@ wd.addPromiseChainMethod('openReporter', function (open) {
 
 export const driver = wd.promiseChainRemote({
   host: 'localhost',
-  port: process.env.MACACA_SERVER_PORT || 3456
+  port: process.env.MACACA_SERVER_PORT || 3456,
 });
 
 const webpackDevServerPort = 8080;

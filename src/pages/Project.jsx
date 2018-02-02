@@ -4,12 +4,12 @@ import React from 'react';
 import io from 'socket.io-client';
 
 import {
-  injectIntl
+  injectIntl,
 } from 'react-intl';
 
 import {
   Layout,
-  Tabs
+  Tabs,
 } from 'antd';
 
 import DataList from '../components/DataList';
@@ -26,7 +26,7 @@ const Content = Layout.Content;
 const projectId = window.pageConfig.projectId;
 
 class Project extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       contentViewType: 'api', // display api content by default
@@ -35,11 +35,11 @@ class Project extends React.Component {
 
       REALTIME_MAXLINE: 10,
       realTimeDataList: [],
-      realTimeIndex: 0
+      realTimeIndex: 0,
     };
   }
 
-  componentDidMount() {
+  componentDidMount () {
     request(`/api/data/${projectId}`, 'GET').then((res) => {
       console.log('res', res);
       res.data.forEach(item => {
@@ -48,55 +48,57 @@ class Project extends React.Component {
       });
       if (res.success) {
         this.setState({
-          data: res.data
+          data: res.data,
         });
       }
     });
     this.initRealTimeDataList();
   }
 
-  initRealTimeDataList() {
+  initRealTimeDataList () {
     const pageConfig = window.pageConfig;
     const host = `http://${location.hostname}:${pageConfig.socket.port}`;
     const socket = io(host);
     socket.on('push data', (data) => {
       console.log('socket', data);
-      const newData = [ ...this.state.realTimeDataList ].slice(0, this.state.REALTIME_MAXLINE - 1);
+      const newData = [
+        ...this.state.realTimeDataList,
+      ].slice(0, this.state.REALTIME_MAXLINE - 1);
       newData.unshift(data);
       this.setState({
-        realTimeDataList: newData
+        realTimeDataList: newData,
       });
     });
   }
 
-  addApi(allData, newApi) {
+  addApi (allData, newApi) {
     request(`/api/data/${projectId}`, 'POST', {
       pathname: newApi.pathname,
-      description: newApi.description
+      description: newApi.description,
     }).then((res) => {
       console.log('update', res);
       if (res.success) {
         this.setState({
-          data: allData
+          data: allData,
         });
         console.log('update api success');
       }
     });
   }
 
-  deleteApi(allData, newApi) {
+  deleteApi (allData, newApi) {
     request(`/api/data/${projectId}/${newApi.pathname}`, 'DELETE').then((res) => {
       console.log('delete', res);
       if (res.success) {
         this.setState({
-          data: allData
+          data: allData,
         });
         console.log('delete api success');
       }
     });
   }
 
-  asynSecType(type, data, index) {
+  asynSecType (type, data, index) {
     const apis = [...this.state.data];
     let apiIndex = this.state.currentIndex;
     if (typeof index === 'number') {
@@ -110,54 +112,54 @@ class Project extends React.Component {
     console.log('type', type);
     console.log('data', data);
     request(`/api/data/${projectId}/${currentPathname}`, 'POST', {
-      [type]: data
+      [type]: data,
     }).then((res) => {
       if (res.success) {
         this.setState({
-          data: apis
+          data: apis,
         });
         console.log('update api success');
       }
     });
   }
 
-  handleApiClick(index) {
+  handleApiClick (index) {
     this.setState({
       contentViewType: 'api',
-      currentIndex: index
+      currentIndex: index,
     });
   }
 
-  tabOnChange(key) {
+  tabOnChange (key) {
     if (key === 'realtimesnapshot' && this.state.realTimeDataList.length > 0) {
       console.log('this.state.realTimeDataList', this.state.realTimeDataList);
       this.setState({
         contentViewType: 'realTime',
-        realTimeIndex: 0
+        realTimeIndex: 0,
       });
     } else if (key === 'apilist' && this.state.data.length > 0) {
       this.setState({
         contentViewType: 'api',
-        currentIndex: 0
+        currentIndex: 0,
       });
     }
   }
 
-  selectRealTimeItem(index) {
+  selectRealTimeItem (index) {
     this.setState({
       contentViewType: 'realTime',
-      realTimeIndex: index
+      realTimeIndex: index,
     });
   }
 
-  render() {
+  render () {
     return (
       <Layout style={{ padding: '0 20px', marginTop: '10px' }}>
         <Sider width="300" style={{
           background: 'none',
           borderRight: '1px solid #eee',
           marginRight: '20px',
-          paddingRight: '20px'
+          paddingRight: '20px',
         }}>
           <Tabs
             defaultActiveKey="apilist"

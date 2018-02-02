@@ -1,7 +1,7 @@
 'use strict';
 
-import React, {
-  Component
+import {
+  Component,
 } from 'react';
 
 import isURL from 'validator/lib/isURL';
@@ -13,12 +13,12 @@ import {
   Radio,
   Alert,
   Button,
-  Checkbox
+  Checkbox,
 } from 'antd';
 
 import {
   injectIntl,
-  FormattedMessage
+  FormattedMessage,
 } from 'react-intl';
 
 import './ProxyInputList.less';
@@ -28,7 +28,7 @@ const RadioGroup = Radio.Group;
 let uuid = 0;
 
 class DynamicFieldSet extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       useProxy: false,
@@ -36,11 +36,11 @@ class DynamicFieldSet extends Component {
       proxies: [],
       originKeys: [],
       isErrorInput: {},
-      proxyUrlError: null
+      proxyUrlError: null,
     };
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps (props) {
     if (props.proxyContent) {
       const origin = JSON.parse(props.proxyContent);
       const lastKey = origin.originKeys[origin.originKeys.length - 1];
@@ -53,12 +53,12 @@ class DynamicFieldSet extends Component {
         useProxy: false,
         currentProxyIndex: 1,
         proxies: [],
-        originKeys: []
+        originKeys: [],
       });
     }
   }
 
-  remove(k) {
+  remove (k) {
     const newKeys = this.state.originKeys.filter(key => key !== k);
     const index = this.state.originKeys.indexOf(k);
     const newPorxies = [].concat(this.state.proxies);
@@ -67,119 +67,119 @@ class DynamicFieldSet extends Component {
       this.setState({
         originKeys: newKeys,
         proxies: newPorxies,
-        currentProxyIndex: newKeys[0]
+        currentProxyIndex: newKeys[0],
       });
     } else {
       this.setState({
         originKeys: newKeys,
-        proxies: newPorxies
+        proxies: newPorxies,
       });
     }
   }
 
-  add() {
+  add () {
     uuid++;
     const newKeys = this.state.originKeys.concat(uuid);
     const newProxies = this.state.proxies.concat('');
     if (this.state.originKeys.length) {
       this.setState({
         originKeys: newKeys,
-        proxies: newProxies
+        proxies: newProxies,
       });
     } else {
       this.setState({
         originKeys: newKeys,
         proxies: newProxies,
-        currentProxyIndex: newKeys[0]
+        currentProxyIndex: newKeys[0],
       });
     }
   }
 
-  onCheckboxChange(e) {
+  onCheckboxChange (e) {
     this.setState({
-      useProxy: e.target.checked
+      useProxy: e.target.checked,
     });
     const result = {
       proxies: this.state.proxies,
       useProxy: e.target.checked,
       originKeys: this.state.originKeys,
-      currentProxyIndex: this.state.currentProxyIndex
+      currentProxyIndex: this.state.currentProxyIndex,
     };
     this.props.onChangeProxy(JSON.stringify(result));
   }
 
-  onRadioChange(e) {
+  onRadioChange (e) {
     this.setState({
-      currentProxyIndex: e.target.value
+      currentProxyIndex: e.target.value,
     });
   }
 
-  handleSubmit(e) {
+  handleSubmit (e) {
     e.preventDefault();
 
-    for (var i = 0; i < this.state.proxies.length; i++) {
+    for (let i = 0; i < this.state.proxies.length; i++) {
       const proxy = this.state.proxies[i];
       this.setState({
-        [this.state.isErrorInput[i]]: 'ok'
+        [this.state.isErrorInput[i]]: 'ok',
       });
       const isErrorInput = JSON.parse(JSON.stringify(this.state.isErrorInput));
       if (!isURL(proxy)) {
         isErrorInput[i] = 'error';
         this.setState({
-          isErrorInput
+          isErrorInput,
         });
         this.setState({
           proxyUrlError: {
             message: `proxy url: ${proxy} is invalid`,
-            type: 'error'
-          }
+            type: 'error',
+          },
         });
         return;
       } else {
         isErrorInput[i] = 'ok';
         this.setState({
-          isErrorInput
+          isErrorInput,
         });
       }
     }
     this.setState({
-      proxyUrlError: null
+      proxyUrlError: null,
     });
     const result = {
       proxies: this.state.proxies,
       useProxy: this.state.useProxy,
       originKeys: this.state.originKeys,
-      currentProxyIndex: this.state.currentProxyIndex
+      currentProxyIndex: this.state.currentProxyIndex,
     };
     this.props.onChangeProxy(JSON.stringify(result));
   }
 
-  proxyInputChange(e, index) {
+  proxyInputChange (e, index) {
     const originProxies = [].concat(this.state.proxies);
     originProxies[index] = e.target.value;
     this.setState({
-      proxies: originProxies
+      proxies: originProxies,
     });
   }
 
-  render() {
+  render () {
     const formItemLayout = {
       labelCol: {
         xs: {
-          span: 24
+          span: 24,
         },
         sm: {
-          span: 4
-        }
+          span: 4,
+        },
       },
       wrapperCol: {
         xs: {
-          span: 24
+          span: 24,
         },
         sm: {
-          span: 20
-        }
-      }
+          span: 20,
+        },
+      },
     };
     const formItems = this.state.originKeys.map((k, index) => {
       return (
@@ -214,7 +214,10 @@ class DynamicFieldSet extends Component {
     return (
       <Form onSubmit={this.handleSubmit.bind(this)} className="proxyInputList">
         <FormItem {...formItemLayout}>
-          <Checkbox checked={this.state.useProxy} onChange={this.onCheckboxChange.bind(this)}>
+          <Checkbox
+            checked={this.state.useProxy}
+            onChange={this.onCheckboxChange.bind(this)}
+          >
             <FormattedMessage id='proxyConfig.isUseProxy' />
           </Checkbox>
           <Button size="small" type="dashed" onClick={this.add.bind(this)} style={{ marginLeft: '200px' }}>
@@ -223,10 +226,17 @@ class DynamicFieldSet extends Component {
           <Button size="small" type="primary" htmlType="submit" style={{ width: '55px' }}><FormattedMessage id='common.submite' /></Button>
         </FormItem>
 
-        <RadioGroup onChange={this.onRadioChange.bind(this)} value={this.state.currentProxyIndex}>
+        <RadioGroup
+          onChange={this.onRadioChange.bind(this)}
+          value={this.state.currentProxyIndex}
+        >
           {formItems}
         </RadioGroup>
-        {this.state.proxyUrlError ? <Alert message={this.state.proxyUrlError.message} type={this.state.proxyUrlError.type} showIcon /> : null}
+        {this.state.proxyUrlError
+          ? <Alert
+            message={this.state.proxyUrlError.message}
+            type={this.state.proxyUrlError.type}
+            showIcon /> : null}
       </Form>
     );
   }

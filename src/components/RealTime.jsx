@@ -3,15 +3,15 @@
 import React from 'react';
 import {
   Row,
-  Badge
+  Badge,
 } from 'antd';
 
 import './RealTime.less';
 
 export default class RealTime extends React.Component {
-  render() {
+  render () {
     const {
-      realTimeDataList
+      realTimeDataList,
     } = this.props;
     const statusBadge = status => {
       status = String(status);
@@ -44,7 +44,10 @@ export default class RealTime extends React.Component {
                 </div>
                 <div>
                   <span className="real-time-status">
-                    <Badge status={statusBadge(data.res.status)} text={data.res.status} />
+                    <Badge
+                      status={statusBadge(data.res.status)}
+                      text={data.res.status}
+                    />
                   </span>
                   <span className="real-time-host">{data.res.host}</span>
                 </div>

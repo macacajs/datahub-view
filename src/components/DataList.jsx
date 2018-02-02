@@ -8,13 +8,13 @@ import {
   Row,
   Alert,
   Col,
-  Popconfirm
+  Popconfirm,
 } from 'antd';
 import _ from 'lodash';
 
 import {
   injectIntl,
-  FormattedMessage
+  FormattedMessage,
 } from 'react-intl';
 
 import './DataList.less';
@@ -22,7 +22,7 @@ import './DataList.less';
 const Search = Input.Search;
 
 class DataList extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       modalVisible: false,
@@ -30,49 +30,50 @@ class DataList extends React.Component {
       modalDescription: '',
       apis: props.apis,
       currentIndex: 0,
-      errorAlert: null
+      errorAlert: null,
     };
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.handleApiClick(0);
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps (props) {
     const apis = props.apis;
     this.setState({
-      apis
+      apis,
     });
   }
 
-  handleAdd() {
+  handleAdd () {
     this.setState({
       modalVisible: true,
       modalTitle: '',
-      modalDescription: ''
+      modalDescription: '',
     });
   }
 
-  modalTitleChange(e) {
+  modalTitleChange (e) {
     this.setState({
-      modalTitle: e.target.value
+      modalTitle: e.target.value,
     });
   }
 
-  modalDescriptionChange(e) {
+  modalDescriptionChange (e) {
     this.setState({
-      modalDescription: e.target.value
+      modalDescription: e.target.value,
     });
   }
 
-  handleModalOk(e) {
-    const index = _.findIndex(this.state.apis, o => o.pathname === this.state.modalTitle);
+  handleModalOk (e) {
+    const index = _.findIndex(this.state.apis,
+      o => o.pathname === this.state.modalTitle);
     if (index !== -1) {
       this.setState({
         errorAlert: {
           message: this.props.intl.formatMessage({id: 'apiConfig.existError'}),
-          type: 'error'
-        }
+          type: 'error',
+        },
       });
       return;
     }
@@ -80,48 +81,48 @@ class DataList extends React.Component {
       this.setState({
         errorAlert: {
           message: this.props.intl.formatMessage({id: 'apiConfig.nullError'}),
-          type: 'error'
-        }
+          type: 'error',
+        },
       });
       return;
     }
     this.setState({
       errorAlert: {
         message: this.props.intl.formatMessage({id: 'apiConfig.addSuccess'}),
-        type: 'success'
-      }
+        type: 'success',
+      },
     });
     const addAPI = {
       pathname: this.state.modalTitle,
-      description: this.state.modalDescription
+      description: this.state.modalDescription,
     };
     const newData = [...this.state.apis, addAPI];
     this.setState({
-      modalVisible: false
+      modalVisible: false,
     });
     this.props.handleAddApi(newData, addAPI);
   }
 
-  handleModalCancel() {
+  handleModalCancel () {
     this.setState({
-      modalVisible: false
+      modalVisible: false,
     });
   }
 
-  onConfirmRemoveApi(index) {
+  onConfirmRemoveApi (index) {
     const newData = [...this.state.apis];
     const deleteApi = newData.splice(index, 1)[0];
     this.props.handleDeleteApi(newData, deleteApi);
   }
 
-  handleApiClick(index) {
+  handleApiClick (index) {
     this.props.handleApiClick(index);
     this.setState({
-      currentIndex: index
+      currentIndex: index,
     });
   }
 
-  render() {
+  render () {
     return (
       <div className="datalist">
         <Row>
@@ -162,7 +163,7 @@ class DataList extends React.Component {
         </ul>
         <Modal
           title={this.props.intl.formatMessage({
-            id: 'apiList.addApi'
+            id: 'apiList.addApi',
           })}
           visible={this.state.modalVisible}
           onOk={this.handleModalOk.bind(this)}
@@ -170,18 +171,22 @@ class DataList extends React.Component {
         >
           <Input
             placeholder={this.props.intl.formatMessage({
-              id: 'apiList.apiNameInput'
+              id: 'apiList.apiNameInput',
             })}
             onChange={this.modalTitleChange.bind(this)}
             value={this.state.modalTitle} />
           <Input
             placeholder={this.props.intl.formatMessage({
-              id: 'apiList.apiDesInput'
+              id: 'apiList.apiDesInput',
             })}
             style={{ margin: '10px 0' }}
             onChange={this.modalDescriptionChange.bind(this)}
             value={this.state.modalDescription} />
-          {this.state.errorAlert && this.state.errorAlert.message ? <Alert message={this.state.errorAlert.message} type={this.state.errorAlert.type} showIcon /> : null}
+          {this.state.errorAlert && this.state.errorAlert.message
+            ? <Alert
+              message={this.state.errorAlert.message}
+              type={this.state.errorAlert.type}
+              showIcon/> : null}
         </Modal>
       </div>
     );

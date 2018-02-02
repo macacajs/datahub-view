@@ -2,19 +2,17 @@
 
 import {
   driver,
-  BASE_URL
+  BASE_URL,
 } from './helper';
 
 describe('test/datahub-view.test.js', () => {
-
   describe('page func testing', () => {
-
     before(() => {
       return driver
         .initWindow({
           width: 800,
           height: 600,
-          deviceScaleFactor: 2
+          deviceScaleFactor: 2,
         });
     });
 
@@ -35,7 +33,5 @@ describe('test/datahub-view.test.js', () => {
         .getUrl(BASE_URL)
         .sleep(1000);
     });
-
   });
-
 });

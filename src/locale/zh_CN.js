@@ -69,7 +69,7 @@ const zhCN = {
   'document.sceneData': '场景数据',
 
   'project.apiList': '接口列表',
-  'project.realtimeList': '实时快照'
+  'project.realtimeList': '实时快照',
 };
 
 export default zhCN;

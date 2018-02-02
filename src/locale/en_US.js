@@ -69,7 +69,7 @@ const enUS = {
   'document.sceneData': 'scene data',
 
   'project.apiList': 'api list',
-  'project.realtimeList': 'realtime snapshot'
+  'project.realtimeList': 'realtime snapshot',
 };
 
 export default enUS;

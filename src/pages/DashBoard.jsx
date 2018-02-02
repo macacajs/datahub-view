@@ -1,7 +1,7 @@
 'use strict';
 
 import React, {
-  Component
+  Component,
 } from 'react';
 
 import {
@@ -13,12 +13,12 @@ import {
   Popconfirm,
   Row,
   Col,
-  Icon
+  Icon,
 } from 'antd';
 
 import {
   injectIntl,
-  FormattedMessage
+  FormattedMessage,
 } from 'react-intl';
 
 import './DashBoard.less';
@@ -28,33 +28,33 @@ import request from '../common/fetch';
 const FormItem = Form.Item;
 
 class EditableCell extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       value: this.props.value,
-      editable: false
+      editable: false,
     };
   }
 
-  handleChange(e) {
+  handleChange (e) {
     const value = e.target.value;
     this.setState({
-      value
+      value,
     });
   }
 
-  check() {
+  check () {
     this.setState({ editable: false });
     if (this.props.onChange) {
       this.props.onChange(this.state.value);
     }
   }
 
-  edit() {
+  edit () {
     this.setState({ editable: true });
   }
 
-  render() {
+  render () {
     const { value, editable } = this.state;
     return (
       <div className="editable-cell">
@@ -88,16 +88,16 @@ class EditableCell extends React.Component {
 }
 
 class CollectionForm extends Component {
-  render() {
+  render () {
     const {
       visible,
       onCancel,
       onCreate,
       form,
-      loading
+      loading,
     } = this.props;
     const {
-      getFieldDecorator
+      getFieldDecorator,
     } = form;
     const formatMessage = this.props.intl.formatMessage;
     return (
@@ -117,27 +117,27 @@ class CollectionForm extends Component {
                 {
                   required: true,
                   message: formatMessage({
-                    id: 'dashboard.modalNameTip'
+                    id: 'dashboard.modalNameTip',
                   }),
-                  pattern: /^[A-Za-z0-9]+$/
-                }
-              ]
+                  pattern: /^[A-Za-z0-9]+$/,
+                },
+              ],
             })(
               <Input />
             )}
           </FormItem>
           <FormItem label={formatMessage({
-            id: 'dashboard.modalDescription'
+            id: 'dashboard.modalDescription',
           })}>
             {getFieldDecorator('description', {
               rules: [
                 {
                   required: true,
                   message: formatMessage({
-                    id: 'dashboard.modalDescriptionTip'
-                  })
-                }
-              ]
+                    id: 'dashboard.modalDescriptionTip',
+                  }),
+                },
+              ],
             })(
               <Input />
             )}
@@ -151,29 +151,29 @@ class CollectionForm extends Component {
 const CollectionCreateForm = Form.create()(injectIntl(CollectionForm));
 
 class DashBoard extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       context: window.context,
       visible: false,
       loading: false,
-      listData: []
+      listData: [],
     };
   }
 
-  showModal() {
+  showModal () {
     this.setState({
-      visible: true
+      visible: true,
     });
   }
 
-  handleCancel() {
+  handleCancel () {
     this.setState({
-      visible: false
+      visible: false,
     });
   }
 
-  handleCreate() {
+  handleCreate () {
     const form = this.form;
     form.validateFields((err, values) => {
       if (err) {
@@ -181,7 +181,7 @@ class DashBoard extends React.Component {
       }
 
       this.setState({
-        loading: true
+        loading: true,
       });
 
       console.log('Received values of form: ', values);
@@ -191,7 +191,7 @@ class DashBoard extends React.Component {
           form.resetFields();
           this.setState({
             visible: false,
-            loading: false
+            loading: false,
           });
 
           if (res.success) {
@@ -201,9 +201,9 @@ class DashBoard extends React.Component {
     });
   }
 
-  handleDelete(key) {
+  handleDelete (key) {
     request('/api/project', 'DELETE', {
-      identifer: this.state.listData[key].identifer
+      identifer: this.state.listData[key].identifer,
     }).then((res) => {
       console.log(res);
       if (res.success) {
@@ -212,41 +212,41 @@ class DashBoard extends React.Component {
     });
   }
 
-  saveFormRef(form) {
+  saveFormRef (form) {
     this.form = form;
   }
 
-  updateProjects() {
+  updateProjects () {
     request('/api/project').then((res) => {
       res && res.forEach((item, index) => {
         item.key = index;
       });
       this.setState({
-        listData: res
+        listData: res,
       });
     });
   }
 
-  componentWillMount() {
+  componentWillMount () {
     this.updateProjects();
   }
 
-  onCellChange(value, projectId) {
+  onCellChange (value, projectId) {
     request('/api/project', 'POST', {
       identifer: projectId,
-      description: value
+      description: value,
     }).then((res) => {
       console.log('res', res);
     });
   }
 
-  render() {
+  render () {
     const columns = [{
       title: this.props.intl.formatMessage({id: 'dashboard.tableId'}),
       dataIndex: 'identifer',
       width: '20%',
       key: 'identifer',
-      render: text => <a href={`/project/${text}`}>{text}</a>
+      render: text => <a href={`/project/${text}`}>{text}</a>,
     }, {
       title: this.props.intl.formatMessage({id: 'dashboard.tableDescription'}),
       dataIndex: 'description',
@@ -256,7 +256,7 @@ class DashBoard extends React.Component {
           value={text}
           onChange={value => this.onCellChange(value, record.identifer)}
         />
-      )
+      ),
     }, {
       title: this.props.intl.formatMessage({id: 'dashboard.tableOperation'}),
       dataIndex: 'operation',
@@ -268,7 +268,7 @@ class DashBoard extends React.Component {
             <Button type="primary" className="project-delete-button"><FormattedMessage id='common.delete' /></Button>
           </Popconfirm>
         );
-      }
+      },
     }];
 
     return (

@@ -6,7 +6,7 @@ import ReactDom from 'react-dom';
 
 import {
   addLocaleData,
-  IntlProvider
+  IntlProvider,
 } from 'react-intl';
 
 import zhCN from './locale/zh_CN';
@@ -16,7 +16,7 @@ import en from 'react-intl/locale-data/en';
 
 import {
   Button,
-  Layout
+  Layout,
 } from 'antd';
 
 import Project from './pages/Project';
@@ -27,7 +27,7 @@ import './app.less';
 
 addLocaleData([
   ...en,
-  ...zh
+  ...zh,
 ]);
 
 const Header = Layout.Header;
@@ -37,7 +37,7 @@ const Content = Layout.Content;
 const pkg = require('../package.json');
 
 class App extends React.Component {
-  pageRouter() {
+  pageRouter () {
     switch (this.props.pageConfig.pageId) {
       case 'dashboard':
         return <DashBoard />;
@@ -59,7 +59,7 @@ class App extends React.Component {
     }
   }
 
-  render() {
+  render () {
     return (
       <Layout>
         <Header className="header" style={{height: '60px'}}>
@@ -80,25 +80,25 @@ class App extends React.Component {
 
 App.defaultProps = {
   context: window.context,
-  pageConfig: window.pageConfig
+  pageConfig: window.pageConfig,
 };
 
 const chooseLocale = () => {
   let result = {
     locale: 'zh-CN',
-    messages: zhCN
+    messages: zhCN,
   };
   switch (window.navigator.language.split('_')[0]) {
     case 'en-US':
       result = {
         locale: 'en-US',
-        messages: enUS
+        messages: enUS,
       };
       break;
     case 'zh-CN':
       result = {
         locale: 'zh-CN',
-        messages: zhCN
+        messages: zhCN,
       };
       break;
   }

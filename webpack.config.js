@@ -12,17 +12,17 @@ module.exports = {
   devtool: isProduction ? false : '#source-map',
 
   entry: {
-    [pkg.name]: path.join(__dirname, 'src', 'app')
+    [pkg.name]: path.join(__dirname, 'src', 'app'),
   },
 
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/dist',
-    filename: '[name].js'
+    filename: '[name].js',
   },
 
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
   },
 
   module: {
@@ -30,26 +30,29 @@ module.exports = {
       {
         test: /\.js[x]?$/,
         exclude: /node_modules/,
-        loader: 'babel-loader'
+        loader: 'babel-loader',
       }, {
         test: /\.json$/,
-        loader: 'json-loader'
+        loader: 'json-loader',
       }, {
         test: /\.less$/,
         loader: ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          use: 'css-loader!less-loader'
-        })
+          use: 'css-loader!less-loader',
+        }),
       }, {
         test: /\.css$/,
         loader: ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          use: 'css-loader'
-        })
-      }
-    ]
+          use: 'css-loader',
+        }),
+      },
+    ],
   },
   plugins: [
-    new ExtractTextPlugin(`${pkg.name}.css`)
-  ]
+    new ExtractTextPlugin(`${pkg.name}.css`),
+  ],
+  devServer: {
+    hot: true,
+  },
 };

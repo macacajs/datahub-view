@@ -7,30 +7,30 @@ import {
   Button,
   Modal,
   Input,
-  Alert
+  Alert,
 } from 'antd';
 
 import _ from '../common/helper';
 
 import {
   injectIntl,
-  FormattedMessage
+  FormattedMessage,
 } from 'react-intl';
 
 import './RealTimeDetail.less';
 
 class RealTimeDetail extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       modalVisible: false,
       addingScene: '',
-      sceneError: null
+      sceneError: null,
     };
     this.apis = props.apis;
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps (props) {
     this.apis = props.apis;
 
     if (!this.currentData) {
@@ -38,7 +38,7 @@ class RealTimeDetail extends React.Component {
     }
   }
 
-  renderHeaders({ headers }) {
+  renderHeaders ({ headers }) {
     // console.log('renderHeaders', headers);
     return Object.keys(headers).map(key => {
       return (
@@ -50,7 +50,7 @@ class RealTimeDetail extends React.Component {
     });
   }
 
-  renderBody({ body }) {
+  renderBody ({ body }) {
     // console.log('renderBody', body);
     let result = null;
     if (typeof body === 'object') {
@@ -69,21 +69,21 @@ class RealTimeDetail extends React.Component {
     );
   }
 
-  onChangeScene(e) {
+  onChangeScene (e) {
     this.setState({
-      addingScene: e.target.value
+      addingScene: e.target.value,
     });
   }
 
-  showModal() {
+  showModal () {
     this.setState({
       modalVisible: true,
       addingScene: '',
-      sceneError: null
+      sceneError: null,
     });
   }
 
-  handleModalOk() {
+  handleModalOk () {
     const projectId = window.pageConfig.projectId;
     const pathname = this.props.data.req.path;
     const apiName = pathname && pathname.replace(`/${projectId}/`, '');
@@ -99,8 +99,8 @@ class RealTimeDetail extends React.Component {
       this.setState({
         sceneError: {
           message: this.props.intl.formatMessage({id: 'realtimeProject.chineseError'}),
-          type: 'error'
-        }
+          type: 'error',
+        },
       });
       return;
     }
@@ -109,21 +109,22 @@ class RealTimeDetail extends React.Component {
       this.setState({
         sceneError: {
           message: this.props.intl.formatMessage({id: 'realtimeProject.nullError'}),
-          type: 'error'
-        }
+          type: 'error',
+        },
       });
       return;
     }
 
     const currentApiData = this.apis[apiIndex];
-    const index = _.findIndex(currentApiData.scenes, o => o.name === this.state.addingScene);
+    const index = _.findIndex(currentApiData.scenes,
+      o => o.name === this.state.addingScene);
 
     if (index !== -1) {
       this.setState({
         sceneError: {
           message: this.props.intl.formatMessage({id: 'sceneMng.existError'}),
-          type: 'error'
-        }
+          type: 'error',
+        },
       });
       return;
     }
@@ -132,35 +133,35 @@ class RealTimeDetail extends React.Component {
       this.setState({
         sceneError: {
           message: this.props.intl.formatMessage({id: 'sceneMng.nullError'}),
-          type: 'error'
-        }
+          type: 'error',
+        },
       });
       return;
     }
 
     const newScene = {
       name: this.state.addingScene,
-      data: this.props.data.res.body
+      data: this.props.data.res.body,
     };
     const newData = [...currentApiData.scenes, newScene];
     this.props.handleAsynSecType('scenes', newData, apiIndex);
 
     this.setState({
       sceneError: null,
-      modalVisible: false
+      modalVisible: false,
     });
   }
 
-  handleModalCancel() {
+  handleModalCancel () {
     this.setState({
-      modalVisible: false
+      modalVisible: false,
     });
   }
 
-  render() {
+  render () {
     const {
       req,
-      res
+      res,
     } = this.props.data;
     return (
       <div className="real-time-detail">
@@ -196,7 +197,11 @@ class RealTimeDetail extends React.Component {
                 onChange={this.onChangeScene.bind(this)}
                 style={{ marginBottom: '10px' }}
               />
-              {this.state.sceneError ? <Alert message={this.state.sceneError.message} type={this.state.sceneError.type} showIcon /> : null}
+              {this.state.sceneError
+                ? <Alert
+                  message={this.state.sceneError.message}
+                  type={this.state.sceneError.type}
+                  showIcon /> : null}
             </Modal>
             {this.renderBody({ body: res.body })}
           </div>

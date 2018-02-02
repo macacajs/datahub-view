@@ -4,11 +4,11 @@ import React from 'react';
 
 import {
   injectIntl,
-  FormattedMessage
+  FormattedMessage,
 } from 'react-intl';
 
 import {
-  UnControlled as CodeMirror
+  UnControlled as CodeMirror,
 } from 'react-codemirror2';
 
 import 'codemirror/lib/codemirror.css';
@@ -34,7 +34,7 @@ import {
   Tooltip,
   Popconfirm,
   Breadcrumb,
-  InputNumber
+  InputNumber,
 } from 'antd';
 
 import _ from '../common/helper';
@@ -64,12 +64,12 @@ const codeMirrorOptions = {
   styleActiveLine: true,
   gutters: [
     'CodeMirror-linenumbers',
-    'CodeMirror-foldgutter'
-  ]
+    'CodeMirror-foldgutter',
+  ],
 };
 
 class DataInfo extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     const currentData = props.currentData;
 
@@ -92,11 +92,11 @@ class DataInfo extends React.Component {
       description: currentData && currentData.description,
       currentScene: currentData && currentData.currentScene,
       cursorPos: null,
-      sceneError: null
+      sceneError: null,
     };
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps (props) {
     const currentData = props.currentData;
 
     if (!currentData) {
@@ -118,19 +118,20 @@ class DataInfo extends React.Component {
       delay: (currentData && currentData.delay) || 0,
       pathname: currentData && currentData.pathname,
       currentScene: currentData && currentData.currentScene,
-      description: currentData && currentData.description
+      description: currentData && currentData.description,
     });
   }
 
-  handleAdd() {
-    const index = _.findIndex(this.state.scenes, o => o.name === this.state.addingScene);
+  handleAdd () {
+    const index = _.findIndex(this.state.scenes,
+      o => o.name === this.state.addingScene);
 
     if (index !== -1) {
       this.setState({
         sceneError: {
           message: this.props.intl.formatMessage({id: 'sceneMng.existError'}),
-          type: 'error'
-        }
+          type: 'error',
+        },
       });
       return;
     }
@@ -139,8 +140,8 @@ class DataInfo extends React.Component {
       this.setState({
         sceneError: {
           message: this.props.intl.formatMessage({id: 'realtimeProject.chineseError'}),
-          type: 'error'
-        }
+          type: 'error',
+        },
       });
       return;
     }
@@ -149,24 +150,24 @@ class DataInfo extends React.Component {
       this.setState({
         sceneError: {
           message: this.props.intl.formatMessage({id: 'sceneMng.nullError'}),
-          type: 'error'
-        }
+          type: 'error',
+        },
       });
       return;
     }
 
     this.setState({
-      sceneError: null
+      sceneError: null,
     });
 
     const newScene = {
       name: this.state.addingScene,
-      data: {}
+      data: {},
     };
 
     if (!this.state.scenes) {
       this.setState({
-        scenes: []
+        scenes: [],
       });
     }
     const newData = [...this.state.scenes, newScene];
@@ -174,189 +175,191 @@ class DataInfo extends React.Component {
       scenes: newData,
       currentScene: this.state.addingScene,
       modalInfoData: '',
-      _modalInfoData: ''
+      _modalInfoData: '',
     });
     this.props.handleAsynSecType('scenes', newData);
     this.props.handleAsynSecType('currentScene', this.state.addingScene);
   }
 
-  handleAddSceneChange(e) {
+  handleAddSceneChange (e) {
     this.setState({
-      addingScene: e.target.value
+      addingScene: e.target.value,
     });
   }
 
-  onConfirmRemoveScene(index) {
+  onConfirmRemoveScene (index) {
     const newData = [...this.state.scenes];
     newData.splice(index, 1);
 
-    if (this.state.scenes[index].name === this.state.currentScene && this.state.scenes.length) {
+    if (this.state.scenes[index].name === this.state.currentScene &&
+      this.state.scenes.length) {
       if (index > 0) {
         this.setState({
           scenes: newData,
-          currentScene: this.state.scenes[0].name
+          currentScene: this.state.scenes[0].name,
         });
         this.props.handleAsynSecType('currentScene', this.state.scenes[0].name);
       } else if (this.state.scenes.length > 1) {
         this.setState({
           scenes: newData,
-          currentScene: this.state.scenes[1].name
+          currentScene: this.state.scenes[1].name,
         });
         this.props.handleAsynSecType('currentScene', this.state.scenes[1].name);
       }
     } else {
       this.setState({
-        scenes: newData
+        scenes: newData,
       });
     }
     this.props.handleAsynSecType('scenes', newData);
   }
 
-  showModal(index) {
+  showModal (index) {
     const str = JSON.stringify(this.state.scenes[index].data, null, 2);
     this.setState({
       modalVisible: true,
       modalInfoTitle: this.state.scenes[index].name,
       modalInfoData: str.trim(),
-      _modalInfoData: str.trim()
+      _modalInfoData: str.trim(),
     });
   }
 
-  handleModalOk(e) {
+  handleModalOk (e) {
     try {
       JSON.parse(this.state._modalInfoData);
     } catch (e) {
       console.log('invalid json string');
       return;
     }
-    const index = _.findIndex(this.state.scenes, o => o.name === this.state.modalInfoTitle);
+    const index = _.findIndex(this.state.scenes,
+      o => o.name === this.state.modalInfoTitle);
     const updateScene = {
       name: this.state.modalInfoTitle,
-      data: JSON.parse(this.state._modalInfoData)
+      data: JSON.parse(this.state._modalInfoData),
     };
     console.log('updateScene', updateScene.data);
     const newData = [...this.state.scenes];
     newData.splice(index, 1, updateScene);
     this.setState({
       modalVisible: false,
-      scenes: newData
+      scenes: newData,
     });
     this.props.handleAsynSecType('scenes', newData);
   }
 
-  handleModalCancel() {
+  handleModalCancel () {
     this.setState({
-      modalVisible: false
+      modalVisible: false,
     });
   }
 
-  modalTextAreaChange(editor, data, value) {
+  modalTextAreaChange (editor, data, value) {
     this.setState({
-      _modalInfoData: value
+      _modalInfoData: value,
     });
   }
 
-  handleOptionChange(value) {
+  handleOptionChange (value) {
     this.setState({
-      method: value
+      method: value,
     });
     this.props.handleAsynSecType('method', value);
   }
 
-  handleSceneChange(e) {
+  handleSceneChange (e) {
     this.setState({
-      currentScene: e.target.value
+      currentScene: e.target.value,
     });
     this.props.handleAsynSecType('currentScene', e.target.value);
   }
 
-  handleDescriptionChange(e) {
+  handleDescriptionChange (e) {
     this.setState({
-      description: e.target.value
+      description: e.target.value,
     });
   }
 
-  handleDescriptionBlur(e) {
+  handleDescriptionBlur (e) {
     this.props.handleAsynSecType('description', e.target.value);
   }
 
-  delayChange(value) {
+  delayChange (value) {
     value = parseInt(value, 10);
     this.setState({
-      delay: value
+      delay: value,
     });
     this.props.handleAsynSecType('delay', value);
   }
 
-  handleProxyChange(value) {
+  handleProxyChange (value) {
     this.setState({
-      proxyContent: value
+      proxyContent: value,
     });
     this.props.handleAsynSecType('proxyContent', value);
   }
 
-  editSchema() {
+  editSchema () {
     this.setState({
       schemaModalVisible: true,
       schemaJSONParseError: false,
-      schemaNewData: JSON.stringify(this.state.schemaData, null, 2)
+      schemaNewData: JSON.stringify(this.state.schemaData, null, 2),
     });
   }
 
-  schemaModalTextAreaChange(editor, data, value) {
+  schemaModalTextAreaChange (editor, data, value) {
     this.setState({
       schemaNewData: value.trim(),
-      schemaJSONParseError: false
+      schemaJSONParseError: false,
     });
   }
 
-  confirmSchemaModal(data) {
+  confirmSchemaModal (data) {
     try {
       const newData = JSON.parse(this.state.schemaNewData);
       this.setState({
-        schemaModalVisible: false
+        schemaModalVisible: false,
       });
       this.props.handleAsynSecType('params', JSON.stringify({
         enableSchemaValidate: this.state.enableSchemaValidate,
-        schemaData: newData
+        schemaData: newData,
       }));
     } catch (e) {
       this.setState({
-        schemaJSONParseError: true
+        schemaJSONParseError: true,
       });
     }
   }
 
-  toggleSchemaValidate(e) {
+  toggleSchemaValidate (e) {
     this.props.handleAsynSecType('params', JSON.stringify({
       enableSchemaValidate: e.target.checked,
-      schemaData: this.state.schemaData
+      schemaData: this.state.schemaData,
     }));
   }
 
-  cancelSchemaModal() {
+  cancelSchemaModal () {
     this.setState({
       schemaModalVisible: false,
       schemaJSONParseError: false,
-      schemaNewData: ''
+      schemaNewData: '',
     });
   }
 
-  onSetSchemaData(data) {
+  onSetSchemaData (data) {
     this.setState({
       schemaData: data,
-      schemaNewData: JSON.stringify(data, null, 2)
+      schemaNewData: JSON.stringify(data, null, 2),
     });
     try {
       this.props.handleAsynSecType('params', JSON.stringify({
         enableSchemaValidate: this.state.enableSchemaValidate,
-        schemaData: data
+        schemaData: data,
       }));
     } catch (e) {
     }
   }
 
-  render() {
+  render () {
     const projectId = window.pageConfig.projectId;
     const apiHref = `http://${location.host}/data/${projectId}/${this.state.pathname}`;
     return (
@@ -366,7 +369,8 @@ class DataInfo extends React.Component {
             <a href="/dashboard"><FormattedMessage id="topNav.allProject" /></a>
           </Breadcrumb.Item>
           <Breadcrumb.Item>
-            { this.state.description ? this.state.description : this.state.pathname }
+            { this.state.description ? this.state.description
+              : this.state.pathname }
           </Breadcrumb.Item>
           <Breadcrumb.Item>
             <FormattedMessage id="topNav.projectConfig" />
@@ -390,7 +394,12 @@ class DataInfo extends React.Component {
             </div>
             <div>
               <span><FormattedMessage id='apiConfig.HTTP' /></span>
-              <Select defaultValue={this.state.method} value={this.state.method} style={{ width: 120, marginLeft: 10 }} onChange={this.handleOptionChange.bind(this)}>
+              <Select
+                defaultValue={this.state.method}
+                value={this.state.method}
+                style={{ width: 120, marginLeft: 10 }}
+                onChange={this.handleOptionChange.bind(this)}
+              >
                 <Option value="ALL">ALL</Option>
                 <Option value="GET">GET</Option>
                 <Option value="POST">POST</Option>
@@ -416,7 +425,12 @@ class DataInfo extends React.Component {
                 <Button style={{ marginBottom: `${this.state.sceneError ? '10px' : '0'}` }} type="primary" onClick={this.handleAdd.bind(this)}>
                   <FormattedMessage id='sceneMng.addSceneBtn' />
                 </Button>
-                {this.state.sceneError ? <Alert message={this.state.sceneError.message} type={this.state.sceneError.type} showIcon /> : null}
+                {this.state.sceneError
+                  ? <Alert
+                    message={this.state.sceneError.message}
+                    type={this.state.sceneError.type}
+                    showIcon
+                  /> : null}
               </div>
               <RadioGroup name="radiogroup" value={this.state.currentScene} onChange={this.handleSceneChange.bind(this)}>
                 {
