@@ -70,6 +70,7 @@ const zhCN = {
 
   'project.apiList': '接口列表',
   'project.realtimeList': '实时快照',
+  'project.createApi': '请添加接口',
 };
 
 export default zhCN;

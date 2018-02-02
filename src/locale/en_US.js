@@ -70,6 +70,7 @@ const enUS = {
 
   'project.apiList': 'api list',
   'project.realtimeList': 'realtime snapshot',
+  'project.createApi': 'please add API',
 };
 
 export default enUS;

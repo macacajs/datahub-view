@@ -7,7 +7,9 @@ import {
   injectIntl,
 } from 'react-intl';
 
+
 import {
+  Alert,
   Layout,
   Tabs,
 } from 'antd';
@@ -18,6 +20,8 @@ import DataInfo from '../components/DataInfo';
 import RealTimeDetail from '../components/RealTimeDetail';
 
 import request from '../common/fetch';
+
+import './Project.less';
 
 const TabPane = Tabs.TabPane;
 const Sider = Layout.Sider;
@@ -185,24 +189,31 @@ class Project extends React.Component {
         </Sider>
         <Content>
           {
-            this.state.contentViewType === 'api' &&
-            <DataInfo
-              currentData={this.state.data[this.state.currentIndex]}
-              handleAsynSecType={this.asynSecType.bind(this)}
+            !this.state.data.length &&
+            <Alert
+              className="add-api-hint"
+              message={this.props.intl.formatMessage({id: 'project.createApi'})}
+              type="info"
+              showIcon
             />
           }
           {
-            this.state.contentViewType === 'realTime' &&
+            this.state.data.length
+              ? this.state.contentViewType === 'api' &&
+            <DataInfo
+              currentData={this.state.data[this.state.currentIndex]}
+              handleAsynSecType={this.asynSecType.bind(this)}
+            /> : ''
+          }
+          {
+            this.state.data.length
+              ? this.state.contentViewType === 'realTime' &&
             <RealTimeDetail
               handleAsynSecType={this.asynSecType.bind(this)}
               apis={this.state.data}
               data={this.state.realTimeDataList[this.state.realTimeIndex]}
-            />
+            /> : ''
           }
-          {/* {
-            this.state.data.length < 1
-            && <h1 style={{ margin: '50px', textAlign: 'center' }}>请添加接口</h1>
-          } */}
         </Content>
       </Layout>
     );

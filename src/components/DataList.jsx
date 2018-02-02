@@ -125,16 +125,15 @@ class DataList extends React.Component {
   render () {
     return (
       <div className="datalist">
-        <Row>
+        <Row gutter={8}>
           <Col span={16}>
             <Search
               disabled
               placeholder="Search interface"
-              style={{ width: '100%' }}
               onSearch={value => console.log(value)}
             />
           </Col>
-          <Col span={8} push={1}>
+          <Col span={8}>
             <Button type="primary" onClick={this.handleAdd.bind(this)}>
               <FormattedMessage id='apiList.addApi' />
             </Button>

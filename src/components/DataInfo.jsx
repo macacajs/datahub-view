@@ -452,6 +452,7 @@ class DataInfo extends React.Component {
                 }
               </RadioGroup>
               <Modal
+                className="codemirror-modal"
                 width="80%"
                 title={`scene: ${this.state.modalInfoTitle}`}
                 visible={this.state.modalVisible}
@@ -467,6 +468,7 @@ class DataInfo extends React.Component {
                 />
               </Modal>
               <Modal
+                className="codemirror-modal"
                 width="80%"
                 title="schema"
                 visible={this.state.schemaModalVisible}

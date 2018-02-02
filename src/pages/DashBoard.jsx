@@ -265,7 +265,11 @@ class DashBoard extends React.Component {
       render: (text, record, index) => {
         return (
           <Popconfirm title={this.props.intl.formatMessage({id: 'common.deleteTip'})} onConfirm={this.handleDelete.bind(this, index)} okText={this.props.intl.formatMessage({id: 'common.confirm'})} cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}>
-            <Button type="primary" className="project-delete-button"><FormattedMessage id='common.delete' /></Button>
+            <Button
+              className="project-delete-button"
+              type="danger"
+              ghost
+            ><FormattedMessage id='common.delete' /></Button>
           </Popconfirm>
         );
       },
@@ -275,7 +279,11 @@ class DashBoard extends React.Component {
       <div className="dashboard">
         <Row type="flex" justify="center">
           <Col span="20">
-            <Button type="primary" className="dashboard-add-button" onClick={this.showModal.bind(this)}>
+            <Button
+              type="primary"
+              className="dashboard-add-button"
+              onClick={this.showModal.bind(this)}
+            >
               <FormattedMessage id='dashboard.tableAdd' />
             </Button>
           </Col>
