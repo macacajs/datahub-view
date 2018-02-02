@@ -73,6 +73,8 @@ class DataInfo extends React.Component {
     super(props);
     const currentData = props.currentData;
 
+    const { statusCode } = this.parseHeaders(currentData);
+
     this.state = {
       addingScene: '',
       modalVisible: false,
@@ -88,6 +90,7 @@ class DataInfo extends React.Component {
       scenes: currentData && currentData.scenes,
       method: currentData && currentData.method,
       delay: (currentData && currentData.delay) || 0,
+      statusCode,
       pathname: currentData && currentData.pathname,
       description: currentData && currentData.description,
       currentScene: currentData && currentData.currentScene,
@@ -109,7 +112,10 @@ class DataInfo extends React.Component {
       schemaContent = JSON.parse(currentData.params);
     }
 
+    const { statusCode } = this.parseHeaders(currentData);
+
     this.setState({
+      statusCode,
       proxyContent: currentData && currentData.proxyContent,
       scenes: currentData && currentData.scenes,
       schemaData: schemaContent.schemaData,
@@ -120,6 +126,16 @@ class DataInfo extends React.Component {
       currentScene: currentData && currentData.currentScene,
       description: currentData && currentData.description,
     });
+  }
+
+  parseHeaders (currentData) {
+    const statusCode = (currentData &&
+      currentData.proxyContent &&
+      JSON.parse(currentData.proxyContent).statusCode
+    ) || 200;
+    return {
+      statusCode,
+    };
   }
 
   handleAdd () {
@@ -285,10 +301,26 @@ class DataInfo extends React.Component {
 
   delayChange (value) {
     value = parseInt(value, 10);
+    if (isNaN(value)) {
+      value = 0;
+    }
     this.setState({
       delay: value,
     });
     this.props.handleAsynSecType('delay', value);
+  }
+
+  statusCodeChange = (e) => {
+    const value = e.target.value.replace(/[^0-9]/g, '').substring(0, 3);
+    this.setState({
+      statusCode: value,
+    });
+    this.props.handleAsynSecType('proxyContent', JSON.stringify(
+      {
+        ...JSON.parse(this.state.proxyContent),
+        statusCode: value,
+      }
+    ));
   }
 
   handleProxyChange (value) {
@@ -416,6 +448,9 @@ class DataInfo extends React.Component {
               <span><FormattedMessage id='apiConfig.apiDelay' /></span>
               <InputNumber min={0} max={5} value={parseInt(this.state.delay, 10)} onChange={this.delayChange.bind(this)} /> <FormattedMessage id='apiConfig.second' />
             </div>
+            <div className="api-status-code">
+              <span><FormattedMessage id='apiConfig.statusCode' /></span>
+              <Input onChange={e => { this.setState({ statusCode: e.target.value}); }} onBlur={this.statusCodeChange} value={this.state.statusCode} maxLength="3"></Input>（200 ~ 501）</div>
           </section>
           <section className="data-scene">
             <h1><FormattedMessage id='sceneMng.title' /></h1>

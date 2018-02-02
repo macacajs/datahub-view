@@ -23,6 +23,7 @@ const zhCN = {
   'apiConfig.HTTP': 'HTTP 方法：',
   'apiConfig.apiDescription': '接口说明：',
   'apiConfig.apiDelay': '接口延迟：',
+  'apiConfig.statusCode': '服务端响应状态码：',
   'apiConfig.second': '秒',
   'apiConfig.existError': '接口已存在！',
   'apiConfig.nullError': '接口名称和描述不能为空！',
