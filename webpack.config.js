@@ -1,6 +1,7 @@
 'use strict';
 
 const path = require('path');
+const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const pkg = require('./package');
@@ -51,6 +52,8 @@ module.exports = {
   },
   plugins: [
     new ExtractTextPlugin(`${pkg.name}.css`),
+    new webpack.NamedModulesPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
   ],
   devServer: {
     hot: true,
