@@ -86,12 +86,6 @@ class DataList extends React.Component {
       });
       return;
     }
-    this.setState({
-      errorAlert: {
-        message: this.props.intl.formatMessage({id: 'apiConfig.addSuccess'}),
-        type: 'success',
-      },
-    });
     const addAPI = {
       pathname: this.state.modalTitle,
       description: this.state.modalDescription,
@@ -99,6 +93,7 @@ class DataList extends React.Component {
     const newData = [...this.state.apis, addAPI];
     this.setState({
       modalVisible: false,
+      errorAlert: {},
     });
     this.props.handleAddApi(newData, addAPI);
   }
