@@ -9,7 +9,7 @@
     "datahub",
     "view"
   ],
-  "main": "lib/datahub-view.js",
+  "main": "dist/datahub-view.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/macacajs/datahub-view.git"
