@@ -43,11 +43,13 @@ class DynamicFieldSet extends Component {
   componentWillReceiveProps (props) {
     if (props.proxyContent) {
       const origin = JSON.parse(props.proxyContent);
-      const lastKey = origin.originKeys[origin.originKeys.length - 1];
-      if (lastKey) {
-        uuid += lastKey;
+      if (origin.proxies && origin.originKeys) {
+        const lastKey = origin.originKeys[origin.originKeys.length - 1];
+        if (lastKey) {
+          uuid += lastKey;
+        }
+        this.setState(origin);
       }
-      this.setState(origin);
     } else {
       this.setState({
         useProxy: false,

@@ -317,17 +317,38 @@ class DataInfo extends React.Component {
     });
     this.props.handleAsynSecType('proxyContent', JSON.stringify(
       {
-        ...JSON.parse(this.state.proxyContent),
+        ...this.getProxyObject(),
         statusCode: value,
       }
     ));
   }
 
   handleProxyChange (value) {
+    let newProxyObject = {};
+    try {
+      newProxyObject = JSON.parse(value);
+    } catch (e) {
+      console.log(`new proxy content '${this.state.proxyContent}' JSON parse failed ${e.message}`);
+    }
     this.setState({
       proxyContent: value,
     });
-    this.props.handleAsynSecType('proxyContent', value);
+    this.props.handleAsynSecType('proxyContent', JSON.stringify(
+      {
+        ...this.getProxyObject(),
+        ...newProxyObject,
+      }
+    ));
+  }
+
+  getProxyObject () {
+    let proxyObject = {};
+    try {
+      proxyObject = JSON.parse(this.state.proxyContent);
+    } catch (e) {
+      console.log(`proxy content '${this.state.proxyContent}' JSON parse failed ${e.message}`);
+    }
+    return proxyObject;
   }
 
   editSchema () {
