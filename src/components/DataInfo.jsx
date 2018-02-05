@@ -75,6 +75,12 @@ class DataInfo extends React.Component {
 
     const { statusCode } = this.parseHeaders(currentData);
 
+    let schemaContent = {};
+
+    if (currentData && currentData.params) {
+      schemaContent = JSON.parse(currentData.params);
+    }
+
     this.state = {
       addingScene: '',
       modalVisible: false,
@@ -84,7 +90,7 @@ class DataInfo extends React.Component {
       schemaModalVisible: false,
       schemaJSONParseError: false,
       schemaNewData: '',
-      schemaData: [],
+      schemaData: schemaContent.schemaData || [],
       enableSchemaValidate: false,
       proxyContent: currentData && currentData.proxyContent,
       scenes: currentData && currentData.scenes,
@@ -186,6 +192,7 @@ class DataInfo extends React.Component {
         scenes: [],
       });
     }
+    this.state.scenes = this.state.scenes || []
     const newData = [...this.state.scenes, newScene];
     this.setState({
       scenes: newData,
