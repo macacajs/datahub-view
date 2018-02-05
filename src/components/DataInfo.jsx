@@ -192,7 +192,7 @@ class DataInfo extends React.Component {
         scenes: [],
       });
     }
-    this.state.scenes = this.state.scenes || []
+    this.state.scenes = this.state.scenes || [];
     const newData = [...this.state.scenes, newScene];
     this.setState({
       scenes: newData,
