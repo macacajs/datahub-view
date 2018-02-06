@@ -48,6 +48,8 @@ const enUS = {
   'fieldDes.required': 'required',
   'fieldDes.description': 'description',
   'fieldDes.operation': 'operation',
+  'fieldDes.pleaseInputArray': 'please input array',
+  'fieldDes.jsonFormatError': 'JSON format error',
 
   'realtimeProject.myProject': 'my project',
   'realtimeProject.detailPhoto': 'detail snapshot',
