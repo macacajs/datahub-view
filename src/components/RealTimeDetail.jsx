@@ -8,6 +8,7 @@ import {
   Modal,
   Input,
   Alert,
+  Collapse,
 } from 'antd';
 
 import _ from '../common/helper';
@@ -18,6 +19,8 @@ import {
 } from 'react-intl';
 
 import './RealTimeDetail.less';
+
+const Panel = Collapse.Panel;
 
 class RealTimeDetail extends React.Component {
   constructor (props) {
@@ -173,39 +176,56 @@ class RealTimeDetail extends React.Component {
             <FormattedMessage id='realtimeProject.detailPhoto' />
           </Breadcrumb.Item>
         </Breadcrumb>
-        <section className="request">
-          <div className="request-headers">
-            <h1>Headers</h1>
-            {this.renderHeaders({ headers: req.headers })}
-          </div>
+        <section className="save-to">
+          <Button type="primary" style={{ verticalAlign: 'super', float: 'right' }} onClick={this.showModal.bind(this)}>
+            <FormattedMessage id='realtimeProject.saveToScene' />
+          </Button>
+          <Modal
+            title={this.props.intl.formatMessage({id: 'realtimeProject.saveToScene'})}
+            visible={this.state.modalVisible}
+            onOk={this.handleModalOk.bind(this)}
+            onCancel={this.handleModalCancel.bind(this)}
+          >
+            <Input
+              placeholder={this.props.intl.formatMessage({id: 'realtimeProject.inputPlacehold'})}
+              value={this.state.addingScene}
+              onChange={this.onChangeScene.bind(this)}
+              style={{ marginBottom: '10px' }}
+            />
+            {this.state.sceneError
+              ? <Alert
+                message={this.state.sceneError.message}
+                type={this.state.sceneError.type}
+                showIcon /> : null}
+          </Modal>
         </section>
-        <section className="response">
-          <div className="response-body">
-            <span style={{ fontSize: '2em', fontWeight: '500', marginRight: '10px' }}>Body</span>
-            <Button type="primary" style={{ verticalAlign: 'super', float: 'right' }} onClick={this.showModal.bind(this)}>
-              <FormattedMessage id='realtimeProject.saveToScene' />
-            </Button>
-            <Modal
-              title={this.props.intl.formatMessage({id: 'realtimeProject.saveToScene'})}
-              visible={this.state.modalVisible}
-              onOk={this.handleModalOk.bind(this)}
-              onCancel={this.handleModalCancel.bind(this)}
-            >
-              <Input
-                placeholder={this.props.intl.formatMessage({id: 'realtimeProject.inputPlacehold'})}
-                value={this.state.addingScene}
-                onChange={this.onChangeScene.bind(this)}
-                style={{ marginBottom: '10px' }}
-              />
-              {this.state.sceneError
-                ? <Alert
-                  message={this.state.sceneError.message}
-                  type={this.state.sceneError.type}
-                  showIcon /> : null}
-            </Modal>
-            {this.renderBody({ body: res.body })}
-          </div>
-        </section>
+
+        <h2 style={{marginTop: '10px'}}>Request</h2>
+        <Collapse defaultActiveKey={['header', 'body']}>
+          <Panel header="request header" key="header">
+            <p className="headers-list">
+              {this.renderHeaders({ headers: req.headers })}
+            </p>
+          </Panel>
+          <Panel header="request body" key="body">
+            <p className="body-content">
+              {this.renderBody({ body: req.body })}
+            </p>
+          </Panel>
+        </Collapse>
+        <h2 style={{marginTop: '10px'}}>Respose</h2>
+        <Collapse defaultActiveKey={['header', 'body']}>
+          <Panel header="response header" key="header">
+            <p className="headers-list">
+              {this.renderHeaders({ headers: res.headers })}
+            </p>
+          </Panel>
+          <Panel header="response body" key="body">
+            <p className="body-content">
+              {this.renderBody({ body: res.body })}
+            </p>
+          </Panel>
+        </Collapse>
       </div>
     );
   }
