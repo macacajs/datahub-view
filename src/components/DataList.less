@@ -11,22 +11,28 @@
     padding: 0;
 
     li {
+      position: relative;
       margin: 10px 0;
       padding: 5px;
       cursor: pointer;
       overflow: hidden;
-
       &:hover {
         background: #eee;
+        .right {
+          display: block;
+        }
       }
 
       .left {
         float: left;
-        width: 70%;
+        width: 100%;
       }
 
       .right {
-        float: right;
+        position: absolute;
+        right: 0;
+        top: 18px;
+        display: none;
         width: 23%;
         margin-right: 5px;
       }
@@ -45,6 +51,9 @@
     h3 {
       font-size: 15px;
       font-weight: 400;
+      overflow: hidden;
+      text-overflow:ellipsis;
+      white-space: nowrap;
       color: #49a9ee;
     }
 
