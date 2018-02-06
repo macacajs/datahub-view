@@ -14,8 +14,7 @@
     "type": "git",
     "url": "git://github.com/macacajs/datahub-view.git"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "antd": "^3.0.1",
     "babel-core": "^6.25.0",
@@ -53,6 +52,7 @@
     "react-syntax-highlighter": "^5.6.3",
     "socket.io": "^2.0.4",
     "style-loader": "^0.18.2",
+    "stylelint": "^8.4.0",
     "type-detect": "^4.0.5",
     "validator": "^9.1.2",
     "webpack": "^3.10.0",
@@ -64,7 +64,7 @@
     "dev": "webpack-dev-server",
     "dev:test": "cross-env NODE_ENV=test webpack-dev-server",
     "build": "cross-env NODE_ENV=production webpack -p --progress --hide-modules",
-    "lint": "eslint src . --ext js,jsx --fix",
+    "lint": "eslint src . --ext js,jsx --fix && stylelint --fix src/**/*.less -s less",
     "prepublish": "npm run build",
     "serve": "npm run dev:test &",
     "test": "macaca run -d ./test --verbose --reporter macaca-reporter",
