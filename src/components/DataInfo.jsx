@@ -78,7 +78,9 @@ class DataInfo extends React.Component {
     let schemaContent = {};
 
     if (currentData && currentData.params) {
-      schemaContent = JSON.parse(currentData.params);
+      try {
+        schemaContent = JSON.parse(currentData.params);
+      } catch (e) {}
     }
 
     this.state = {
@@ -90,7 +92,7 @@ class DataInfo extends React.Component {
       schemaModalVisible: false,
       schemaJSONParseError: false,
       schemaNewData: '',
-      schemaData: schemaContent.schemaData || [],
+      schemaData: schemaContent && schemaContent.schemaData instanceof Array && schemaContent.schemaData || [],
       enableSchemaValidate: false,
       proxyContent: currentData && currentData.proxyContent,
       scenes: currentData && currentData.scenes,
@@ -376,6 +378,12 @@ class DataInfo extends React.Component {
   confirmSchemaModal (data) {
     try {
       const newData = JSON.parse(this.state.schemaNewData);
+      if (!(newData instanceof Array)) {
+        this.setState({
+          schemaFormatError: true,
+        });
+        return;
+      }
       this.setState({
         schemaModalVisible: false,
       });
@@ -545,7 +553,8 @@ class DataInfo extends React.Component {
                   options={{ ...codeMirrorOptions }}
                   onChange={this.schemaModalTextAreaChange.bind(this)}
                 />
-                {this.state.schemaJSONParseError && <Alert style={{marginTop: '20px'}} message="JSON 格式错误" type="warning" />}
+                {this.state.schemaJSONParseError && <Alert style={{marginTop: '20px'}} message={this.props.intl.formatMessage({id: 'fieldDes.jsonFormatError'})} type="warning" />}
+                {this.state.schemaFormatError && <Alert style={{marginTop: '20px'}} message={this.props.intl.formatMessage({id: 'fieldDes.pleaseInputArray'})} type="warning" />}
               </Modal>
             </div>
           </section>
