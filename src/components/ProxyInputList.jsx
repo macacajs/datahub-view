@@ -30,11 +30,17 @@ let uuid = 0;
 class DynamicFieldSet extends Component {
   constructor (props) {
     super(props);
+
+    let proxyContent = {};
+    try {
+      proxyContent = JSON.parse(props.proxyContent);
+    } catch (e) {}
+
     this.state = {
-      useProxy: false,
-      currentProxyIndex: 1,
-      proxies: [],
-      originKeys: [],
+      useProxy: proxyContent && proxyContent.useProxy,
+      currentProxyIndex: proxyContent && proxyContent.currentProxyIndex || 1,
+      proxies: proxyContent && proxyContent.proxies || [],
+      originKeys: proxyContent && proxyContent.originKeys || [],
       isErrorInput: {},
       proxyUrlError: null,
     };
