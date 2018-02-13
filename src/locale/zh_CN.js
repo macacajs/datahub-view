@@ -63,9 +63,6 @@ const zhCN = {
   'dashboard.modalNameTip': '请输入不为字母或者数字',
   'dashboard.modalDescription': '项目描述',
   'dashboard.modalDescriptionTip': '请输入不为空的中文或者数字',
-  'dashboard.tableId': '项目ID',
-  'dashboard.tableDescription': '描述',
-  'dashboard.tableOperation': '操作',
   'dashboard.tableAdd': '添加项目',
 
   'document.schemaDes': 'Schema 描述',
