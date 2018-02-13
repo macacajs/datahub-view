@@ -124,7 +124,6 @@ export default class Document extends React.Component {
       list.map((item, index) => {
         return (
           <TabPane tab={item.name} key={`tab-${index}`}>
-
             <CodeMirror
               value={JSON.stringify(item.data, null, 2)}
               options={{ ...codeMirrorOptions }}
@@ -139,13 +138,15 @@ export default class Document extends React.Component {
 
   render () {
     return (
-      <Layout style={{ padding: '10px 20px 0 20px'}}>
-        <Sider width="300" style={{
-          background: 'none',
-          borderRight: '1px solid #eee',
-          marginRight: '20px',
-          paddingRight: '20px',
-        }}>
+      <Layout style={{ padding: '10px 10px 0 10px'}}>
+        <Sider
+          width="300"
+          style={{
+            background: 'none',
+            borderRight: '1px solid #eee',
+            paddingRight: '10px',
+          }}
+        >
           <div className="datalist">
             <ul>
               {

@@ -6,6 +6,10 @@
     margin: 10px 0;
   }
 
+  .ant-btn {
+    width: 100%;
+  }
+
   ul {
     margin-top: 10px;
     padding: 0;
@@ -13,27 +17,27 @@
     li {
       position: relative;
       margin: 10px 0;
-      padding: 5px;
+      padding: 5px 0 15px 5px;
       cursor: pointer;
       overflow: hidden;
       &:hover {
         background: #eee;
         .right {
-          display: block;
+          opacity: 1;
         }
       }
 
       .left {
-        float: left;
         width: 100%;
+        margin-top: 4px;
       }
 
       .right {
         position: absolute;
         right: 0;
-        top: 18px;
-        display: none;
-        width: 23%;
+        top: 20px;
+        transition: opacity .5s linear;
+        opacity: 0;
         margin-right: 5px;
       }
     }
@@ -58,8 +62,12 @@
     }
 
     p {
-      font-size: 13px;
       line-height: 15px;
+      margin: 0;
     }
+  }
+  .delete-icon {
+    color: #f5222d;
+    font-size: 30px;
   }
 }

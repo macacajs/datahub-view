@@ -155,7 +155,12 @@ class EditableTable extends React.Component {
               onClick={this.plus.bind(this, index, record)}
             />
           </Button>
-          <Popconfirm title={this.props.intl.formatMessage({id: 'common.deleteTip'})} onConfirm={this.minus.bind(this, index, record)} okText={this.props.intl.formatMessage({id: 'common.confirm'})} cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}>
+          <Popconfirm
+            title={this.props.intl.formatMessage({id: 'common.deleteTip'})}
+            onConfirm={this.minus.bind(this, index, record)}
+            okText={this.props.intl.formatMessage({id: 'common.confirm'})}
+            cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}
+          >
             <Button
               size="small"
               style={{ marginLeft: '3px' }}
@@ -186,7 +191,13 @@ class EditableTable extends React.Component {
 
   modify (value, index, column, record) {
     const data = this.props.schemaData || [];
-    const res = _.operateSchema('modify', { item: record, data, index, key: column, value });
+    const res = _.operateSchema('modify', {
+      item: record,
+      data,
+      index,
+      key: column,
+      value,
+    });
     this.props.onChange(res);
 
     this.setState({
@@ -232,7 +243,13 @@ class EditableTable extends React.Component {
   render () {
     const data = this.getDataList();
     return (
-      <Table size="small" pagination={false} bordered dataSource={data} columns={this.columns} />
+      <Table
+        size="small"
+        pagination={false}
+        bordered
+        dataSource={data}
+        columns={this.columns}
+      />
     );
   }
 }

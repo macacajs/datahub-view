@@ -12,7 +12,7 @@ const enUS = {
   'topNav.allProject': 'all projects',
   'topNav.projectConfig': 'project config',
 
-  'apiList.addApi': 'add API',
+  'apiList.addApi': 'Add API',
   'apiList.searchApi': 'search API',
   'apiList.apiNameInput': 'please input api name',
   'apiList.apiDesInput': 'please input api description',

@@ -7,7 +7,6 @@ import {
   injectIntl,
 } from 'react-intl';
 
-
 import {
   Alert,
   Layout,
@@ -158,13 +157,15 @@ class Project extends React.Component {
 
   render () {
     return (
-      <Layout style={{ padding: '10px 20px 0 20px'}}>
-        <Sider width="300" style={{
-          background: 'none',
-          borderRight: '1px solid #eee',
-          marginRight: '20px',
-          paddingRight: '20px',
-        }}>
+      <Layout style={{ padding: '10px 10px 0 10px'}}>
+        <Sider
+          width="300"
+          style={{
+            background: 'none',
+            borderRight: '1px solid #eee',
+            paddingRight: '10px',
+          }}
+        >
           <Tabs
             defaultActiveKey="apilist"
             onChange={this.tabOnChange.bind(this)}
@@ -189,21 +190,20 @@ class Project extends React.Component {
         </Sider>
         <Content>
           {
-            !this.state.data.length &&
-            <Alert
-              className="add-api-hint"
-              message={this.props.intl.formatMessage({id: 'project.createApi'})}
-              type="info"
-              showIcon
-            />
-          }
-          {
             this.state.data.length
               ? this.state.contentViewType === 'api' &&
             <DataInfo
               currentData={this.state.data[this.state.currentIndex]}
               handleAsynSecType={this.asynSecType.bind(this)}
-            /> : ''
+            />
+              : <div className="datainfo">
+                <Alert
+                  className="add-api-hint"
+                  message={this.props.intl.formatMessage({id: 'project.createApi'})}
+                  type="info"
+                  showIcon
+                />
+              </div>
           }
           {
             this.state.data.length
@@ -212,7 +212,7 @@ class Project extends React.Component {
               handleAsynSecType={this.asynSecType.bind(this)}
               apis={this.state.data}
               data={this.state.realTimeDataList[this.state.realTimeIndex]}
-            /> : ''
+            /> : null
           }
         </Content>
       </Layout>

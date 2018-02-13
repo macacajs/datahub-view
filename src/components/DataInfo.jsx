@@ -35,6 +35,7 @@ import {
   Popconfirm,
   Breadcrumb,
   InputNumber,
+  Icon,
 } from 'antd';
 
 import _ from '../common/helper';
@@ -122,7 +123,9 @@ class DataInfo extends React.Component {
       schemaContent = JSON.parse(currentData.params);
     }
 
-    const { statusCode } = this.parseHeaders(currentData);
+    const {
+      statusCode,
+    } = this.parseHeaders(currentData);
 
     this.setState({
       statusCode,
@@ -214,7 +217,7 @@ class DataInfo extends React.Component {
     });
   }
 
-  onConfirmRemoveScene (index) {
+  onRemoveScene (index) {
     const newData = [...this.state.scenes];
     newData.splice(index, 1);
 
@@ -431,7 +434,7 @@ class DataInfo extends React.Component {
 
   render () {
     const projectId = window.pageConfig.projectId;
-    const apiHref = `http://${location.host}/data/${projectId}/${this.state.pathname}`;
+    const apiHref = `//${location.host}/data/${projectId}/${this.state.pathname}`;
     return (
       <div className="datainfo">
         <Breadcrumb>
@@ -439,8 +442,11 @@ class DataInfo extends React.Component {
             <a href="/dashboard"><FormattedMessage id="topNav.allProject" /></a>
           </Breadcrumb.Item>
           <Breadcrumb.Item>
-            { this.state.description ? this.state.description
-              : this.state.pathname }
+            {
+              this.state.description
+                ? this.state.description
+                : this.state.pathname
+            }
           </Breadcrumb.Item>
           <Breadcrumb.Item>
             <FormattedMessage id="topNav.projectConfig" />
@@ -463,11 +469,16 @@ class DataInfo extends React.Component {
               </a>
             </div>
             <div>
-              <span><FormattedMessage id='apiConfig.HTTP' /></span>
+              <span>
+                <FormattedMessage id='apiConfig.HTTP' />
+              </span>
               <Select
                 defaultValue={this.state.method}
                 value={this.state.method}
-                style={{ width: 120, marginLeft: 10 }}
+                style={{
+                  width: 120,
+                  marginLeft: 10,
+                }}
                 onChange={this.handleOptionChange.bind(this)}
               >
                 <Option value="ALL">ALL</Option>
@@ -479,45 +490,102 @@ class DataInfo extends React.Component {
               </Select>
             </div>
             <div className="api-description">
-              <span><FormattedMessage id='apiConfig.apiDescription' /></span>
-              <Input className="des-content" onBlur={this.handleDescriptionBlur.bind(this)} onChange={this.handleDescriptionChange.bind(this)} value={this.state.description}></Input>
+              <span>
+                <FormattedMessage id='apiConfig.apiDescription' />
+              </span>
+              <Input className="des-content"
+                style={{
+                  marginLeft: 10,
+                }}
+                onBlur={this.handleDescriptionBlur.bind(this)}
+                onChange={this.handleDescriptionChange.bind(this)}
+                value={this.state.description}
+              />
             </div>
             <div className="api-delay">
-              <span><FormattedMessage id='apiConfig.apiDelay' /></span>
-              <InputNumber min={0} max={5} value={parseInt(this.state.delay, 10)} onChange={this.delayChange.bind(this)} /> <FormattedMessage id='apiConfig.second' />
+              <span>
+                <FormattedMessage id='apiConfig.apiDelay' />
+              </span>
+              <InputNumber
+                style={{
+                  marginLeft: 10,
+                }}
+                min={0}
+                max={5}
+                value={parseInt(this.state.delay, 10)}
+                onChange={this.delayChange.bind(this)}
+              />
+              <FormattedMessage id='apiConfig.second' />
             </div>
             <div className="api-status-code">
-              <span><FormattedMessage id='apiConfig.statusCode' /></span>
-              <Input onChange={e => { this.setState({ statusCode: e.target.value}); }} onBlur={this.statusCodeChange} value={this.state.statusCode} maxLength="3"></Input>（200 ~ 501）</div>
+              <span>
+                <FormattedMessage id='apiConfig.statusCode' />
+              </span>
+              <Input
+                style={{
+                  marginLeft: 10,
+                }}
+                onChange={e => {
+                  this.setState({
+                    statusCode: e.target.value,
+                  });
+                }}
+                onBlur={this.statusCodeChange}
+                value={this.state.statusCode}
+                maxLength="3"
+              />（200 ~ 501）
+            </div>
           </section>
           <section className="data-scene">
-            <h1><FormattedMessage id='sceneMng.title' /></h1>
+            <h1>
+              <FormattedMessage id='sceneMng.title' />
+            </h1>
             <div>
               <div className="add-input">
-                <Input style={{ width: '200px' }} placeholder={this.props.intl.formatMessage({id: 'sceneMng.inputTip'})} onChange={this.handleAddSceneChange.bind(this)} />
-                <Button style={{ marginBottom: `${this.state.sceneError ? '10px' : '0'}` }} type="primary" onClick={this.handleAdd.bind(this)}>
+                <Input style={{ width: '200px' }}
+                  placeholder={this.props.intl.formatMessage({id: 'sceneMng.inputTip'})}
+                  onChange={this.handleAddSceneChange.bind(this)}
+                />
+                <Button
+                  style={{
+                    marginBottom: `${this.state.sceneError ? '10px' : '0'}`,
+                  }}
+                  type="primary"
+                  onClick={this.handleAdd.bind(this)}
+                >
                   <FormattedMessage id='sceneMng.addSceneBtn' />
                 </Button>
-                {this.state.sceneError
-                  ? <Alert
-                    message={this.state.sceneError.message}
-                    type={this.state.sceneError.type}
-                    showIcon
-                  /> : null}
+                {
+                  this.state.sceneError
+                    ? <Alert
+                      message={this.state.sceneError.message}
+                      type={this.state.sceneError.type}
+                      showIcon
+                    /> : null
+                }
               </div>
-              <RadioGroup name="radiogroup" value={this.state.currentScene} onChange={this.handleSceneChange.bind(this)}>
+              <RadioGroup
+                name="radiogroup"
+                value={this.state.currentScene}
+                onChange={this.handleSceneChange.bind(this)}
+              >
                 {
                   this.state.scenes && this.state.scenes.map((scene, index) => {
                     return (
-                      <Radio value={scene.name} key={scene.name}>
+                      <Radio className="radio-container" value={scene.name} key={scene.name}>
                         <span>{ scene.name }</span>
-                        <Button size="small" onClick={this.showModal.bind(this, index)}>
-                          <FormattedMessage id='common.look' />
-                        </Button>
-                        <Popconfirm title={<FormattedMessage id='common.deleteTip' />} onConfirm={this.onConfirmRemoveScene.bind(this, index)} okText={<FormattedMessage id='common.confirm' />} cancelText={<FormattedMessage id='common.cancel' />}>
-                          <Button type="danger" size="small" >
-                            <FormattedMessage id='common.delete' />
-                          </Button>
+                        <Icon
+                          type="edit"
+                          className="view-icon"
+                          onClick={this.showModal.bind(this, index)}
+                        />
+                        <Popconfirm
+                          title={<FormattedMessage id='common.deleteTip' />}
+                          onConfirm={this.onRemoveScene.bind(this, index)}
+                          okText={<FormattedMessage id='common.confirm' />}
+                          cancelText={<FormattedMessage id='common.cancel' />}
+                        >
+                          <Icon className="delete-icon" type="delete" />
                         </Popconfirm>
                       </Radio>
                     );
