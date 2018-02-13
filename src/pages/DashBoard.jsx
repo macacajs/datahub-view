@@ -22,7 +22,9 @@ import {
 
 import './DashBoard.less';
 
-import request from '../common/fetch';
+import request, {
+  fetch,
+} from '../common/fetch';
 
 const FormItem = Form.Item;
 
@@ -66,7 +68,7 @@ class EditableCell extends React.Component {
       <div className="editable-cell">
         {
           editable
-            ? <div className="editable-cell-input-wrapper">
+            ? <div className="input-wrapper">
               <Input
                 value={value}
                 style={{
@@ -77,15 +79,15 @@ class EditableCell extends React.Component {
               />
               <Icon
                 type="check"
-                className="editable-cell-icon-check"
+                className="icon-check"
                 onClick={this.check.bind(this)}
               />
             </div>
-            : <div className="editable-cell-text-wrapper">
+            : <div className="text-wrapper">
               {value || ' '}
               <Icon
                 type="edit"
-                className="editable-cell-icon"
+                className="icon"
                 onClick={this.edit.bind(this)}
               />
             </div>
@@ -166,6 +168,7 @@ class DashBoard extends React.Component {
       visible: false,
       loading: false,
       listData: [],
+      sizeMap: {},
     };
   }
 
@@ -248,6 +251,36 @@ class DashBoard extends React.Component {
     });
   }
 
+  fetchApiNumber (identifer) {
+    if (this.state.sizeMap[identifer]) {
+      return;
+    }
+    fetch(`/api/data/${identifer}`)
+      .then(res => {
+        if (res.ok) {
+          const size = parseInt(res.headers.get('Content-length') || 0, 10);
+          const sizeStr = size >= 1024 ? `${(size / 1024).toFixed(2)}KB` : `${size}B`;
+          res.json().then(d => {
+            if (d.success) {
+              const obj = Object.assign({}, this.state.sizeMap);
+              const json = {
+                [identifer]: {
+                  size: sizeStr,
+                  number: d.data.length || 0,
+                },
+              };
+              this.setState({
+                sizeMap: Object.assign(obj, json),
+              });
+            }
+          });
+          return res;
+        } else {
+          throw new Error('Network Errror');
+        }
+      });
+  }
+
   render () {
     return (
       <div className="dashboard">
@@ -255,10 +288,11 @@ class DashBoard extends React.Component {
           <Col span="22">
             <Row>
               {
-                this.state.listData.map((r, i) => {
+                this.state.listData.map((item, i) => {
+                  this.fetchApiNumber(item.identifer);
                   const editor = <EditableCell
-                    value={r.description}
-                    onChange={value => this.onCellChange(value, r.identifer)}
+                    value={item.description}
+                    onChange={value => this.onCellChange(value, item.identifer)}
                   />;
 
                   return (
@@ -271,20 +305,36 @@ class DashBoard extends React.Component {
                         >
                           <Row type="flex">
                             <Col span={24} className="main-icon">
-                              <a href={`/project/${r.identifer}`} target="_blank">
+                              <a href={`/project/${item.identifer}`} target="_blank">
                                 <Icon type="inbox" />
                               </a>
                             </Col>
                             <Row type="flex" className="sub-info">
-                              <Col span={22}>
-                                {r.identifer}
+                              <Col span={22} key={item.identifer}>
+                                {item.identifer}
+                                <span className="main-info">
+                                  <Icon type="file" />
+                                  {
+                                    this.state.sizeMap[item.identifer]
+                                      ? this.state.sizeMap[item.identifer].number
+                                      : null
+                                  }
+                                  <Icon type="hdd" />
+                                  {
+                                    this.state.sizeMap[item.identifer]
+                                      ? this.state.sizeMap[item.identifer].size
+                                      : null
+                                  }
+                                </span>
                               </Col>
                               <Col span={2} style={{textAlign: 'right'}}>
-                                <Popconfirm title={this.props.intl.formatMessage({id: 'common.deleteTip'})} onConfirm={this.handleDelete.bind(this, i)} okText={this.props.intl.formatMessage({id: 'common.confirm'})} cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}>
-                                  <Icon
-                                    className="delete-icon"
-                                    type="delete"
-                                  />
+                                <Popconfirm
+                                  title={this.props.intl.formatMessage({id: 'common.deleteTip'})}
+                                  onConfirm={this.handleDelete.bind(this, i)}
+                                  okText={this.props.intl.formatMessage({id: 'common.confirm'})}
+                                  cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}
+                                >
+                                  <Icon className="delete-icon" type="delete" />
                                 </Popconfirm>
                               </Col>
                             </Row>

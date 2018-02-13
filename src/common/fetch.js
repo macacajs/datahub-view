@@ -1,3 +1,5 @@
+'use strict';
+
 import 'whatwg-fetch';
 
 const verbs = {
@@ -61,7 +63,9 @@ const request = (url, method = 'GET', params = {}) => {
       } else {
         throw new Error('Network Errror');
       }
-    }).then(res => res.json());
+    })
+    .then(res => res.json());
 };
 
 module.exports = request;
+module.exports.fetch = fetch;

@@ -9,6 +9,7 @@ import {
   Alert,
   Col,
   Popconfirm,
+  Icon,
 } from 'antd';
 import _ from 'lodash';
 
@@ -144,10 +145,13 @@ class DataList extends React.Component {
                     <p>{api.description}</p>
                   </div>
                   <div className="right">
-                    <Popconfirm title={this.props.intl.formatMessage({id: 'common.deleteTip'})} onConfirm={this.onConfirmRemoveApi.bind(this, index)} okText={this.props.intl.formatMessage({id: 'common.confirm'})} cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}>
-                      <Button type="danger">
-                        <FormattedMessage id='common.delete' />
-                      </Button>
+                    <Popconfirm
+                      title={this.props.intl.formatMessage({id: 'common.deleteTip'})}
+                      onConfirm={this.onConfirmRemoveApi.bind(this, index)}
+                      okText={this.props.intl.formatMessage({id: 'common.confirm'})}
+                      cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}
+                    >
+                      <Icon className="delete-icon" type="delete" />
                     </Popconfirm>
                   </div>
                 </li>
@@ -175,12 +179,16 @@ class DataList extends React.Component {
             })}
             style={{ margin: '10px 0' }}
             onChange={this.modalDescriptionChange.bind(this)}
-            value={this.state.modalDescription} />
-          {this.state.errorAlert && this.state.errorAlert.message
-            ? <Alert
-              message={this.state.errorAlert.message}
-              type={this.state.errorAlert.type}
-              showIcon/> : null}
+            value={this.state.modalDescription}
+          />
+          {
+            this.state.errorAlert && this.state.errorAlert.message
+              ? <Alert
+                message={this.state.errorAlert.message}
+                type={this.state.errorAlert.type}
+                showIcon
+              /> : null
+          }
         </Modal>
       </div>
     );

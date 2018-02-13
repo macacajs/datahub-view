@@ -7,6 +7,8 @@ import ReactDom from 'react-dom';
 import {
   Button,
   Layout,
+  Row,
+  Col,
 } from 'antd';
 
 import {
@@ -68,9 +70,13 @@ class App extends React.Component {
     return (
       <Layout>
         <Header>
-          <a href="/">
-            <h1>DataHub</h1>
-          </a>
+          <Row type="flex" justify="center">
+            <Col span={22}>
+              <a href="/">
+                <h1 style={{ marginLeft: '15px' }}>DataHub</h1>
+              </a>
+            </Col>
+          </Row>
         </Header>
         <Content>
           { this.pageRouter() }

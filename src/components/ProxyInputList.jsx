@@ -207,7 +207,6 @@ class DynamicFieldSet extends Component {
                 style={{ width: '355px', marginRight: 8 }}
               />
               <Button
-                size="small"
                 className="dynamic-delete-button"
                 type="danger"
                 disabled={!this.state.useProxy}
@@ -220,7 +219,10 @@ class DynamicFieldSet extends Component {
       );
     });
     return (
-      <Form onSubmit={this.handleSubmit.bind(this)} className="proxyInputList">
+      <Form
+        onSubmit={this.handleSubmit.bind(this)}
+        className="proxyInputList"
+      >
         <FormItem {...formItemLayout}>
           <Checkbox
             checked={this.state.useProxy}
@@ -229,22 +231,27 @@ class DynamicFieldSet extends Component {
             <FormattedMessage id='proxyConfig.isUseProxy' />
           </Checkbox>
           <Button size="small" type="dashed" onClick={this.add.bind(this)} style={{ marginLeft: '200px' }}>
-            <Icon type="plus" /><FormattedMessage id='proxyConfig.addProxy' />
+            <Icon type="plus" />
+            <FormattedMessage id='proxyConfig.addProxy' />
           </Button>
-          <Button size="small" type="primary" htmlType="submit" style={{ width: '55px' }}><FormattedMessage id='common.submite' /></Button>
+          <Button size="small" type="primary" htmlType="submit">
+            <FormattedMessage id='common.submite' />
+          </Button>
         </FormItem>
-
         <RadioGroup
           onChange={this.onRadioChange.bind(this)}
           value={this.state.currentProxyIndex}
         >
           {formItems}
         </RadioGroup>
-        {this.state.proxyUrlError
-          ? <Alert
-            message={this.state.proxyUrlError.message}
-            type={this.state.proxyUrlError.type}
-            showIcon /> : null}
+        {
+          this.state.proxyUrlError
+            ? <Alert
+              message={this.state.proxyUrlError.message}
+              type={this.state.proxyUrlError.type}
+              showIcon
+            /> : null
+        }
       </Form>
     );
   }

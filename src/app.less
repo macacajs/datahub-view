@@ -23,7 +23,7 @@ body {
   box-shadow: 0 3px 7px @bg-color;
   padding: 0;
   h1 {
-    margin: 0 0 0 48px;
+    margin: 0;
     line-height: 10vh;
   }
 }
@@ -66,7 +66,7 @@ body {
 .editable-cell {
   height: 26px;
   &:hover {
-    .editable-cell-icon {
+    .icon {
       transition: opacity .5s linear;
       opacity: 1;
     }
@@ -74,10 +74,10 @@ body {
   .ant-input {
     height: 26px;
   }
-  .editable-cell-icon {
+  .icon {
     opacity: 0;
   }
-  .editable-cell-icon-check {
+  .icon-check {
     margin-left: 4px;
   }
 }

@@ -1,3 +1,5 @@
+'use strict';
+
 import lodash from 'lodash';
 import typeDetect from 'type-detect';
 
