@@ -92,7 +92,9 @@ class DataInfo extends React.Component {
       schemaModalVisible: false,
       schemaJSONParseError: false,
       schemaNewData: '',
-      schemaData: schemaContent && schemaContent.schemaData instanceof Array && schemaContent.schemaData || [],
+      schemaData: schemaContent &&
+        schemaContent.schemaData instanceof Array &&
+        schemaContent.schemaData || [],
       enableSchemaValidate: false,
       proxyContent: currentData && currentData.proxyContent,
       scenes: currentData && currentData.scenes,

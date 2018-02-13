@@ -1,9 +1,45 @@
 @import '../mixin.less';
 
 .dashboard {
-  .dashboard-add-button {
-    margin: 20px 20px 20px 0;
-    float: right;
+  .content {
+    padding: 15px;
+    .anticon {
+      cursor: pointer;
+    }
+    .main-icon {
+      .anticon {
+        transition: color .5s linear;
+        cursor: pointer;
+        font-size: 80px;
+        color: rgba(128, 128, 128, 0.4);
+        &:hover {
+          color: #1890ff;
+        }
+      }
+    }
+    .ant-col-24.main-icon {
+      text-align: center;
+    }
+    .sub-info {
+      width: 100%;
+      border-top: 1px solid rgba(171, 171, 171, 0.2);
+      margin-top: 12px;
+      padding-top: 8px;
+      min-height: 30px;
+      &.blank {
+        border-top: 1px solid transparent;
+      }
+    }
+    .delete-icon {
+      color: #f5222d;
+      transition: opacity .5s linear;
+      opacity: 0;
+    }
+    &:hover {
+      .delete-icon {
+        opacity: 1;
+      }
+    }
   }
   .dashboard-table {
     margin: 5px;

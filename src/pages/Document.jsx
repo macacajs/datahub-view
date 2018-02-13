@@ -139,7 +139,7 @@ export default class Document extends React.Component {
 
   render () {
     return (
-      <Layout style={{ padding: '0 20px', marginTop: '10px' }}>
+      <Layout style={{ padding: '10px 20px 0 20px'}}>
         <Sider width="300" style={{
           background: 'none',
           borderRight: '1px solid #eee',

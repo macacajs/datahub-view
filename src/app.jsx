@@ -5,6 +5,11 @@ import React from 'react';
 import ReactDom from 'react-dom';
 
 import {
+  Button,
+  Layout,
+} from 'antd';
+
+import {
   addLocaleData,
   IntlProvider,
 } from 'react-intl';
@@ -13,11 +18,6 @@ import zhCN from './locale/zh_CN';
 import enUS from './locale/en_US';
 import zh from 'react-intl/locale-data/zh';
 import en from 'react-intl/locale-data/en';
-
-import {
-  Button,
-  Layout,
-} from 'antd';
 
 import Project from './pages/Project';
 import Document from './pages/Document';
@@ -76,7 +76,7 @@ class App extends React.Component {
           { this.pageRouter() }
         </Content>
         <Footer>
-          &copy;&nbsp;<a target="_blank" href={ pkg.homepage }>Macaca Team</a> { new Date().getFullYear() }
+          &copy;&nbsp;<a target="_blank" href={ pkg.homepage }>Macaca Team</a> 2015-{ new Date().getFullYear() }
         </Footer>
       </Layout>
     );

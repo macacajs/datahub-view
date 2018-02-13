@@ -5,8 +5,6 @@ import React, {
 } from 'react';
 
 import {
-  Table,
-  Button,
   Modal,
   Form,
   Input,
@@ -14,6 +12,7 @@ import {
   Row,
   Col,
   Icon,
+  Card,
 } from 'antd';
 
 import {
@@ -44,18 +43,25 @@ class EditableCell extends React.Component {
   }
 
   check () {
-    this.setState({ editable: false });
+    this.setState({
+      editable: false,
+    });
     if (this.props.onChange) {
       this.props.onChange(this.state.value);
     }
   }
 
   edit () {
-    this.setState({ editable: true });
+    this.setState({
+      editable: true,
+    });
   }
 
   render () {
-    const { value, editable } = this.state;
+    const {
+      value,
+      editable,
+    } = this.state;
     return (
       <div className="editable-cell">
         {
@@ -63,7 +69,9 @@ class EditableCell extends React.Component {
             ? <div className="editable-cell-input-wrapper">
               <Input
                 value={value}
-                style={{ width: '200px' }}
+                style={{
+                  width: '80%',
+                }}
                 onChange={this.handleChange.bind(this)}
                 onPressEnter={this.check.bind(this)}
               />
@@ -241,54 +249,73 @@ class DashBoard extends React.Component {
   }
 
   render () {
-    const columns = [{
-      title: this.props.intl.formatMessage({id: 'dashboard.tableId'}),
-      dataIndex: 'identifer',
-      width: '20%',
-      key: 'identifer',
-      render: text => <a href={`/project/${text}`}>{text}</a>,
-    }, {
-      title: this.props.intl.formatMessage({id: 'dashboard.tableDescription'}),
-      dataIndex: 'description',
-      key: 'description',
-      render: (text, record) => (
-        <EditableCell
-          value={text}
-          onChange={value => this.onCellChange(value, record.identifer)}
-        />
-      ),
-    }, {
-      title: this.props.intl.formatMessage({id: 'dashboard.tableOperation'}),
-      dataIndex: 'operation',
-      key: 'operation',
-      width: '100px',
-      render: (text, record, index) => {
-        return (
-          <Popconfirm title={this.props.intl.formatMessage({id: 'common.deleteTip'})} onConfirm={this.handleDelete.bind(this, index)} okText={this.props.intl.formatMessage({id: 'common.confirm'})} cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}>
-            <Button
-              className="project-delete-button"
-              type="danger"
-              ghost
-            ><FormattedMessage id='common.delete' /></Button>
-          </Popconfirm>
-        );
-      },
-    }];
-
     return (
       <div className="dashboard">
         <Row type="flex" justify="center">
-          <Col span="20">
-            <Button
-              type="primary"
-              className="dashboard-add-button"
-              onClick={this.showModal.bind(this)}
-            >
-              <FormattedMessage id='dashboard.tableAdd' />
-            </Button>
-          </Col>
-          <Col span="20">
-            <Table columns={columns} dataSource={this.state.listData} size="middle" className="dashboard-table"/>
+          <Col span="22">
+            <Row>
+              {
+                this.state.listData.map((r, i) => {
+                  const editor = <EditableCell
+                    value={r.description}
+                    onChange={value => this.onCellChange(value, r.identifer)}
+                  />;
+
+                  return (
+                    <Col span={8} key={i}>
+                      <div className="content">
+                        <Card
+                          title={ editor }
+                          bordered={ false }
+                          style={{ color: '#000' }}
+                        >
+                          <Row type="flex">
+                            <Col span={24} className="main-icon">
+                              <a href={`/project/${r.identifer}`} target="_blank">
+                                <Icon type="inbox" />
+                              </a>
+                            </Col>
+                            <Row type="flex" className="sub-info">
+                              <Col span={22}>
+                                {r.identifer}
+                              </Col>
+                              <Col span={2} style={{textAlign: 'right'}}>
+                                <Popconfirm title={this.props.intl.formatMessage({id: 'common.deleteTip'})} onConfirm={this.handleDelete.bind(this, i)} okText={this.props.intl.formatMessage({id: 'common.confirm'})} cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}>
+                                  <Icon
+                                    className="delete-icon"
+                                    type="delete"
+                                  />
+                                </Popconfirm>
+                              </Col>
+                            </Row>
+                          </Row>
+                        </Card>
+                      </div>
+                    </Col>
+                  );
+                })
+              }
+              <Col span={8}>
+                <div className="content">
+                  <Card
+                    title={<FormattedMessage id='dashboard.tableAdd' />}
+                    bordered={ false }
+                    style={{ color: '#000' }}
+                  >
+                    <Row type="flex">
+                      <Col span={24} className="main-icon">
+                        <Icon
+                          onClick={this.showModal.bind(this)}
+                          type="folder-add"
+                        />
+                      </Col>
+                      <Row type="flex" className="sub-info blank">
+                      </Row>
+                    </Row>
+                  </Card>
+                </div>
+              </Col>
+            </Row>
           </Col>
           <CollectionCreateForm
             ref={this.saveFormRef.bind(this)}

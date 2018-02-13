@@ -1,7 +1,7 @@
 {
   "name": "datahub-view",
-  "version": "1.0.32",
-  "description": "datahub view layer",
+  "version": "1.0.33",
+  "description": "DataHub view layer",
   "eggPlugin": {
     "name": "dataHubView"
   },
@@ -62,9 +62,9 @@
   },
   "scripts": {
     "dev": "webpack-dev-server",
-    "dev:test": "cross-env NODE_ENV=test webpack-dev-server",
-    "build": "cross-env NODE_ENV=production webpack -p --progress --hide-modules",
-    "lint": "eslint src . --ext js,jsx --fix && stylelint --fix src/**/*.less -s less",
+    "dev:test": "cross-env NODE_ENV=test npm run dev",
+    "build": "cross-env NODE_ENV=production webpack -p --hide-modules",
+    "lint": "eslint . --ext js,jsx --fix && stylelint --fix src/**/*.less -s less",
     "prepublish": "npm run build",
     "serve": "npm run dev:test &",
     "test": "macaca run -d ./test --verbose --reporter macaca-reporter",
