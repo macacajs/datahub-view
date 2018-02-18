@@ -5,15 +5,15 @@ import React from 'react';
 import ReactDom from 'react-dom';
 
 import {
-  Button,
-  Layout,
   Row,
   Col,
+  Layout,
 } from 'antd';
 
 import {
   addLocaleData,
   IntlProvider,
+  FormattedMessage,
 } from 'react-intl';
 
 import zhCN from './locale/zh_CN';
@@ -21,6 +21,7 @@ import enUS from './locale/en_US';
 import zh from 'react-intl/locale-data/zh';
 import en from 'react-intl/locale-data/en';
 
+import Home from './pages/Home';
 import Project from './pages/Project';
 import Document from './pages/Document';
 import DashBoard from './pages/DashBoard';
@@ -48,33 +49,36 @@ class App extends React.Component {
       case 'doc':
         return <Document />;
       default:
-        return (
-          <div className="index-content">
-            <p>macaca-datahub version: { window.pageConfig.version }</p>
-            <p>datahub-view version: { pkg.version }</p>
-            <a className="go-btn" href="/dashboard">
-              <Button
-                type="primary"
-                icon="rocket"
-                size="large"
-                ghost
-              >Go Now
-              </Button>
-            </a>
-          </div>
-        );
+        return <Home />;
     }
   }
 
   render () {
     return (
-      <Layout>
-        <Header>
+      <Layout className={`page-${this.props.pageConfig.pageId}`}>
+        <Header className="header">
           <Row type="flex" justify="center">
             <Col span={22}>
               <a href="/">
-                <h1 style={{ marginLeft: '15px' }}>DataHub</h1>
+                <h1 className="title">DataHub</h1>
               </a>
+              <ul className="nav">
+                <li className="portrait">
+                  <a title="hi Macaca!" className="mask">
+                    <img src="//npmcdn.com/macaca-logo@latest/svg/monkey.svg" />
+                  </a>
+                </li>
+                <li>
+                  <a href={ pkg.links.issue } target="_blank">
+                    <h3><FormattedMessage id="common.issue" /></h3>
+                  </a>
+                </li>
+                <li>
+                  <a href={ pkg.links.document } target="_blank">
+                    <h3><FormattedMessage id="common.document" /></h3>
+                  </a>
+                </li>
+              </ul>
             </Col>
           </Row>
         </Header>
@@ -82,7 +86,9 @@ class App extends React.Component {
           { this.pageRouter() }
         </Content>
         <Footer>
-          &copy;&nbsp;<a target="_blank" href={ pkg.homepage }>Macaca Team</a> 2015-{ new Date().getFullYear() }
+          &copy;&nbsp;<a target="_blank" href={ pkg.links.homepage }>
+            Macaca Team
+          </a> 2015-{ new Date().getFullYear() }
         </Footer>
       </Layout>
     );
@@ -95,25 +101,22 @@ App.defaultProps = {
 };
 
 const chooseLocale = () => {
-  let result = {
-    locale: 'zh-CN',
-    messages: zhCN,
-  };
   switch (window.navigator.language.split('_')[0]) {
     case 'en-US':
-      result = {
+      return {
         locale: 'en-US',
         messages: enUS,
       };
-      break;
     case 'zh-CN':
-      result = {
+      return {
         locale: 'zh-CN',
         messages: zhCN,
       };
-      break;
   }
-  return result;
+  return {
+    locale: 'zh-CN',
+    messages: zhCN,
+  };
 };
 
 if (window.pageConfig) {
