@@ -14,6 +14,12 @@
     "type": "git",
     "url": "git://github.com/macacajs/datahub-view.git"
   },
+  "links": {
+    "document": "//macacajs.github.io/datahub",
+    "issue": "//github.com/macacajs/macaca-datahub/issues",
+    "homepage": "//github.com/macacajs/macaca-datahub",
+    "macaca": "//macacajs.github.io"
+  },
   "dependencies": {},
   "devDependencies": {
     "antd": "^3.0.1",

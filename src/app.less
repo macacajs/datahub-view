@@ -58,10 +58,6 @@ body {
   margin: 0;
 }
 
-.index-content {
-  text-align: center;
-  padding-top: 4vh;
-}
 
 .editable-cell {
   height: 26px;
@@ -79,5 +75,51 @@ body {
   }
   .icon-check {
     margin-left: 4px;
+  }
+}
+
+.header {
+  min-height: 80px;
+  .title {
+    display: inline-block;
+    margin-left: 15px;
+  }
+
+  .nav {
+    float: right;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    .portrait {
+      .mask {
+        display: inline-block;
+        background: #f3f3f3;
+        margin: 0;
+        padding: 0;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        margin-top: 20px;
+        border-radius: 100%;
+        overflow: hidden;
+        text-align: center;
+      }
+      img {
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0;
+        width: 80%;
+      }
+    }
+    li {
+      display: inline-block;
+      line-height: 80px;
+      float: right;
+      list-style: none;
+      margin-left: 30px;
+      a h3 {
+        margin: 0;
+      }
+    }
   }
 }
