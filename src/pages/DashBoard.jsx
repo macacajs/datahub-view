@@ -37,9 +37,9 @@ class EditableCell extends React.Component {
     };
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps (props) {
     this.setState({
-      value: props.value
+      value: props.value,
     });
   }
 
