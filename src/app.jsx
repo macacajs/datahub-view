@@ -8,6 +8,7 @@ import {
   Row,
   Col,
   Layout,
+  Tooltip,
 } from 'antd';
 
 import {
@@ -64,9 +65,11 @@ class App extends React.Component {
               </a>
               <ul className="nav">
                 <li className="portrait">
-                  <a title="hi Macaca!" className="mask">
-                    <img src="//npmcdn.com/macaca-logo@latest/svg/monkey.svg" />
-                  </a>
+                  <Tooltip placement="bottom" title={'hi Macaca!'}>
+                    <a title="hi Macaca!" className="mask">
+                      <img src="//npmcdn.com/macaca-logo@latest/svg/monkey.svg" />
+                    </a>
+                  </Tooltip>
                 </li>
                 <li>
                   <a href={ pkg.links.issue } target="_blank">
@@ -75,7 +78,7 @@ class App extends React.Component {
                 </li>
                 <li>
                   <a href={ pkg.links.document } target="_blank">
-                    <h3><FormattedMessage id="common.document" /></h3>
+                    <h3><FormattedMessage id="common.guide" /></h3>
                   </a>
                 </li>
               </ul>
