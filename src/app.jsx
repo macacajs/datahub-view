@@ -66,7 +66,7 @@ class App extends React.Component {
               <ul className="nav">
                 <li className="portrait">
                   <Tooltip placement="bottom" title={'hi Macaca!'}>
-                    <a title="hi Macaca!" className="mask">
+                    <a className="mask">
                       <img src="//npmcdn.com/macaca-logo@latest/svg/monkey.svg" />
                     </a>
                   </Tooltip>
