@@ -5,6 +5,7 @@ import {
   Row,
   Col,
   Button,
+  Icon,
 } from 'antd';
 
 import {
@@ -67,30 +68,74 @@ class Home extends React.Component {
           </Row>
           <Row type="flex" justify="center">
             <Col span={18}>
-              <Row type="flex" justify="center" className="desc">
-                <Col span={8}>
-                  <h2>{this.props.intl.formatMessage({id: 'home.description.title-1'})}</h2>
-                  <ul>
-                    <li>{this.props.intl.formatMessage({id: 'home.description.content-1-1'})}</li>
-                    <li>{this.props.intl.formatMessage({id: 'home.description.content-1-2'})}</li>
-                    <li>{this.props.intl.formatMessage({id: 'home.description.content-1-3'})}</li>
-                  </ul>
+              <Row className="desc-icons">
+                <Col span={4}>
+                  <Icon type="cloud-o" />
+                  <div className="text">{this.props.intl.formatMessage({id: 'home.icon.cloud'})}</div>
                 </Col>
-                <Col span={8}>
-                  <h2>{this.props.intl.formatMessage({id: 'home.description.title-2'})}</h2>
-                  <ul>
-                    <li>{this.props.intl.formatMessage({id: 'home.description.content-2-1'})}</li>
-                    <li>{this.props.intl.formatMessage({id: 'home.description.content-2-2'})}</li>
-                    <li>{this.props.intl.formatMessage({id: 'home.description.content-2-3'})}</li>
-                  </ul>
+                <Col span={4}>
+                  <Icon type="team" />
+                  <div className="text">{this.props.intl.formatMessage({id: 'home.icon.team'})}</div>
                 </Col>
-                <Col span={8}>
-                  <h2>{this.props.intl.formatMessage({id: 'home.description.title-3'})}</h2>
-                  <ul>
-                    <li>{this.props.intl.formatMessage({id: 'home.description.content-3-1'})}</li>
-                    <li>{this.props.intl.formatMessage({id: 'home.description.content-3-2'})}</li>
-                    <li>{this.props.intl.formatMessage({id: 'home.description.content-3-3'})}</li>
-                  </ul>
+                <Col span={4}>
+                  <Icon type="camera-o" />
+                  <div className="text">{this.props.intl.formatMessage({id: 'home.icon.snapshot'})}</div>
+                </Col>
+                <Col span={4}>
+                  <Icon type="sync" />
+                  <div className="text">{this.props.intl.formatMessage({id: 'home.icon.dataflow'})}</div>
+                </Col>
+                <Col span={4}>
+                  <Icon type="rocket" />
+                  <div className="text">{this.props.intl.formatMessage({id: 'home.icon.quick'})}</div>
+                </Col>
+                <Col span={4}>
+                  <Icon type="eye-o" />
+                  <div className="text">{this.props.intl.formatMessage({id: 'home.icon.scene'})}</div>
+                </Col>
+                <Col span={4}>
+                  <Icon type="clock-circle-o" />
+                  <div className="text">{this.props.intl.formatMessage({id: 'home.icon.continues'})}</div>
+                </Col>
+                <Col span={4}>
+                  <Icon type="book" />
+                  <div className="text">{this.props.intl.formatMessage({id: 'home.icon.document'})}</div>
+                </Col>
+                <Col span={4}>
+                  <Icon type="fork" />
+                  <div className="text">{this.props.intl.formatMessage({id: 'home.icon.versioning'})}</div>
+                </Col>
+                <Col span={4}>
+                  <Icon type="tool" />
+                  <div className="text">{this.props.intl.formatMessage({id: 'home.icon.setting'})}</div>
+                </Col>
+                <Col span={4}>
+                  <Icon type="database" />
+                  <div className="text">{this.props.intl.formatMessage({id: 'home.icon.database'})}</div>
+                </Col>
+                <Col span={4}>
+                  <Icon type="save" />
+                  <div className="text">{this.props.intl.formatMessage({id: 'home.icon.save'})}</div>
+                </Col>
+                <Col span={4}>
+                  <Icon type="disconnect" />
+                  <div className="text">{this.props.intl.formatMessage({id: 'home.icon.decentration'})}</div>
+                </Col>
+                <Col span={4}>
+                  <Icon type="api" />
+                  <div className="text">{this.props.intl.formatMessage({id: 'home.icon.api'})}</div>
+                </Col>
+                <Col span={4}>
+                  <Icon type="code-o" />
+                  <div className="text">{this.props.intl.formatMessage({id: 'home.icon.cli'})}</div>
+                </Col>
+                <Col span={4}>
+                  <Icon type="global" />
+                  <div className="text">{this.props.intl.formatMessage({id: 'home.icon.i18n'})}</div>
+                </Col>
+                <Col span={4}>
+                  <Icon type="github" />
+                  <div className="text">{this.props.intl.formatMessage({id: 'home.icon.github'})}</div>
                 </Col>
               </Row>
             </Col>

@@ -11,6 +11,7 @@ screenshots/
 .project
 build/
 logs/
+TODO
 *.sw*
 *.un~
 *.tgz
