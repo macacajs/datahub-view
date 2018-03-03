@@ -24,7 +24,7 @@ const enUS = {
   'home.icon.setting': 'response setting',
   'home.icon.database': 'data migration',
   'home.icon.save': 'quick save',
-  'home.icon.decentration': 'decentration',
+  'home.icon.decentration': 'decentralized',
   'home.icon.api': 'open API',
   'home.icon.cli': 'cli tool',
   'home.icon.i18n': 'i18n support',
