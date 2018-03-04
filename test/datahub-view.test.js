@@ -1,12 +1,12 @@
 'use strict';
 
 import {
-  webpackHelper
+  webpackHelper,
 } from 'macaca-wd';
 
 const {
   driver,
-  BASE_URL
+  BASE_URL,
 } = webpackHelper;
 
 describe('test/datahub-view.test.js', () => {
