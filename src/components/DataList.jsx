@@ -36,7 +36,7 @@ class DataList extends React.Component {
   }
 
   componentDidMount () {
-    this.handleApiClick(0);
+    this.handleApiClick(parseInt(window.location.hash.replace('#', '')) || 0);
   }
 
   componentWillReceiveProps (props) {
@@ -116,6 +116,7 @@ class DataList extends React.Component {
     this.setState({
       currentIndex: index,
     });
+    window.location.hash = index;
   }
 
   render () {
