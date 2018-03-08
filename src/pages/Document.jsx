@@ -47,9 +47,19 @@ const projectId = window.pageConfig.projectId;
 export default class Document extends React.Component {
   constructor (props) {
     super(props);
+    let slectedIndex = '';
+    let hashSceneIndex = '';
+    if (/scene=/.test(location.hash)) {
+      slectedIndex = parseInt(location.hash.replace(/#api=(.*)scene=\w*/, '$1'), 10);
+      hashSceneIndex = parseInt(location.hash.split('scene=')[1], 10);
+    } else {
+      slectedIndex = parseInt(location.hash.split('api=')[1], 10);
+    }
+
     this.state = {
       list: [],
-      slectedIndex: 0,
+      slectedIndex,
+      hashSceneIndex,
     };
   }
 
@@ -68,10 +78,24 @@ export default class Document extends React.Component {
     });
   }
 
+  handletabClick (data) {
+    const sceneIndex = data.replace('tab-', '');
+    if (!/scene=/.test(location.hash)) {
+      location.hash += `scene=${sceneIndex}`;
+    } else {
+      const nowApi = location.hash.split('scene=')[0];
+      location.hash = `${nowApi}scene=${sceneIndex}`;
+    }
+    this.setState({
+      hashSceneIndex: sceneIndex,
+    });
+  }
+
   selectApiClick (index) {
     this.setState({
       slectedIndex: index,
     });
+    location.hash = `api=${index}`;
   }
 
   renderDocument () {
@@ -109,9 +133,10 @@ export default class Document extends React.Component {
         />
         <h1><FormattedMessage id='document.sceneData' /></h1>
         <Tabs
-          defaultActiveKey="tab-0"
+          defaultActiveKey={'tab-' + this.state.hashSceneIndex}
           type="card"
           animated={false}
+          onTabClick={this.handletabClick.bind(this)}
         >
           {this.renderScene(scenesData)}
         </Tabs>
