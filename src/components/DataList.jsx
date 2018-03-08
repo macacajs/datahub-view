@@ -36,7 +36,7 @@ class DataList extends React.Component {
   }
 
   componentDidMount () {
-    this.handleApiClick(parseInt(window.location.hash.replace('#', '')) || 0);
+    this.handleApiClick(parseInt(location.hash.replace('#', ''), 10) || 0);
   }
 
   componentWillReceiveProps (props) {

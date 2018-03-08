@@ -50,10 +50,10 @@ export default class Document extends React.Component {
     let slectedIndex = '';
     let hashSceneIndex = '';
     if (/scene=/.test(location.hash)) {
-      slectedIndex = parseInt(location.hash.replace(/#api=(.*)scene=\w*/, '$1'));
-      hashSceneIndex = parseInt(location.hash.split('scene=')[1]);
+      slectedIndex = parseInt(location.hash.replace(/#api=(.*)scene=\w*/, '$1'), 10);
+      hashSceneIndex = parseInt(location.hash.split('scene=')[1], 10);
     } else {
-      slectedIndex = parseInt(location.hash.split('api=')[1]);
+      slectedIndex = parseInt(location.hash.split('api=')[1], 10);
     }
 
     this.state = {
