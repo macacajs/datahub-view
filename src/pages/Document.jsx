@@ -58,7 +58,7 @@ export default class Document extends React.Component {
 
     this.state = {
       list: [],
-      slectedIndex,
+      slectedIndex: slectedIndex || 0,
       hashSceneIndex,
     };
   }
