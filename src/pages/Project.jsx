@@ -35,7 +35,6 @@ class Project extends React.Component {
       contentViewType: 'api', // display api content by default
       data: [],
       currentIndex: 0,
-
       REALTIME_MAXLINE: 10,
       realTimeDataList: [],
       realTimeIndex: 0,

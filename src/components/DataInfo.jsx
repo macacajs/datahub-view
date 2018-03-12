@@ -511,7 +511,7 @@ class DataInfo extends React.Component {
                   marginLeft: 10,
                 }}
                 min={0}
-                max={5}
+                max={30}
                 value={parseInt(this.state.delay, 10)}
                 onChange={this.delayChange.bind(this)}
               />
