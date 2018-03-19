@@ -51,6 +51,8 @@ const zhCN = {
   'apiConfig.existError': '接口已存在！',
   'apiConfig.nullError': '接口名称和描述不能为空！',
   'apiConfig.addSuccess': '添加成功',
+  'apiConfig.responseHeader': '自定义响应头：',
+  'apiConfig.modifyResponseHeader': '修改',
 
   'sceneMng.title': '场景管理',
   'sceneMng.sceneName': '场景',
@@ -83,9 +85,9 @@ const zhCN = {
 
   'dashboard.modalTile': '创建新项目',
   'dashboard.modalName': '项目名称',
-  'dashboard.modalNameTip': '请输入不为字母或者数字',
+  'dashboard.modalNameTip': '请输入字母或者数字',
   'dashboard.modalDescription': '项目描述',
-  'dashboard.modalDescriptionTip': '请输入不为空的中文或者数字',
+  'dashboard.modalDescriptionTip': '请输入中文或者数字',
   'dashboard.tableAdd': '添加项目',
 
   'document.schemaDes': 'Schema 描述',

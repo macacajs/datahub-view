@@ -51,6 +51,9 @@ const enUS = {
   'apiConfig.existError': 'api is existed!',
   'apiConfig.nullError': 'api name and api description can\'t be empty!',
   'apiConfig.addSuccess': 'add success',
+  'apiConfig.responseHeader': 'custom response header:',
+  'apiConfig.modifyResponseHeader': 'modify',
+
 
   'sceneMng.title': 'scene manage',
   'sceneMng.sceneName': 'scene',

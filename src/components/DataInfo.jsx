@@ -91,6 +91,7 @@ class DataInfo extends React.Component {
       modalInfoData: '',
       _modalInfoData: '',
       schemaModalVisible: false,
+      responseHeaderModalVisible: false,
       schemaJSONParseError: false,
       schemaNewData: '',
       schemaData: schemaContent &&
@@ -102,6 +103,8 @@ class DataInfo extends React.Component {
       method: currentData && currentData.method,
       delay: (currentData && currentData.delay) || 0,
       statusCode,
+      responseHeader: currentData && currentData.responseHeader || '{}',
+      _responseHeader: '{}',
       pathname: currentData && currentData.pathname,
       description: currentData && currentData.description,
       currentScene: currentData && currentData.currentScene,
@@ -131,6 +134,7 @@ class DataInfo extends React.Component {
       statusCode,
       proxyContent: currentData && currentData.proxyContent,
       scenes: currentData && currentData.scenes,
+      responseHeader: currentData && currentData.responseHeader || '{}',
       schemaData: schemaContent.schemaData,
       enableSchemaValidate: schemaContent.enableSchemaValidate,
       method: currentData && currentData.method,
@@ -432,6 +436,42 @@ class DataInfo extends React.Component {
     }
   }
 
+  handleRequestHeader () {
+    const str = JSON.stringify(JSON.parse(this.state.responseHeader), null, 2);
+    this.setState({
+      responseHeaderModalVisible: true,
+      responseHeader: str.trim(),
+      _responseHeader: str.trim(),
+    });
+  }
+
+  responseHeaderModalCancel () {
+    this.setState({
+      responseHeaderModalVisible: false,
+    });
+  }
+
+  responseHeaderModalChange (editor, data, value) {
+    this.setState({
+      _responseHeader: value,
+    });
+  }
+
+  responseHeaderModalOk (e) {
+    try {
+      JSON.parse(this.state._responseHeader);
+    } catch (e) {
+      console.log('invalid json string');
+      return;
+    }
+    this.props.handleAsynSecType('responseHeader', this.state._responseHeader);
+
+    this.setState({
+      responseHeaderModalVisible: false,
+      responseHeader: this.state._responseHeader,
+    });
+  }
+
   render () {
     const projectId = window.pageConfig.projectId;
     const apiHref = `//${location.host}/data/${projectId}/${this.state.pathname}`;
@@ -535,6 +575,19 @@ class DataInfo extends React.Component {
                 maxLength="3"
               />（200 ~ 501）
             </div>
+            <div className="response-header">
+              <span>
+                <FormattedMessage id='apiConfig.responseHeader' />
+              </span>
+              <Button
+                size="small"
+                type="primary"
+                onClick={this.handleRequestHeader.bind(this)}
+              >
+                <FormattedMessage id='apiConfig.modifyResponseHeader' />
+              </Button>
+
+            </div>
           </section>
           <section className="data-scene">
             <h1>
@@ -592,6 +645,23 @@ class DataInfo extends React.Component {
                   })
                 }
               </RadioGroup>
+              <Modal
+                className="codemirror-modal"
+                width="80%"
+                title={<FormattedMessage id='apiConfig.responseHeader' />}
+                visible={this.state.responseHeaderModalVisible}
+                onOk={this.responseHeaderModalOk.bind(this)}
+                cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}
+                okText={this.props.intl.formatMessage({id: 'common.confirm'})}
+                onCancel={this.responseHeaderModalCancel.bind(this)}
+              >
+                <CodeMirror
+                  value={this.state.responseHeader}
+                  options={{ ...codeMirrorOptions }}
+                  onChange={this.responseHeaderModalChange.bind(this)}
+                />
+              </Modal>
+
               <Modal
                 className="codemirror-modal"
                 width="80%"
