@@ -40,6 +40,7 @@
     "eslint-config-antife": "^1.0.0",
     "eslint-plugin-react": "^7.2.1",
     "extract-text-webpack-plugin": "^3.0.2",
+    "git-contributor": "^1.0.0",
     "intl": "^1.2.5",
     "json-loader": "^0.5.7",
     "less": "^2.7.2",
@@ -72,7 +73,8 @@
     "prepublish": "npm run build",
     "serve": "npm run dev:test &",
     "test": "macaca run -d ./test --verbose --reporter macaca-reporter",
-    "ci": "npm run lint && npm run serve && npm run test"
+    "ci": "npm run lint && npm run serve && npm run test",
+    "contributor": "git-contributor"
   },
   "precommit": [
     "lint"
