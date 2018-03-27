@@ -87,7 +87,7 @@ class DataInfo extends React.Component {
       schemaModalVisible: false,
       responseHeaderModalVisible: false,
       reqSchemaContent: currentData.reqSchemaContent,
-      // 兼容原来的参数名叫params
+      // adapt params field
       resSchemaContent: currentData.resSchemaContent ? currentData.resSchemaContent : currentData.params,
       proxyContent: currentData && currentData.proxyContent,
       scenes: currentData && currentData.scenes,
