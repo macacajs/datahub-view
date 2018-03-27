@@ -41,6 +41,7 @@ import {
 import _ from '../common/helper';
 import CustomTable from './CustomTable';
 import ProxyInputList from './ProxyInputList';
+import FieldTable from './FieldTable';
 
 import './DataInfo.less';
 
@@ -72,17 +73,10 @@ const codeMirrorOptions = {
 class DataInfo extends React.Component {
   constructor (props) {
     super(props);
-    const currentData = props.currentData;
+    const currentData = props.currentData || {};
+
 
     const { statusCode } = this.parseHeaders(currentData);
-
-    let schemaContent = {};
-
-    if (currentData && currentData.params) {
-      try {
-        schemaContent = JSON.parse(currentData.params);
-      } catch (e) {}
-    }
 
     this.state = {
       addingScene: '',
@@ -92,12 +86,9 @@ class DataInfo extends React.Component {
       _modalInfoData: '',
       schemaModalVisible: false,
       responseHeaderModalVisible: false,
-      schemaJSONParseError: false,
-      schemaNewData: '',
-      schemaData: schemaContent &&
-        schemaContent.schemaData instanceof Array &&
-        schemaContent.schemaData || [],
-      enableSchemaValidate: false,
+      reqSchemaContent: currentData.reqSchemaContent,
+      // 兼容原来的参数名叫params
+      resSchemaContent: currentData.resSchemaContent ? currentData.resSchemaContent : currentData.params,
       proxyContent: currentData && currentData.proxyContent,
       scenes: currentData && currentData.scenes,
       method: currentData && currentData.method,
@@ -114,16 +105,10 @@ class DataInfo extends React.Component {
   }
 
   componentWillReceiveProps (props) {
-    const currentData = props.currentData;
+    const currentData = props.currentData || {};
 
     if (!currentData) {
       return;
-    }
-
-    let schemaContent = {};
-
-    if (currentData && currentData.params) {
-      schemaContent = JSON.parse(currentData.params);
     }
 
     const {
@@ -135,13 +120,13 @@ class DataInfo extends React.Component {
       proxyContent: currentData && currentData.proxyContent,
       scenes: currentData && currentData.scenes,
       responseHeader: currentData && currentData.responseHeader || '{}',
-      schemaData: schemaContent.schemaData,
-      enableSchemaValidate: schemaContent.enableSchemaValidate,
       method: currentData && currentData.method,
       delay: (currentData && currentData.delay) || 0,
       pathname: currentData && currentData.pathname,
       currentScene: currentData && currentData.currentScene,
       description: currentData && currentData.description,
+      reqSchemaContent: currentData.reqSchemaContent,
+      resSchemaContent: currentData.resSchemaContent ? currentData.resSchemaContent : currentData.params,
     });
   }
 
@@ -367,73 +352,6 @@ class DataInfo extends React.Component {
       console.log(`proxy content '${this.state.proxyContent}' JSON parse failed ${e.message}`);
     }
     return proxyObject;
-  }
-
-  editSchema () {
-    this.setState({
-      schemaModalVisible: true,
-      schemaJSONParseError: false,
-      schemaNewData: JSON.stringify(this.state.schemaData, null, 2),
-    });
-  }
-
-  schemaModalTextAreaChange (editor, data, value) {
-    this.setState({
-      schemaNewData: value.trim(),
-      schemaJSONParseError: false,
-    });
-  }
-
-  confirmSchemaModal (data) {
-    try {
-      const newData = JSON.parse(this.state.schemaNewData);
-      if (!(newData instanceof Array)) {
-        this.setState({
-          schemaFormatError: true,
-        });
-        return;
-      }
-      this.setState({
-        schemaModalVisible: false,
-      });
-      this.props.handleAsynSecType('params', JSON.stringify({
-        enableSchemaValidate: this.state.enableSchemaValidate,
-        schemaData: newData,
-      }));
-    } catch (e) {
-      this.setState({
-        schemaJSONParseError: true,
-      });
-    }
-  }
-
-  toggleSchemaValidate (e) {
-    this.props.handleAsynSecType('params', JSON.stringify({
-      enableSchemaValidate: e.target.checked,
-      schemaData: this.state.schemaData,
-    }));
-  }
-
-  cancelSchemaModal () {
-    this.setState({
-      schemaModalVisible: false,
-      schemaJSONParseError: false,
-      schemaNewData: '',
-    });
-  }
-
-  onSetSchemaData (data) {
-    this.setState({
-      schemaData: data,
-      schemaNewData: JSON.stringify(data, null, 2),
-    });
-    try {
-      this.props.handleAsynSecType('params', JSON.stringify({
-        enableSchemaValidate: this.state.enableSchemaValidate,
-        schemaData: data,
-      }));
-    } catch (e) {
-    }
   }
 
   handleRequestHeader () {
@@ -678,24 +596,6 @@ class DataInfo extends React.Component {
                   onChange={this.modalTextAreaChange.bind(this)}
                 />
               </Modal>
-              <Modal
-                className="codemirror-modal"
-                width="80%"
-                title="schema"
-                visible={this.state.schemaModalVisible}
-                onOk={this.confirmSchemaModal.bind(this)}
-                cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}
-                okText={this.props.intl.formatMessage({id: 'common.confirm'})}
-                onCancel={this.cancelSchemaModal.bind(this)}
-              >
-                <CodeMirror
-                  value={JSON.stringify(this.state.schemaData, null, 2)}
-                  options={{ ...codeMirrorOptions }}
-                  onChange={this.schemaModalTextAreaChange.bind(this)}
-                />
-                {this.state.schemaJSONParseError && <Alert style={{marginTop: '20px'}} message={this.props.intl.formatMessage({id: 'fieldDes.jsonFormatError'})} type="warning" />}
-                {this.state.schemaFormatError && <Alert style={{marginTop: '20px'}} message={this.props.intl.formatMessage({id: 'fieldDes.pleaseInputArray'})} type="warning" />}
-              </Modal>
             </div>
           </section>
           <section className="data-proxy">
@@ -705,22 +605,20 @@ class DataInfo extends React.Component {
               proxyContent={this.state.proxyContent}
             />
           </section>
-          <section className="params-doc">
-            <h1><FormattedMessage id='fieldDes.title' /></h1>
-            <Checkbox
-              checked={this.state.enableSchemaValidate}
-              onChange={this.toggleSchemaValidate.bind(this)}
-            >
-              <FormattedMessage id='fieldDes.isUseCheck' />
-            </Checkbox>
-            <Button size="small" type="primary" onClick={this.editSchema.bind(this)}><FormattedMessage id='common.edit' /></Button>
-            <CustomTable
-              type="schema"
-              className="schema-table"
-              schemaData={this.state.schemaData}
-              onChange={this.onSetSchemaData.bind(this)}
+
+          <FieldTable 
+            {...this.props}
+            codeMirrorOption={codeMirrorOptions}
+            schemaContent={this.state.reqSchemaContent}
+            type='req'
             />
-          </section>
+          
+          <FieldTable 
+            {...this.props}
+            codeMirrorOption={codeMirrorOptions}
+            schemaContent={this.state.resSchemaContent}
+            type='res'
+            />
         </content>
       </div>
     );

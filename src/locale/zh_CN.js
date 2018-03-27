@@ -66,7 +66,8 @@ const zhCN = {
   'proxyConfig.addProxy': '添加代理',
   'proxyConfig.inputTip': '请填写代理地址',
 
-  'fieldDes.title': '字段描述',
+  'fieldDes.req.title': 'Request字段描述',
+  'fieldDes.res.title': 'Response字段描述',
   'fieldDes.isUseCheck': '是否开启校验',
   'fieldDes.field': '字段',
   'fieldDes.type': '类型',
