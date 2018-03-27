@@ -606,19 +606,19 @@ class DataInfo extends React.Component {
             />
           </section>
 
-          <FieldTable 
+          <FieldTable
             {...this.props}
             codeMirrorOption={codeMirrorOptions}
             schemaContent={this.state.reqSchemaContent}
             type='req'
-            />
-          
-          <FieldTable 
+          />
+
+          <FieldTable
             {...this.props}
             codeMirrorOption={codeMirrorOptions}
             schemaContent={this.state.resSchemaContent}
             type='res'
-            />
+          />
         </content>
       </div>
     );

@@ -28,16 +28,16 @@ import CustomTable from './CustomTable';
 
 const parseString = (string) => {
   try {
-    return JSON.parse(string || '{}')
+    return JSON.parse(string || '{}');
   } catch (e) {
-    return {}
+    return {};
   }
-}
+};
 
 class FieldTable extends React.Component {
   constructor (props) {
     super(props);
-    
+
     const schemaContent = parseString(props.schemaContent);
     this.state = {
       schemaField: props.type === 'req' ? 'reqSchemaContent' : 'resSchemaContent',
@@ -46,19 +46,19 @@ class FieldTable extends React.Component {
       schemaJSONParseError: false,
       schemaData: schemaContent.schemaData,
       enableSchemaValidate: schemaContent.enableSchemaValidate,
-    }
+    };
   }
 
   componentWillReceiveProps (props) {
-    const schemaContent = parseString(props.schemaContent);;
+    const schemaContent = parseString(props.schemaContent); ;
     this.setState({
       schemaData: schemaContent.schemaData,
       enableSchemaValidate: schemaContent.enableSchemaValidate,
-    })
+    });
   }
 
   editSchema () {
-    debugger
+    debugger;
     this.setState({
       schemaModalVisible: true,
       schemaJSONParseError: false,
@@ -160,10 +160,10 @@ class FieldTable extends React.Component {
             className="schema-table"
             schemaData={this.state.schemaData}
             onChange={this.onSetSchemaData.bind(this)}
-            />
+          />
         </section>
       </div>
-    )
+    );
   }
 }
 
