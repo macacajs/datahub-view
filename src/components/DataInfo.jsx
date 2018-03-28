@@ -30,7 +30,6 @@ import {
   Radio,
   Input,
   Modal,
-  Checkbox,
   Tooltip,
   Popconfirm,
   Breadcrumb,
@@ -39,7 +38,6 @@ import {
 } from 'antd';
 
 import _ from '../common/helper';
-import CustomTable from './CustomTable';
 import ProxyInputList from './ProxyInputList';
 import FieldTable from './FieldTable';
 

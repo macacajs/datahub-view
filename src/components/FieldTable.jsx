@@ -12,16 +12,8 @@ import {
 import {
   Alert,
   Button,
-  Select,
-  Radio,
-  Input,
   Modal,
   Checkbox,
-  Tooltip,
-  Popconfirm,
-  Breadcrumb,
-  InputNumber,
-  Icon,
 } from 'antd';
 
 import CustomTable from './CustomTable';
