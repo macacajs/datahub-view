@@ -58,7 +58,6 @@ class FieldTable extends React.Component {
   }
 
   editSchema () {
-    debugger;
     this.setState({
       schemaModalVisible: true,
       schemaJSONParseError: false,
