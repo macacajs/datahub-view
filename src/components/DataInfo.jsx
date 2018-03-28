@@ -88,7 +88,7 @@ class DataInfo extends React.Component {
       responseHeaderModalVisible: false,
       reqSchemaContent: currentData.reqSchemaContent,
       // adapt params field
-      resSchemaContent: currentData.resSchemaContent ? currentData.resSchemaContent : currentData.params,
+      resSchemaContent: (currentData.resSchemaContent && currentData.resSchemaContent !== '{}') ? currentData.resSchemaContent : currentData.params,
       proxyContent: currentData && currentData.proxyContent,
       scenes: currentData && currentData.scenes,
       method: currentData && currentData.method,
@@ -126,7 +126,8 @@ class DataInfo extends React.Component {
       currentScene: currentData && currentData.currentScene,
       description: currentData && currentData.description,
       reqSchemaContent: currentData.reqSchemaContent,
-      resSchemaContent: currentData.resSchemaContent ? currentData.resSchemaContent : currentData.params,
+      // adapt params field
+      resSchemaContent: (currentData.resSchemaContent && currentData.resSchemaContent !== '{}') ? currentData.resSchemaContent : currentData.params,
     });
   }
 
