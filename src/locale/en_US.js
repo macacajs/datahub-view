@@ -67,7 +67,8 @@ const enUS = {
   'proxyConfig.addProxy': 'add proxy',
   'proxyConfig.inputTip': 'please input proxy url',
 
-  'fieldDes.title': 'field description',
+  'fieldDes.req.title': 'Request field description',
+  'fieldDes.res.title': 'Response field description',
   'fieldDes.isUseCheck': 'use verify?',
   'fieldDes.field': 'field',
   'fieldDes.type': 'type',
