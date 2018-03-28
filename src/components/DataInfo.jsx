@@ -38,8 +38,8 @@ import {
 } from 'antd';
 
 import _ from '../common/helper';
-import ProxyInputList from './ProxyInputList';
 import FieldTable from './FieldTable';
+import ProxyInputList from './ProxyInputList';
 
 import './DataInfo.less';
 
