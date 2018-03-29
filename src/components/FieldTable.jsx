@@ -130,7 +130,7 @@ class FieldTable extends React.Component {
           onCancel={this.cancelSchemaModal.bind(this)}
         >
           <CodeMirror
-            value={this.state.schemaNewData}
+            value={JSON.stringify(this.state.schemaData, null, 2)}
             options={{ ...this.props.codeMirrorOptions }}
             onChange={this.schemaModalTextAreaChange.bind(this)}
           />
