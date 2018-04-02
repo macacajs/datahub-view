@@ -63,7 +63,7 @@ const enUS = {
   'sceneMng.existError': 'scene name is existed',
 
   'proxyConfig.title': 'proxy config',
-  'proxyConfig.isUseProxy': 'ues proxy?',
+  'proxyConfig.isUseProxy': 'use proxy?',
   'proxyConfig.addProxy': 'add proxy',
   'proxyConfig.inputTip': 'please input proxy url',
 
