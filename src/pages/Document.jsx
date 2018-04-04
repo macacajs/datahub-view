@@ -52,7 +52,9 @@ export default class Document extends React.Component {
     this.state = {
       list: [],
       slectedIndex: 0,
+      slectedName: '',
       hashSceneIndex: 0,
+      hashSceneName: '',
     };
   }
 
@@ -88,7 +90,9 @@ export default class Document extends React.Component {
           });
           this.setState({
             slectedIndex: slectedIndex || 0,
+            slectedName: pathname,
             hashSceneIndex: hashSceneIndex || 0,
+            hashSceneName: scenename,
             list: res.data,
           });
         }
@@ -97,20 +101,23 @@ export default class Document extends React.Component {
 
   handletabClick (scenesData, tabIndex) {
     const sceneIndex = tabIndex.replace('tab-', '');
+    const sceneName = scenesData[sceneIndex].name;
     if (!/&scene=/.test(location.hash)) {
-      location.hash += `&scene=${scenesData[sceneIndex].name}`;
+      location.hash += `&scene=${sceneName}`;
     } else {
       const nowApi = location.hash.split('&scene=')[0];
-      location.hash = `${nowApi}&scene=${scenesData[sceneIndex].name}`;
+      location.hash = `${nowApi}&scene=${sceneName}`;
     }
     this.setState({
       hashSceneIndex: sceneIndex,
+      hashSceneName: sceneName,
     });
   }
 
   selectApiClick (index, pathname) {
     this.setState({
       slectedIndex: index,
+      slectedName: pathname,
     });
     location.hash = `api=${pathname}`;
   }
@@ -202,7 +209,7 @@ export default class Document extends React.Component {
               {
                 this.handleApiSort().map((api, index) => {
                   return (
-                    <li className={index === this.state.slectedIndex ? 'clicked' : ''} key={index} onClick={this.selectApiClick.bind(this, index, api.pathname)}>
+                    <li className={api.pathname === this.state.slectedName ? 'clicked' : ''} key={index} onClick={this.selectApiClick.bind(this, index, api.pathname)}>
                       <div className="left">
                         <h3>{api.pathname}</h3>
                         <p>{api.description}</p>
