@@ -30,17 +30,29 @@ class DataList extends React.Component {
       modalTitle: '',
       modalDescription: '',
       apis: props.apis,
-      currentIndex: 0,
+      currentPathname: '',
       errorAlert: null,
     };
   }
 
-  componentDidMount () {
-    this.handleApiClick(parseInt(location.hash.replace('#', ''), 10) || 0);
-  }
-
   componentWillReceiveProps (props) {
-    const apis = props.apis;
+    const apis = this.handleApiSort(props.apis);
+    const firstApi = apis && apis[0] && apis[0].pathname;
+    if (location.hash) {
+      apis.forEach((api, index) => {
+        if (api.pathname === location.hash.replace('#', '')) {
+          this.setState({
+            currentPathname: api.pathname,
+          });
+        }
+      });
+    } else if (firstApi) {
+      this.setState({
+        currentPathname: firstApi,
+      });
+      this.handleApiClick(firstApi);
+    }
+
     this.setState({
       apis,
     });
@@ -67,8 +79,8 @@ class DataList extends React.Component {
   }
 
   handleModalOk (e) {
-    const index = _.findIndex(this.state.apis,
-      o => o.pathname === this.state.modalTitle);
+    const index = _.findIndex(this.state.apis, o =>
+      o.pathname === this.state.modalTitle);
     if (index !== -1) {
       this.setState({
         errorAlert: {
@@ -118,20 +130,34 @@ class DataList extends React.Component {
     this.props.handleDeleteApi(newData, deleteApi);
   }
 
-  handleApiClick (index) {
-    this.props.handleApiClick(index);
+  handleApiClick (pathname) {
+    this.props.handleApiClick(pathname);
     this.setState({
-      currentIndex: index,
+      currentPathname: pathname,
     });
-    window.location.hash = index;
+    if (pathname) {
+      window.location.hash = pathname;
+    }
   }
 
-  handleApiSort () {
-    if (!this.state.apis) {
+  handleApiSort (apis) {
+    if (!apis) {
       return [];
     }
-    const res = _.sortBy(this.state.apis, item => item.pathname);
+    const res = _.sortBy(apis, item => item.pathname);
     return res;
+  }
+
+  handleSearchChange (e) {
+    const filter = e.target.value;
+    const apis = [...this.state.apis];
+    apis.map(api => {
+      api.isHide = api.pathname.indexOf(filter) === -1;
+    });
+
+    this.setState({
+      apis,
+    });
   }
 
   render () {
@@ -140,9 +166,8 @@ class DataList extends React.Component {
         <Row gutter={8}>
           <Col span={16}>
             <Search
-              disabled
               placeholder="Search interface"
-              onSearch={value => console.log(value)}
+              onChange={this.handleSearchChange.bind(this)}
             />
           </Col>
           <Col span={8}>
@@ -153,9 +178,12 @@ class DataList extends React.Component {
         </Row>
         <ul>
           {
-            this.handleApiSort().map((api, index) => {
+            this.state.apis.map((api, index) => {
+              if (api.isHide) {
+                return null;
+              }
               return (
-                <li className={this.state.currentIndex === index ? 'clicked' : ''} key={index} onClick={this.handleApiClick.bind(this, index)}>
+                <li className={this.state.currentPathname === api.pathname ? 'clicked' : ''} key={index} onClick={this.handleApiClick.bind(this, api.pathname)}>
                   <div className="left">
                     <h3>{api.pathname}</h3>
                     <p>{api.description}</p>

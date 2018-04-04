@@ -110,6 +110,11 @@ const chooseLocale = () => {
         locale: 'en-US',
         messages: enUS,
       };
+    case 'en':
+      return {
+        locale: 'en-US',
+        messages: enUS,
+      };
     case 'zh-CN':
       return {
         locale: 'zh-CN',

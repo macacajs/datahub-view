@@ -413,7 +413,7 @@ class DataInfo extends React.Component {
         <content>
           <section className="base-info">
             <h1><FormattedMessage id='apiConfig.title' /></h1>
-            <a href={`/doc/${projectId}`} target="_blank">
+            <a href={`/doc/${projectId}${location.hash ? `#api=${location.hash.replace('#', '')}` : ''}`} target="_blank">
               <Button className="right-button" type="primary"><FormattedMessage id='apiConfig.apiDoc' /></Button>
             </a>
             <div className="mock-address">
