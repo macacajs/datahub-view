@@ -47,55 +47,71 @@ const projectId = window.pageConfig.projectId;
 export default class Document extends React.Component {
   constructor (props) {
     super(props);
-    let slectedIndex = '';
-    let hashSceneIndex = '';
-    if (/scene=/.test(location.hash)) {
-      slectedIndex = parseInt(location.hash.replace(/#api=(.*)scene=\w*/, '$1'), 10);
-      hashSceneIndex = parseInt(location.hash.split('scene=')[1], 10);
-    } else {
-      slectedIndex = parseInt(location.hash.split('api=')[1], 10);
-    }
-
     this.state = {
       list: [],
-      slectedIndex: slectedIndex || 0,
-      hashSceneIndex: hashSceneIndex || 0,
+      slectedIndex: 0,
+      hashSceneIndex: 0,
     };
   }
 
   componentDidMount () {
+    let pathname = ''
+    let scenename = ''
+    if (/scene=/.test(location.hash)) {
+      pathname = location.hash.replace(/#api=(.*)&scene=\w*/, '$1');
+      scenename = location.hash.split('&scene=')[1];
+    } else {
+      pathname = location.hash.split('api=')[1];
+    }
+
     request(`/api/data/${projectId}`, 'GET')
       .then((res) => {
+        let hashSceneIndex;
+        let slectedIndex;
         if (res.success) {
-          this.handleInitData(res.data);
+          res.data.forEach((item, index) => {
+            if (item.pathname === pathname) {
+              slectedIndex = index
+              let scenes = []
+              try {
+                scenes = JSON.parse(item.scenes)
+              } catch (e) {
+              }
+              scenes.forEach((scene, i) => {
+                if (scene.name === scenename) {
+                  hashSceneIndex = i
+                }
+              })
+            }
+          })
+          this.setState({
+            slectedIndex: slectedIndex || 0,
+            hashSceneIndex: hashSceneIndex || 0,
+            list: res.data,
+          });
+
         }
       });
   }
 
-  handleInitData (data) {
-    this.setState({
-      list: data,
-    });
-  }
-
-  handletabClick (data) {
-    const sceneIndex = data.replace('tab-', '');
-    if (!/scene=/.test(location.hash)) {
-      location.hash += `scene=${sceneIndex}`;
+  handletabClick (scenesData, tabIndex) {
+    const sceneIndex = tabIndex.replace('tab-', '');
+    if (!/&scene=/.test(location.hash)) {
+      location.hash += `&scene=${scenesData[sceneIndex].name}`;
     } else {
-      const nowApi = location.hash.split('scene=')[0];
-      location.hash = `${nowApi}scene=${sceneIndex}`;
+      const nowApi = location.hash.split('&scene=')[0];
+      location.hash = `${nowApi}&scene=${scenesData[sceneIndex].name}`;
     }
     this.setState({
       hashSceneIndex: sceneIndex,
     });
   }
 
-  selectApiClick (index) {
+  selectApiClick (index, pathname) {
     this.setState({
       slectedIndex: index,
     });
-    location.hash = `api=${index}`;
+    location.hash = `api=${pathname}`;
   }
 
   renderDocument () {
@@ -136,7 +152,7 @@ export default class Document extends React.Component {
           defaultActiveKey={'tab-' + this.state.hashSceneIndex}
           type="card"
           animated={false}
-          onTabClick={this.handletabClick.bind(this)}
+          onTabClick={this.handletabClick.bind(this, scenesData)}
         >
           {this.renderScene(scenesData)}
         </Tabs>
@@ -177,7 +193,7 @@ export default class Document extends React.Component {
               {
                 this.state.list.map((api, index) => {
                   return (
-                    <li className={index === this.state.slectedIndex ? 'clicked' : ''} key={index} onClick={this.selectApiClick.bind(this, index)}>
+                    <li className={index === this.state.slectedIndex ? 'clicked' : ''} key={index} onClick={this.selectApiClick.bind(this, index, api.pathname)}>
                       <div className="left">
                         <h3>{api.pathname}</h3>
                         <p>{api.description}</p>

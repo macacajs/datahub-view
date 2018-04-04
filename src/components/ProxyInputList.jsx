@@ -71,18 +71,21 @@ class DynamicFieldSet extends Component {
     const index = this.state.originKeys.indexOf(k);
     const newPorxies = [].concat(this.state.proxies);
     newPorxies.splice(index, 1);
+    let result = {}
     if (k === this.state.currentProxyIndex) {
-      this.setState({
+      result = {
         originKeys: newKeys,
         proxies: newPorxies,
         currentProxyIndex: newKeys[0],
-      });
+      }
     } else {
-      this.setState({
+      result = {
         originKeys: newKeys,
         proxies: newPorxies,
-      });
+      }
     }
+    this.setState(result);
+    this.handleSubmitProxy(result)
   }
 
   add () {
@@ -120,11 +123,20 @@ class DynamicFieldSet extends Component {
     this.setState({
       currentProxyIndex: e.target.value,
     });
+    this.handleSubmitProxy({
+      currentProxyIndex: e.target.value,
+    })
   }
 
-  handleSubmit (e) {
-    e.preventDefault();
+  proxyInputChange (e, index) {
+    const originProxies = [].concat(this.state.proxies);
+    originProxies[index] = e.target.value;
+    this.setState({
+      proxies: originProxies,
+    });
+  }
 
+  handleSubmitProxy(param) {
     for (let i = 0; i < this.state.proxies.length; i++) {
       const proxy = this.state.proxies[i];
       this.setState({
@@ -154,20 +166,12 @@ class DynamicFieldSet extends Component {
       proxyUrlError: null,
     });
     const result = {
-      proxies: this.state.proxies,
-      useProxy: this.state.useProxy,
-      originKeys: this.state.originKeys,
-      currentProxyIndex: this.state.currentProxyIndex,
+      proxies: param.proxies || this.state.proxies,
+      useProxy: param.useProxy || this.state.useProxy,
+      originKeys: param.originKeys || this.state.originKeys,
+      currentProxyIndex: param.currentProxyIndex || this.state.currentProxyIndex,
     };
     this.props.onChangeProxy(JSON.stringify(result));
-  }
-
-  proxyInputChange (e, index) {
-    const originProxies = [].concat(this.state.proxies);
-    originProxies[index] = e.target.value;
-    this.setState({
-      proxies: originProxies,
-    });
   }
 
   render () {
@@ -199,8 +203,11 @@ class DynamicFieldSet extends Component {
               <Input
                 className={this.state.isErrorInput[index] === 'error' ? 'error-input' : ''}
                 value={this.state.proxies[index]}
-                onChange={(e) => {
+                onChange={e => {
                   this.proxyInputChange(e, index);
+                }}
+                onBlur={e => {
+                  this.handleSubmitProxy(e, index);
                 }}
                 disabled={!this.state.useProxy}
                 placeholder={this.props.intl.formatMessage({id: 'proxyConfig.inputTip'})}
@@ -220,7 +227,6 @@ class DynamicFieldSet extends Component {
     });
     return (
       <Form
-        onSubmit={this.handleSubmit.bind(this)}
         className="proxyInputList"
       >
         <FormItem {...formItemLayout}>
@@ -230,12 +236,9 @@ class DynamicFieldSet extends Component {
           >
             <FormattedMessage id='proxyConfig.isUseProxy' />
           </Checkbox>
-          <Button size="small" type="dashed" onClick={this.add.bind(this)} style={{ marginLeft: '200px' }}>
+          <Button size="small" type="dashed" onClick={this.add.bind(this)} style={{ marginLeft: '250px' }}>
             <Icon type="plus" />
             <FormattedMessage id='proxyConfig.addProxy' />
-          </Button>
-          <Button size="small" type="primary" htmlType="submit">
-            <FormattedMessage id='common.submite' />
           </Button>
         </FormItem>
         <RadioGroup

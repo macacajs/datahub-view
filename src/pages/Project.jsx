@@ -52,6 +52,11 @@ class Project extends React.Component {
         this.setState({
           data: res.data,
         });
+        res.data.forEach((api, index) => {
+          if (api.pathname === location.hash.replace('#', '')) {
+            this.handleApiClick(index)
+          }
+        })
       }
     });
     this.initRealTimeDataList();

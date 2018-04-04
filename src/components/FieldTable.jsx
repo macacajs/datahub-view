@@ -54,19 +54,20 @@ class FieldTable extends React.Component {
       schemaModalVisible: true,
       schemaJSONParseError: false,
       schemaNewData: JSON.stringify(this.state.schemaData, null, 2),
+      _schemaNewData: JSON.stringify(this.state.schemaData, null, 2),
     });
   }
 
   schemaModalTextAreaChange (editor, data, value) {
     this.setState({
-      schemaNewData: value.trim(),
+      _schemaNewData: value.trim(),
       schemaJSONParseError: false,
     });
   }
 
   confirmSchemaModal (data) {
     try {
-      const newData = JSON.parse(this.state.schemaNewData);
+      const newData = JSON.parse(this.state._schemaNewData);
       if (!(newData instanceof Array)) {
         this.setState({
           schemaFormatError: true,
@@ -99,6 +100,7 @@ class FieldTable extends React.Component {
       schemaModalVisible: false,
       schemaJSONParseError: false,
       schemaNewData: '{}',
+      _schemaNewData: '{}',
     });
   }
 
@@ -106,6 +108,7 @@ class FieldTable extends React.Component {
     this.setState({
       schemaData: data,
       schemaNewData: JSON.stringify(data, null, 2),
+      _schemaNewData: JSON.stringify(data, null, 2),
     });
     try {
       this.props.handleAsynSecType(this.state.schemaField, JSON.stringify({
@@ -131,7 +134,7 @@ class FieldTable extends React.Component {
         >
           <CodeMirror
             value={this.state.schemaNewData}
-            options={{ ...this.props.codeMirrorOptions }}
+            options={{ ...this.props.codeMirrorOption }}
             onChange={this.schemaModalTextAreaChange.bind(this)}
           />
           {this.state.schemaJSONParseError && <Alert style={{marginTop: '20px'}} message={this.props.intl.formatMessage({id: 'fieldDes.jsonFormatError'})} type="warning" />}

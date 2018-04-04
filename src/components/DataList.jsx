@@ -35,12 +35,26 @@ class DataList extends React.Component {
     };
   }
 
-  componentDidMount () {
-    this.handleApiClick(parseInt(location.hash.replace('#', ''), 10) || 0);
+  setIntApi (pathname, apis) {
+    apis.forEach((api, index) => {
+      console.log(api)
+      if (api.pathname === pathname) {
+        this.props.handleApiClick(index);
+        this.handleApiClick(index);
+      }
+    })
   }
 
   componentWillReceiveProps (props) {
     const apis = props.apis;
+    apis.forEach((api, index) => {
+      if (api.pathname === location.hash.replace('#', '')) {
+        this.setState({
+          currentIndex: index,
+        });
+      }
+    })
+
     this.setState({
       apis,
     });
@@ -116,7 +130,10 @@ class DataList extends React.Component {
     this.setState({
       currentIndex: index,
     });
-    window.location.hash = index;
+    const apis = this.state.apis
+    if (apis[index] && apis[index].pathname) {
+      window.location.hash = apis[index].pathname;
+    }
   }
 
   render () {
