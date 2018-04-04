@@ -35,7 +35,7 @@ import {
   Breadcrumb,
   InputNumber,
   Icon,
-  message
+  message,
 } from 'antd';
 
 import _ from '../common/helper';
