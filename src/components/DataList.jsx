@@ -72,7 +72,9 @@ class DataList extends React.Component {
     if (index !== -1) {
       this.setState({
         errorAlert: {
-          message: this.props.intl.formatMessage({id: 'apiConfig.existError'}),
+          message: this.props.intl.formatMessage({
+            id: 'apiConfig.existError',
+          }),
           type: 'error',
         },
       });
@@ -81,7 +83,9 @@ class DataList extends React.Component {
     if (!this.state.modalTitle || !this.state.modalDescription) {
       this.setState({
         errorAlert: {
-          message: this.props.intl.formatMessage({id: 'apiConfig.nullError'}),
+          message: this.props.intl.formatMessage({
+            id: 'apiConfig.nullError',
+          }),
           type: 'error',
         },
       });
@@ -91,7 +95,10 @@ class DataList extends React.Component {
       pathname: this.state.modalTitle,
       description: this.state.modalDescription,
     };
-    const newData = [...this.state.apis, addAPI];
+    const newData = [
+      ...this.state.apis,
+      addAPI,
+    ];
     this.setState({
       modalVisible: false,
       errorAlert: {},
@@ -119,6 +126,14 @@ class DataList extends React.Component {
     window.location.hash = index;
   }
 
+  handleApiSort () {
+    if (!this.state.apis) {
+      return [];
+    }
+    const res = _.sortBy(this.state.apis, item => item.pathname);
+    return res;
+  }
+
   render () {
     return (
       <div className="datalist">
@@ -138,7 +153,7 @@ class DataList extends React.Component {
         </Row>
         <ul>
           {
-            this.state.apis && this.state.apis.map((api, index) => {
+            this.handleApiSort().map((api, index) => {
               return (
                 <li className={this.state.currentIndex === index ? 'clicked' : ''} key={index} onClick={this.handleApiClick.bind(this, index)}>
                   <div className="left">

@@ -13,6 +13,8 @@ import {
   Tabs,
 } from 'antd';
 
+import _ from 'lodash';
+
 import {
   UnControlled as CodeMirror,
 } from 'react-codemirror2';
@@ -161,6 +163,14 @@ export default class Document extends React.Component {
     );
   }
 
+  handleApiSort () {
+    if (!this.state.list) {
+      return [];
+    }
+    const res = _.sortBy(this.state.list, item => item.pathname);
+    return res;
+  }
+
   render () {
     return (
       <Layout style={{ padding: '10px 10px 0 10px'}}>
@@ -175,7 +185,7 @@ export default class Document extends React.Component {
           <div className="datalist">
             <ul>
               {
-                this.state.list.map((api, index) => {
+                this.handleApiSort().map((api, index) => {
                   return (
                     <li className={index === this.state.slectedIndex ? 'clicked' : ''} key={index} onClick={this.selectApiClick.bind(this, index)}>
                       <div className="left">
