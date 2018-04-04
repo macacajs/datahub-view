@@ -35,24 +35,23 @@ class DataList extends React.Component {
     };
   }
 
-  setIntApi (pathname, apis) {
-    apis.forEach((api, index) => {
-      if (api.pathname === pathname) {
-        this.props.handleApiClick(pathname);
-        this.handleApiClick(pathname);
-      }
-    });
-  }
-
   componentWillReceiveProps (props) {
-    const apis = props.apis;
-    apis.forEach((api, index) => {
-      if (api.pathname === location.hash.replace('#', '')) {
-        this.setState({
-          currentPathname: api.pathname,
-        });
-      }
-    });
+    const apis = this.handleApiSort(props.apis);
+    const firstApi = apis && apis[0] && apis[0].pathname;
+    if (location.hash) {
+      apis.forEach((api, index) => {
+        if (api.pathname === location.hash.replace('#', '')) {
+          this.setState({
+            currentPathname: api.pathname,
+          });
+        }
+      });
+    } else if (firstApi) {
+      this.setState({
+        currentPathname: firstApi,
+      });
+      this.handleApiClick(firstApi);
+    }
 
     this.setState({
       apis,
@@ -80,9 +79,8 @@ class DataList extends React.Component {
   }
 
   handleModalOk (e) {
-    const index = _.findIndex(this.state
-      .apis,
-    o => o.pathname === this.state.modalTitle);
+    const index = _.findIndex(this.state.apis, o =>
+      o.pathname === this.state.modalTitle);
     if (index !== -1) {
       this.setState({
         errorAlert: {
@@ -138,16 +136,15 @@ class DataList extends React.Component {
       currentPathname: pathname,
     });
     if (pathname) {
-      // window.location.hash = apis[index].pathname;
       window.location.hash = pathname;
     }
   }
 
-  handleApiSort () {
-    if (!this.state.apis) {
+  handleApiSort (apis) {
+    if (!apis) {
       return [];
     }
-    const res = _.sortBy(this.state.apis, item => item.pathname);
+    const res = _.sortBy(apis, item => item.pathname);
     return res;
   }
 
@@ -181,7 +178,7 @@ class DataList extends React.Component {
         </Row>
         <ul>
           {
-            this.handleApiSort().map((api, index) => {
+            this.state.apis.map((api, index) => {
               if (api.isHide) {
                 return null;
               }
