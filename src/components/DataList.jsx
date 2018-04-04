@@ -30,19 +30,18 @@ class DataList extends React.Component {
       modalTitle: '',
       modalDescription: '',
       apis: props.apis,
-      currentIndex: 0,
+      currentPathname: '',
       errorAlert: null,
     };
   }
 
   setIntApi (pathname, apis) {
     apis.forEach((api, index) => {
-      console.log(api)
       if (api.pathname === pathname) {
-        this.props.handleApiClick(index);
-        this.handleApiClick(index);
+        this.props.handleApiClick(pathname);
+        this.handleApiClick(pathname);
       }
-    })
+    });
   }
 
   componentWillReceiveProps (props) {
@@ -50,10 +49,10 @@ class DataList extends React.Component {
     apis.forEach((api, index) => {
       if (api.pathname === location.hash.replace('#', '')) {
         this.setState({
-          currentIndex: index,
+          currentPathname: api.pathname,
         });
       }
-    })
+    });
 
     this.setState({
       apis,
@@ -81,12 +80,15 @@ class DataList extends React.Component {
   }
 
   handleModalOk (e) {
-    const index = _.findIndex(this.state.apis,
-      o => o.pathname === this.state.modalTitle);
+    const index = _.findIndex(this.state
+      .apis,
+    o => o.pathname === this.state.modalTitle);
     if (index !== -1) {
       this.setState({
         errorAlert: {
-          message: this.props.intl.formatMessage({id: 'apiConfig.existError'}),
+          message: this.props.intl.formatMessage({
+            id: 'apiConfig.existError',
+          }),
           type: 'error',
         },
       });
@@ -95,7 +97,9 @@ class DataList extends React.Component {
     if (!this.state.modalTitle || !this.state.modalDescription) {
       this.setState({
         errorAlert: {
-          message: this.props.intl.formatMessage({id: 'apiConfig.nullError'}),
+          message: this.props.intl.formatMessage({
+            id: 'apiConfig.nullError',
+          }),
           type: 'error',
         },
       });
@@ -105,7 +109,10 @@ class DataList extends React.Component {
       pathname: this.state.modalTitle,
       description: this.state.modalDescription,
     };
-    const newData = [...this.state.apis, addAPI];
+    const newData = [
+      ...this.state.apis,
+      addAPI,
+    ];
     this.setState({
       modalVisible: false,
       errorAlert: {},
@@ -125,15 +132,35 @@ class DataList extends React.Component {
     this.props.handleDeleteApi(newData, deleteApi);
   }
 
-  handleApiClick (index) {
-    this.props.handleApiClick(index);
+  handleApiClick (pathname) {
+    this.props.handleApiClick(pathname);
     this.setState({
-      currentIndex: index,
+      currentPathname: pathname,
     });
-    const apis = this.state.apis
-    if (apis[index] && apis[index].pathname) {
-      window.location.hash = apis[index].pathname;
+    if (pathname) {
+      // window.location.hash = apis[index].pathname;
+      window.location.hash = pathname;
     }
+  }
+
+  handleApiSort () {
+    if (!this.state.apis) {
+      return [];
+    }
+    const res = _.sortBy(this.state.apis, item => item.pathname);
+    return res;
+  }
+
+  handleSearchChange (e) {
+    const filter = e.target.value;
+    const apis = [...this.state.apis];
+    apis.map(api => {
+      api.isHide = api.pathname.indexOf(filter) === -1;
+    });
+
+    this.setState({
+      apis,
+    });
   }
 
   render () {
@@ -142,9 +169,8 @@ class DataList extends React.Component {
         <Row gutter={8}>
           <Col span={16}>
             <Search
-              disabled
               placeholder="Search interface"
-              onSearch={value => console.log(value)}
+              onChange={this.handleSearchChange.bind(this)}
             />
           </Col>
           <Col span={8}>
@@ -155,9 +181,12 @@ class DataList extends React.Component {
         </Row>
         <ul>
           {
-            this.state.apis && this.state.apis.map((api, index) => {
+            this.handleApiSort().map((api, index) => {
+              if (api.isHide) {
+                return null;
+              }
               return (
-                <li className={this.state.currentIndex === index ? 'clicked' : ''} key={index} onClick={this.handleApiClick.bind(this, index)}>
+                <li className={this.state.currentPathname === api.pathname ? 'clicked' : ''} key={index} onClick={this.handleApiClick.bind(this, api.pathname)}>
                   <div className="left">
                     <h3>{api.pathname}</h3>
                     <p>{api.description}</p>

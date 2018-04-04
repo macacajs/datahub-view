@@ -71,21 +71,21 @@ class DynamicFieldSet extends Component {
     const index = this.state.originKeys.indexOf(k);
     const newPorxies = [].concat(this.state.proxies);
     newPorxies.splice(index, 1);
-    let result = {}
+    let result = {};
     if (k === this.state.currentProxyIndex) {
       result = {
         originKeys: newKeys,
         proxies: newPorxies,
         currentProxyIndex: newKeys[0],
-      }
+      };
     } else {
       result = {
         originKeys: newKeys,
         proxies: newPorxies,
-      }
+      };
     }
     this.setState(result);
-    this.handleSubmitProxy(result)
+    this.handleSubmitProxy(result);
   }
 
   add () {
@@ -125,7 +125,7 @@ class DynamicFieldSet extends Component {
     });
     this.handleSubmitProxy({
       currentProxyIndex: e.target.value,
-    })
+    });
   }
 
   proxyInputChange (e, index) {
@@ -136,7 +136,7 @@ class DynamicFieldSet extends Component {
     });
   }
 
-  handleSubmitProxy(param) {
+  handleSubmitProxy (param) {
     for (let i = 0; i < this.state.proxies.length; i++) {
       const proxy = this.state.proxies[i];
       this.setState({

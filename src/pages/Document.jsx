@@ -13,6 +13,8 @@ import {
   Tabs,
 } from 'antd';
 
+import _ from 'lodash';
+
 import {
   UnControlled as CodeMirror,
 } from 'react-codemirror2';
@@ -55,8 +57,8 @@ export default class Document extends React.Component {
   }
 
   componentDidMount () {
-    let pathname = ''
-    let scenename = ''
+    let pathname = '';
+    let scenename = '';
     if (/scene=/.test(location.hash)) {
       pathname = location.hash.replace(/#api=(.*)&scene=\w*/, '$1');
       scenename = location.hash.split('&scene=')[1];
@@ -71,25 +73,24 @@ export default class Document extends React.Component {
         if (res.success) {
           res.data.forEach((item, index) => {
             if (item.pathname === pathname) {
-              slectedIndex = index
-              let scenes = []
+              slectedIndex = index;
+              let scenes = [];
               try {
-                scenes = JSON.parse(item.scenes)
+                scenes = JSON.parse(item.scenes);
               } catch (e) {
               }
               scenes.forEach((scene, i) => {
                 if (scene.name === scenename) {
-                  hashSceneIndex = i
+                  hashSceneIndex = i;
                 }
-              })
+              });
             }
-          })
+          });
           this.setState({
             slectedIndex: slectedIndex || 0,
             hashSceneIndex: hashSceneIndex || 0,
             list: res.data,
           });
-
         }
       });
   }
@@ -177,6 +178,14 @@ export default class Document extends React.Component {
     );
   }
 
+  handleApiSort () {
+    if (!this.state.list) {
+      return [];
+    }
+    const res = _.sortBy(this.state.list, item => item.pathname);
+    return res;
+  }
+
   render () {
     return (
       <Layout style={{ padding: '10px 10px 0 10px'}}>
@@ -191,7 +200,7 @@ export default class Document extends React.Component {
           <div className="datalist">
             <ul>
               {
-                this.state.list.map((api, index) => {
+                this.handleApiSort().map((api, index) => {
                   return (
                     <li className={index === this.state.slectedIndex ? 'clicked' : ''} key={index} onClick={this.selectApiClick.bind(this, index, api.pathname)}>
                       <div className="left">

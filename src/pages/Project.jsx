@@ -34,7 +34,7 @@ class Project extends React.Component {
     this.state = {
       contentViewType: 'api', // display api content by default
       data: [],
-      currentIndex: 0,
+      currentPathname: '',
       REALTIME_MAXLINE: 10,
       realTimeDataList: [],
       realTimeIndex: 0,
@@ -54,9 +54,9 @@ class Project extends React.Component {
         });
         res.data.forEach((api, index) => {
           if (api.pathname === location.hash.replace('#', '')) {
-            this.handleApiClick(index)
+            this.handleApiClick(api.pathname);
           }
-        })
+        });
       }
     });
     this.initRealTimeDataList();
@@ -107,7 +107,12 @@ class Project extends React.Component {
 
   asynSecType (type, data, index) {
     const apis = [...this.state.data];
-    let apiIndex = this.state.currentIndex;
+    let apiIndex = 0;
+    apis.forEach((api, index) => {
+      if (api.pathname === this.state.currentPathname) {
+        apiIndex = index;
+      }
+    });
     if (typeof index === 'number') {
       apiIndex = index;
     }
@@ -130,10 +135,10 @@ class Project extends React.Component {
     });
   }
 
-  handleApiClick (index) {
+  handleApiClick (pathname) {
     this.setState({
       contentViewType: 'api',
-      currentIndex: index,
+      currentPathname: pathname,
     });
   }
 
@@ -147,7 +152,7 @@ class Project extends React.Component {
     } else if (key === 'apilist' && this.state.data.length > 0) {
       this.setState({
         contentViewType: 'api',
-        currentIndex: 0,
+        currentPathname: this.state.data[0].pathname,
       });
     }
   }
@@ -160,6 +165,12 @@ class Project extends React.Component {
   }
 
   render () {
+    let currentData = {};
+    this.state.data.forEach((api, index) => {
+      if (api.pathname === this.state.currentPathname) {
+        currentData = api;
+      }
+    });
     return (
       <Layout style={{ padding: '10px 10px 0 10px'}}>
         <Sider
@@ -197,7 +208,7 @@ class Project extends React.Component {
             this.state.data.length
               ? this.state.contentViewType === 'api' &&
             <DataInfo
-              currentData={this.state.data[this.state.currentIndex]}
+              currentData={ currentData }
               handleAsynSecType={this.asynSecType.bind(this)}
             />
               : <div className="datainfo">
