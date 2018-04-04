@@ -35,6 +35,7 @@ import {
   Breadcrumb,
   InputNumber,
   Icon,
+  message
 } from 'antd';
 
 import _ from '../common/helper';
@@ -246,7 +247,7 @@ class DataInfo extends React.Component {
     try {
       JSON.parse(this.state._modalInfoData);
     } catch (e) {
-      console.log('invalid json string');
+      message.warning('invalid json string');
       return;
     }
     const index = _.findIndex(this.state.scenes,
