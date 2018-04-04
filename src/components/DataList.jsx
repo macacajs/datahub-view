@@ -73,7 +73,7 @@ class DataList extends React.Component {
       this.setState({
         errorAlert: {
           message: this.props.intl.formatMessage({
-            id: 'apiConfig.existError'
+            id: 'apiConfig.existError',
           }),
           type: 'error',
         },
@@ -84,7 +84,7 @@ class DataList extends React.Component {
       this.setState({
         errorAlert: {
           message: this.props.intl.formatMessage({
-            id: 'apiConfig.nullError'
+            id: 'apiConfig.nullError',
           }),
           type: 'error',
         },
@@ -97,7 +97,7 @@ class DataList extends React.Component {
     };
     const newData = [
       ...this.state.apis,
-      addAPI
+      addAPI,
     ];
     this.setState({
       modalVisible: false,
