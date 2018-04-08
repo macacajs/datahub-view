@@ -134,10 +134,12 @@ export default class Document extends React.Component {
       description,
       pathname,
       scenes,
-      params,
+      resSchemaContent,
+      reqSchemaContent,
     } = currentData;
     const scenesData = JSON.parse(scenes);
-    const paramsData = JSON.parse(params);
+    const reqSchemaContentObj = JSON.parse(reqSchemaContent);
+    const resSchemaContentObj = JSON.parse(resSchemaContent);
 
     return (
       <div className="document">
@@ -147,12 +149,20 @@ export default class Document extends React.Component {
           </span>  /{pathname}
         </h1>
         <h3>{description}</h3>
-        <h1><FormattedMessage id='document.schemaDes' /></h1>
+        <h1><FormattedMessage id='document.reqSchemaDes' /></h1>
         <CustomTable
           type="api"
           className="schema-table"
           schemaData={scenesData}
-          paramsData={paramsData}
+          paramsData={reqSchemaContentObj}
+          disabled={true}
+        />
+        <h1><FormattedMessage id='document.resSchemaDes' /></h1>
+        <CustomTable
+          type="api"
+          className="schema-table"
+          schemaData={scenesData}
+          paramsData={resSchemaContentObj}
           disabled={true}
         />
         <h1><FormattedMessage id='document.sceneData' /></h1>
