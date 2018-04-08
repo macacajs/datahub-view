@@ -92,7 +92,8 @@ const enUS = {
   'dashboard.modalDescriptionTip': 'input cant be null',
   'dashboard.tableAdd': 'add hub',
 
-  'document.schemaDes': 'schema description',
+  'document.resSchemaDes': ' response schema description',
+  'document.reqSchemaDes': ' request schema description',
   'document.sceneData': 'scene data',
 
   'project.apiList': 'api list',

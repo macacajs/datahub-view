@@ -85,8 +85,7 @@ class EditableAddDeleteCell extends React.Component {
             >
               <span
                 className={ columnStyleMap[this.props.column] || '' }
-                dangerouslySetInnerHTML={{__html: value}}
-                style={{ marginLeft: `${this.props.level * 20}px` }}>
+                dangerouslySetInnerHTML={{__html: value}}>
               </span>
               {
                 showEditableIcon ? <Icon
@@ -230,11 +229,16 @@ class EditableTable extends React.Component {
   }
 
   getDataList () {
+    const paramsData = this.props.paramsData;
+    const schemaData = this.props.schemaData;
     if (this.props.type === 'schema') {
-      return _.genSchemaList(this.props.schemaData || []);
+      return _.genSchemaList(schemaData || []);
     } else if (this.props.type === 'api') {
-      return _.genApiList(this.props.schemaData || [],
-        this.props.paramsData || []);
+      if (paramsData && paramsData.schemaData && paramsData.schemaData.length > 0) {
+        return _.genApiList(schemaData || [], paramsData || []);
+      } else {
+        return [];
+      }
     } else {
       return [];
     }
