@@ -91,8 +91,8 @@ const zhCN = {
   'dashboard.modalDescriptionTip': '请输入中文或者数字',
   'dashboard.tableAdd': '添加项目',
 
-  'document.resSchemaDes': ' 响应 Schema 描述',
-  'document.reqSchemaDes': ' 请求 Schema 描述',
+  'document.resSchemaDes': '响应 Schema 描述',
+  'document.reqSchemaDes': '请求 Schema 描述',
   'document.schemaDes': 'Schema 描述',
   'document.sceneData': '场景数据',
 
