@@ -85,6 +85,7 @@ class EditableAddDeleteCell extends React.Component {
             >
               <span
                 className={ columnStyleMap[this.props.column] || '' }
+                style={{ marginLeft: `${this.props.level * 15}px` }}
                 dangerouslySetInnerHTML={{__html: value}}>
               </span>
               {
