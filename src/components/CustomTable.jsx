@@ -8,6 +8,7 @@ import {
   Button,
   Popconfirm,
   Checkbox,
+  Select
 } from 'antd';
 
 import {
@@ -18,10 +19,18 @@ import _ from '../common/helper';
 
 import './CustomTable.less';
 
+const Option = Select.Option;
+
 const columnStyleMap = {
   type: 'capitalize',
   required: '',
 };
+
+const schemaTypes = ['object', 'string', 'array', 'boolean', 'number'];
+
+const typeOptions = schemaTypes.map(t => {
+  return (<Option key={t} value={t}>{t}</Option>)
+});
 
 class EditableAddDeleteCell extends React.Component {
   constructor (props) {
@@ -30,6 +39,12 @@ class EditableAddDeleteCell extends React.Component {
       value: props.value,
       showEditableIcon: false,
     };
+  }
+
+  handleSelectChange (value) {
+    this.setState({
+      value,
+    });
   }
 
   handleChange (e) {
@@ -65,17 +80,25 @@ class EditableAddDeleteCell extends React.Component {
         {
           this.props.editable
             ? <div className="editable-cell-input-wrapper">
-              <Input
-                value={value}
-                style={{ width: '70%' }}
-                onChange={this.handleChange.bind(this)}
-                onPressEnter={this.check.bind(this)}
-              />
-              <Icon
-                type="check"
-                className="editable-cell-icon-check"
-                onClick={this.check.bind(this)}
-              />
+              {
+                this.props.column === 'type' 
+                ? 
+                <Select defaultValue={value} onChange={this.handleSelectChange.bind(this)}>
+                  {typeOptions}
+                </Select>
+                : 
+                <Input
+                  value={value}
+                  style={{ width: '70%' }}
+                  onChange={this.handleChange.bind(this)}
+                  onPressEnter={this.check.bind(this)}
+                />
+              }
+                <Icon
+                  type="check"
+                  className="editable-cell-icon-check"
+                  onClick={this.check.bind(this)}
+                />
             </div>
             : <div
               className="editable-cell-text-wrapper"
