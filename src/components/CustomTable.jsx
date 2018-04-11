@@ -8,7 +8,7 @@ import {
   Button,
   Popconfirm,
   Checkbox,
-  Select
+  Select,
 } from 'antd';
 
 import {
@@ -29,7 +29,7 @@ const columnStyleMap = {
 const schemaTypes = ['object', 'string', 'array', 'boolean', 'number'];
 
 const typeOptions = schemaTypes.map(t => {
-  return (<Option key={t} value={t}>{t}</Option>)
+  return (<Option key={t} value={t}>{t}</Option>);
 });
 
 class EditableAddDeleteCell extends React.Component {
@@ -81,24 +81,22 @@ class EditableAddDeleteCell extends React.Component {
           this.props.editable
             ? <div className="editable-cell-input-wrapper">
               {
-                this.props.column === 'type' 
-                ? 
-                <Select defaultValue={value} onChange={this.handleSelectChange.bind(this)}>
-                  {typeOptions}
-                </Select>
-                : 
-                <Input
-                  value={value}
-                  style={{ width: '70%' }}
-                  onChange={this.handleChange.bind(this)}
-                  onPressEnter={this.check.bind(this)}
-                />
+                this.props.column === 'type'
+                  ? <Select defaultValue={value} onChange={this.handleSelectChange.bind(this)}>
+                    {typeOptions}
+                  </Select>
+                  : <Input
+                    value={value}
+                    style={{ width: '70%' }}
+                    onChange={this.handleChange.bind(this)}
+                    onPressEnter={this.check.bind(this)}
+                  />
               }
-                <Icon
-                  type="check"
-                  className="editable-cell-icon-check"
-                  onClick={this.check.bind(this)}
-                />
+              <Icon
+                type="check"
+                className="editable-cell-icon-check"
+                onClick={this.check.bind(this)}
+              />
             </div>
             : <div
               className="editable-cell-text-wrapper"
