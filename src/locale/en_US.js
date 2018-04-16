@@ -53,7 +53,7 @@ const enUS = {
   'apiConfig.addSuccess': 'add success',
   'apiConfig.responseHeader': 'custom response header:',
   'apiConfig.modifyResponseHeader': 'modify',
-
+  'apiConfig.project': 'Project',
 
   'sceneMng.title': 'scene manage',
   'sceneMng.sceneName': 'scene',

@@ -11,6 +11,8 @@ import {
 import {
   Layout,
   Tabs,
+  Button,
+  Icon,
 } from 'antd';
 
 import _ from 'lodash';
@@ -146,10 +148,21 @@ export default class Document extends React.Component {
         <h1>
           <span className={`method-${method.toLowerCase()}`}>
             {method}
-          </span>  /{pathname}
+          </span>&nbsp;/&nbsp;{pathname}
         </h1>
+        <a
+          href={`/project/${projectId}${location.hash}`}
+        >
+          <Button className="right-button">
+            <Icon type="setting" />
+            <FormattedMessage id='apiConfig.project' />
+          </Button>
+        </a>
+
         <h3>{description}</h3>
-        <h1><FormattedMessage id='document.reqSchemaDes' /></h1>
+        <h1>
+          <FormattedMessage id='document.reqSchemaDes' />
+        </h1>
         <CustomTable
           type="api"
           className="schema-table"
@@ -157,7 +170,9 @@ export default class Document extends React.Component {
           paramsData={reqSchemaContentObj}
           disabled={true}
         />
-        <h1><FormattedMessage id='document.resSchemaDes' /></h1>
+        <h1>
+          <FormattedMessage id='document.resSchemaDes' />
+        </h1>
         <CustomTable
           type="api"
           className="schema-table"
@@ -165,7 +180,9 @@ export default class Document extends React.Component {
           paramsData={resSchemaContentObj}
           disabled={true}
         />
-        <h1><FormattedMessage id='document.sceneData' /></h1>
+        <h1>
+          <FormattedMessage id='document.sceneData' />
+        </h1>
         <Tabs
           defaultActiveKey={'tab-' + this.state.hashSceneIndex}
           type="card"
@@ -219,7 +236,11 @@ export default class Document extends React.Component {
               {
                 this.handleApiSort().map((api, index) => {
                   return (
-                    <li className={api.pathname === this.state.slectedName ? 'clicked' : ''} key={index} onClick={this.selectApiClick.bind(this, index, api.pathname)}>
+                    <li
+                      className={api.pathname === this.state.slectedName ? 'clicked' : ''}
+                      key={index}
+                      onClick={this.selectApiClick.bind(this, index, api.pathname)}
+                    >
                       <div className="left">
                         <h3>{api.pathname}</h3>
                         <p>{api.description}</p>
