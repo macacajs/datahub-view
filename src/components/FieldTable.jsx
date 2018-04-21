@@ -147,6 +147,7 @@ class FieldTable extends React.Component {
         <section className="params-doc">
           <h1><FormattedMessage id={this.state.title} /></h1>
           <Checkbox
+            disabled={true}
             checked={this.state.enableSchemaValidate}
             onChange={this.toggleSchemaValidate.bind(this)}
           >
