@@ -37,7 +37,7 @@ const genSchemaList = (data) => {
         description,
         level,
         key: `${_.guid()}`,
-        required: !!~requiredList.indexOf(title)
+        required: !!~requiredList.indexOf(title),
       });
 
       if (properties) {
@@ -72,7 +72,6 @@ _.isChineseChar = str => {
 };
 
 _.genApiList = (schemaData, paramsData) => {
-
   if (!paramsData.schemaData || !schemaData.length) {
     return [];
   }

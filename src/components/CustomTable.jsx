@@ -71,14 +71,14 @@ class EditableAddDeleteCell extends React.Component {
       return;
     }
     this.setState({
-      showEditableIcon: !!value
+      showEditableIcon: !!value,
     });
   }
 
   render () {
     const {
       value,
-      showEditableIcon
+      showEditableIcon,
     } = this.state;
     return (
       <div className="editable-cell">
