@@ -12,7 +12,7 @@
   "main": "dist/datahub-view.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/macacajs/datahub-view.git"
+    "url": "https://github.com/macacajs/datahub-view"
   },
   "links": {
     "document": "//macacajs.github.io/datahub",
