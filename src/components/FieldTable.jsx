@@ -68,12 +68,6 @@ class FieldTable extends React.Component {
   confirmSchemaModal (data) {
     try {
       const newData = JSON.parse(this.state._schemaNewData);
-      if (!(newData instanceof Array)) {
-        this.setState({
-          schemaFormatError: true,
-        });
-        return;
-      }
       this.setState({
         schemaModalVisible: false,
       });
@@ -125,7 +119,17 @@ class FieldTable extends React.Component {
         <Modal
           className="codemirror-modal"
           width="80%"
-          title="schema"
+          title={
+            <p>
+              Schema&nbsp;&nbsp;
+              <a
+                href="//github.com/macacajs/macaca-datahub/blob/master/README.md#schema-syntax"
+                target="_blank"
+              >
+                syntax docs
+              </a>
+            </p>
+          }
           visible={this.state.schemaModalVisible}
           onOk={this.confirmSchemaModal.bind(this)}
           cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}
@@ -143,6 +147,7 @@ class FieldTable extends React.Component {
         <section className="params-doc">
           <h1><FormattedMessage id={this.state.title} /></h1>
           <Checkbox
+            disabled={true}
             checked={this.state.enableSchemaValidate}
             onChange={this.toggleSchemaValidate.bind(this)}
           >
@@ -154,6 +159,7 @@ class FieldTable extends React.Component {
             className="schema-table"
             schemaData={this.state.schemaData}
             onChange={this.onSetSchemaData.bind(this)}
+            disabled={true}
           />
         </section>
       </div>

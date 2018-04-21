@@ -166,8 +166,8 @@ export default class Document extends React.Component {
         <CustomTable
           type="api"
           className="schema-table"
-          schemaData={scenesData}
-          paramsData={reqSchemaContentObj}
+          schemaData={[]}
+          paramsData={[]}
           disabled={true}
         />
         <h1>
