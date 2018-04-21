@@ -18,31 +18,47 @@ const genSchemaList = (data) => {
   let level = -1;
 
   const walker = (data) => {
+    if (!data.properties) {
+      return [];
+    }
+    const requiredList = data.required || [];
     level++;
-    data.forEach(item => {
+    Object.keys(data.properties).forEach(key => {
+      const schema = data.properties[key];
       const {
-        field,
+        title,
         type,
-        required,
         description,
-        children,
-      } = item;
+        properties,
+      } = schema;
       res.push({
-        field,
+        title,
         type,
-        required,
         description,
         level,
         key: `${_.guid()}`,
+        required: !!~requiredList.indexOf(title)
       });
 
-      if (children) {
-        walker(children);
+      if (properties) {
+        walker(schema);
         level--;
       }
     });
     return res;
   };
+  /**
+   pass the root schema
+   {
+    "title": "root",
+    "type": "object",
+    "properties": {
+      "title": "success",
+      "type": "boolean",
+      "properties": {
+      }
+    }
+   */
   return walker(data);
 };
 
@@ -56,7 +72,8 @@ _.isChineseChar = str => {
 };
 
 _.genApiList = (schemaData, paramsData) => {
-  if (!paramsData.schemaData) {
+
+  if (!paramsData.schemaData || !schemaData.length) {
     return [];
   }
   const paramsMap = _.groupBy(genSchemaList(paramsData.schemaData), 'level');
@@ -85,7 +102,7 @@ _.genApiList = (schemaData, paramsData) => {
     keys.forEach(key => {
       const value = data[key];
       const map = {
-        field: key,
+        title: key,
         type: typeDetect(value),
         level,
         key: `${_.guid()}`,

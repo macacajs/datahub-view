@@ -70,11 +70,16 @@ class EditableAddDeleteCell extends React.Component {
     if (this.props.disabled) {
       return;
     }
-    this.setState({ showEditableIcon: !!value });
+    this.setState({
+      showEditableIcon: !!value
+    });
   }
 
   render () {
-    const { value, showEditableIcon } = this.state;
+    const {
+      value,
+      showEditableIcon
+    } = this.state;
     return (
       <div className="editable-cell">
         {
@@ -133,7 +138,7 @@ class EditableTable extends React.Component {
 
     this.columns = [{
       title: this.props.intl.formatMessage({id: 'fieldDes.field'}),
-      dataIndex: 'field',
+      dataIndex: 'title',
       width: '20%',
       render: (text, record, index) => this.renderColumns(text, record, 'field', index),
     }, {
@@ -254,10 +259,13 @@ class EditableTable extends React.Component {
     const paramsData = this.props.paramsData;
     const schemaData = this.props.schemaData;
     if (this.props.type === 'schema') {
-      return _.genSchemaList(schemaData || []);
+      if (schemaData) {
+        const res = _.genSchemaList(schemaData);
+        return res;
+      }
     } else if (this.props.type === 'api') {
-      if (paramsData && paramsData.schemaData && paramsData.schemaData.length > 0) {
-        return _.genApiList(schemaData || [], paramsData || []);
+      if (paramsData && paramsData.schemaData) {
+        return _.genApiList(schemaData, paramsData);
       } else {
         return [];
       }
