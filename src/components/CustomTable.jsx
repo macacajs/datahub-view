@@ -161,14 +161,14 @@ class EditableTable extends React.Component {
       },
     }, {
       title: this.props.intl.formatMessage({
-        id: 'fieldDes.description'
+        id: 'fieldDes.description',
       }),
       dataIndex: 'description',
       width: '40%',
       render: (text, record, index) => this.renderColumns(text, record, 'description', index),
     }, {
       title: this.props.intl.formatMessage({
-        id: 'fieldDes.operation'
+        id: 'fieldDes.operation',
       }),
       dataIndex: 'operation',
       width: '10%',
@@ -187,14 +187,14 @@ class EditableTable extends React.Component {
           </Button>
           <Popconfirm
             title={this.props.intl.formatMessage({
-              id: 'common.deleteTip'
+              id: 'common.deleteTip',
             })}
             onConfirm={this.minus.bind(this, index, record)}
             okText={this.props.intl.formatMessage({
-              id: 'common.confirm'
+              id: 'common.confirm',
             })}
             cancelText={this.props.intl.formatMessage({
-              id: 'common.cancel'
+              id: 'common.cancel',
             })}
           >
             <Button
