@@ -111,7 +111,7 @@ _.genApiList = (schemaData, paramsData) => {
 
       if (paramsList && paramsList.length) {
         paramsList.forEach(item => {
-          if (item.field === map.field) {
+          if (item.title === map.title) {
             map.description = item.description;
             map.required = item.required;
           }
