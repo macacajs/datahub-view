@@ -23,10 +23,9 @@ const genSchemaList = (data) => {
     }
     const requiredList = data.required || [];
     level++;
-    Object.keys(data.properties).forEach(key => {
-      const schema = data.properties[key];
+    Object.keys(data.properties).forEach(title => {
+      const schema = data.properties[title];
       const {
-        title,
         type,
         description,
         properties,
@@ -50,12 +49,13 @@ const genSchemaList = (data) => {
   /**
    pass the root schema
    {
-    "title": "root",
     "type": "object",
     "properties": {
-      "title": "success",
-      "type": "boolean",
-      "properties": {
+      "success": {
+        "type": "boolean",
+        "description": "",
+        "properties": {
+        }
       }
     }
    */
