@@ -37,8 +37,8 @@ const enUS = {
 
   'apiList.addApi': 'Add API',
   'apiList.searchApi': 'search API',
-  'apiList.apiNameInput': 'please input api name',
-  'apiList.apiDesInput': 'please input api description',
+  'apiList.apiNameInput': 'please input API name',
+  'apiList.apiDesInput': 'please input API description',
 
   'apiConfig.title': 'API config',
   'apiConfig.apiDoc': 'API doc',
@@ -48,12 +48,13 @@ const enUS = {
   'apiConfig.apiDelay': 'API delay:',
   'apiConfig.statusCode': 'Response status code:',
   'apiConfig.second': 'secs',
-  'apiConfig.existError': 'api is existed!',
-  'apiConfig.nullError': 'api name and api description can\'t be empty!',
+  'apiConfig.existError': 'API is existed!',
+  'apiConfig.nullError': 'API name and API description can\'t be empty!',
   'apiConfig.addSuccess': 'add success',
   'apiConfig.responseHeader': 'custom response header:',
   'apiConfig.modifyResponseHeader': 'modify',
-  'apiConfig.project': 'Project',
+  'apiConfig.project': 'ProjecAPIt',
+  'apiConfig.validateError': 'API name is ivalide',
 
   'sceneMng.title': 'scene manage',
   'sceneMng.sceneName': 'scene',
@@ -83,7 +84,7 @@ const enUS = {
   'realtimeProject.saveToScene': 'save to scene list',
   'realtimeProject.inputPlacehold': 'please input scene name',
   'realtimeProject.chineseError': 'please input non-chinese characters',
-  'realtimeProject.nullError': 'please add hub or api',
+  'realtimeProject.nullError': 'please add hub or API',
 
   'dashboard.modalTile': 'create a hub',
   'dashboard.modalName': 'hub name',
@@ -96,7 +97,7 @@ const enUS = {
   'document.reqSchemaDes': ' request schema description',
   'document.sceneData': 'scene data',
 
-  'project.apiList': 'api list',
+  'project.apiList': 'API list',
   'project.realtimeList': 'realtime snapshot',
   'project.createApi': 'please add API',
 };

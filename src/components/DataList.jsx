@@ -103,6 +103,19 @@ class DataList extends React.Component {
       });
       return;
     }
+
+    if (this.state.modalTitle[0] === '/') {
+      this.setState({
+        errorAlert: {
+          message: this.props.intl.formatMessage({
+            id: 'apiConfig.validateError',
+          }),
+          type: 'error',
+        },
+      });
+      return;
+    }
+
     const addAPI = {
       pathname: this.state.modalTitle,
       description: this.state.modalDescription,
