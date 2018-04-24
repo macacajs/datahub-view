@@ -54,7 +54,7 @@ const enUS = {
   'apiConfig.responseHeader': 'custom response header:',
   'apiConfig.modifyResponseHeader': 'modify',
   'apiConfig.project': 'ProjecAPIt',
-  'apiConfig.validateError': 'API name is ivalide',
+  'apiConfig.validateError': 'API name is invalid',
 
   'sceneMng.title': 'scene manage',
   'sceneMng.sceneName': 'scene',
