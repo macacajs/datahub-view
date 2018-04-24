@@ -42,23 +42,24 @@ class Project extends React.Component {
   }
 
   componentDidMount () {
-    request(`/api/data/${projectId}`, 'GET').then((res) => {
-      console.log('res', res);
-      res.data.forEach(item => {
-        item.params = item.params;
-        item.scenes = JSON.parse(item.scenes);
+    request(`/api/data/${projectId}`, 'GET')
+      .then((res) => {
+        console.log('res', res);
+        res.data.forEach(item => {
+          item.params = item.params;
+          item.scenes = JSON.parse(item.scenes);
+        });
+        if (res.success) {
+          this.setState({
+            data: res.data,
+          });
+          res.data.forEach((api, index) => {
+            if (api.pathname === location.hash.replace('#', '')) {
+              this.handleApiClick(api.pathname);
+            }
+          });
+        }
       });
-      if (res.success) {
-        this.setState({
-          data: res.data,
-        });
-        res.data.forEach((api, index) => {
-          if (api.pathname === location.hash.replace('#', '')) {
-            this.handleApiClick(api.pathname);
-          }
-        });
-      }
-    });
     this.initRealTimeDataList();
   }
 
@@ -82,27 +83,29 @@ class Project extends React.Component {
     request(`/api/data/${projectId}`, 'POST', {
       pathname: newApi.pathname,
       description: newApi.description,
-    }).then((res) => {
-      console.log('update', res);
-      if (res.success) {
-        this.setState({
-          data: allData,
-        });
-        console.log('update api success');
-      }
-    });
+    })
+      .then((res) => {
+        console.log('update', res);
+        if (res.success) {
+          this.setState({
+            data: allData,
+          });
+          console.log('update api success');
+        }
+      });
   }
 
   deleteApi (allData, newApi) {
-    request(`/api/data/${projectId}/${newApi.pathname}`, 'DELETE').then((res) => {
-      console.log('delete', res);
-      if (res.success) {
-        this.setState({
-          data: allData,
-        });
-        console.log('delete api success');
-      }
-    });
+    request(`/api/data/${projectId}/${newApi.pathname}`, 'DELETE')
+      .then((res) => {
+        console.log('delete', res);
+        if (res.success) {
+          this.setState({
+            data: allData,
+          });
+          console.log('delete api success');
+        }
+      });
   }
 
   asynSecType (type, data, index) {
@@ -149,7 +152,7 @@ class Project extends React.Component {
         contentViewType: 'realTime',
         realTimeIndex: 0,
       });
-    } else if (key === 'apilist' && this.state.data.length > 0) {
+    } else if (key === 'apilist' && this.state.data.length) {
       this.setState({
         contentViewType: 'api',
         currentPathname: this.state.data[0].pathname,
@@ -172,7 +175,7 @@ class Project extends React.Component {
       }
     });
     return (
-      <Layout style={{ padding: '10px 10px 0 10px'}}>
+      <Layout style={{ padding: '10px 10px 0 10px' }}>
         <Sider
           width="300"
           style={{
@@ -186,7 +189,9 @@ class Project extends React.Component {
             onChange={this.tabOnChange.bind(this)}
             animated={false}
           >
-            <TabPane tab={this.props.intl.formatMessage({id: 'project.apiList'})} key="apilist">
+            <TabPane tab={this.props.intl.formatMessage({
+              id: 'project.apiList',
+            })} key="apilist">
               <DataList
                 apis={this.state.data}
                 handleAddApi={this.addApi.bind(this)}
@@ -194,7 +199,9 @@ class Project extends React.Component {
                 handleApiClick={this.handleApiClick.bind(this)}
               />
             </TabPane>
-            <TabPane tab={this.props.intl.formatMessage({id: 'project.realtimeList'})} key="realtimesnapshot">
+            <TabPane tab={this.props.intl.formatMessage({
+              id: 'project.realtimeList',
+            })} key="realtimesnapshot">
               <RealTime
                 realTimeDataList={this.state.realTimeDataList}
                 realTimeIndex={this.state.realTimeIndex || 0}
@@ -214,7 +221,9 @@ class Project extends React.Component {
               : <div className="datainfo">
                 <Alert
                   className="add-api-hint"
-                  message={this.props.intl.formatMessage({id: 'project.createApi'})}
+                  message={this.props.intl.formatMessage({
+                    id: 'project.createApi',
+                  })}
                   type="info"
                   showIcon
                 />

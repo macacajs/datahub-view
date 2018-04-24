@@ -72,7 +72,7 @@ class App extends React.Component {
                   </Tooltip>
                 </li>
                 <li>
-                  <a href={ pkg.links.issue } target="_blank">
+                  <a href={ `${pkg.links.issue}?utf8=%E2%9C%93&q=` } target="_blank">
                     <h3><FormattedMessage id="common.issue" /></h3>
                   </a>
                 </li>
