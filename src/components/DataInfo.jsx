@@ -416,7 +416,7 @@ class DataInfo extends React.Component {
               <FormattedMessage id='apiConfig.title' />
             </h1>
             <a
-              href={`/doc/${projectId}#api=${location.hash}`}
+              href={`/doc/${projectId}${location.hash.replace('#', '#api=')}`}
               target="_blank"
             >
               <Button className="right-button" type="primary">
