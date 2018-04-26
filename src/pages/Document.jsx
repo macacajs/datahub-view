@@ -137,7 +137,7 @@ export default class Document extends React.Component {
       pathname,
       scenes,
       resSchemaContent,
-      reqSchemaContent,
+      // reqSchemaContent,
     } = currentData;
     const scenesData = JSON.parse(scenes);
     const resSchemaContentObj = JSON.parse(resSchemaContent);

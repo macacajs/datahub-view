@@ -55,15 +55,15 @@ class DynamicFieldSet extends Component {
           uuid += lastKey;
         }
         this.setState(origin);
+        return;
       }
-    } else {
-      this.setState({
-        useProxy: false,
-        currentProxyIndex: 1,
-        proxies: [],
-        originKeys: [],
-      });
     }
+    this.setState({
+      useProxy: false,
+      currentProxyIndex: 1,
+      proxies: [],
+      originKeys: [],
+    });
   }
 
   remove (k) {
