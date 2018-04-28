@@ -173,6 +173,7 @@ _.operateSchema = (type, { item, data, index, key, value }) => {
             current.properties[new Date().getTime()] = {
               type: 'string',
               description: '',
+              properties: {},
             };
             break;
           }

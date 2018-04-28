@@ -174,7 +174,7 @@ class EditableTable extends React.Component {
       width: '10%',
       render: (text, record, index) => (
         <div>
-          { record.type === 'array' || record.type === 'object' ? <Button
+          { record.type === 'object' ? <Button
             size="small"
             onClick={this.plus.bind(this, index, record)}
             disabled={this.props.disabled}
