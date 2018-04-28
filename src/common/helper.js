@@ -188,10 +188,10 @@ _.operateSchema = (type, { item, data, index, key, value }) => {
               } else {
                 data.required.splice(data.required.indexOf(item.title), 1);
               }
-            } else if (key === 'field') { // 修改 key
+            } else if (key === 'field') { // modify key
               data.properties[value] = data.properties[item.title];
               delete data.properties[item.title];
-            } else { // 修改属性
+            } else { // modify property
               current[key] = value;
             }
             break;
