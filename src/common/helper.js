@@ -164,35 +164,42 @@ _.operateSchema = (type, { item, data, index, key, value }) => {
   let count = -1;
 
   const walker = data => {
-    data.forEach((current, currentIndex) => {
+    Object.keys(data.properties).forEach((_current, currentIndex) => {
+      const current = data.properties[_current];
       count++;
       if (index === count) {
         switch (type) {
           case 'add': {
-            const defaultNode = {
-              field: 'default',
-              type: 'default',
-              require: true,
-              description: 'default',
+            current.properties[new Date().getTime()] = {
+              type: 'string',
+              description: '',
+              properties: {},
             };
-            current.children ? current.children.push(defaultNode)
-              : current.children = [defaultNode];
             break;
           }
           case 'delete': {
-            data.splice(currentIndex, 1);
+            delete data.properties[_current];
             break;
           }
           case 'modify': {
-            if (item['field'] === current['field']) {
+            if (key === 'required') {
+              if (value) {
+                data.required.push(item.title);
+              } else {
+                data.required.splice(data.required.indexOf(item.title), 1);
+              }
+            } else if (key === 'field') { // modify key
+              data.properties[value] = data.properties[item.title];
+              delete data.properties[item.title];
+            } else { // modify property
               current[key] = value;
             }
             break;
           }
         }
       }
-      if (current.children) {
-        walker(current.children);
+      if (current.properties) {
+        walker(current);
       }
     });
   };

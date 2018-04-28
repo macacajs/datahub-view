@@ -174,7 +174,7 @@ class EditableTable extends React.Component {
       width: '10%',
       render: (text, record, index) => (
         <div>
-          <Button
+          { record.type === 'object' ? <Button
             size="small"
             onClick={this.plus.bind(this, index, record)}
             disabled={this.props.disabled}
@@ -184,7 +184,7 @@ class EditableTable extends React.Component {
               className="plus-cell-icon"
               onClick={this.plus.bind(this, index, record)}
             />
-          </Button>
+          </Button> : ''}
           <Popconfirm
             title={this.props.intl.formatMessage({
               id: 'common.deleteTip',
