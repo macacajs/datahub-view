@@ -26,7 +26,7 @@ class Home extends React.Component {
   render () {
     return (
       <Row type="flex" justify="center">
-        <Col span={22} className="index-content">
+        <Col span={22} className="content">
           <Row type="flex" justify="center">
             <Col span={16}>
               <Row type="flex" justify="center">

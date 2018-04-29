@@ -8,6 +8,13 @@
   </head>
   <body>
     <div id="app">
+      <script>
+        if (document.title === '<!-- title -->') {
+          window.pageConfig = {
+            pageId: 'home'
+          };
+        }
+      </script>
       <!-- data -->
       <script>
         window.pageConfig = window.pageConfig || {};
