@@ -53,7 +53,7 @@ const zhCN = {
   'apiConfig.addSuccess': '添加成功',
   'apiConfig.responseHeader': '自定义响应头：',
   'apiConfig.modifyResponseHeader': '修改',
-  'apiConfig.project': '项目',
+  'apiConfig.project': '项目配置',
   'apiConfig.validateError': '接口名不合法',
 
   'sceneMng.title': '场景管理',
