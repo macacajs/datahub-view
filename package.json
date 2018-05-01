@@ -72,7 +72,7 @@
     "lint": "eslint . --ext js,jsx --fix && stylelint --fix src/**/*.less -s less",
     "prepublish": "npm run build",
     "serve": "npm run dev:test &",
-    "test": "macaca run -d ./test --verbose --reporter macaca-reporter",
+    "test": "macaca run -d ./test --verbose",
     "ci": "npm run lint && npm run serve && npm run test",
     "contributor": "git-contributor"
   },
