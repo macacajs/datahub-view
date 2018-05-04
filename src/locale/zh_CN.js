@@ -83,7 +83,7 @@ const zhCN = {
   'realtimeProject.detailPhoto': '详情快照',
   'realtimeProject.saveToScene': '保存到场景',
   'realtimeProject.inputPlacehold': '请输入场景名称',
-  'realtimeProject.chineseError': '请输入非中文字符',
+  'realtimeProject.validError': '请输入合法字符',
   'realtimeProject.nullError': '请先添加项目或者接口',
 
   'dashboard.modalTile': '创建新项目',

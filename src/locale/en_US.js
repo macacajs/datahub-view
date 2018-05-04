@@ -83,7 +83,7 @@ const enUS = {
   'realtimeProject.detailPhoto': 'detail snapshot',
   'realtimeProject.saveToScene': 'save to scene list',
   'realtimeProject.inputPlacehold': 'please input scene name',
-  'realtimeProject.chineseError': 'please input non-chinese characters',
+  'realtimeProject.validError': 'please input valid characters',
   'realtimeProject.nullError': 'please add hub or API',
 
   'dashboard.modalTile': 'create a hub',

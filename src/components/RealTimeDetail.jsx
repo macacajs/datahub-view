@@ -98,10 +98,10 @@ class RealTimeDetail extends React.Component {
       }
     });
 
-    if (_.isChineseChar(this.state.addingScene)) {
+    if (_.isChineseChar(this.state.addingScene) || /\W+/.test(this.state.addingScene)) {
       this.setState({
         sceneError: {
-          message: this.props.intl.formatMessage({id: 'realtimeProject.chineseError'}),
+          message: this.props.intl.formatMessage({id: 'realtimeProject.validError'}),
           type: 'error',
         },
       });
