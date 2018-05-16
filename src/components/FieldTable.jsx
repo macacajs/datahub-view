@@ -154,6 +154,7 @@ class FieldTable extends React.Component {
           </Checkbox>
           <Button size="small" type="primary" onClick={this.editSchema.bind(this)}><FormattedMessage id='common.edit' /></Button>
           <CustomTable
+            disabled={true}
             type="schema"
             className="schema-table"
             schemaData={this.state.schemaData}

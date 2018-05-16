@@ -164,6 +164,7 @@ export default class Document extends React.Component {
         </h1>
         <CustomTable
           type="api"
+          disabeld={true}
           className="schema-table"
           schemaData={[]}
           paramsData={[]}
