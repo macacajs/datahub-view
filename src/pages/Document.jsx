@@ -125,7 +125,7 @@ export default class Document extends React.Component {
   }
 
   renderDocument () {
-    const currentData = this.state.list[this.state.slectedIndex];
+    const currentData = this.state.list.find(i => i.pathname === this.state.slectedName);
 
     if (!currentData) {
       return;
@@ -150,7 +150,7 @@ export default class Document extends React.Component {
           </span>&nbsp;/&nbsp;{pathname}
         </h1>
         <a
-          href={`/project/${projectId}${location.hash}`}
+          href={`/project/${projectId}#${pathname}`}
         >
           <Button className="right-button">
             <Icon type="setting" />
