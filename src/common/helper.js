@@ -29,17 +29,21 @@ const genSchemaList = (data) => {
         type,
         description,
         properties,
+        items,
       } = schema;
       res.push({
         title,
-        type,
+        type: items && items.type ? `${type}<{${items.type}}>` : type,
         description,
         level,
         key: `${_.guid()}`,
         required: !!~requiredList.indexOf(title),
       });
 
-      if (properties) {
+      if (items) {
+        walker(items);
+        level--;
+      } else if (properties) {
         walker(schema);
         level--;
       }
