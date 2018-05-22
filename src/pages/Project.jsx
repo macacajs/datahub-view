@@ -80,7 +80,7 @@ class Project extends React.Component {
   }
 
   addApi (allData, newApi) {
-    request(`/api/data/${projectId}`, 'POST', {
+    return request(`/api/data/${projectId}`, 'POST', {
       pathname: newApi.pathname,
       description: newApi.description,
     })
@@ -92,6 +92,7 @@ class Project extends React.Component {
           });
           console.log('update api success');
         }
+        return res;
       });
   }
 

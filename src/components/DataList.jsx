@@ -128,7 +128,12 @@ class DataList extends React.Component {
       modalVisible: false,
       errorAlert: {},
     });
-    this.props.handleAddApi(newData, addAPI);
+
+    this.props.handleAddApi(newData, addAPI).then(res => {
+      if (res.success) {
+        this.handleApiClick(addAPI.pathname);
+      }
+    });
   }
 
   handleModalCancel () {
