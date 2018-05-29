@@ -266,16 +266,23 @@ class EditableTable extends React.Component {
   }
 
   getDataList () {
-    const paramsData = this.props.paramsData;
-    const schemaData = this.props.schemaData;
+    const {
+      schemaData,
+      paramsData,
+    } = this.props;
     if (this.props.type === 'schema') {
       if (schemaData) {
         const res = _.genSchemaList(schemaData);
         return res;
+      } else {
+        return [];
       }
     } else if (this.props.type === 'api') {
       if (paramsData && paramsData.schemaData) {
-        return _.genApiList(schemaData, paramsData);
+        const res = schemaData.length
+          ? _.genApiList(schemaData, paramsData)
+          : _.genSchemaList(paramsData.schemaData);
+        return res;
       } else {
         return [];
       }

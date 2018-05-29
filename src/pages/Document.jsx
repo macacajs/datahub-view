@@ -137,10 +137,11 @@ export default class Document extends React.Component {
       pathname,
       scenes,
       resSchemaContent,
-      // reqSchemaContent,
+      reqSchemaContent,
     } = currentData;
     const scenesData = JSON.parse(scenes);
     const resSchemaContentObj = JSON.parse(resSchemaContent);
+    const reqSchemaContentObj = JSON.parse(reqSchemaContent);
 
     return (
       <div className="document">
@@ -167,7 +168,7 @@ export default class Document extends React.Component {
           disabeld={true}
           className="schema-table"
           schemaData={[]}
-          paramsData={[]}
+          paramsData={reqSchemaContentObj}
           disabled={true}
         />
         <h1>

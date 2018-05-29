@@ -49,12 +49,8 @@ const genSchemaList = (data) => {
       });
     } else if (data.items) {
       const requiredList = data.required || [];
-      level++;
       const distObj = data.items.length ? data.items[0] : data.items;
-      Object.keys(distObj).forEach(title => {
-        const schema = distObj[title];
-        schemaWalker(schema, title, requiredList);
-      });
+      walker(distObj);
     } else {
       return [];
     }
