@@ -17,37 +17,50 @@ const genSchemaList = (data) => {
   const res = [];
   let level = -1;
 
+  const schemaWalker = (schema, title, requiredList) => {
+    const {
+      type,
+      description,
+      properties,
+      items,
+    } = schema;
+    res.push({
+      title,
+      type: items && items.type ? `${type}<{${items.type}}>` : type,
+      description,
+      level,
+      key: `${_.guid()}`,
+      required: !!~requiredList.indexOf(title),
+    });
+
+    if (items) {
+      walker(items);
+      level--;
+    } else if (properties) {
+      walker(schema);
+      level--;
+    }
+  };
+
   const walker = (data) => {
-    if (!data.properties) {
+    if (data.properties) {
+      const requiredList = data.required || [];
+      level++;
+      Object.keys(data.properties).forEach(title => {
+        const schema = data.properties[title];
+        schemaWalker(schema, title, requiredList);
+      });
+    } else if (data.items) {
+      const requiredList = data.required || [];
+      level++;
+      const distObj = data.items.length ? data.items[0] : data.items;
+      Object.keys(distObj).forEach(title => {
+        const schema = distObj[title];
+        schemaWalker(schema, title, requiredList);
+      });
+    } else {
       return [];
     }
-    const requiredList = data.required || [];
-    level++;
-    Object.keys(data.properties).forEach(title => {
-      const schema = data.properties[title];
-      const {
-        type,
-        description,
-        properties,
-        items,
-      } = schema;
-      res.push({
-        title,
-        type: items && items.type ? `${type}<{${items.type}}>` : type,
-        description,
-        level,
-        key: `${_.guid()}`,
-        required: !!~requiredList.indexOf(title),
-      });
-
-      if (items) {
-        walker(items);
-        level--;
-      } else if (properties) {
-        walker(schema);
-        level--;
-      }
-    });
     return res;
   };
   /**
