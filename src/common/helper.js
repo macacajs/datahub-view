@@ -33,10 +33,7 @@ const genSchemaList = (data) => {
       required: !!~requiredList.indexOf(title),
     });
 
-    if (items) {
-      walker(items);
-      level--;
-    } else if (properties) {
+    if (items || properties) {
       walker(schema);
       level--;
     }
