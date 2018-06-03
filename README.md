@@ -32,7 +32,7 @@ $ npm i datahub-view --save-dev
 | :---: | :---: | :---: | :---: | :---: | :---: |
 
 
-This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto upated at `Tue May 22 2018 19:16:31 GMT+0800`.
+This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto upated at `Thu May 31 2018 19:21:21 GMT+0800`.
 
 <!-- GITCONTRIBUTOR_END -->
 
