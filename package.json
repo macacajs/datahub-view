@@ -1,6 +1,6 @@
 {
   "name": "datahub-view",
-  "version": "1.0.76",
+  "version": "1.0.77",
   "description": "DataHub view layer",
   "eggPlugin": {
     "name": "dataHubView"
@@ -22,7 +22,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "antd": "^3.0.1",
+    "antd": "^3.6.1",
     "babel-core": "^6.25.0",
     "babel-eslint": "^8.0.1",
     "babel-loader": "^7.0.0",
@@ -39,16 +39,16 @@
     "eslint": "^4.5.0",
     "eslint-config-antife": "^1.0.0",
     "eslint-plugin-react": "^7.2.1",
-    "extract-text-webpack-plugin": "^3.0.2",
     "git-contributor": "^1.0.8",
     "intl": "^1.2.5",
     "json-loader": "^0.5.7",
     "less": "^2.7.2",
-    "less-loader": "^4.0.5",
+    "less-loader": "^4.1.0",
     "lodash": "^4.17.4",
     "macaca-cli": "^2.0.12",
     "macaca-electron": "2",
     "macaca-wd": "^1.1.1",
+    "mini-css-extract-plugin": "^0.4.0",
     "pre-commit": "^1.2.2",
     "react": "^15.6.1",
     "react-codemirror2": "^3.0.7",
@@ -60,13 +60,14 @@
     "stylelint": "^8.4.0",
     "type-detect": "^4.0.5",
     "validator": "^9.1.2",
-    "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.9.7",
+    "webpack": "^4.10.0",
+    "webpack-cli": "^3.0.1",
+    "webpack-dev-server": "^3.1.4",
     "whatwg-fetch": "^2.0.3",
     "xutil": "^1.0.9"
   },
   "scripts": {
-    "dev": "webpack-dev-server",
+    "dev": "webpack-dev-server --mode=development",
     "dev:test": "cross-env NODE_ENV=test npm run dev",
     "build": "cross-env NODE_ENV=production webpack -p --hide-modules",
     "lint": "eslint . --ext js,jsx --fix && stylelint --fix src/**/*.less -s less",
