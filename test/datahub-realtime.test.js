@@ -1,21 +1,24 @@
 'use strict';
 
+import assert from 'assert';
+
 import {
   webpackHelper,
 } from 'macaca-wd';
 
 const {
   driver,
-  BASE_URL,
 } = webpackHelper;
 
-describe('test/datahub-view.test.js', () => {
-  describe('page func testing', () => {
+const BASE_URL = 'http://localhost:5678/dashboard';
+
+describe('test/datahub-realtime.test.js', () => {
+  describe('realtime page render testing', () => {
     before(() => {
       return driver
         .initWindow({
-          width: 800,
-          height: 600,
+          width: 1000,
+          height: 800,
           deviceScaleFactor: 2,
         });
     });
@@ -32,10 +35,11 @@ describe('test/datahub-view.test.js', () => {
         .quit();
     });
 
-    it('page render should be ok', () => {
+    it('realtime should be ok', () => {
       return driver
         .getUrl(BASE_URL)
         .sleep(1000);
     });
   });
 });
+

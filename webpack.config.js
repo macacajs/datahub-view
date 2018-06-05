@@ -8,6 +8,27 @@ const pkg = require('./package');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
+const DataHub = require('macaca-datahub');
+const datahubProxyMiddle = require('datahub-proxy-middleware');
+
+const datahubConfig = {
+  port: 5678,
+  hostname: 'localhost',
+  store: path.join(__dirname, 'data'),
+  proxy: {
+    '^/datahubview': {
+      hub: 'datahubview',
+    },
+  },
+  showBoard: true,
+  view: {
+    assetsUrl: '//unpkg.com/datahub-view@latest',
+  },
+};
+
+const defaultDatahub = new DataHub({
+  port: datahubConfig.port,
+});
 module.exports = {
 
   devtool: isProduction ? false : '#source-map',
@@ -72,5 +93,13 @@ module.exports = {
   ],
   devServer: {
     hot: true,
+    before: app => {
+      datahubProxyMiddle(app)(datahubConfig);
+    },
+    after: () => {
+      defaultDatahub.startServer(datahubConfig).then(() => {
+        console.log('datahub ready');
+      });
+    },
   },
 };
