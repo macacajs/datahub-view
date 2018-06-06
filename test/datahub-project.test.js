@@ -32,7 +32,7 @@ describe('test/datahub-project.test.js', () => {
 
     it('add project should be ok', () => {
       return driver
-        .getUrl(BASE_URL)
+        .getUrl(`${BASE_URL}/dashboard`)
         .sleep(1000)
         .elementByCss('div.ant-card-body  div.ant-col-24.main-icon > i.anticon-folder-add')
         .click()
@@ -66,7 +66,7 @@ describe('test/datahub-project.test.js', () => {
     // depend on add project successfully
     it('delete project should be ok', () => {
       return driver
-        .getUrl(BASE_URL)
+        .getUrl(`${BASE_URL}/dashboard`)
         .sleep(1000)
         .elementByCss('#app > div > div.ant-layout-content > div > div > div > div > div:nth-child(1) > div > div > div.ant-card-body > div > div.ant-row-flex.sub-info > div.ant-col-2 > i')
         .click()

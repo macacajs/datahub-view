@@ -30,7 +30,7 @@ describe('test/datahub-realtime.test.js', () => {
 
     it('realtime should be ok', () => {
       return driver
-        .getUrl(BASE_URL)
+        .getUrl(`${BASE_URL}/dashboard`)
         .sleep(1000);
     });
   });

@@ -22,7 +22,8 @@ const datahubConfig = {
   },
   showBoard: true,
   view: {
-    assetsUrl: '//unpkg.com/datahub-view@latest',
+    // use local resource for test
+    assetsUrl: 'http://localhost:8080',
   },
 };
 
