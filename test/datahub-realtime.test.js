@@ -1,16 +1,9 @@
 'use strict';
 
-import assert from 'assert';
-
 import {
-  webpackHelper,
-} from 'macaca-wd';
-
-const {
   driver,
-} = webpackHelper;
-
-const BASE_URL = 'http://localhost:5678/dashboard';
+  BASE_URL,
+} from './helper';
 
 describe('test/datahub-realtime.test.js', () => {
   describe('realtime page render testing', () => {

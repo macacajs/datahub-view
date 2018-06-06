@@ -3,14 +3,9 @@
 import assert from 'assert';
 
 import {
-  webpackHelper,
-} from 'macaca-wd';
-
-const {
   driver,
-} = webpackHelper;
-
-const BASE_URL = 'http://localhost:5678/dashboard';
+  BASE_URL,
+} from './helper';
 
 describe('test/datahub-project.test.js', () => {
   describe('project page render testing', () => {

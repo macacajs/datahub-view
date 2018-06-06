@@ -1,14 +1,9 @@
 'use strict';
 
 import {
-  webpackHelper,
-} from 'macaca-wd';
-
-const {
   driver,
-} = webpackHelper;
-
-const BASE_URL = 'http://localhost:5678';
+  BASE_URL,
+} from './helper';
 
 describe('test/datahub-render.test.js', () => {
   describe('home page render testing', () => {
