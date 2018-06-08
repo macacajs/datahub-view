@@ -14,46 +14,6 @@ import {
 } from './data';
 
 describe('test/datahub-api-operate.test.js', () => {
-  const addProjectAndApi = () => {
-    return driver
-      // add project
-      .getUrl(`${BASE_URL}/dashboard`)
-      .sleep(1000)
-      .elementByCss('[data-accessbilityid="dashboard-folder-add"]')
-      .click()
-      .elementByCss('#identifer')
-      .click()
-      .formatInput('datahubview')
-      .sleep(500)
-      .elementByCss('#description')
-      .click()
-      .formatInput('DataHub Mock Data')
-      .sleep(500)
-      .elementByCss('button.ant-btn.ant-btn-primary')
-      .click()
-      .sleep(1000)
-
-      // add api
-      .getUrl(`${BASE_URL}/project/datahubview`)
-      .sleep(1000)
-      .elementByCss('[data-accessbilityid="project-add-api-list-btn"]')
-      .click()
-      .elementByCss('[data-accessbilityid="project-add-api-name-input"]')
-      .click()
-      .formatInput('init')
-      .sleep(500)
-      .elementByCss('[data-accessbilityid="project-add-api-desc-input"]')
-      .click()
-      .formatInput('init api')
-      .sleep(500)
-      .elementByCss('.ant-modal-footer .ant-btn-primary')
-      .click()
-      .sleep(1000)
-      .elementByCss('[data-accessbilityid="project-add-api-list-0"] h3')
-      .hasText('init')
-      .sleep(1000);
-  };
-
   describe('project api scene testing', () => {
     before(() => {
       return driver
@@ -77,9 +37,48 @@ describe('test/datahub-api-operate.test.js', () => {
         .quit();
     });
 
+    it('add api should be ok', () => {
+      return driver
+      // add project
+        .getUrl(`${BASE_URL}/dashboard`)
+        .sleep(1000)
+        .elementByCss('[data-accessbilityid="dashboard-folder-add"]')
+        .click()
+        .elementByCss('#identifer')
+        .click()
+        .formatInput('datahubview')
+        .sleep(500)
+        .elementByCss('#description')
+        .click()
+        .formatInput('DataHub Mock Data')
+        .sleep(500)
+        .elementByCss('button.ant-btn.ant-btn-primary')
+        .click()
+        .sleep(1000)
+
+      // add api
+        .getUrl(`${BASE_URL}/project/datahubview`)
+        .sleep(1000)
+        .elementByCss('[data-accessbilityid="project-add-api-list-btn"]')
+        .click()
+        .elementByCss('[data-accessbilityid="project-add-api-name-input"]')
+        .click()
+        .formatInput('init')
+        .sleep(500)
+        .elementByCss('[data-accessbilityid="project-add-api-desc-input"]')
+        .click()
+        .formatInput('init api')
+        .sleep(500)
+        .elementByCss('.ant-modal-footer .ant-btn-primary')
+        .click()
+        .sleep(1000)
+        .elementByCss('[data-accessbilityid="project-add-api-list-0"] h3')
+        .hasText('init')
+        .sleep(1000);
+    });
+
     it('modify api config should be ok', () => {
-      // return driver
-      return addProjectAndApi()
+      return driver
         .getUrl(`${BASE_URL}/project/datahubview`)
         .sleep(1000)
         // modify HTTP method: PATCH
