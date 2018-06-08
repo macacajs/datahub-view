@@ -11,7 +11,7 @@ const {
 const BASE_URL = 'http://localhost:5678';
 
 driver.configureHttp({
-  timeout: 20000,
+  timeout: 100000,
   retries: 5,
   retryDelay: 5,
 });
