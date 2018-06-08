@@ -8,24 +8,6 @@ import {
 } from './helper';
 
 describe('test/datahub-api-list.test.js', () => {
-  const addProject = () => {
-    return driver
-      .getUrl(`${BASE_URL}/dashboard`)
-      .sleep(1000)
-      .elementByCss('[data-accessbilityid="dashboard-folder-add"]')
-      .click()
-      .elementByCss('#identifer')
-      .click()
-      .formatInput('datahubview')
-      .sleep(500)
-      .elementByCss('#description')
-      .click()
-      .formatInput('DataHub Mock Data')
-      .sleep(500)
-      .elementByCss('button.ant-btn.ant-btn-primary')
-      .click()
-      .sleep(1500);
-  };
 
   describe('project api list render testing', () => {
     before(() => {
@@ -50,8 +32,27 @@ describe('test/datahub-api-list.test.js', () => {
         .quit();
     });
 
+    it('add project should be ok', () => {
+      return driver
+        .getUrl(`${BASE_URL}/dashboard`)
+        .sleep(1000)
+        .elementByCss('[data-accessbilityid="dashboard-folder-add"]')
+        .click()
+        .elementByCss('#identifer')
+        .click()
+        .formatInput('datahubview')
+        .sleep(500)
+        .elementByCss('#description')
+        .click()
+        .formatInput('DataHub Mock Data')
+        .sleep(500)
+        .elementByCss('button.ant-btn.ant-btn-primary')
+        .click()
+        .sleep(1500);
+    });
+
     it('add api should be ok', () => {
-      return addProject()
+      return driver
         .getUrl(`${BASE_URL}/project/datahubview`)
         .sleep(1000)
         .elementByCss('[data-accessbilityid="project-add-api-list-btn"]')
