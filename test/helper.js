@@ -10,6 +10,12 @@ const {
 
 const BASE_URL = 'http://localhost:5678';
 
+driver.configureHttp({
+  timeout: 20000,
+  retries: 5,
+  retryDelay: 5,
+})
+
 exports.driver = driver;
 exports.BASE_URL = BASE_URL;
 
