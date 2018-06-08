@@ -32,7 +32,7 @@ const defaultDatahub = new DataHub({
 });
 module.exports = {
 
-  devtool: isProduction ? false : '#source-map',
+  devtool: isProduction ? false : 'source-map',
 
   entry: {
     [pkg.name]: path.join(__dirname, 'src', 'app'),

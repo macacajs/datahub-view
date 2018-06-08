@@ -15,6 +15,7 @@ describe('test/datahub-project.test.js', () => {
           width: 1000,
           height: 800,
           deviceScaleFactor: 2,
+          userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36 Language/zh-CN',
         });
     });
 
@@ -34,7 +35,7 @@ describe('test/datahub-project.test.js', () => {
       return driver
         .getUrl(`${BASE_URL}/dashboard`)
         .sleep(1000)
-        .elementByCss('div.ant-card-body  div.ant-col-24.main-icon > i.anticon-folder-add')
+        .elementByCss('[data-accessbilityid="dashboard-folder-add"]')
         .click()
         .elementByCss('#identifer')
         .click()
@@ -47,11 +48,11 @@ describe('test/datahub-project.test.js', () => {
         .elementByCss('button.ant-btn.ant-btn-primary')
         .click()
         .sleep(1500)
-        .elementByCss('div.ant-layout-content div:nth-child(1) div.ant-card-head')
+        .elementByCss('[data-accessbilityid="dashboard-content-card-0"] div.ant-card-head')
         .hasText('DataHub Mock Data')
         .sleep(1000)
         // input should be empty after add projct
-        .elementByCss('div.ant-card-body  div.ant-col-24.main-icon > i.anticon-folder-add')
+        .elementByCss('[data-accessbilityid="dashboard-folder-add"]')
         .click()
         .elementByCss('#identifer')
         .text()
@@ -68,13 +69,13 @@ describe('test/datahub-project.test.js', () => {
       return driver
         .getUrl(`${BASE_URL}/dashboard`)
         .sleep(1000)
-        .elementByCss('#app > div > div.ant-layout-content > div > div > div > div > div:nth-child(1) > div > div > div.ant-card-body > div > div.ant-row-flex.sub-info > div.ant-col-2 > i')
+        .elementByCss('[data-accessbilityid="dashboard-content-card-0"] .delete-icon')
         .click()
         .sleep(500)
-        .elementByCss('body > div:nth-child(2) > div > div > div > div.ant-popover-inner > div > div > div.ant-popover-buttons > button.ant-btn.ant-btn-primary.ant-btn-sm')
+        .elementByCss('.ant-popover-buttons .ant-btn-primary')
         .click()
         .sleep(1000)
-        .hasElementByCss('div.ant-layout-content div:nth-child(2) div.ant-card-head')
+        .hasElementByCss('[data-accessbilityid="dashboard-content-card-0"] .ant-card-head')
         .then(value => assert.equal(value, false));
     });
   });

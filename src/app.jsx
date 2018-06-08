@@ -104,20 +104,26 @@ App.defaultProps = {
 };
 
 const chooseLocale = () => {
+  const zh = {
+    locale: 'zh-CN',
+    messages: zhCN,
+  };
+  const en = {
+    locale: 'en-US',
+    messages: enUS,
+  };
+  const ua = window.navigator.userAgent;
+  if (ua.indexOf('en-US') !== -1) return en;
+  if (ua.indexOf('zh-CN') !== -1) return zh;
+
   switch (window.navigator.language) {
     case 'zh-CN':
     case 'zh-HK':
     case 'zh-TW':
     case 'zh':
-      return {
-        locale: 'zh-CN',
-        messages: zhCN,
-      };
+      return zh;
     default:
-      return {
-        locale: 'en-US',
-        messages: enUS,
-      };
+      return en;
   }
 };
 

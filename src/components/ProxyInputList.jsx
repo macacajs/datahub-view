@@ -199,7 +199,7 @@ class DynamicFieldSet extends Component {
           <FormItem
             required={true}
           >
-            <div>
+            <div data-accessbilityid={`project-api-proxy-list-${index}`}>
               <Input
                 className={this.state.isErrorInput[index] === 'error' ? 'error-input' : ''}
                 value={this.state.proxies[index]}
@@ -231,12 +231,19 @@ class DynamicFieldSet extends Component {
       >
         <FormItem {...formItemLayout}>
           <Checkbox
+            data-accessbilityid="project-api-proxy-checkbox"
             checked={this.state.useProxy}
             onChange={this.onCheckboxChange.bind(this)}
           >
             <FormattedMessage id='proxyConfig.isUseProxy' />
           </Checkbox>
-          <Button size="small" type="dashed" onClick={this.add.bind(this)} style={{ marginLeft: '250px' }}>
+          <Button
+            size="small"
+            type="dashed"
+            onClick={this.add.bind(this)}
+            data-accessbilityid="project-api-add-proxy-btn"
+            style={{ marginLeft: '250px' }}
+          >
             <Icon type="plus" />
             <FormattedMessage id='proxyConfig.addProxy' />
           </Button>

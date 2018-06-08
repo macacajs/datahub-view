@@ -5,14 +5,20 @@ import assert from 'assert';
 import {
   driver,
   BASE_URL,
+  setCodeMirror,
 } from './helper';
+
+import {
+  successScene,
+  failScene,
+} from './data';
 
 describe('test/datahub-api-scene.test.js', () => {
   const addProjectAndApi = () => {
     return driver
       .getUrl(`${BASE_URL}/dashboard`)
       .sleep(1000)
-      .elementByCss('div.ant-card-body  div.ant-col-24.main-icon > i.anticon-folder-add')
+      .elementByCss('[data-accessbilityid="dashboard-folder-add"]')
       .click()
       .elementByCss('#identifer')
       .click()
@@ -25,22 +31,24 @@ describe('test/datahub-api-scene.test.js', () => {
       .elementByCss('button.ant-btn.ant-btn-primary')
       .click()
       .sleep(1000)
+
+      // add api
       .getUrl(`${BASE_URL}/project/datahubview`)
       .sleep(1000)
-      .elementByCss('div.ant-layout-sider.ant-layout-sider-dark div.ant-tabs-content.ant-tabs-content-no-animated > div.ant-tabs-tabpane.ant-tabs-tabpane-active div.ant-col-8 > button')
+      .elementByCss('[data-accessbilityid="project-add-api-list-btn"]')
       .click()
-      .elementByCss('body > div:nth-child(2) > div > div.ant-modal-wrap > div > div.ant-modal-content > div.ant-modal-body > input:nth-child(1)')
+      .elementByCss('[data-accessbilityid="project-add-api-name-input"]')
       .click()
       .formatInput('init')
       .sleep(500)
-      .elementByCss('body > div:nth-child(2) > div > div.ant-modal-wrap > div > div.ant-modal-content > div.ant-modal-body > input:nth-child(2)')
+      .elementByCss('[data-accessbilityid="project-add-api-desc-input"]')
       .click()
       .formatInput('init api')
       .sleep(500)
-      .elementByCss('body > div:nth-child(2) > div > div.ant-modal-wrap > div > div.ant-modal-content > div.ant-modal-footer > div > button.ant-btn.ant-btn-primary')
+      .elementByCss('.ant-modal-footer .ant-btn-primary')
       .click()
       .sleep(1000)
-      .elementByCss('div.ant-layout-sider.ant-layout-sider-dark div.ant-tabs-content.ant-tabs-content-no-animated > div.ant-tabs-tabpane.ant-tabs-tabpane-active > div > ul > li > div.left > h3')
+      .elementByCss('[data-accessbilityid="project-add-api-list-0"] h3')
       .hasText('init')
       .sleep(1000);
   };
@@ -52,6 +60,7 @@ describe('test/datahub-api-scene.test.js', () => {
           width: 1000,
           height: 800,
           deviceScaleFactor: 2,
+          userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36 Language/zh-CN',
         });
     });
 
@@ -74,20 +83,20 @@ describe('test/datahub-api-scene.test.js', () => {
         .sleep(1000)
 
         // add default scene
-        .elementByCss('#app > div > div.ant-layout-content > div > div.ant-layout-content > div > content > section.data-scene > div > div.add-input > input')
+        .elementByCss('[data-accessbilityid="project-api-scene-input"]')
         .formatInput('default')
-        .elementByCss('#app > div > div.ant-layout-content > div > div.ant-layout-content > div > content > section.data-scene > div > div.add-input > button')
+        .elementByCss('[data-accessbilityid="project-api-scene-add-btn"]')
         .click()
         .sleep(500)
-        .elementByCss('#app > div > div.ant-layout-content > div > div.ant-layout-content > div > content > section.data-scene > div > div.ant-radio-group > label > span:nth-child(2) > span')
+        .elementByCss('[data-accessbilityid="project-api-scene-list-0"] .scene-name')
         .hasText('default')
         .sleep(1000)
 
         // add default scene data
-        .elementByCss('#app > div > div.ant-layout-content > div > div.ant-layout-content > div > content > section.data-scene > div > div.ant-radio-group > label.radio-container.ant-radio-wrapper.ant-radio-wrapper-checked > span:nth-child(2) > i.anticon.anticon-edit.view-icon')
+        .elementByCss('[data-accessbilityid="project-api-scene-list-0"] .anticon-edit')
         .click()
-        .execute("document.querySelector('.CodeMirror').CodeMirror.setValue('{\"success\": true, \"name\": \"datahub\"}')")
-        .elementByCss('body > div:nth-child(2) > div > div.ant-modal-wrap > div > div.ant-modal-content > div.ant-modal-footer > div > button.ant-btn.ant-btn-primary')
+        .execute(setCodeMirror(successScene))
+        .elementByCss('.ant-modal-footer .ant-btn.ant-btn-primary')
         .click()
         .sleep(1000);
     });
@@ -98,20 +107,20 @@ describe('test/datahub-api-scene.test.js', () => {
         .sleep(1000)
 
         // add error scene
-        .elementByCss('#app > div > div.ant-layout-content > div > div.ant-layout-content > div > content > section.data-scene > div > div.add-input > input')
+        .elementByCss('[data-accessbilityid="project-api-scene-input"]')
         .formatInput('error')
-        .elementByCss('#app > div > div.ant-layout-content > div > div.ant-layout-content > div > content > section.data-scene > div > div.add-input > button')
+        .elementByCss('[data-accessbilityid="project-api-scene-add-btn"]')
         .click()
         .sleep(500)
-        .elementByCss('#app > div > div.ant-layout-content > div > div.ant-layout-content > div > content > section.data-scene > div > div.ant-radio-group > label.radio-container.ant-radio-wrapper.ant-radio-wrapper-checked > span:nth-child(2) > span')
+        .elementByCss('[data-accessbilityid="project-api-scene-list-1"] .scene-name')
         .hasText('error')
         .sleep(1000)
 
         // add errro scene data
-        .elementByCss('#app > div > div.ant-layout-content > div > div.ant-layout-content > div > content > section.data-scene > div > div.ant-radio-group > label.radio-container.ant-radio-wrapper.ant-radio-wrapper-checked > span:nth-child(2) > i.anticon.anticon-edit.view-icon')
+        .elementByCss('[data-accessbilityid="project-api-scene-list-1"] .anticon.anticon-edit')
         .click()
-        .execute("document.querySelector('.CodeMirror').CodeMirror.setValue('{\"success\": false, \"name\": \"datahub\"}')")
-        .elementByCss('body > div:nth-child(2) > div > div.ant-modal-wrap > div > div.ant-modal-content > div.ant-modal-footer > div > button.ant-btn.ant-btn-primary')
+        .execute(setCodeMirror(failScene))
+        .elementByCss('.ant-modal-footer .ant-btn.ant-btn-primary')
         .click()
         .sleep(1000);
     });
@@ -119,12 +128,12 @@ describe('test/datahub-api-scene.test.js', () => {
     it('switch default scene should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/project/datahubview`)
-        .elementByCss('#app > div > div.ant-layout-content > div > div.ant-layout-content > div > content > section.data-scene > div > div.ant-radio-group > label:nth-child(1) > span.ant-radio > input')
+        .elementByCss('[data-accessbilityid="project-api-scene-list-0"] input')
         .click()
         .getUrl(`${BASE_URL}/data/datahubview/init`)
         .elementByCss('body')
         /* eslint-disable */
-        .hasText('{\"success\":true,\"name\":\"datahub\"}')
+        .hasText(JSON.stringify(successScene))
         /* eslint-enable */
         .sleep(100);
     });
@@ -132,12 +141,12 @@ describe('test/datahub-api-scene.test.js', () => {
     it('switch error scene should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/project/datahubview`)
-        .elementByCss('#app > div > div.ant-layout-content > div > div.ant-layout-content > div > content > section.data-scene > div > div.ant-radio-group > label:nth-child(2) > span.ant-radio > input')
+        .elementByCss('[data-accessbilityid="project-api-scene-list-1"] input')
         .click()
         .getUrl(`${BASE_URL}/data/datahubview/init`)
         .elementByCss('body')
         /* eslint-disable */
-        .hasText('{\"success\":false,\"name\":\"datahub\"}')
+        .hasText(JSON.stringify(failScene))
         /* eslint-enable */
         .sleep(1000);
     });
@@ -145,12 +154,12 @@ describe('test/datahub-api-scene.test.js', () => {
     it('delete error scene should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/project/datahubview`)
-        .elementByCss('#app > div > div.ant-layout-content > div > div.ant-layout-content > div > content > section.data-scene > div > div.ant-radio-group > label.radio-container.ant-radio-wrapper.ant-radio-wrapper-checked > span:nth-child(2) > i.anticon.anticon-delete.delete-icon')
+        .elementByCss('[data-accessbilityid="project-api-scene-list-1"] .anticon.anticon-delete')
         .click()
-        .elementByCss('body > div:nth-child(2) > div > div > div > div.ant-popover-inner > div > div > div.ant-popover-buttons > button.ant-btn.ant-btn-primary.ant-btn-sm.ant-btn-two-chinese-chars')
+        .elementByCss('.ant-popover-buttons .ant-btn-primary')
         .click()
         .sleep(1000)
-        .hasElementByCss('#app > div > div.ant-layout-content > div > div.ant-layout-content > div > content > section.data-scene > div > div.ant-radio-group > label.radio-container.ant-radio-wrapper.ant-radio-wrapper-checked:nth-child(2)')
+        .hasElementByCss('[data-accessbilityid="project-api-scene-list-1"] .scene-name')
         .then(value => assert.equal(value, false))
         .sleep(1000);
     });
@@ -158,28 +167,29 @@ describe('test/datahub-api-scene.test.js', () => {
     it('delete default scene should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/project/datahubview`)
-        .elementByCss('#app > div > div.ant-layout-content > div > div.ant-layout-content > div > content > section.data-scene > div > div.ant-radio-group > label:nth-child(1) > span:nth-child(2) > i.anticon.anticon-delete.delete-icon')
+        .elementByCss('[data-accessbilityid="project-api-scene-list-0"] .anticon-delete')
         .click()
         .sleep(1000)
-        .elementByCss('body > div:nth-child(2) > div > div > div > div.ant-popover-inner > div > div > div.ant-popover-buttons > button.ant-btn.ant-btn-primary.ant-btn-sm.ant-btn-two-chinese-chars')
+        .elementByCss('.ant-popover-buttons .ant-btn-primary')
         .click()
         .sleep(1000)
-        .hasElementByCss('#app > div > div.ant-layout-content > div > div.ant-layout-content > div > content > section.data-scene > div > div.ant-radio-group > label > span:nth-child(2) > i.anticon.anticon-delete.delete-icon')
+        .hasElementByCss('[data-accessbilityid="project-api-scene-list-0"] .anticon-delete')
         .then(value => assert.equal(value, false))
         .sleep(1000);
     });
 
+    // depend on add project successfully
     it('delete project should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/dashboard`)
         .sleep(1000)
-        .elementByCss('#app > div > div.ant-layout-content > div > div > div > div > div:nth-child(1) > div > div > div.ant-card-body > div > div.ant-row-flex.sub-info > div.ant-col-2 > i')
+        .elementByCss('[data-accessbilityid="dashboard-content-card-0"] .delete-icon')
         .click()
         .sleep(500)
-        .elementByCss('body > div:nth-child(2) > div > div > div > div.ant-popover-inner > div > div > div.ant-popover-buttons > button.ant-btn.ant-btn-primary.ant-btn-sm')
+        .elementByCss('.ant-popover-buttons .ant-btn-primary')
         .click()
         .sleep(1000)
-        .hasElementByCss('div.ant-layout-content div:nth-child(2) div.ant-card-head')
+        .hasElementByCss('[data-accessbilityid="dashboard-content-card-0"] .ant-card-head')
         .then(value => assert.equal(value, false));
     });
   });

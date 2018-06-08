@@ -71,10 +71,12 @@ class FieldTable extends React.Component {
       this.setState({
         schemaModalVisible: false,
       });
-      this.props.handleAsynSecType(this.state.schemaField, JSON.stringify({
-        enableSchemaValidate: this.state.enableSchemaValidate,
-        schemaData: newData,
-      }));
+      this.props.handleAsynSecType({
+        [this.state.schemaField]: JSON.stringify({
+          enableSchemaValidate: this.state.enableSchemaValidate,
+          schemaData: newData,
+        }),
+      });
     } catch (e) {
       this.setState({
         schemaJSONParseError: true,
@@ -83,10 +85,12 @@ class FieldTable extends React.Component {
   }
 
   toggleSchemaValidate (e) {
-    this.props.handleAsynSecType(this.state.schemaField, JSON.stringify({
-      enableSchemaValidate: e.target.checked,
-      schemaData: this.state.schemaData,
-    }));
+    this.props.handleAsynSecType({
+      [this.state.schemaField]: JSON.stringify({
+        enableSchemaValidate: e.target.checked,
+        schemaData: this.state.schemaData,
+      }),
+    });
   }
 
   cancelSchemaModal () {
@@ -105,17 +109,19 @@ class FieldTable extends React.Component {
       _schemaNewData: JSON.stringify(data, null, 2),
     });
     try {
-      this.props.handleAsynSecType(this.state.schemaField, JSON.stringify({
-        enableSchemaValidate: this.state.enableSchemaValidate,
-        schemaData: this.state.schemaData,
-      }));
+      this.props.handleAsynSecType({
+        [this.state.schemaField]: JSON.stringify({
+          enableSchemaValidate: this.state.enableSchemaValidate,
+          schemaData: this.state.schemaData,
+        }),
+      });
     } catch (e) {
     }
   }
 
   render () {
     return (
-      <div>
+      <div className={`api-schema-${this.props.type}`}>
         <Modal
           className="codemirror-modal"
           width="80%"
@@ -152,7 +158,14 @@ class FieldTable extends React.Component {
           >
             <FormattedMessage id='fieldDes.isUseCheck' />
           </Checkbox>
-          <Button size="small" type="primary" onClick={this.editSchema.bind(this)}><FormattedMessage id='common.edit' /></Button>
+          <Button
+            size="small"
+            type="primary"
+            data-accessbilityid="project-api-schema-edit-btn"
+            onClick={this.editSchema.bind(this)}
+          >
+            <FormattedMessage id='common.edit' />
+          </Button>
           <CustomTable
             disabled={true}
             type="schema"

@@ -11,6 +11,7 @@ import {
   Alert,
   Layout,
   Tabs,
+  message,
 } from 'antd';
 
 import DataList from '../components/DataList';
@@ -18,6 +19,7 @@ import RealTime from '../components/RealTime';
 import DataInfo from '../components/DataInfo';
 import RealTimeDetail from '../components/RealTimeDetail';
 
+import _ from '../common/helper';
 import request from '../common/fetch';
 
 import './Project.less';
@@ -44,7 +46,7 @@ class Project extends React.Component {
   componentDidMount () {
     request(`/api/data/${projectId}`, 'GET')
       .then((res) => {
-        console.log('res', res);
+        _.logger(`/api/data/${projectId} GET`, res);
         res.data.forEach(item => {
           item.params = item.params;
           item.scenes = JSON.parse(item.scenes);
@@ -68,7 +70,7 @@ class Project extends React.Component {
     const host = `http://${location.hostname}:${pageConfig.socket.port}`;
     const socket = io(host);
     socket.on('push data', (data) => {
-      console.log('socket', data);
+      _.logger('socket', data);
       const newData = [
         ...this.state.realTimeDataList,
       ].slice(0, this.state.REALTIME_MAXLINE - 1);
@@ -85,12 +87,14 @@ class Project extends React.Component {
       description: newApi.description,
     })
       .then((res) => {
-        console.log('update', res);
+        _.logger(`/api/data/${projectId} POST`, res);
         if (res.success) {
+          message.success(`add api success`)
           this.setState({
             data: allData,
           });
-          console.log('update api success');
+        } else {
+          message.error('add api fail')
         }
         return res;
       });
@@ -99,17 +103,19 @@ class Project extends React.Component {
   deleteApi (allData, newApi) {
     request(`/api/data/${projectId}/${newApi.pathname}`, 'DELETE')
       .then((res) => {
-        console.log('delete', res);
+        _.logger(`/api/data/${projectId}/${newApi.pathname} DELETE`, res);
         if (res.success) {
+          message.success('delete api success')
           this.setState({
             data: allData,
           });
-          console.log('delete api success');
+        } else {
+          message.error('delete api fail')
         }
       });
   }
 
-  asynSecType (type, data, index) {
+  asynSecType (obj, index) {
     const apis = [...this.state.data];
     let apiIndex = 0;
     apis.forEach((api, index) => {
@@ -117,24 +123,29 @@ class Project extends React.Component {
         apiIndex = index;
       }
     });
+
     if (typeof index === 'number') {
       apiIndex = index;
-    }
-    apis[apiIndex][type] = data;
+    };
+
+    Object.keys(obj).forEach(item => {
+      apis[apiIndex][item] = obj[item];
+      if (obj[item] instanceof Object) {
+        obj[item] = JSON.stringify(obj[item]);
+      }
+    })
+
     const currentPathname = this.state.data[apiIndex].pathname;
-    if (data instanceof Object) {
-      data = JSON.stringify(data);
-    }
-    console.log('type', type);
-    console.log('data', data);
-    request(`/api/data/${projectId}/${currentPathname}`, 'POST', {
-      [type]: data,
-    }).then((res) => {
+
+    _.logger('asynSecType', { index, obj, });
+    request(`/api/data/${projectId}/${currentPathname}`, 'POST', obj).then((res) => {
       if (res.success) {
         this.setState({
           data: apis,
         });
-        console.log('update api success');
+        message.success('update api success')
+      } else {
+        message.error('update api fail')
       }
     });
   }
@@ -148,7 +159,7 @@ class Project extends React.Component {
 
   tabOnChange (key) {
     if (key === 'realtimesnapshot' && this.state.realTimeDataList.length > 0) {
-      console.log('this.state.realTimeDataList', this.state.realTimeDataList);
+      _.logger('this.state.realTimeDataList', this.state.realTimeDataList);
       this.setState({
         contentViewType: 'realTime',
         realTimeIndex: 0,
@@ -178,7 +189,7 @@ class Project extends React.Component {
     return (
       <Layout style={{ padding: '10px 10px 0 10px' }}>
         <Sider
-          width="300"
+          width="300px"
           style={{
             background: 'none',
             borderRight: '1px solid #eee',
