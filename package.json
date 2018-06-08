@@ -68,6 +68,9 @@
     "whatwg-fetch": "^2.0.3",
     "xutil": "^1.0.9"
   },
+  "pre-commit": [
+    "lint"
+  ],
   "scripts": {
     "dev": "webpack-dev-server --mode=development",
     "dev:test": "cross-env NODE_ENV=test npm run dev",
