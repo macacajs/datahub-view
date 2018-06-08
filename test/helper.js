@@ -14,7 +14,7 @@ driver.configureHttp({
   timeout: 20000,
   retries: 5,
   retryDelay: 5,
-})
+});
 
 exports.driver = driver;
 exports.BASE_URL = BASE_URL;
