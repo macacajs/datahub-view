@@ -244,7 +244,7 @@ class DataInfo extends React.Component {
 
   showModal (index) {
     const str = JSON.stringify(this.state.scenes[index].data, null, 2);
-    const scene = this.state.scenes[index]
+    const scene = this.state.scenes[index];
     this.clearCodeMirror(scene.data);
     this.setState({
       modalVisible: true,

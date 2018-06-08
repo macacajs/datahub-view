@@ -250,7 +250,7 @@ class DashBoard extends React.Component {
         this.setState({
           listData: res,
         });
-        _.logger('/api/project GET', res)
+        _.logger('/api/project GET', res);
       } else {
         message.error('update project success');
       }

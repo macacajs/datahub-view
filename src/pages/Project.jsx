@@ -89,12 +89,12 @@ class Project extends React.Component {
       .then((res) => {
         _.logger(`/api/data/${projectId} POST`, res);
         if (res.success) {
-          message.success(`add api success`)
+          message.success('add api success');
           this.setState({
             data: allData,
           });
         } else {
-          message.error('add api fail')
+          message.error('add api fail');
         }
         return res;
       });
@@ -105,12 +105,12 @@ class Project extends React.Component {
       .then((res) => {
         _.logger(`/api/data/${projectId}/${newApi.pathname} DELETE`, res);
         if (res.success) {
-          message.success('delete api success')
+          message.success('delete api success');
           this.setState({
             data: allData,
           });
         } else {
-          message.error('delete api fail')
+          message.error('delete api fail');
         }
       });
   }
@@ -133,19 +133,19 @@ class Project extends React.Component {
       if (obj[item] instanceof Object) {
         obj[item] = JSON.stringify(obj[item]);
       }
-    })
+    });
 
     const currentPathname = this.state.data[apiIndex].pathname;
 
-    _.logger('asynSecType', { index, obj, });
+    _.logger('asynSecType', { index, obj });
     request(`/api/data/${projectId}/${currentPathname}`, 'POST', obj).then((res) => {
       if (res.success) {
         this.setState({
           data: apis,
         });
-        message.success('update api success')
+        message.success('update api success');
       } else {
-        message.error('update api fail')
+        message.error('update api fail');
       }
     });
   }
