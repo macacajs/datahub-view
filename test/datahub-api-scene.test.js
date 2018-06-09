@@ -11,7 +11,7 @@ import {
 import {
   successScene,
   failScene,
-} from './data';
+} from './fixture/data';
 
 describe('test/datahub-api-scene.test.js', () => {
   describe('project api scene testing', () => {

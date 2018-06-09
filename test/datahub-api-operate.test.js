@@ -11,7 +11,7 @@ import {
 import {
   schemaData,
   apiHeader,
-} from './data';
+} from './fixture/data';
 
 describe('test/datahub-api-operate.test.js', () => {
   describe('project api scene testing', () => {
