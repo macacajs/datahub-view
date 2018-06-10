@@ -48,7 +48,6 @@ const genSchemaList = (data) => {
         schemaWalker(schema, title, requiredList);
       });
     } else if (data.items) {
-      const requiredList = data.required || [];
       const distObj = data.items.length ? data.items[0] : data.items;
       walker(distObj);
     } else {
@@ -216,5 +215,15 @@ _.operateSchema = (type, { item, data, index, key, value }) => {
   walker(res);
   return res;
 };
+
+_.logger = (...content) => {
+  const debugMode = location.href.indexOf('__debug') > -1;
+
+  if (!debugMode) {
+    return;
+  }
+  console.log(...content);
+};
+
 
 module.exports = _;

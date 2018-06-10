@@ -9,6 +9,7 @@ import {
   Alert,
   Col,
   Popconfirm,
+  Tooltip,
   Icon,
 } from 'antd';
 import _ from 'lodash';
@@ -104,7 +105,7 @@ class DataList extends React.Component {
       return;
     }
 
-    if (this.state.modalTitle[0] === '/') {
+    if (this.state.modalTitle.indexOf('/') !== -1) {
       this.setState({
         errorAlert: {
           message: this.props.intl.formatMessage({
@@ -184,12 +185,17 @@ class DataList extends React.Component {
         <Row gutter={8}>
           <Col span={16}>
             <Search
+              data-accessbilityid="project-search-api"
               placeholder="Search interface"
               onChange={this.handleSearchChange.bind(this)}
             />
           </Col>
           <Col span={8}>
-            <Button type="primary" onClick={this.handleAdd.bind(this)}>
+            <Button
+              type="primary"
+              data-accessbilityid="project-add-api-list-btn"
+              onClick={this.handleAdd.bind(this)}
+            >
               <FormattedMessage id='apiList.addApi' />
             </Button>
           </Col>
@@ -201,10 +207,17 @@ class DataList extends React.Component {
                 return null;
               }
               return (
-                <li className={this.state.currentPathname === api.pathname ? 'clicked' : ''} key={index} onClick={this.handleApiClick.bind(this, api.pathname)}>
+                <li
+                  className={this.state.currentPathname === api.pathname ? 'clicked' : ''}
+                  key={index}
+                  data-accessbilityid={`project-add-api-list-${index}`}
+                  onClick={this.handleApiClick.bind(this, api.pathname)}
+                >
                   <div className="left">
-                    <h3>{api.pathname}</h3>
-                    <p>{api.description}</p>
+                    <Tooltip title={api.pathname}>
+                      <h3>{api.pathname}</h3>
+                      <p>{api.description}</p>
+                    </Tooltip>
                   </div>
                   <div className="right">
                     <Popconfirm
@@ -233,6 +246,7 @@ class DataList extends React.Component {
             placeholder={this.props.intl.formatMessage({
               id: 'apiList.apiNameInput',
             })}
+            data-accessbilityid="project-add-api-name-input"
             onChange={this.modalTitleChange.bind(this)}
             value={this.state.modalTitle} />
           <Input
@@ -240,6 +254,7 @@ class DataList extends React.Component {
               id: 'apiList.apiDesInput',
             })}
             style={{ margin: '10px 0' }}
+            data-accessbilityid="project-add-api-desc-input"
             onChange={this.modalDescriptionChange.bind(this)}
             value={this.state.modalDescription}
           />

@@ -163,24 +163,28 @@ export default class Document extends React.Component {
         <h1>
           <FormattedMessage id='document.reqSchemaDes' />
         </h1>
-        <CustomTable
-          type="api"
-          disabeld={true}
-          className="schema-table"
-          schemaData={[]}
-          paramsData={reqSchemaContentObj}
-          disabled={true}
-        />
+        <div className="req-shcema-doc">
+          <CustomTable
+            type="api"
+            disabeld={true}
+            className="schema-table"
+            schemaData={[]}
+            paramsData={reqSchemaContentObj}
+            disabled={true}
+          />
+        </div>
         <h1>
           <FormattedMessage id='document.resSchemaDes' />
         </h1>
-        <CustomTable
-          type="api"
-          className="schema-table"
-          schemaData={scenesData}
-          paramsData={resSchemaContentObj}
-          disabled={true}
-        />
+        <div className="res-shcema-doc">
+          <CustomTable
+            type="api"
+            className="schema-table"
+            schemaData={scenesData}
+            paramsData={resSchemaContentObj}
+            disabled={true}
+          />
+        </div>
         <h1>
           <FormattedMessage id='document.sceneData' />
         </h1>

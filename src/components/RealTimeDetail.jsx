@@ -42,7 +42,7 @@ class RealTimeDetail extends React.Component {
   }
 
   renderHeaders ({ headers }) {
-    // console.log('renderHeaders', headers);
+    _.logger('renderHeaders', headers);
     return Object.keys(headers).map(key => {
       return (
         <div key={key}>
@@ -54,7 +54,7 @@ class RealTimeDetail extends React.Component {
   }
 
   renderBody ({ body }) {
-    // console.log('renderBody', body);
+    _.logger('renderBody', body);
     let result = null;
     if (typeof body === 'object') {
       result = JSON.stringify(body, {}, 2);
@@ -147,7 +147,9 @@ class RealTimeDetail extends React.Component {
       data: this.props.data.res.body,
     };
     const newData = [...currentApiData.scenes, newScene];
-    this.props.handleAsynSecType('scenes', newData, apiIndex);
+    this.props.handleAsynSecType({
+      scenes: newData,
+    }, apiIndex);
 
     this.setState({
       sceneError: null,

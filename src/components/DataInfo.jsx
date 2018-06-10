@@ -78,7 +78,6 @@ class DataInfo extends React.Component {
     const { statusCode } = this.parseHeaders(currentData);
 
     this.state = {
-      addingScene: '',
       modalVisible: false,
       modalInfoTitle: '',
       modalInfoData: '',
@@ -98,6 +97,7 @@ class DataInfo extends React.Component {
       pathname: currentData && currentData.pathname,
       description: currentData && currentData.description,
       currentScene: currentData && currentData.currentScene,
+      addingScene: '',
       cursorPos: null,
       sceneError: null,
     };
@@ -140,7 +140,7 @@ class DataInfo extends React.Component {
     };
   }
 
-  handleAdd () {
+  handleAdd (e) {
     const index = _.findIndex(this.state.scenes,
       o => o.name === this.state.addingScene);
 
@@ -154,7 +154,7 @@ class DataInfo extends React.Component {
       return;
     }
 
-    if (_.isChineseChar(this.state.addingScene) || /\W+/.test(this.state.addingScene)) {
+    if (_.isChineseChar(this.state.addingScene) || /[^-\w]+/.test(this.state.addingScene)) {
       this.setState({
         sceneError: {
           message: this.props.intl.formatMessage({id: 'realtimeProject.validError'}),
@@ -191,13 +191,16 @@ class DataInfo extends React.Component {
     this.state.scenes = this.state.scenes || [];
     const newData = [...this.state.scenes, newScene];
     this.setState({
+      addingScene: '',
       scenes: newData,
       currentScene: this.state.addingScene,
       modalInfoData: '',
       _modalInfoData: '',
     });
-    this.props.handleAsynSecType('scenes', newData);
-    this.props.handleAsynSecType('currentScene', this.state.addingScene);
+    this.props.handleAsynSecType({
+      scenes: newData,
+      currentScene: this.state.addingScene,
+    });
   }
 
   handleAddSceneChange (e) {
@@ -217,27 +220,35 @@ class DataInfo extends React.Component {
           scenes: newData,
           currentScene: this.state.scenes[0].name,
         });
-        this.props.handleAsynSecType('currentScene', this.state.scenes[0].name);
+        this.props.handleAsynSecType({
+          currentScene: this.state.scenes[0].name,
+        });
       } else if (this.state.scenes.length > 1) {
         this.setState({
           scenes: newData,
           currentScene: this.state.scenes[1].name,
         });
-        this.props.handleAsynSecType('currentScene', this.state.scenes[1].name);
+        this.props.handleAsynSecType({
+          currentScene: this.state.scenes[1].name,
+        });
       }
     } else {
       this.setState({
         scenes: newData,
       });
     }
-    this.props.handleAsynSecType('scenes', newData);
+    this.props.handleAsynSecType({
+      scenes: newData,
+    });
   }
 
   showModal (index) {
     const str = JSON.stringify(this.state.scenes[index].data, null, 2);
+    const scene = this.state.scenes[index];
+    this.clearCodeMirror(scene.data);
     this.setState({
       modalVisible: true,
-      modalInfoTitle: this.state.scenes[index].name,
+      modalInfoTitle: scene.name,
       modalInfoData: str.trim(),
       _modalInfoData: str.trim(),
     });
@@ -256,14 +267,16 @@ class DataInfo extends React.Component {
       name: this.state.modalInfoTitle,
       data: JSON.parse(this.state._modalInfoData),
     };
-    console.log('updateScene', updateScene.data);
+    _.logger('updateScene', updateScene.data);
     const newData = [...this.state.scenes];
     newData.splice(index, 1, updateScene);
     this.setState({
       modalVisible: false,
       scenes: newData,
     });
-    this.props.handleAsynSecType('scenes', newData);
+    this.props.handleAsynSecType({
+      scenes: newData,
+    });
   }
 
   handleModalCancel () {
@@ -282,14 +295,18 @@ class DataInfo extends React.Component {
     this.setState({
       method: value,
     });
-    this.props.handleAsynSecType('method', value);
+    this.props.handleAsynSecType({
+      method: value,
+    });
   }
 
   handleSceneChange (e) {
     this.setState({
       currentScene: e.target.value,
     });
-    this.props.handleAsynSecType('currentScene', e.target.value);
+    this.props.handleAsynSecType({
+      currentScene: e.target.value,
+    });
   }
 
   handleDescriptionChange (e) {
@@ -299,7 +316,15 @@ class DataInfo extends React.Component {
   }
 
   handleDescriptionBlur (e) {
-    this.props.handleAsynSecType('description', e.target.value);
+    this.props.handleAsynSecType({
+      description: e.target.value,
+    });
+  }
+
+  handleDelayBlur (e) {
+    this.props.handleAsynSecType({
+      delay: e.target.value,
+    });
   }
 
   delayChange (value) {
@@ -310,7 +335,6 @@ class DataInfo extends React.Component {
     this.setState({
       delay: value,
     });
-    this.props.handleAsynSecType('delay', value);
   }
 
   statusCodeChange = (e) => {
@@ -318,12 +342,12 @@ class DataInfo extends React.Component {
     this.setState({
       statusCode: value,
     });
-    this.props.handleAsynSecType('proxyContent', JSON.stringify(
-      {
+    this.props.handleAsynSecType({
+      proxyContent: JSON.stringify({
         ...this.getProxyObject(),
         statusCode: value,
-      }
-    ));
+      }),
+    });
   }
 
   handleProxyChange (value) {
@@ -331,17 +355,17 @@ class DataInfo extends React.Component {
     try {
       newProxyObject = JSON.parse(value);
     } catch (e) {
-      console.log(`new proxy content '${this.state.proxyContent}' JSON parse failed ${e.message}`);
+      console.error(`new proxy content '${this.state.proxyContent}' JSON parse failed ${e.message}`);
     }
     this.setState({
       proxyContent: value,
     });
-    this.props.handleAsynSecType('proxyContent', JSON.stringify(
-      {
+    this.props.handleAsynSecType({
+      proxyContent: JSON.stringify({
         ...this.getProxyObject(),
         ...newProxyObject,
-      }
-    ));
+      }),
+    });
   }
 
   getProxyObject () {
@@ -349,7 +373,7 @@ class DataInfo extends React.Component {
     try {
       proxyObject = JSON.parse(this.state.proxyContent);
     } catch (e) {
-      console.log(`proxy content '${this.state.proxyContent}' JSON parse failed ${e.message}`);
+      console.error(`proxy content '${this.state.proxyContent}' JSON parse failed ${e.message}`);
     }
     return proxyObject;
   }
@@ -361,6 +385,14 @@ class DataInfo extends React.Component {
       responseHeader: str.trim(),
       _responseHeader: str.trim(),
     });
+  }
+
+  clearCodeMirror (data) {
+    const CodeMirrorDom = document.querySelector('.CodeMirror');
+    const noData = JSON.stringify(data) === '{}';
+    if (CodeMirrorDom && CodeMirrorDom.CodeMirror && noData) {
+      CodeMirrorDom.CodeMirror.setValue('{}');
+    }
   }
 
   responseHeaderModalCancel () {
@@ -379,10 +411,12 @@ class DataInfo extends React.Component {
     try {
       JSON.parse(this.state._responseHeader);
     } catch (e) {
-      console.log('invalid json string');
+      console.error('invalid json string');
       return;
     }
-    this.props.handleAsynSecType('responseHeader', this.state._responseHeader);
+    this.props.handleAsynSecType({
+      responseHeader: this.state._responseHeader,
+    });
 
     this.setState({
       responseHeaderModalVisible: false,
@@ -438,24 +472,29 @@ class DataInfo extends React.Component {
               <span>
                 <FormattedMessage id='apiConfig.HTTP' />
               </span>
-              <Select
-                defaultValue={this.state.method}
-                value={this.state.method}
-                style={{
-                  width: 120,
-                  marginLeft: 10,
-                }}
-                onChange={this.handleOptionChange.bind(this)}
-              >
-                <Option value="ALL">ALL</Option>
-                <Option value="GET">GET</Option>
-                <Option value="POST">POST</Option>
-                <Option value="PUT">PUT</Option>
-                <Option value="DELETE">DELETE</Option>
-                <Option value="PATCH">PATCH</Option>
-              </Select>
+              <span data-accessbilityid="project-api-method-select">
+                <Select
+                  defaultValue={this.state.method || 'ALL'}
+                  value={this.state.method || 'ALL'}
+                  style={{
+                    width: 120,
+                    marginLeft: 10,
+                  }}
+                  onChange={this.handleOptionChange.bind(this)}
+                >
+                  <Option value="ALL">ALL</Option>
+                  <Option value="GET">GET</Option>
+                  <Option value="POST">POST</Option>
+                  <Option value="PUT">PUT</Option>
+                  <Option value="DELETE">DELETE</Option>
+                  <Option value="PATCH">PATCH</Option>
+                </Select>
+              </span>
             </div>
-            <div className="api-description">
+            <div
+              data-accessbilityid="project-api-description"
+              className="api-description"
+            >
               <span>
                 <FormattedMessage id='apiConfig.apiDescription' />
               </span>
@@ -468,7 +507,10 @@ class DataInfo extends React.Component {
                 value={this.state.description}
               />
             </div>
-            <div className="api-delay">
+            <div
+              className="api-delay"
+              data-accessbilityid="project-api-delay"
+            >
               <span>
                 <FormattedMessage id='apiConfig.apiDelay' />
               </span>
@@ -477,13 +519,18 @@ class DataInfo extends React.Component {
                   marginLeft: 10,
                 }}
                 min={0}
-                max={30}
+                max={30}s
+                style={{ marginRight: '5px' }}
                 value={parseInt(this.state.delay, 10)}
+                onBlur={this.handleDelayBlur.bind(this)}
                 onChange={this.delayChange.bind(this)}
               />
               <FormattedMessage id='apiConfig.second' />
             </div>
-            <div className="api-status-code">
+            <div
+              className="api-status-code"
+              data-accessbilityid="project-api-status-code"
+            >
               <span>
                 <FormattedMessage id='apiConfig.statusCode' />
               </span>
@@ -501,7 +548,10 @@ class DataInfo extends React.Component {
                 maxLength="3"
               />（200 ~ 501）
             </div>
-            <div className="response-header">
+            <div
+              className="response-header"
+              data-accessbilityid="project-api-response-header"
+            >
               <span>
                 <FormattedMessage id='apiConfig.responseHeader' />
               </span>
@@ -521,14 +571,18 @@ class DataInfo extends React.Component {
             </h1>
             <div>
               <div className="add-input">
-                <Input style={{ width: '200px' }}
+                <Input
+                  style={{ width: '200px' }}
+                  data-accessbilityid="project-api-scene-input"
                   placeholder={this.props.intl.formatMessage({id: 'sceneMng.inputTip'})}
+                  value={this.state.addingScene}
                   onChange={this.handleAddSceneChange.bind(this)}
                 />
                 <Button
                   style={{
                     marginBottom: `${this.state.sceneError ? '10px' : '0'}`,
                   }}
+                  data-accessbilityid="project-api-scene-add-btn"
                   type="primary"
                   onClick={this.handleAdd.bind(this)}
                 >
@@ -551,22 +605,32 @@ class DataInfo extends React.Component {
                 {
                   this.state.scenes && this.state.scenes.map((scene, index) => {
                     return (
-                      <Radio className="radio-container" value={scene.name} key={scene.name}>
-                        <span>{ scene.name }</span>
-                        <Icon
-                          type="edit"
-                          className="view-icon"
-                          onClick={this.showModal.bind(this, index)}
-                        />
-                        <Popconfirm
-                          title={<FormattedMessage id='common.deleteTip' />}
-                          onConfirm={this.onRemoveScene.bind(this, index)}
-                          okText={<FormattedMessage id='common.confirm' />}
-                          cancelText={<FormattedMessage id='common.cancel' />}
+                      <div
+                        key={scene.name}
+                        style={{ display: 'inline-block' }}
+                        data-accessbilityid={`project-api-scene-list-${index}`}
+                      >
+                        <Radio
+                          className="radio-container"
+                          value={scene.name}
+                          key={scene.name}
                         >
-                          <Icon className="delete-icon" type="delete" />
-                        </Popconfirm>
-                      </Radio>
+                          <span className="scene-name">{ scene.name }</span>
+                          <Icon
+                            type="edit"
+                            className="view-icon"
+                            onClick={this.showModal.bind(this, index)}
+                          />
+                          <Popconfirm
+                            title={<FormattedMessage id='common.deleteTip' />}
+                            onConfirm={this.onRemoveScene.bind(this, index)}
+                            okText={<FormattedMessage id='common.confirm' />}
+                            cancelText={<FormattedMessage id='common.cancel' />}
+                          >
+                            <Icon className="delete-icon" type="delete" />
+                          </Popconfirm>
+                        </Radio>
+                      </div>
                     );
                   })
                 }
@@ -607,7 +671,9 @@ class DataInfo extends React.Component {
             </div>
           </section>
           <section className="data-proxy">
-            <h1><FormattedMessage id='proxyConfig.title' /></h1>
+            <h1 data-accessbilityid="project-api-proxy-title">
+              <FormattedMessage id='proxyConfig.title' />
+            </h1>
             <ProxyInputList
               onChangeProxy={this.handleProxyChange.bind(this)}
               proxyContent={this.state.proxyContent}

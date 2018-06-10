@@ -39,6 +39,7 @@ class Home extends React.Component {
                   </p>
                   <a className="go-btn" href="/dashboard">
                     <Button
+                      data-accessbilityid="go-btn-dashboard"
                       type="primary"
                       icon="rocket"
                       size="large"

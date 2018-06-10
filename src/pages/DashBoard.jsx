@@ -13,6 +13,7 @@ import {
   Col,
   Icon,
   Card,
+  message,
 } from 'antd';
 
 import {
@@ -25,6 +26,7 @@ import './DashBoard.less';
 import request, {
   fetch,
 } from '../common/fetch';
+import _ from '../common/helper';
 
 const FormItem = Form.Item;
 
@@ -201,7 +203,7 @@ class DashBoard extends React.Component {
         loading: true,
       });
 
-      console.log('Received values of form: ', values);
+      _.logger('Received values of form: ', values);
 
       request('/api/project', 'POST', values)
         .then((res) => {
@@ -212,7 +214,10 @@ class DashBoard extends React.Component {
           });
 
           if (res.success) {
+            message.success('add project success');
             this.updateProjects();
+          } else {
+            message.error('delete project success');
           }
         });
     });
@@ -222,9 +227,12 @@ class DashBoard extends React.Component {
     request('/api/project', 'DELETE', {
       identifer: this.state.listData[key].identifer,
     }).then((res) => {
-      console.log(res);
+      _.logger('/api/project DELETE', res);
       if (res.success) {
+        message.success('delete project success');
         this.updateProjects();
+      } else {
+        message.error('delete project fail');
       }
     });
   }
@@ -235,12 +243,17 @@ class DashBoard extends React.Component {
 
   updateProjects () {
     request('/api/project').then((res) => {
-      res && res.forEach((item, index) => {
-        item.key = index;
-      });
-      this.setState({
-        listData: res,
-      });
+      if (res) {
+        res.forEach((item, index) => {
+          item.key = index;
+        });
+        this.setState({
+          listData: res,
+        });
+        _.logger('/api/project GET', res);
+      } else {
+        message.error('update project success');
+      }
     });
   }
 
@@ -253,7 +266,12 @@ class DashBoard extends React.Component {
       identifer: projectId,
       description: value,
     }).then((res) => {
-      console.log('res', res);
+      _.logger('/api/project POST', res);
+      if (res.success) {
+        message.success('update project success');
+      } else {
+        message.error('update project success');
+      }
     });
   }
 
@@ -306,6 +324,7 @@ class DashBoard extends React.Component {
                       <div className="content">
                         <Card
                           title={ editor }
+                          data-accessbilityid={`dashboard-content-card-${i}`}
                           bordered={ false }
                           style={{ color: '#000' }}
                         >
@@ -361,6 +380,7 @@ class DashBoard extends React.Component {
                     <Row type="flex">
                       <Col span={24} className="main-icon">
                         <Icon
+                          data-accessbilityid="dashboard-folder-add"
                           onClick={this.showModal.bind(this)}
                           type="folder-add"
                         />
