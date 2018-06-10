@@ -16,7 +16,7 @@
 
 ---
 
-> DataHub view layer
+> view layer for DataHub
 
 ## Installment
 
