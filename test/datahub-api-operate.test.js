@@ -33,6 +33,16 @@ describe('test/datahub-api-operate.test.js', () => {
 
     after(() => {
       return driver
+        // delete project
+        .getUrl(`${BASE_URL}/dashboard`)
+        .sleep(1000)
+        .elementByCss('[data-accessbilityid="dashboard-content-card-0"] .delete-icon')
+        .click()
+        .sleep(500)
+        .elementByCss('.ant-popover-buttons .ant-btn-primary')
+        .click()
+        .sleep(1000)
+        // quit
         .openReporter(false)
         .quit();
     });
@@ -239,21 +249,6 @@ describe('test/datahub-api-operate.test.js', () => {
         .hasText('success')
         .elementByCss('.res-shcema-doc tbody > tr:nth-child(6) > td:nth-child(1)')
         .hasText('address');
-    });
-
-    // depend on add project successfully
-    it('delete project should be ok', () => {
-      return driver
-        .getUrl(`${BASE_URL}/dashboard`)
-        .sleep(1000)
-        .elementByCss('[data-accessbilityid="dashboard-content-card-0"] .delete-icon')
-        .click()
-        .sleep(500)
-        .elementByCss('.ant-popover-buttons .ant-btn-primary')
-        .click()
-        .sleep(1000)
-        .hasElementByCss('[data-accessbilityid="dashboard-content-card-0"] .ant-card-head')
-        .then(value => assert.equal(value, false));
     });
   });
 });

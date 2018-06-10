@@ -33,6 +33,16 @@ describe('test/datahub-api-scene.test.js', () => {
 
     after(() => {
       return driver
+        // delete project
+        .getUrl(`${BASE_URL}/dashboard`)
+        .sleep(1000)
+        .elementByCss('[data-accessbilityid="dashboard-content-card-0"] .delete-icon')
+        .click()
+        .sleep(500)
+        .elementByCss('.ant-popover-buttons .ant-btn-primary')
+        .click()
+        .sleep(1000)
+        // quit
         .openReporter(false)
         .quit();
     });
@@ -175,21 +185,6 @@ describe('test/datahub-api-scene.test.js', () => {
         .hasElementByCss('[data-accessbilityid="project-api-scene-list-0"] .anticon-delete')
         .then(value => assert.equal(value, false))
         .sleep(1000);
-    });
-
-    // depend on add project successfully
-    it('delete project should be ok', () => {
-      return driver
-        .getUrl(`${BASE_URL}/dashboard`)
-        .sleep(1000)
-        .elementByCss('[data-accessbilityid="dashboard-content-card-0"] .delete-icon')
-        .click()
-        .sleep(500)
-        .elementByCss('.ant-popover-buttons .ant-btn-primary')
-        .click()
-        .sleep(1000)
-        .hasElementByCss('[data-accessbilityid="dashboard-content-card-0"] .ant-card-head')
-        .then(value => assert.equal(value, false));
     });
   });
 });
