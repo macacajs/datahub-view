@@ -105,7 +105,7 @@ class DataList extends React.Component {
       return;
     }
 
-    if (this.state.modalTitle.indexOf('/') !== -1) {
+    if (this.state.modalTitle.startsWith('/') || this.state.modalTitle.endsWith('/')) {
       this.setState({
         errorAlert: {
           message: this.props.intl.formatMessage({
