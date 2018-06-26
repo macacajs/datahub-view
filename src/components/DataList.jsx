@@ -171,7 +171,7 @@ class DataList extends React.Component {
     const filter = e.target.value;
     const apis = [...this.state.apis];
     apis.map(api => {
-      api.isHide = api.pathname.indexOf(filter) === -1;
+      api.isHide = api.pathname.toLowerCase().indexOf(filter.toLowerCase()) === -1;
     });
 
     this.setState({

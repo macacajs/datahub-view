@@ -321,18 +321,15 @@ class DataInfo extends React.Component {
     });
   }
 
-  handleDelayBlur (e) {
-    this.props.handleAsynSecType({
-      delay: e.target.value,
-    });
-  }
-
-  delayChange (value) {
+  delayChange (value, e) {
     value = parseInt(value, 10);
     if (isNaN(value)) {
       value = 0;
     }
     this.setState({
+      delay: value,
+    });
+    this.props.handleAsynSecType({
       delay: value,
     });
   }
@@ -522,7 +519,6 @@ class DataInfo extends React.Component {
                 max={30}s
                 style={{ marginRight: '5px' }}
                 value={parseInt(this.state.delay, 10)}
-                onBlur={this.handleDelayBlur.bind(this)}
                 onChange={this.delayChange.bind(this)}
               />
               <FormattedMessage id='apiConfig.second' />
