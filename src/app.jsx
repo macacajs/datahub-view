@@ -54,6 +54,20 @@ class App extends React.Component {
     }
   }
 
+  renderInfo () {
+    const link = location.href;
+    return (
+      <div className="info">
+        <p>please visit the page in desktop browser.</p>
+        <p className="link">
+          <a href={link} target="_blank">
+            {link}
+          </a>
+        </p>
+      </div>
+    );
+  }
+
   render () {
     return (
       <Layout className={`page-${this.props.pageConfig.pageId}`}>
@@ -85,8 +99,11 @@ class App extends React.Component {
             </Col>
           </Row>
         </Header>
-        <Content>
+        <Content className="main-content">
           { this.pageRouter() }
+        </Content>
+        <Content className="main-content-mobile">
+          { this.renderInfo() }
         </Content>
         <Footer>
           &copy;&nbsp;<a target="_blank" href={ pkg.links.homepage }>
