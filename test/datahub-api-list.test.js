@@ -21,6 +21,7 @@ describe('test/datahub-api-list.test.js', () => {
 
     afterEach(function () {
       return driver
+        .sleep(1000)
         .coverage()
         .saveScreenshots(this);
     });
@@ -29,7 +30,6 @@ describe('test/datahub-api-list.test.js', () => {
       return driver
         // delete project
         .getUrl(`${BASE_URL}/dashboard`)
-        .sleep(500)
         .elementByCss('[data-accessbilityid="dashboard-content-card-0"] .delete-icon')
         .click()
         .sleep(500)
@@ -44,7 +44,6 @@ describe('test/datahub-api-list.test.js', () => {
     it('add project should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/dashboard`)
-        .sleep(500)
         .elementByCss('[data-accessbilityid="dashboard-folder-add"]')
         .click()
         .elementByCss('#identifer')
@@ -56,14 +55,12 @@ describe('test/datahub-api-list.test.js', () => {
         .formatInput('DataHub Mock Data')
         .sleep(500)
         .elementByCss('button.ant-btn.ant-btn-primary')
-        .click()
-        .sleep(500);
+        .click();
     });
 
     it('add api should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/project/datahubview`)
-        .sleep(500)
         .elementByCss('[data-accessbilityid="project-add-api-list-btn"]')
         .click()
         .elementByCss('[data-accessbilityid="project-add-api-name-input"]')
@@ -108,8 +105,7 @@ describe('test/datahub-api-list.test.js', () => {
         .sleep(500)
         .elementByCss('[data-accessbilityid="project-add-api-desc-input"]')
         .text()
-        .then(value => assert.equal(value, ''))
-        .sleep(500);
+        .then(value => assert.equal(value, ''));
     });
 
     // depend on add api successfully

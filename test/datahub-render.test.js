@@ -25,6 +25,7 @@ describe('test/datahub-render.test.js', () => {
 
     after(() => {
       return driver
+        .sleep(1000)
         .openReporter(false)
         .quit();
     });
@@ -32,7 +33,6 @@ describe('test/datahub-render.test.js', () => {
     it('home page render should be ok', () => {
       return driver
         .getUrl(BASE_URL)
-        .sleep(500)
         .elementByCss('[data-accessbilityid="go-btn-dashboard"]')
         .hasText('立即开始');
     });
@@ -40,7 +40,6 @@ describe('test/datahub-render.test.js', () => {
     it('home page render should be ok', () => {
       return driver
         .getUrl(BASE_URL)
-        .sleep(500)
         .elementByCss('[data-accessbilityid="go-btn-dashboard"]')
         .click()
         .elementByCss('h1.title')
