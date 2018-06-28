@@ -36,10 +36,10 @@ describe('test/datahub-api-scene.test.js', () => {
       return driver
         // delete project
         .getUrl(`${BASE_URL}/dashboard`)
-        .elementByCss('[data-accessbilityid="dashboard-content-card-0"] .delete-icon')
+        .waitForElementByCss('[data-accessbilityid="dashboard-content-card-0"] .delete-icon')
         .click()
         .sleep(500)
-        .elementByCss('.ant-popover-buttons .ant-btn-primary')
+        .waitForElementByCss('.ant-popover-buttons .ant-btn-primary')
         .click()
         .sleep(500)
         // quit
@@ -50,7 +50,7 @@ describe('test/datahub-api-scene.test.js', () => {
     it('add api should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/dashboard`)
-        .elementByCss('[data-accessbilityid="dashboard-folder-add"]')
+        .waitForElementByCss('[data-accessbilityid="dashboard-folder-add"]')
         .click()
         .elementByCss('#identifer')
         .click()
@@ -60,13 +60,13 @@ describe('test/datahub-api-scene.test.js', () => {
         .click()
         .formatInput('DataHub Mock Data')
         .sleep(500)
-        .elementByCss('button.ant-btn.ant-btn-primary')
+        .waitForElementByCss('button.ant-btn.ant-btn-primary')
         .click()
         .sleep(500)
 
       // add api
         .getUrl(`${BASE_URL}/project/datahubview`)
-        .elementByCss('[data-accessbilityid="project-add-api-list-btn"]')
+        .waitForElementByCss('[data-accessbilityid="project-add-api-list-btn"]')
         .click()
         .elementByCss('[data-accessbilityid="project-add-api-name-input"]')
         .click()
@@ -76,10 +76,10 @@ describe('test/datahub-api-scene.test.js', () => {
         .click()
         .formatInput('init api')
         .sleep(500)
-        .elementByCss('.ant-modal-footer .ant-btn-primary')
+        .waitForElementByCss('.ant-modal-footer .ant-btn-primary')
         .click()
         .sleep(500)
-        .elementByCss('[data-accessbilityid="project-add-api-list-0"] h3')
+        .waitForElementByCss('[data-accessbilityid="project-add-api-list-0"] h3')
         .hasText('init');
     });
 
@@ -91,18 +91,18 @@ describe('test/datahub-api-scene.test.js', () => {
         // add default scene
         .elementByCss('[data-accessbilityid="project-api-scene-input"]')
         .formatInput('default')
-        .elementByCss('[data-accessbilityid="project-api-scene-add-btn"]')
+        .waitForElementByCss('[data-accessbilityid="project-api-scene-add-btn"]')
         .click()
         .sleep(500)
-        .elementByCss('[data-accessbilityid="project-api-scene-list-0"] .scene-name')
+        .waitForElementByCss('[data-accessbilityid="project-api-scene-list-0"] .scene-name')
         .hasText('default')
         .sleep(500)
 
         // add default scene data
-        .elementByCss('[data-accessbilityid="project-api-scene-list-0"] .anticon-edit')
+        .waitForElementByCss('[data-accessbilityid="project-api-scene-list-0"] .anticon-edit')
         .click()
         .execute(setCodeMirror(successScene))
-        .elementByCss('.ant-modal-footer .ant-btn.ant-btn-primary')
+        .waitForElementByCss('.ant-modal-footer .ant-btn.ant-btn-primary')
         .click();
     });
 
@@ -113,15 +113,15 @@ describe('test/datahub-api-scene.test.js', () => {
         // add error scene
         .elementByCss('[data-accessbilityid="project-api-scene-input"]')
         .formatInput('error')
-        .elementByCss('[data-accessbilityid="project-api-scene-add-btn"]')
+        .waitForElementByCss('[data-accessbilityid="project-api-scene-add-btn"]')
         .click()
         .sleep(500)
-        .elementByCss('[data-accessbilityid="project-api-scene-list-1"] .scene-name')
+        .waitForElementByCss('[data-accessbilityid="project-api-scene-list-1"] .scene-name')
         .hasText('error')
         .sleep(500)
 
         // add errro scene data
-        .elementByCss('[data-accessbilityid="project-api-scene-list-1"] .anticon.anticon-edit')
+        .waitForElementByCss('[data-accessbilityid="project-api-scene-list-1"] .anticon.anticon-edit')
         .click()
         .execute(setCodeMirror(failScene))
         .elementByCss('.ant-modal-footer .ant-btn.ant-btn-primary')
@@ -131,10 +131,10 @@ describe('test/datahub-api-scene.test.js', () => {
     it('switch default scene should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/project/datahubview`)
-        .elementByCss('[data-accessbilityid="project-api-scene-list-0"] input')
+        .waitForElementByCss('[data-accessbilityid="project-api-scene-list-0"] input')
         .click()
         .getUrl(`${BASE_URL}/data/datahubview/init`)
-        .elementByCss('body')
+        .waitForElementByCss('body')
         /* eslint-disable */
         .hasText(JSON.stringify(successScene));
         /* eslint-enable */
@@ -143,10 +143,10 @@ describe('test/datahub-api-scene.test.js', () => {
     it('switch error scene should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/project/datahubview`)
-        .elementByCss('[data-accessbilityid="project-api-scene-list-1"] input')
+        .waitForElementByCss('[data-accessbilityid="project-api-scene-list-1"] input')
         .click()
         .getUrl(`${BASE_URL}/data/datahubview/init`)
-        .elementByCss('body')
+        .waitForElementByCss('body')
         /* eslint-disable */
         .hasText(JSON.stringify(failScene));
         /* eslint-enable */
@@ -155,9 +155,9 @@ describe('test/datahub-api-scene.test.js', () => {
     it('delete error scene should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/project/datahubview`)
-        .elementByCss('[data-accessbilityid="project-api-scene-list-1"] .anticon.anticon-delete')
+        .waitForElementByCss('[data-accessbilityid="project-api-scene-list-1"] .anticon.anticon-delete')
         .click()
-        .elementByCss('.ant-popover-buttons .ant-btn-primary')
+        .waitForElementByCss('.ant-popover-buttons .ant-btn-primary')
         .click()
         .sleep(500)
         .hasElementByCss('[data-accessbilityid="project-api-scene-list-1"] .scene-name')
@@ -167,10 +167,10 @@ describe('test/datahub-api-scene.test.js', () => {
     it('delete default scene should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/project/datahubview`)
-        .elementByCss('[data-accessbilityid="project-api-scene-list-0"] .anticon-delete')
+        .waitForElementByCss('[data-accessbilityid="project-api-scene-list-0"] .anticon-delete')
         .click()
         .sleep(500)
-        .elementByCss('.ant-popover-buttons .ant-btn-primary')
+        .waitForElementByCss('.ant-popover-buttons .ant-btn-primary')
         .click()
         .sleep(500)
         .hasElementByCss('[data-accessbilityid="project-api-scene-list-0"] .anticon-delete')

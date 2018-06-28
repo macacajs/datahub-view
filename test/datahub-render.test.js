@@ -33,16 +33,16 @@ describe('test/datahub-render.test.js', () => {
     it('home page render should be ok', () => {
       return driver
         .getUrl(BASE_URL)
-        .elementByCss('[data-accessbilityid="go-btn-dashboard"]')
+        .waitForElementByCss('[data-accessbilityid="go-btn-dashboard"]')
         .hasText('立即开始');
     });
 
     it('home page render should be ok', () => {
       return driver
         .getUrl(BASE_URL)
-        .elementByCss('[data-accessbilityid="go-btn-dashboard"]')
+        .waitForElementByCss('[data-accessbilityid="go-btn-dashboard"]')
         .click()
-        .elementByCss('h1.title')
+        .waitForElementByCss('h1.title')
         .hasText('DataHub');
     });
   });

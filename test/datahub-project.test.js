@@ -35,7 +35,7 @@ describe('test/datahub-project.test.js', () => {
     it('add project should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/dashboard`)
-        .elementByCss('[data-accessbilityid="dashboard-folder-add"]')
+        .waitForElementByCss('[data-accessbilityid="dashboard-folder-add"]')
         .click()
         .elementByCss('#identifer')
         .click()
@@ -45,20 +45,20 @@ describe('test/datahub-project.test.js', () => {
         .click()
         .formatInput('DataHub Mock Data')
         .sleep(500)
-        .elementByCss('button.ant-btn.ant-btn-primary')
+        .waitForElementByCss('button.ant-btn.ant-btn-primary')
         .click()
         .sleep(500)
-        .elementByCss('[data-accessbilityid="dashboard-content-card-0"] div.ant-card-head')
+        .waitForElementByCss('[data-accessbilityid="dashboard-content-card-0"] div.ant-card-head')
         .hasText('DataHub Mock Data')
         .sleep(1000)
         // input should be empty after add projct
-        .elementByCss('[data-accessbilityid="dashboard-folder-add"]')
+        .waitForElementByCss('[data-accessbilityid="dashboard-folder-add"]')
         .click()
-        .elementByCss('#identifer')
+        .waitForElementByCss('#identifer')
         .text()
         .then(value => assert.equal(value, ''))
         .sleep(500)
-        .elementByCss('#description')
+        .waitForElementByCss('#description')
         .text()
         .then(value => assert.equal(value, ''));
     });
@@ -67,10 +67,10 @@ describe('test/datahub-project.test.js', () => {
     it('delete project should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/dashboard`)
-        .elementByCss('[data-accessbilityid="dashboard-content-card-0"] .delete-icon')
+        .waitForElementByCss('[data-accessbilityid="dashboard-content-card-0"] .delete-icon')
         .click()
         .sleep(500)
-        .elementByCss('.ant-popover-buttons .ant-btn-primary')
+        .waitForElementByCss('.ant-popover-buttons .ant-btn-primary')
         .click()
         .sleep(500)
         .hasElementByCss('[data-accessbilityid="dashboard-content-card-0"] .ant-card-head')

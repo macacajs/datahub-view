@@ -30,10 +30,10 @@ describe('test/datahub-api-list.test.js', () => {
       return driver
         // delete project
         .getUrl(`${BASE_URL}/dashboard`)
-        .elementByCss('[data-accessbilityid="dashboard-content-card-0"] .delete-icon')
+        .waitForElementByCss('[data-accessbilityid="dashboard-content-card-0"] .delete-icon')
         .click()
         .sleep(500)
-        .elementByCss('.ant-popover-buttons .ant-btn-primary')
+        .waitForElementByCss('.ant-popover-buttons .ant-btn-primary')
         .click()
         .sleep(500)
         // quit
@@ -44,7 +44,7 @@ describe('test/datahub-api-list.test.js', () => {
     it('add project should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/dashboard`)
-        .elementByCss('[data-accessbilityid="dashboard-folder-add"]')
+        .waitForElementByCss('[data-accessbilityid="dashboard-folder-add"]')
         .click()
         .elementByCss('#identifer')
         .click()
@@ -54,14 +54,14 @@ describe('test/datahub-api-list.test.js', () => {
         .click()
         .formatInput('DataHub Mock Data')
         .sleep(500)
-        .elementByCss('button.ant-btn.ant-btn-primary')
+        .waitForElementByCss('button.ant-btn.ant-btn-primary')
         .click();
     });
 
     it('add api should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/project/datahubview`)
-        .elementByCss('[data-accessbilityid="project-add-api-list-btn"]')
+        .waitForElementByCss('[data-accessbilityid="project-add-api-list-btn"]')
         .click()
         .elementByCss('[data-accessbilityid="project-add-api-name-input"]')
         .click()
@@ -71,15 +71,15 @@ describe('test/datahub-api-list.test.js', () => {
         .click()
         .formatInput('init api')
         .sleep(500)
-        .elementByCss('.ant-modal-footer .ant-btn-primary')
+        .waitForElementByCss('.ant-modal-footer .ant-btn-primary')
         .click()
         .sleep(500)
-        .elementByCss('[data-accessbilityid="project-add-api-list-0"] h3')
+        .waitForElementByCss('[data-accessbilityid="project-add-api-list-0"] h3')
         .hasText('init')
         .sleep(500)
 
         // add result api
-        .elementByCss('[data-accessbilityid="project-add-api-list-btn"]')
+        .waitForElementByCss('[data-accessbilityid="project-add-api-list-btn"]')
         .click()
         .elementByCss('[data-accessbilityid="project-add-api-name-input"]')
         .click()
@@ -89,21 +89,21 @@ describe('test/datahub-api-list.test.js', () => {
         .click()
         .formatInput('result api')
         .sleep(500)
-        .elementByCss('.ant-modal-footer .ant-btn-primary')
+        .waitForElementByCss('.ant-modal-footer .ant-btn-primary')
         .click()
         .sleep(500)
-        .elementByCss('[data-accessbilityid="project-add-api-list-1"] h3')
+        .waitForElementByCss('[data-accessbilityid="project-add-api-list-1"] h3')
         .hasText('result')
         .sleep(500)
 
         // input should be empty after add projct
-        .elementByCss('[data-accessbilityid="project-add-api-list-btn"]')
+        .waitForElementByCss('[data-accessbilityid="project-add-api-list-btn"]')
         .click()
-        .elementByCss('[data-accessbilityid="project-add-api-name-input"]')
+        .waitForElementByCss('[data-accessbilityid="project-add-api-name-input"]')
         .text()
         .then(value => assert.equal(value, ''))
         .sleep(500)
-        .elementByCss('[data-accessbilityid="project-add-api-desc-input"]')
+        .waitForElementByCss('[data-accessbilityid="project-add-api-desc-input"]')
         .text()
         .then(value => assert.equal(value, ''));
     });
@@ -114,7 +114,7 @@ describe('test/datahub-api-list.test.js', () => {
         .getUrl(`${BASE_URL}/project/datahubview`)
         .elementByCss('[data-accessbilityid="project-search-api"]')
         .formatInput('result')
-        .elementByCss('[data-accessbilityid="project-add-api-list-1"] h3')
+        .waitForElementByCss('[data-accessbilityid="project-add-api-list-1"] h3')
         .hasText('result');
     });
 
@@ -123,18 +123,18 @@ describe('test/datahub-api-list.test.js', () => {
       return driver
         .getUrl(`${BASE_URL}/project/datahubview`)
         // delete init api
-        .elementByCss('[data-accessbilityid="project-add-api-list-0"] .right i')
+        .waitForElementByCss('[data-accessbilityid="project-add-api-list-0"] .right i')
         .click()
-        .elementByCss('.ant-popover-buttons .ant-btn-primary')
+        .waitForElementByCss('.ant-popover-buttons .ant-btn-primary')
         .click()
         .sleep(500)
         .hasElementByCss('[data-accessbilityid="project-add-api-list-1"] h3')
         .then(value => assert.equal(value, false))
         .sleep(500)
         // delete result api
-        .elementByCss('[data-accessbilityid="project-add-api-list-0"] .right i')
+        .waitForElementByCss('[data-accessbilityid="project-add-api-list-0"] .right i')
         .click()
-        .elementByCss('.ant-popover-buttons .ant-btn-primary')
+        .waitForElementByCss('.ant-popover-buttons .ant-btn-primary')
         .click()
         .sleep(500)
         .hasElementByCss('[data-accessbilityid="project-add-api-list-0"] h3')
