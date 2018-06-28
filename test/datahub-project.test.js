@@ -34,7 +34,7 @@ describe('test/datahub-project.test.js', () => {
     it('add project should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/dashboard`)
-        .sleep(1000)
+        .sleep(500)
         .elementByCss('[data-accessbilityid="dashboard-folder-add"]')
         .click()
         .elementByCss('#identifer')
@@ -47,7 +47,7 @@ describe('test/datahub-project.test.js', () => {
         .sleep(500)
         .elementByCss('button.ant-btn.ant-btn-primary')
         .click()
-        .sleep(1500)
+        .sleep(500)
         .elementByCss('[data-accessbilityid="dashboard-content-card-0"] div.ant-card-head')
         .hasText('DataHub Mock Data')
         .sleep(1000)
@@ -68,13 +68,13 @@ describe('test/datahub-project.test.js', () => {
     it('delete project should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/dashboard`)
-        .sleep(1000)
+        .sleep(500)
         .elementByCss('[data-accessbilityid="dashboard-content-card-0"] .delete-icon')
         .click()
         .sleep(500)
         .elementByCss('.ant-popover-buttons .ant-btn-primary')
         .click()
-        .sleep(1000)
+        .sleep(500)
         .hasElementByCss('[data-accessbilityid="dashboard-content-card-0"] .ant-card-head')
         .then(value => assert.equal(value, false));
     });

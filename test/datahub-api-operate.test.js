@@ -35,13 +35,13 @@ describe('test/datahub-api-operate.test.js', () => {
       return driver
         // delete project
         .getUrl(`${BASE_URL}/dashboard`)
-        .sleep(1000)
+        .sleep(500)
         .elementByCss('[data-accessbilityid="dashboard-content-card-0"] .delete-icon')
         .click()
         .sleep(500)
         .elementByCss('.ant-popover-buttons .ant-btn-primary')
         .click()
-        .sleep(1000)
+        .sleep(500)
         // quit
         .openReporter(false)
         .quit();
@@ -51,7 +51,7 @@ describe('test/datahub-api-operate.test.js', () => {
       return driver
       // add project
         .getUrl(`${BASE_URL}/dashboard`)
-        .sleep(1000)
+        .sleep(500)
         .elementByCss('[data-accessbilityid="dashboard-folder-add"]')
         .click()
         .elementByCss('#identifer')
@@ -64,11 +64,11 @@ describe('test/datahub-api-operate.test.js', () => {
         .sleep(500)
         .elementByCss('button.ant-btn.ant-btn-primary')
         .click()
-        .sleep(1000)
+        .sleep(500)
 
       // add api
         .getUrl(`${BASE_URL}/project/datahubview`)
-        .sleep(1000)
+        .sleep(500)
         .elementByCss('[data-accessbilityid="project-add-api-list-btn"]')
         .click()
         .elementByCss('[data-accessbilityid="project-add-api-name-input"]')
@@ -81,36 +81,36 @@ describe('test/datahub-api-operate.test.js', () => {
         .sleep(500)
         .elementByCss('.ant-modal-footer .ant-btn-primary')
         .click()
-        .sleep(1000)
+        .sleep(500)
         .elementByCss('[data-accessbilityid="project-add-api-list-0"] h3')
         .hasText('init')
-        .sleep(1000);
+        .sleep(500);
     });
 
     it('modify api config should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/project/datahubview`)
-        .sleep(1000)
+        .sleep(500)
         // modify HTTP method: PATCH
         .elementByCss('[data-accessbilityid="project-api-method-select"] .ant-select-selection')
         .click()
         .elementByCss('.ant-select-dropdown-menu-item:nth-child(6)')
         .click()
-        .sleep(1000)
+        .sleep(500)
         // mofiy api description: v2.0
         .elementByCss('[data-accessbilityid="project-api-description"] input')
         .clear()
         .sendKeys('init api v2.0')
         .elementByCss('[data-accessbilityid="project-api-description"] span')
         .click()
-        .sleep(1000)
+        .sleep(500)
         // modify api delay: 10
         .elementByCss('[data-accessbilityid="project-api-delay"] input')
         .clear()
         .formatInput('10')
         .elementByCss('[data-accessbilityid="project-api-delay"] span')
         .click()
-        .sleep(1000)
+        .sleep(500)
         // modify api response: 500
         .elementByCss('[data-accessbilityid="project-api-status-code"] input')
         .clear()
@@ -123,7 +123,7 @@ describe('test/datahub-api-operate.test.js', () => {
         .execute(setCodeMirror(apiHeader))
         .elementByCss('.ant-modal-footer .ant-btn-primary')
         .click()
-        .sleep(1000)
+        .sleep(500)
 
         .refresh()
         // check HTTP method
@@ -144,43 +144,43 @@ describe('test/datahub-api-operate.test.js', () => {
         // check http header
         .elementByCss('[data-accessbilityid="project-api-response-header"] button')
         .click()
-        .sleep(2000)
+        .sleep(500)
         .elementByCss('.CodeMirror-code div:nth-child(2) pre')
         .hasText('datahub')
-        .sleep(1000);
+        .sleep(500);
     });
 
     // rely on add api successfully
     it('modify api proxy config should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/project/datahubview`)
-        .sleep(1000)
+        .sleep(500)
         // open proxy
         .elementByCss('[data-accessbilityid="project-api-proxy-checkbox"]')
         .click()
         // add 1 proxy
         .elementByCss('[data-accessbilityid="project-api-add-proxy-btn"]')
         .click()
-        .sleep(1000)
+        .sleep(500)
         .elementByCss('[data-accessbilityid="project-api-proxy-list-0"] input')
         .clear()
         .formatInput('http://datahub1.com')
-        .sleep(1000)
+        .sleep(500)
         .elementByCss('[data-accessbilityid="project-api-proxy-title"]')
         .click()
-        .sleep(1000)
+        .sleep(500)
 
         // add 2 proxy
         .elementByCss('[data-accessbilityid="project-api-add-proxy-btn"]')
         .click()
-        .sleep(1000)
+        .sleep(500)
         .elementByCss('[data-accessbilityid="project-api-proxy-list-1"] input')
         .clear()
         .formatInput('http://datahub2.com')
-        .sleep(1000)
+        .sleep(500)
         .elementByCss('[data-accessbilityid="project-api-proxy-title"]')
         .click()
-        .sleep(1000)
+        .sleep(500)
 
         // check 2 proxy
         .refresh()
@@ -195,7 +195,7 @@ describe('test/datahub-api-operate.test.js', () => {
         .refresh()
         .hasElementByCss('[data-accessbilityid="project-api-proxy-list-1"] button')
         .then(value => assert.equal(value, false))
-        .sleep(1000)
+        .sleep(500)
 
         // cant delete proxy after close proxy
         .elementByCss('[data-accessbilityid="project-api-proxy-checkbox"]')
@@ -204,21 +204,21 @@ describe('test/datahub-api-operate.test.js', () => {
         .click()
         .hasElementByCss('[data-accessbilityid="project-api-proxy-list-0"] button')
         .then(value => assert.equal(value, true))
-        .sleep(1000);
+        .sleep(500);
     });
 
     // rely on add api successfully
     it('modify api req schema should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/project/datahubview`)
-        .sleep(1000)
+        .sleep(500)
         // Request Schema
         .elementByCss('.api-schema-req [data-accessbilityid="project-api-schema-edit-btn"]')
         .click()
         .execute(setCodeMirror(schemaData))
         .elementByCss('.ant-modal-footer .ant-btn.ant-btn-primary')
         .click()
-        .sleep(1000)
+        .sleep(500)
         .refresh()
         .elementByCss('.api-schema-req table > tbody > tr:nth-child(1) > td:nth-child(1)')
         .hasText('success');
@@ -228,14 +228,14 @@ describe('test/datahub-api-operate.test.js', () => {
     it('modify api res schema should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/project/datahubview`)
-        .sleep(1000)
+        .sleep(500)
         // Response Schema
         .elementByCss('.api-schema-res [data-accessbilityid="project-api-schema-edit-btn"]')
         .click()
         .execute(setCodeMirror(schemaData))
         .elementByCss('.ant-modal-footer .ant-btn.ant-btn-primary')
         .click()
-        .sleep(1000)
+        .sleep(500)
         .elementByCss('.api-schema-res table > tbody > tr:nth-child(1) > td:nth-child(2)')
         .hasText('Boolean');
     });
@@ -244,7 +244,7 @@ describe('test/datahub-api-operate.test.js', () => {
     it('api doc should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/doc/datahubview#api=init`)
-        .sleep(1000)
+        .sleep(500)
         .elementByCss('.req-shcema-doc tbody > tr:nth-child(1) > td:nth-child(1)')
         .hasText('success')
         .elementByCss('.res-shcema-doc tbody > tr:nth-child(6) > td:nth-child(1)')
