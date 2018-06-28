@@ -19,6 +19,7 @@ describe('test/datahub-realtime.test.js', () => {
 
     afterEach(function () {
       return driver
+        .sleep(1000)
         .coverage()
         .saveScreenshots(this);
     });
@@ -31,8 +32,7 @@ describe('test/datahub-realtime.test.js', () => {
 
     it('realtime should be ok', () => {
       return driver
-        .getUrl(`${BASE_URL}/dashboard`)
-        .sleep(1000);
+        .getUrl(`${BASE_URL}/dashboard`);
     });
   });
 });
