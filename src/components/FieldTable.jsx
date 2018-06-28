@@ -129,7 +129,7 @@ class FieldTable extends React.Component {
             <p>
               Schema&nbsp;&nbsp;
               <a
-                href="//github.com/macacajs/macaca-datahub/blob/master/README.md#schema-syntax"
+                href="//github.com/macacajs/macaca-datahub/blob/1.x/README.md#schema-syntax"
                 target="_blank"
               >
                 syntax docs
