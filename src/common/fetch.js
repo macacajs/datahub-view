@@ -3,8 +3,8 @@
 import 'whatwg-fetch';
 
 const verbs = {
-  GET (url, params) {
-    return fetch(params ? `${url}?${params}` : url, {
+  GET (url) {
+    return fetch(url, {
       credentials: 'same-origin',
     });
   },
@@ -14,49 +14,33 @@ const verbs = {
       method: 'POST',
       credentials: 'same-origin',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
       },
-      body: params,
+      body: JSON.stringify(params),
     });
   },
 
-  DELETE (url, params) {
+  PUT (url, params) {
+    return fetch(url, {
+      method: 'PUT',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(params),
+    });
+  },
+
+  DELETE (url) {
     return fetch(url, {
       method: 'DELETE',
       credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: params,
-    });
-  },
-
-  PATCH (url, params) {
-    return fetch(url, {
-      method: 'PATCH',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: params,
     });
   },
 };
 
-function serialize (obj) {
-  const s = [];
-
-  for (const item in obj) {
-    const k = encodeURIComponent(item);
-    const v = encodeURIComponent(obj[item] == null ? '' : obj[item]);
-    s.push(`${k}=${v}`);
-  }
-
-  return s.join('&');
-}
-
-const request = (url, method = 'GET', params = {}) => {
-  return verbs[method](url, serialize(params))
+export default (url, method = 'GET', params = {}) => {
+  return verbs[method](url, params)
     .then(res => {
       if (res.ok) {
         return res;
@@ -67,5 +51,3 @@ const request = (url, method = 'GET', params = {}) => {
     .then(res => res.json());
 };
 
-module.exports = request;
-module.exports.fetch = fetch;

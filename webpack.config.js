@@ -94,13 +94,14 @@ module.exports = {
   ],
   devServer: {
     hot: true,
+    stats: 'errors-only',
     before: app => {
       datahubProxyMiddle(app)(datahubConfig);
     },
     after: () => {
-      defaultDatahub.startServer(datahubConfig).then(() => {
-        console.log('datahub ready');
-      });
+      // defaultDatahub.startServer(datahubConfig).then(() => {
+      //   console.log('datahub ready');
+      // });
     },
   },
 };

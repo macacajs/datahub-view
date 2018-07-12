@@ -28,7 +28,7 @@ const TabPane = Tabs.TabPane;
 const Sider = Layout.Sider;
 const Content = Layout.Content;
 
-const projectId = window.pageConfig.projectId;
+const { projectId, uniqId } = window.pageConfig;
 
 class Project extends React.Component {
   constructor (props) {
@@ -44,9 +44,9 @@ class Project extends React.Component {
   }
 
   componentDidMount () {
-    request(`/api/data/${projectId}`, 'GET')
+    request(`/api/interface?projectUniqId=${uniqId}`, 'GET')
       .then((res) => {
-        _.logger(`/api/data/${projectId} GET`, res);
+        _.logger(`/api/data/${uniqId} GET`, res);
         res.data.forEach(item => {
           item.params = item.params;
           item.scenes = JSON.parse(item.scenes);

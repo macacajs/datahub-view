@@ -23,9 +23,8 @@ import {
 
 import './DashBoard.less';
 
-import request, {
-  fetch,
-} from '../common/fetch';
+import 'whatwg-fetch';
+import request from '../common/fetch';
 import _ from '../common/helper';
 
 const FormItem = Form.Item;
@@ -130,7 +129,7 @@ class CollectionForm extends Component {
       >
         <Form layout="vertical">
           <FormItem label={formatMessage({id: 'dashboard.modalName'})}>
-            {getFieldDecorator('identifer', {
+            {getFieldDecorator('projectName', {
               rules: [
                 {
                   required: true,
@@ -214,27 +213,26 @@ class DashBoard extends React.Component {
           });
 
           if (res.success) {
-            message.success('add project success');
+            message.success('create project success');
             this.updateProjects();
           } else {
-            message.error('delete project success');
+            message.error('create project fail');
           }
         });
     });
   }
 
-  handleDelete (key) {
-    request('/api/project', 'DELETE', {
-      identifer: this.state.listData[key].identifer,
-    }).then((res) => {
-      _.logger('/api/project DELETE', res);
-      if (res.success) {
-        message.success('delete project success');
-        this.updateProjects();
-      } else {
-        message.error('delete project fail');
-      }
-    });
+  handleDelete (uniqId) {
+    request(`/api/project/${uniqId}`, 'DELETE')
+      .then((res) => {
+        _.logger('/api/project DELETE', res);
+        if (res.success) {
+          message.success('delete project success');
+          this.updateProjects();
+        } else {
+          message.error('delete project fail');
+        }
+      });
   }
 
   saveFormRef (form) {
@@ -261,25 +259,25 @@ class DashBoard extends React.Component {
     this.updateProjects();
   }
 
-  onCellChange (value, projectId) {
-    request('/api/project', 'POST', {
-      identifer: projectId,
-      description: value,
+  onCellChange (payload, uniqId) {
+    request(`/api/project/${uniqId}`, 'PUT', {
+      projectName: payload.projectName,
+      description: payload.description,
     }).then((res) => {
-      _.logger('/api/project POST', res);
+      _.logger('/api/project PUT', res);
       if (res.success) {
         message.success('update project success');
       } else {
-        message.error('update project success');
+        message.error('update project fail');
       }
     });
   }
 
-  fetchApiNumber (identifer) {
-    if (this.state.sizeMap[identifer]) {
+  fetchApiNumber (uniqId) {
+    if (this.state.sizeMap[uniqId]) {
       return;
     }
-    fetch(`/api/data/${identifer}`)
+    fetch(`/api/interface?projectUniqId=${uniqId}`)
       .then(res => {
         if (res.ok) {
           const size = parseInt(res.headers.get('Content-length') || 0, 10);
@@ -288,7 +286,7 @@ class DashBoard extends React.Component {
             if (d.success) {
               const obj = Object.assign({}, this.state.sizeMap);
               const json = {
-                [identifer]: {
+                [uniqId]: {
                   size: sizeStr,
                   number: d.data.length || 0,
                 },
@@ -313,10 +311,10 @@ class DashBoard extends React.Component {
             <Row>
               {
                 this.state.listData.map((item, i) => {
-                  this.fetchApiNumber(item.identifer);
+                  this.fetchApiNumber(item.uniqId);
                   const editor = <EditableCell
                     value={item.description}
-                    onChange={value => this.onCellChange(value, item.identifer)}
+                    onChange={value => this.onCellChange({ description: value }, item.uniqId)}
                   />;
 
                   return (
@@ -330,24 +328,24 @@ class DashBoard extends React.Component {
                         >
                           <Row type="flex">
                             <Col span={24} className="main-icon">
-                              <a href={`/project/${item.identifer}`} target="_blank">
+                              <a href={`/project/${item.projectName}`} target="_blank">
                                 <Icon type="inbox" />
                               </a>
                             </Col>
                             <Row type="flex" className="sub-info">
-                              <Col span={22} key={item.identifer}>
-                                {item.identifer}
+                              <Col span={22} key={item.projectName}>
+                                {item.projectName}
                                 <span className="main-info">
                                   <Icon type="file" />
                                   {
-                                    this.state.sizeMap[item.identifer]
-                                      ? this.state.sizeMap[item.identifer].number
+                                    this.state.sizeMap[item.uniqId]
+                                      ? this.state.sizeMap[item.uniqId].number
                                       : null
                                   }
                                   <Icon type="hdd" />
                                   {
-                                    this.state.sizeMap[item.identifer]
-                                      ? this.state.sizeMap[item.identifer].size
+                                    this.state.sizeMap[item.uniqId]
+                                      ? this.state.sizeMap[item.uniqId].size
                                       : null
                                   }
                                 </span>
@@ -355,7 +353,7 @@ class DashBoard extends React.Component {
                               <Col span={2} style={{textAlign: 'right'}}>
                                 <Popconfirm
                                   title={this.props.intl.formatMessage({id: 'common.deleteTip'})}
-                                  onConfirm={this.handleDelete.bind(this, i)}
+                                  onConfirm={this.handleDelete.bind(this, item.uniqId)}
                                   okText={this.props.intl.formatMessage({id: 'common.confirm'})}
                                   cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}
                                 >
