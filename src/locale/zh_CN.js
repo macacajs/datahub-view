@@ -54,7 +54,7 @@ const zhCN = {
   'apiConfig.responseHeader': '自定义响应头：',
   'apiConfig.modifyResponseHeader': '修改',
   'apiConfig.project': '项目配置',
-  'apiConfig.validateError': '接口名不合法',
+  'apiConfig.validateError': '接口名不合法，不能以 / 开头或结尾',
 
   'sceneMng.title': '场景管理',
   'sceneMng.sceneName': '场景',

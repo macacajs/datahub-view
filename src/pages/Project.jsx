@@ -14,7 +14,7 @@ import {
   message,
 } from 'antd';
 
-import DataList from '../components/DataList';
+import InterfaceList from '../components/InterfaceList';
 import RealTime from '../components/RealTime';
 import DataInfo from '../components/DataInfo';
 import RealTimeDetail from '../components/RealTimeDetail';
@@ -204,7 +204,7 @@ class Project extends React.Component {
             <TabPane tab={this.props.intl.formatMessage({
               id: 'project.apiList',
             })} key="apilist">
-              <DataList
+              <InterfaceList
                 apis={this.state.data}
                 handleAddApi={this.addApi.bind(this)}
                 handleDeleteApi={this.deleteApi.bind(this)}

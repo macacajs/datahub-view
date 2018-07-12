@@ -54,7 +54,7 @@ const enUS = {
   'apiConfig.responseHeader': 'custom response header:',
   'apiConfig.modifyResponseHeader': 'modify',
   'apiConfig.project': 'Project API',
-  'apiConfig.validateError': 'API name is invalid',
+  'apiConfig.validateError': 'API name is invalid, should not start with slash or end with slash',
 
   'sceneMng.title': 'scene manage',
   'sceneMng.sceneName': 'scene',

@@ -19,11 +19,11 @@ import {
   FormattedMessage,
 } from 'react-intl';
 
-import './DataList.less';
+import './InterfaceList.less';
 
 const Search = Input.Search;
 
-class DataList extends React.Component {
+class InterfaceList extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -272,4 +272,4 @@ class DataList extends React.Component {
   }
 }
 
-export default injectIntl(DataList);
+export default injectIntl(InterfaceList);
