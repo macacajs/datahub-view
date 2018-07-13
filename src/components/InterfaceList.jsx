@@ -194,39 +194,37 @@ class InterfaceList extends Component {
   renderInterfaceList = () => {
     const formatMessage = this.formatMessage;
     const { interfaceList } = this.props;
-    return (
-      interfaceList.filter(value =>
-        value.pathname.toLowerCase().includes(this.state.filterString) ||
-        value.description.toLowerCase().includes(this.state.filterString)
-      ).map((value, index) => {
-        const isSelected = value.uniqId === this.getSelectedInterface();
-        return (
-          <li
-            className={isSelected ? 'clicked' : ''}
-            key={index}
-            data-accessbilityid={`project-add-api-list-${index}`}
-            onClick={() => this.selectInterface(value.uniqId)}
-          >
-            <div className="left">
-              <Tooltip title={value.pathname}>
-                <h3>{value.pathname}</h3>
-                <p>{value.description}</p>
-              </Tooltip>
-            </div>
-            <div className="right">
-              <Popconfirm
-                title={formatMessage('common.deleteTip')}
-                onConfirm={() => this.deleteInterface(value.uniqId)}
-                okText={formatMessage('common.confirm')}
-                cancelText={formatMessage('common.cancel')}
-              >
-                <Icon className="delete-icon" type="delete" />
-              </Popconfirm>
-            </div>
-          </li>
-        );
-      })
-    );
+    return interfaceList.filter(value =>
+      value.pathname.toLowerCase().includes(this.state.filterString) ||
+      value.description.toLowerCase().includes(this.state.filterString)
+    ).map((value, index) => {
+      const isSelected = value.uniqId === this.getSelectedInterface();
+      return (
+        <li
+          className={isSelected ? 'clicked' : ''}
+          key={index}
+          data-accessbilityid={`project-add-api-list-${index}`}
+          onClick={() => this.selectInterface(value.uniqId)}
+        >
+          <div className="left">
+            <Tooltip title={value.pathname}>
+              <h3>{value.pathname}</h3>
+              <p>{value.description}</p>
+            </Tooltip>
+          </div>
+          <div className="right">
+            <Popconfirm
+              title={formatMessage('common.deleteTip')}
+              onConfirm={() => this.deleteInterface(value.uniqId)}
+              okText={formatMessage('common.confirm')}
+              cancelText={formatMessage('common.cancel')}
+            >
+              <Icon className="delete-icon" type="delete" />
+            </Popconfirm>
+          </div>
+        </li>
+      );
+    });
   }
 
   render () {

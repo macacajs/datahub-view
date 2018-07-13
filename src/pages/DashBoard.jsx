@@ -23,7 +23,6 @@ import {
 
 import {
   projectService,
-  globalService,
 } from '../service';
 
 import './DashBoard.less';
@@ -104,6 +103,8 @@ class DashBoard extends Component {
     listData: [],
   };
 
+  formatMessage = id => this.props.intl.formatMessage({ id });
+
   async componentWillMount () {
     await this.updateProjects();
   }
@@ -157,7 +158,47 @@ class DashBoard extends Component {
   }
 
   renderProjectList () {
-
+    const formatMessage = this.formatMessage;
+    const { listData } = this.state;
+    return listData.map((item, index) => {
+      return <Col span={8} key={index}>
+        <div className="content">
+          <Card
+            title={item.description}
+            data-accessbilityid={`dashboard-content-card-${index}`}
+            bordered={false}
+            style={{ color: '#000' }}
+          >
+            <Row type="flex">
+              <Col span={24} className="main-icon">
+                <a href={`/project/${item.projectName}`} target="_blank">
+                  <Icon type="inbox" />
+                </a>
+              </Col>
+              <Row type="flex" className="sub-info">
+                <Col span={22} key={item.projectName}>
+                  {item.projectName}
+                  <span className="main-info">
+                    <Icon type="file" />{item.capacity && item.capacity.count}
+                    <Icon type="hdd" />{item.capacity && item.capacity.size}
+                  </span>
+                </Col>
+                <Col span={2} style={{ textAlign: 'right' }}>
+                  <Popconfirm
+                    title={formatMessage('common.deleteTip')}
+                    onConfirm={() => this.deleteProject(item.uniqId)}
+                    okText={formatMessage('common.confirm')}
+                    cancelText={formatMessage('common.cancel')}
+                  >
+                    <Icon className="delete-icon" type="delete" />
+                  </Popconfirm>
+                </Col>
+              </Row>
+            </Row>
+          </Card>
+        </div>
+      </Col>;
+    });
   }
 
   render () {
@@ -166,49 +207,7 @@ class DashBoard extends Component {
         <Row type="flex" justify="center">
           <Col span="22">
             <Row>
-              {
-                this.state.listData.map((item, i) => {
-                  return (
-                    <Col span={8} key={i}>
-                      <div className="content">
-                        <Card
-                          title={item.description}
-                          data-accessbilityid={`dashboard-content-card-${i}`}
-                          bordered={ false }
-                          style={{ color: '#000' }}
-                        >
-                          <Row type="flex">
-                            <Col span={24} className="main-icon">
-                              <a href={`/project/${item.projectName}`} target="_blank">
-                                <Icon type="inbox" />
-                              </a>
-                            </Col>
-                            <Row type="flex" className="sub-info">
-                              <Col span={22} key={item.projectName}>
-                                {item.projectName}
-                                <span className="main-info">
-                                  <Icon type="file" />{item.capacity && item.capacity.count}
-                                  <Icon type="hdd" />{item.capacity && item.capacity.size}
-                                </span>
-                              </Col>
-                              <Col span={2} style={{textAlign: 'right'}}>
-                                <Popconfirm
-                                  title={this.props.intl.formatMessage({id: 'common.deleteTip'})}
-                                  onConfirm={() => this.deleteProject(item.uniqId)}
-                                  okText={this.props.intl.formatMessage({id: 'common.confirm'})}
-                                  cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}
-                                >
-                                  <Icon className="delete-icon" type="delete" />
-                                </Popconfirm>
-                              </Col>
-                            </Row>
-                          </Row>
-                        </Card>
-                      </div>
-                    </Col>
-                  );
-                })
-              }
+              { this.renderProjectList() }
               <Col span={8}>
                 <div className="content">
                   <Card
