@@ -9,6 +9,7 @@ const enUS = {
   'common.guide': 'Guide',
   'common.slogan': 'Continuous data provider for development, testing, staging and production.',
   'common.issue': 'Issues',
+  'common.input.invalid': 'Please correct the input',
 
   'home.go': 'GO NOW',
 
@@ -35,10 +36,19 @@ const enUS = {
   'topNav.allProject': 'all projects',
   'topNav.projectConfig': 'project config',
 
-  'apiList.addApi': 'Add API',
-  'apiList.searchApi': 'search API',
-  'apiList.apiNameInput': 'please input API name',
-  'apiList.apiDesInput': 'please input API description',
+  'dashboard.modalTile': 'create a hub',
+  'dashboard.modalName': 'hub name',
+  'dashboard.modalNameTip': 'input cant be null',
+  'dashboard.modalDescription': 'hub description',
+  'dashboard.modalDescriptionTip': 'input cant be null',
+  'dashboard.tableAdd': 'add hub',
+
+  'interfaceList.addInterface': 'Add API',
+  'interfaceList.searchInterface': 'search API',
+  'interfaceList.interfacePathnameInput': 'please input API URL pathname',
+  'interfaceList.interfaceDescription': 'please input API description',
+  'interfaceList.invalidPathname': 'pathname invalid, type path/name or path/:type/:id',
+  'interfaceList.invalidDescription': 'please input description',
 
   'apiConfig.title': 'API config',
   'apiConfig.apiDoc': 'API doc',
@@ -86,15 +96,9 @@ const enUS = {
   'realtimeProject.validError': 'please input valid characters',
   'realtimeProject.nullError': 'please add hub or API',
 
-  'dashboard.modalTile': 'create a hub',
-  'dashboard.modalName': 'hub name',
-  'dashboard.modalNameTip': 'input cant be null',
-  'dashboard.modalDescription': 'hub description',
-  'dashboard.modalDescriptionTip': 'input cant be null',
-  'dashboard.tableAdd': 'add hub',
-
   'document.resSchemaDes': ' response schema description',
   'document.reqSchemaDes': ' request schema description',
+  'document.schemaDes': 'schema description',
   'document.sceneData': 'scene data',
 
   'project.apiList': 'API list',

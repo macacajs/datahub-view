@@ -21,7 +21,7 @@ import {
   UnControlled as CodeMirror,
 } from 'react-codemirror2';
 
-import request from '../common/fetch';
+import request from '../common/request';
 import CustomTable from '../components/CustomTable';
 
 import './Document.less';

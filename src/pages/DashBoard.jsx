@@ -21,255 +21,139 @@ import {
   FormattedMessage,
 } from 'react-intl';
 
-import './DashBoard.less';
-
 import 'whatwg-fetch';
-import request from '../common/fetch';
-import _ from '../common/helper';
+
+import request from '../common/request';
+import { projectService } from '../service';
+
+import './DashBoard.less';
 
 const FormItem = Form.Item;
 
-class EditableCell extends React.Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      value: this.props.value,
-      editable: false,
-    };
-  }
-
-  componentWillReceiveProps (props) {
-    this.setState({
-      value: props.value,
-    });
-  }
-
-  handleChange (e) {
-    const value = e.target.value;
-    this.setState({
-      value,
-    });
-  }
-
-  check () {
-    this.setState({
-      editable: false,
-    });
-    if (this.props.onChange) {
-      this.props.onChange(this.state.value);
-    }
-  }
-
-  edit () {
-    this.setState({
-      editable: true,
-    });
-  }
-
-  render () {
-    const {
-      value,
-      editable,
-    } = this.state;
-    return (
-      <div className="editable-cell">
-        {
-          editable
-            ? <div className="input-wrapper">
-              <Input
-                value={value}
-                style={{
-                  width: '80%',
-                }}
-                onChange={this.handleChange.bind(this)}
-                onPressEnter={this.check.bind(this)}
-              />
-              <Icon
-                type="check"
-                className="icon-check"
-                onClick={this.check.bind(this)}
-              />
-            </div>
-            : <div className="text-wrapper">
-              {value || ' '}
-              <Icon
-                type="edit"
-                className="icon"
-                onClick={this.edit.bind(this)}
-              />
-            </div>
+function CreateProjectComponent (props) {
+  const {
+    visible,
+    onCancel,
+    onOk,
+    form,
+    loading,
+  } = props;
+  const {
+    getFieldDecorator,
+  } = form;
+  const formatMessage = id => props.intl.formatMessage({ id });
+  return <Modal
+    visible={visible}
+    title={formatMessage('dashboard.modalTile')}
+    okText={formatMessage('common.confirm')}
+    cancelText={formatMessage('common.cancel')}
+    onCancel={() => {
+      onCancel();
+      props.form.resetFields();
+    }}
+    onOk={() => {
+      form.validateFields((err, values) => {
+        if (err) {
+          message.warn(formatMessage('common.input.invalid'));
+          return;
         }
-      </div>
-    );
-  }
+        onOk(values, () => {
+          props.form.resetFields();
+        });
+      });
+    }}
+    confirmLoading={loading}
+  >
+    <Form layout="vertical">
+      <FormItem label={formatMessage('dashboard.modalName')}>
+        {getFieldDecorator('projectName', {
+          rules: [
+            {
+              required: true,
+              message: formatMessage('dashboard.modalNameTip'),
+              pattern: /^[a-z0-9_-]+$/,
+            },
+          ],
+        })(
+          <Input />
+        )}
+      </FormItem>
+      <FormItem label={formatMessage('dashboard.modalDescription')}>
+        {getFieldDecorator('description', {
+          rules: [
+            {
+              required: true,
+              message: formatMessage('dashboard.modalDescriptionTip'),
+            },
+          ],
+        })(
+          <Input />
+        )}
+      </FormItem>
+    </Form>
+  </Modal>;
 }
 
-class CollectionForm extends Component {
-  render () {
-    const {
-      visible,
-      onCancel,
-      onCreate,
-      form,
-      loading,
-    } = this.props;
-    const {
-      getFieldDecorator,
-    } = form;
-    const formatMessage = this.props.intl.formatMessage;
-    return (
-      <Modal
-        visible={visible}
-        title={this.props.intl.formatMessage({id: 'dashboard.modalTile'})}
-        okText="Create"
-        onCancel={onCancel}
-        onOk={onCreate}
-        cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}
-        confirmLoading={loading}
-      >
-        <Form layout="vertical">
-          <FormItem label={formatMessage({id: 'dashboard.modalName'})}>
-            {getFieldDecorator('projectName', {
-              rules: [
-                {
-                  required: true,
-                  message: formatMessage({
-                    id: 'dashboard.modalNameTip',
-                  }),
-                  pattern: /^[A-Za-z0-9]+$/,
-                },
-              ],
-            })(
-              <Input />
-            )}
-          </FormItem>
-          <FormItem label={formatMessage({
-            id: 'dashboard.modalDescription',
-          })}>
-            {getFieldDecorator('description', {
-              rules: [
-                {
-                  required: true,
-                  message: formatMessage({
-                    id: 'dashboard.modalDescriptionTip',
-                  }),
-                },
-              ],
-            })(
-              <Input />
-            )}
-          </FormItem>
-        </Form>
-      </Modal>
-    );
-  }
-}
+const CreateProjectForm = Form.create()(injectIntl(CreateProjectComponent));
 
-const CollectionCreateForm = Form.create()(injectIntl(CollectionForm));
+class DashBoard extends Component {
+  state = {
+    context: window.context,
+    visible: false,
+    loading: false,
+    listData: [],
+    sizeMap: {},
+  };
 
-class DashBoard extends React.Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      context: window.context,
-      visible: false,
-      loading: false,
-      listData: [],
-      sizeMap: {},
-    };
+  async componentWillMount () {
+    await this.updateProjects();
   }
 
-  showModal () {
+  showModal = () => {
     this.setState({
       visible: true,
     });
   }
 
-  handleCancel () {
+  cancelCreateProject = () => {
     this.setState({
       visible: false,
     });
   }
 
-  handleCreate () {
-    const form = this.form;
-    form.validateFields((err, values) => {
-      if (err) {
-        return;
-      }
+  createProject = async (values, callback = () => {}) => {
+    this.setState({
+      loading: true,
+    });
 
+    const res = await projectService.createProject({
+      projectName: values.projectName,
+      description: values.description,
+    });
+
+    this.setState({
+      loading: false,
+    });
+
+    if (res.success) {
       this.setState({
-        loading: true,
+        visible: false,
+      }, () => {
+        callback();
+        this.updateProjects();
       });
-
-      _.logger('Received values of form: ', values);
-
-      request('/api/project', 'POST', values)
-        .then((res) => {
-          form.resetFields();
-          this.setState({
-            visible: false,
-            loading: false,
-          });
-
-          if (res.success) {
-            message.success('create project success');
-            this.updateProjects();
-          } else {
-            message.error('create project fail');
-          }
-        });
-    });
+    }
   }
 
-  handleDelete (uniqId) {
-    request(`/api/project/${uniqId}`, 'DELETE')
-      .then((res) => {
-        _.logger('/api/project DELETE', res);
-        if (res.success) {
-          message.success('delete project success');
-          this.updateProjects();
-        } else {
-          message.error('delete project fail');
-        }
-      });
+  deleteProject = async (uniqId) => {
+    await projectService.deleteProject({ uniqId });
+    await this.updateProjects();
   }
 
-  saveFormRef (form) {
-    this.form = form;
-  }
-
-  updateProjects () {
-    request('/api/project').then((res) => {
-      if (res) {
-        res.forEach((item, index) => {
-          item.key = index;
-        });
-        this.setState({
-          listData: res,
-        });
-        _.logger('/api/project GET', res);
-      } else {
-        message.error('update project success');
-      }
-    });
-  }
-
-  componentWillMount () {
-    this.updateProjects();
-  }
-
-  onCellChange (payload, uniqId) {
-    request(`/api/project/${uniqId}`, 'PUT', {
-      projectName: payload.projectName,
-      description: payload.description,
-    }).then((res) => {
-      _.logger('/api/project PUT', res);
-      if (res.success) {
-        message.success('update project success');
-      } else {
-        message.error('update project fail');
-      }
+  updateProjects = async () => {
+    const res = await projectService.getProjectList();
+    this.setState({
+      listData: res.data || [],
     });
   }
 
@@ -312,16 +196,11 @@ class DashBoard extends React.Component {
               {
                 this.state.listData.map((item, i) => {
                   this.fetchApiNumber(item.uniqId);
-                  const editor = <EditableCell
-                    value={item.description}
-                    onChange={value => this.onCellChange({ description: value }, item.uniqId)}
-                  />;
-
                   return (
                     <Col span={8} key={i}>
                       <div className="content">
                         <Card
-                          title={ editor }
+                          title={item.description}
                           data-accessbilityid={`dashboard-content-card-${i}`}
                           bordered={ false }
                           style={{ color: '#000' }}
@@ -353,7 +232,7 @@ class DashBoard extends React.Component {
                               <Col span={2} style={{textAlign: 'right'}}>
                                 <Popconfirm
                                   title={this.props.intl.formatMessage({id: 'common.deleteTip'})}
-                                  onConfirm={this.handleDelete.bind(this, item.uniqId)}
+                                  onConfirm={() => this.deleteProject(item.uniqId)}
                                   okText={this.props.intl.formatMessage({id: 'common.confirm'})}
                                   cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}
                                 >
@@ -379,7 +258,7 @@ class DashBoard extends React.Component {
                       <Col span={24} className="main-icon">
                         <Icon
                           data-accessbilityid="dashboard-folder-add"
-                          onClick={this.showModal.bind(this)}
+                          onClick={this.showModal}
                           type="folder-add"
                         />
                       </Col>
@@ -391,11 +270,10 @@ class DashBoard extends React.Component {
               </Col>
             </Row>
           </Col>
-          <CollectionCreateForm
-            ref={this.saveFormRef.bind(this)}
+          <CreateProjectForm
             visible={this.state.visible}
-            onCancel={this.handleCancel.bind(this)}
-            onCreate={this.handleCreate.bind(this)}
+            onCancel={this.cancelCreateProject}
+            onOk={this.createProject}
             loading={this.state.loading}
           />
         </Row>

@@ -14,7 +14,11 @@
         libraryDirectory: 'lib',
         style: 'css'
       },
-    ]
+    ],
+    ["transform-runtime", {
+      "polyfill": false,
+      "regenerator": true
+    }]
   ],
   env: {
     test: {

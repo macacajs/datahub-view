@@ -20,7 +20,7 @@ import DataInfo from '../components/DataInfo';
 import RealTimeDetail from '../components/RealTimeDetail';
 
 import _ from '../common/helper';
-import request from '../common/fetch';
+import { interfaceService } from '../service';
 
 import './Project.less';
 
@@ -28,12 +28,14 @@ const TabPane = Tabs.TabPane;
 const Sider = Layout.Sider;
 const Content = Layout.Content;
 
-const { projectId, uniqId } = window.pageConfig;
 
 class Project extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
+      interfaceList: [],
+
+
       contentViewType: 'api', // display api content by default
       data: [],
       currentPathname: '',
@@ -43,26 +45,16 @@ class Project extends React.Component {
     };
   }
 
-  componentDidMount () {
-    request(`/api/interface?projectUniqId=${uniqId}`, 'GET')
-      .then((res) => {
-        _.logger(`/api/data/${uniqId} GET`, res);
-        res.data.forEach(item => {
-          item.params = item.params;
-          item.scenes = JSON.parse(item.scenes);
-        });
-        if (res.success) {
-          this.setState({
-            data: res.data,
-          });
-          res.data.forEach((api, index) => {
-            if (api.pathname === location.hash.replace('#', '')) {
-              this.handleApiClick(api.pathname);
-            }
-          });
-        }
-      });
+  async componentDidMount () {
     this.initRealTimeDataList();
+    await this.fetchInterfaceList();
+  }
+
+  fetchInterfaceList = async () => {
+    const res = await interfaceService.getInterfaceList();
+    this.setState({
+      interfaceList: res.data || [],
+    });
   }
 
   initRealTimeDataList () {
@@ -78,82 +70,6 @@ class Project extends React.Component {
       this.setState({
         realTimeDataList: newData,
       });
-    });
-  }
-
-  addApi (allData, newApi) {
-    return request(`/api/data/${projectId}`, 'POST', {
-      pathname: newApi.pathname,
-      description: newApi.description,
-    })
-      .then((res) => {
-        _.logger(`/api/data/${projectId} POST`, res);
-        if (res.success) {
-          message.success('add api success');
-          this.setState({
-            data: allData,
-          });
-        } else {
-          message.error('add api fail');
-        }
-        return res;
-      });
-  }
-
-  deleteApi (allData, newApi) {
-    request(`/api/data/${projectId}/${newApi.pathname}`, 'DELETE')
-      .then((res) => {
-        _.logger(`/api/data/${projectId}/${newApi.pathname} DELETE`, res);
-        if (res.success) {
-          message.success('delete api success');
-          this.setState({
-            data: allData,
-          });
-        } else {
-          message.error('delete api fail');
-        }
-      });
-  }
-
-  asynSecType (obj, index) {
-    const apis = [...this.state.data];
-    let apiIndex = 0;
-    apis.forEach((api, index) => {
-      if (api.pathname === this.state.currentPathname) {
-        apiIndex = index;
-      }
-    });
-
-    if (typeof index === 'number') {
-      apiIndex = index;
-    };
-
-    Object.keys(obj).forEach(item => {
-      apis[apiIndex][item] = obj[item];
-      if (obj[item] instanceof Object) {
-        obj[item] = JSON.stringify(obj[item]);
-      }
-    });
-
-    const currentPathname = this.state.data[apiIndex].pathname;
-
-    _.logger('asynSecType', { index, obj });
-    request(`/api/data/${projectId}/${currentPathname}`, 'POST', obj).then((res) => {
-      if (res.success) {
-        this.setState({
-          data: apis,
-        });
-        message.success('update api success');
-      } else {
-        message.error('update api fail');
-      }
-    });
-  }
-
-  handleApiClick (pathname) {
-    this.setState({
-      contentViewType: 'api',
-      currentPathname: pathname,
     });
   }
 
@@ -180,12 +96,6 @@ class Project extends React.Component {
   }
 
   render () {
-    let currentData = {};
-    this.state.data.forEach((api, index) => {
-      if (api.pathname === this.state.currentPathname) {
-        currentData = api;
-      }
-    });
     return (
       <Layout style={{ padding: '10px 10px 0 10px' }}>
         <Sider
@@ -205,10 +115,8 @@ class Project extends React.Component {
               id: 'project.apiList',
             })} key="apilist">
               <InterfaceList
-                apis={this.state.data}
-                handleAddApi={this.addApi.bind(this)}
-                handleDeleteApi={this.deleteApi.bind(this)}
-                handleApiClick={this.handleApiClick.bind(this)}
+                interfaceList={this.state.interfaceList}
+                fetchInterfaceList={this.fetchInterfaceList}
               />
             </TabPane>
             <TabPane tab={this.props.intl.formatMessage({
@@ -227,8 +135,6 @@ class Project extends React.Component {
             this.state.data.length
               ? this.state.contentViewType === 'api' &&
             <DataInfo
-              currentData={ currentData }
-              handleAsynSecType={this.asynSecType.bind(this)}
             />
               : <div className="datainfo">
                 <Alert

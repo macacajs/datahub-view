@@ -9,6 +9,7 @@ const zhCN = {
   'common.guide': '产品介绍',
   'common.slogan': '全周期数据环境解决方案，提供命令行工具，支持场景管理，多端接入',
   'common.issue': '问题反馈',
+  'common.input.invalid': '请修改输入的内容',
 
   'home.go': '立即开始',
 
@@ -35,10 +36,19 @@ const zhCN = {
   'topNav.allProject': '所有项目',
   'topNav.projectConfig': '项目配置',
 
-  'apiList.addApi': '添加接口',
-  'apiList.searchApi': '查找接口',
-  'apiList.apiNameInput': '请输入接口名',
-  'apiList.apiDesInput': '请输入接口描述',
+  'dashboard.modalTile': '创建新项目',
+  'dashboard.modalName': '项目名称',
+  'dashboard.modalNameTip': '请输入字母或者数字',
+  'dashboard.modalDescription': '项目描述',
+  'dashboard.modalDescriptionTip': '请输入中文或者数字',
+  'dashboard.tableAdd': '添加项目',
+
+  'interfaceList.addInterface': '添加接口',
+  'interfaceList.searchInterface': '查找接口',
+  'interfaceList.interfacePathnameInput': '请输入接口 URL pathname',
+  'interfaceList.interfaceDescription': '请输入接口描述',
+  'interfaceList.invalidPathname': 'pathname 格式不正确，请输入 path/name or path/:type/:id',
+  'interfaceList.invalidDescription': '请输入接口描述',
 
   'apiConfig.title': '接口配置',
   'apiConfig.apiDoc': '接口文档',
@@ -85,13 +95,6 @@ const zhCN = {
   'realtimeProject.inputPlacehold': '请输入场景名称',
   'realtimeProject.validError': '请输入合法字符',
   'realtimeProject.nullError': '请先添加项目或者接口',
-
-  'dashboard.modalTile': '创建新项目',
-  'dashboard.modalName': '项目名称',
-  'dashboard.modalNameTip': '请输入字母或者数字',
-  'dashboard.modalDescription': '项目描述',
-  'dashboard.modalDescriptionTip': '请输入中文或者数字',
-  'dashboard.tableAdd': '添加项目',
 
   'document.resSchemaDes': '响应 Schema 描述',
   'document.reqSchemaDes': '请求 Schema 描述',

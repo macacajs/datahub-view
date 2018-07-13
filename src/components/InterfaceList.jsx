@@ -1,18 +1,21 @@
 'use strict';
 
-import React from 'react';
+import React, {
+  Component,
+} from 'react';
+
 import {
   Input,
   Button,
   Modal,
   Row,
-  Alert,
   Col,
   Popconfirm,
   Tooltip,
   Icon,
+  Form,
+  message,
 } from 'antd';
-import _ from 'lodash';
 
 import {
   injectIntl,
@@ -21,252 +24,221 @@ import {
 
 import './InterfaceList.less';
 
+import { interfaceService } from '../service';
+
 const Search = Input.Search;
+const FormItem = Form.Item;
 
-class InterfaceList extends React.Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      modalVisible: false,
-      modalTitle: '',
-      modalDescription: '',
-      apis: props.apis,
-      currentPathname: '',
-      errorAlert: null,
-    };
-  }
-
-  componentWillReceiveProps (props) {
-    const apis = this.handleApiSort(props.apis);
-    const firstApi = apis && apis[0] && apis[0].pathname;
-    if (location.hash) {
-      apis.forEach((api, index) => {
-        if (api.pathname === location.hash.replace('#', '')) {
-          this.setState({
-            currentPathname: api.pathname,
-          });
+function CreateInterfaceComponent (props) {
+  const {
+    visible,
+    onCancel,
+    onOk,
+    form,
+    confirmLoading,
+  } = props;
+  const {
+    getFieldDecorator,
+  } = form;
+  const formatMessage = id => props.intl.formatMessage({ id });
+  return <Modal
+    visible={visible}
+    title={formatMessage('interfaceList.addInterface')}
+    okText={formatMessage('common.confirm')}
+    cancelText={formatMessage('common.cancel')}
+    onCancel={() => {
+      onCancel();
+      props.form.resetFields();
+    }}
+    onOk={() => {
+      form.validateFields((err, values) => {
+        if (err) {
+          message.warn(formatMessage('common.input.invalid'));
+          return;
         }
+        onOk(values, () => {
+          props.form.resetFields();
+        });
       });
-    } else if (firstApi) {
+    }}
+    confirmLoading={confirmLoading}
+  >
+    <Form layout="vertical">
+      <FormItem label={formatMessage('interfaceList.interfacePathnameInput')}>
+        {getFieldDecorator('pathname', {
+          rules: [
+            {
+              required: true,
+              message: formatMessage('interfaceList.invalidPathname'),
+              pattern: /^[A-Za-z0-9:_-]([A-Za-z0-9:/_-]*[A-Za-z0-9:_-])?$/,
+            },
+          ],
+        })(
+          <Input
+            placeholder="path/name or path/:type/:id"
+          />
+        )}
+      </FormItem>
+      <FormItem label={formatMessage('interfaceList.interfaceDescription')}>
+        {getFieldDecorator('description', {
+          rules: [
+            {
+              required: true,
+              message: formatMessage('interfaceList.invalidDescription'),
+            },
+          ],
+        })(
+          <Input />
+        )}
+      </FormItem>
+    </Form>
+  </Modal>;
+}
+
+const CreateInterfaceForm = Form.create()(injectIntl(CreateInterfaceComponent));
+
+class InterfaceList extends Component {
+  state = {
+    createFormVisible: false,
+    createInterfaceConfirmLoading: false,
+    selectedInterface: '',
+    filterString: '',
+  }
+
+  formatMessage = id => this.props.intl.formatMessage({ id });
+
+  showCreateForm = () => {
+    this.setState({
+      createFormVisible: true,
+    });
+  }
+
+  cancelCreateInterface = () => {
+    this.setState({
+      createFormVisible: false,
+    });
+  }
+
+  createInterface = async ({ pathname, description }, callback = () => {}) => {
+    this.setState({
+      createInterfaceConfirmLoading: true,
+    });
+    const res = await interfaceService.createInterface({
+      pathname,
+      description,
+    });
+    this.setState({
+      createInterfaceConfirmLoading: false,
+    });
+    if (res.success) {
       this.setState({
-        currentPathname: firstApi,
+        createFormVisible: false,
+      }, () => {
+        callback();
+        this.props.fetchInterfaceList();
       });
-      this.handleApiClick(firstApi);
-    }
-
-    this.setState({
-      apis,
-    });
-  }
-
-  handleAdd () {
-    this.setState({
-      modalVisible: true,
-      modalTitle: '',
-      modalDescription: '',
-    });
-  }
-
-  modalTitleChange (e) {
-    this.setState({
-      modalTitle: e.target.value,
-    });
-  }
-
-  modalDescriptionChange (e) {
-    this.setState({
-      modalDescription: e.target.value,
-    });
-  }
-
-  handleModalOk (e) {
-    const index = _.findIndex(this.state.apis, o =>
-      o.pathname === this.state.modalTitle);
-    if (index !== -1) {
-      this.setState({
-        errorAlert: {
-          message: this.props.intl.formatMessage({
-            id: 'apiConfig.existError',
-          }),
-          type: 'error',
-        },
-      });
-      return;
-    }
-    if (!this.state.modalTitle || !this.state.modalDescription) {
-      this.setState({
-        errorAlert: {
-          message: this.props.intl.formatMessage({
-            id: 'apiConfig.nullError',
-          }),
-          type: 'error',
-        },
-      });
-      return;
-    }
-
-    if (this.state.modalTitle.startsWith('/') || this.state.modalTitle.endsWith('/')) {
-      this.setState({
-        errorAlert: {
-          message: this.props.intl.formatMessage({
-            id: 'apiConfig.validateError',
-          }),
-          type: 'error',
-        },
-      });
-      return;
-    }
-
-    const addAPI = {
-      pathname: this.state.modalTitle,
-      description: this.state.modalDescription,
-    };
-    const newData = [
-      ...this.state.apis,
-      addAPI,
-    ];
-    this.setState({
-      modalVisible: false,
-      errorAlert: {},
-    });
-
-    this.props.handleAddApi(newData, addAPI).then(res => {
-      if (res.success) {
-        this.handleApiClick(addAPI.pathname);
-      }
-    });
-  }
-
-  handleModalCancel () {
-    this.setState({
-      modalVisible: false,
-    });
-  }
-
-  onConfirmRemoveApi (index) {
-    const newData = [...this.state.apis];
-    const deleteApi = newData.splice(index, 1)[0];
-    this.props.handleDeleteApi(newData, deleteApi);
-  }
-
-  handleApiClick (pathname) {
-    this.props.handleApiClick(pathname);
-    this.setState({
-      currentPathname: pathname,
-    });
-    if (pathname) {
-      window.location.hash = pathname;
     }
   }
 
-  handleApiSort (apis) {
-    if (!apis) {
-      return [];
-    }
-    const res = _.sortBy(apis, item => item.pathname);
-    return res;
+  selectInterface = uniqId => {
+    this.setState({
+      selectedInterface: uniqId,
+    });
   }
 
-  handleSearchChange (e) {
-    const filter = e.target.value;
-    const apis = [...this.state.apis];
-    apis.map(api => {
-      api.isHide = api.pathname.toLowerCase().indexOf(filter.toLowerCase()) === -1;
-    });
-
+  deleteInterface = async (uniqId) => {
+    await interfaceService.deleteInterface({ uniqId });
+    await this.props.fetchInterfaceList();
     this.setState({
-      apis,
+      selectedInterface: '',
     });
+  }
+
+  filterInterface = (e) => {
+    const filter = e.target.value.toLowerCase();
+    this.setState({
+      filterString: filter,
+    });
+  }
+
+  getSelectedInterface = () => {
+    if (this.state.selectedInterface) {
+      return this.state.selectedInterface;
+    }
+    return this.props.interfaceList[0] && this.props.interfaceList[0].uniqId;
+  }
+
+  renderInterfaceList = () => {
+    const formatMessage = this.formatMessage;
+    const { interfaceList } = this.props;
+    return (
+      interfaceList.filter(value =>
+        value.pathname.toLowerCase().includes(this.state.filterString) ||
+        value.description.toLowerCase().includes(this.state.filterString)
+      ).map((value, index) => {
+        const isSelected = value.uniqId === this.getSelectedInterface();
+        return (
+          <li
+            className={isSelected ? 'clicked' : ''}
+            key={index}
+            data-accessbilityid={`project-add-api-list-${index}`}
+            onClick={() => this.selectInterface(value.uniqId)}
+          >
+            <div className="left">
+              <Tooltip title={value.pathname}>
+                <h3>{value.pathname}</h3>
+                <p>{value.description}</p>
+              </Tooltip>
+            </div>
+            <div className="right">
+              <Popconfirm
+                title={formatMessage('common.deleteTip')}
+                onConfirm={() => this.deleteInterface(value.uniqId)}
+                okText={formatMessage('common.confirm')}
+                cancelText={formatMessage('common.cancel')}
+              >
+                <Icon className="delete-icon" type="delete" />
+              </Popconfirm>
+            </div>
+          </li>
+        );
+      })
+    );
   }
 
   render () {
+    const formatMessage = this.formatMessage;
     return (
-      <div className="datalist">
+      <div className="interface-list">
         <Row gutter={8}>
           <Col span={16}>
             <Search
               data-accessbilityid="project-search-api"
-              placeholder="Search interface"
-              onChange={this.handleSearchChange.bind(this)}
+              placeholder={formatMessage('interfaceList.searchInterface')}
+              onChange={this.filterInterface}
             />
           </Col>
           <Col span={8}>
             <Button
               type="primary"
               data-accessbilityid="project-add-api-list-btn"
-              onClick={this.handleAdd.bind(this)}
+              onClick={this.showCreateForm}
             >
-              <FormattedMessage id='apiList.addApi' />
+              <FormattedMessage id='interfaceList.addInterface' />
             </Button>
           </Col>
         </Row>
-        <ul style={{ maxHeight: '1000px', overflowY: 'scroll' }}>
-          {
-            this.state.apis.map((api, index) => {
-              if (api.isHide) {
-                return null;
-              }
-              return (
-                <li
-                  className={this.state.currentPathname === api.pathname ? 'clicked' : ''}
-                  key={index}
-                  data-accessbilityid={`project-add-api-list-${index}`}
-                  onClick={this.handleApiClick.bind(this, api.pathname)}
-                >
-                  <div className="left">
-                    <Tooltip title={api.pathname}>
-                      <h3>{api.pathname}</h3>
-                      <p>{api.description}</p>
-                    </Tooltip>
-                  </div>
-                  <div className="right">
-                    <Popconfirm
-                      title={this.props.intl.formatMessage({id: 'common.deleteTip'})}
-                      onConfirm={this.onConfirmRemoveApi.bind(this, index)}
-                      okText={this.props.intl.formatMessage({id: 'common.confirm'})}
-                      cancelText={this.props.intl.formatMessage({id: 'common.cancel'})}
-                    >
-                      <Icon className="delete-icon" type="delete" />
-                    </Popconfirm>
-                  </div>
-                </li>
-              );
-            })
-          }
+
+        <ul style={{ maxHeight: '500px', overflowY: 'scroll' }}>
+          { this.renderInterfaceList() }
         </ul>
-        <Modal
-          title={this.props.intl.formatMessage({
-            id: 'apiList.addApi',
-          })}
-          visible={this.state.modalVisible}
-          onOk={this.handleModalOk.bind(this)}
-          onCancel={this.handleModalCancel.bind(this)}
-        >
-          <Input
-            placeholder={this.props.intl.formatMessage({
-              id: 'apiList.apiNameInput',
-            })}
-            data-accessbilityid="project-add-api-name-input"
-            onChange={this.modalTitleChange.bind(this)}
-            value={this.state.modalTitle} />
-          <Input
-            placeholder={this.props.intl.formatMessage({
-              id: 'apiList.apiDesInput',
-            })}
-            style={{ margin: '10px 0' }}
-            data-accessbilityid="project-add-api-desc-input"
-            onChange={this.modalDescriptionChange.bind(this)}
-            value={this.state.modalDescription}
-          />
-          {
-            this.state.errorAlert && this.state.errorAlert.message
-              ? <Alert
-                message={this.state.errorAlert.message}
-                type={this.state.errorAlert.type}
-                showIcon
-              /> : null
-          }
-        </Modal>
+
+        <CreateInterfaceForm
+          visible={this.state.createFormVisible}
+          onCancel={this.cancelCreateInterface}
+          onOk={this.createInterface}
+          confirmLoading={this.state.createInterfaceConfirmLoading}
+        />
       </div>
     );
   }

@@ -1,6 +1,8 @@
 'use strict';
 
 import 'whatwg-fetch';
+import { message } from 'antd';
+import { logger } from '../common/helper';
 
 const verbs = {
   GET (url) {
@@ -39,15 +41,21 @@ const verbs = {
   },
 };
 
-export default (url, method = 'GET', params = {}) => {
-  return verbs[method](url, params)
-    .then(res => {
-      if (res.ok) {
-        return res;
-      } else {
-        throw new Error('Network Errror');
-      }
-    })
-    .then(res => res.json());
+export default async (url, method = 'GET', params = {}) => {
+  let res = await verbs[method](url, params);
+  if (!res.ok) {
+    message.warn('Network Error');
+    return {
+      success: false,
+      message: 'Network Error',
+    };
+  }
+
+  res = await res.json();
+  logger(url, method, res);
+  if (!res.success) {
+    message.warn(res.message || 'Network Error');
+  }
+  return res;
 };
 

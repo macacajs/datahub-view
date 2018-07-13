@@ -217,13 +217,7 @@ _.operateSchema = (type, { item, data, index, key, value }) => {
 };
 
 _.logger = (...content) => {
-  const debugMode = location.href.indexOf('__debug') > -1;
-
-  if (!debugMode) {
-    return;
-  }
   console.log(...content);
 };
-
 
 module.exports = _;
