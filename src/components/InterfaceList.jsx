@@ -72,7 +72,7 @@ function CreateInterfaceComponent (props) {
             {
               required: true,
               message: formatMessage('interfaceList.invalidPathname'),
-              pattern: /^[A-Za-z0-9:_-]([A-Za-z0-9:/_-]*[A-Za-z0-9:_-])?$/,
+              pattern: /^[A-Za-z0-9:_-]([.A-Za-z0-9:/_-]*[A-Za-z0-9:_-])?$/,
             },
           ],
         })(
@@ -209,7 +209,9 @@ class InterfaceList extends Component {
           <div className="left">
             <Tooltip title={value.pathname}>
               <h3>{value.pathname}</h3>
-              <p>{value.description}</p>
+              <p>
+                <span> {value.method} </span> | {value.description}
+              </p>
             </Tooltip>
           </div>
           <div className="right">
