@@ -171,7 +171,7 @@ class DashBoard extends Component {
           >
             <Row type="flex">
               <Col span={24} className="main-icon">
-                <a href={`/project/${item.projectName}`} target="_blank">
+                <a href={`/project/${item.projectName}`}>
                   <Icon type="inbox" />
                 </a>
               </Col>

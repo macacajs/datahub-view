@@ -44,7 +44,8 @@ const enUS = {
   'project.add': 'add hub',
 
   'interfaceList.addInterface': 'Add API',
-  'interfaceList.searchInterface': 'search API',
+  'interfaceList.updateInterface': 'Update API',
+  'interfaceList.searchInterface': 'Search API',
   'interfaceList.interfacePathnameInput': 'please input API URL pathname',
   'interfaceList.interfaceDescription': 'please input API description',
   'interfaceList.interfaceMethod': 'please input API method',

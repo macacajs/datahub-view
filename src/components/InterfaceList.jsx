@@ -38,6 +38,7 @@ function InterfaceModalComponent (props) {
     onOk,
     form,
     confirmLoading,
+    stageData,
   } = props;
   const {
     getFieldDecorator,
@@ -45,7 +46,7 @@ function InterfaceModalComponent (props) {
   const formatMessage = id => props.intl.formatMessage({ id });
   return <Modal
     visible={visible}
-    title={formatMessage('interfaceList.addInterface')}
+    title={formatMessage(stageData ? 'interfaceList.updateInterface' : 'interfaceList.addInterface')}
     okText={formatMessage('common.confirm')}
     cancelText={formatMessage('common.cancel')}
     onCancel={() => {
@@ -68,6 +69,7 @@ function InterfaceModalComponent (props) {
     <Form layout="vertical">
       <FormItem label={formatMessage('interfaceList.interfacePathnameInput')}>
         {getFieldDecorator('pathname', {
+          initialValue: stageData && stageData.pathname,
           rules: [
             {
               required: true,
@@ -83,6 +85,7 @@ function InterfaceModalComponent (props) {
       </FormItem>
       <FormItem label={formatMessage('interfaceList.interfaceDescription')}>
         {getFieldDecorator('description', {
+          initialValue: stageData && stageData.description,
           rules: [
             {
               required: true,
@@ -95,13 +98,13 @@ function InterfaceModalComponent (props) {
       </FormItem>
       <FormItem label={formatMessage('interfaceList.interfaceMethod')}>
         {getFieldDecorator('method', {
+          initialValue: stageData && stageData.method || 'ALL',
           rules: [
             {
               required: true,
               message: formatMessage('interfaceList.invalidMethod'),
             },
           ],
-          initialValue: 'ALL',
         })(
           <Select>
             <Option value="ALL">ALL</Option>
@@ -121,41 +124,56 @@ const InterfaceForm = Form.create()(injectIntl(InterfaceModalComponent));
 
 class InterfaceList extends Component {
   state = {
-    createFormVisible: false,
-    createInterfaceConfirmLoading: false,
+    interfaceFormVisible: false,
+    interfaceFormLoading: false,
     selectedInterface: '',
     filterString: '',
+    stageData: null,
   }
 
   formatMessage = id => this.props.intl.formatMessage({ id });
 
   showCreateForm = () => {
     this.setState({
-      createFormVisible: true,
+      formType: 'create',
+      stageData: null,
+      interfaceFormVisible: true,
     });
   }
 
-  cancelCreateInterface = () => {
+  showUpdateForm = async value => {
     this.setState({
-      createFormVisible: false,
+      formType: 'update',
+      stageData: value,
+      interfaceFormVisible: true,
     });
   }
 
-  createInterface = async ({ pathname, description, method }, callback = () => {}) => {
+  closeInterfaceForm = () => {
     this.setState({
-      createInterfaceConfirmLoading: true,
+      interfaceFormVisible: false,
     });
-    const res = await interfaceService.createInterface({
+  }
+
+  confirmInterfaceFormForm = async ({ pathname, description, method }, callback = () => {}) => {
+    this.setState({
+      interfaceFormLoading: true,
+    });
+    const apiName = this.state.stageData
+      ? 'updateInterface'
+      : 'createInterface';
+    const res = await interfaceService[apiName]({
+      stageData: this.state.stageData,
       pathname,
       description,
       method,
     });
     this.setState({
-      createInterfaceConfirmLoading: false,
+      interfaceFormLoading: false,
     });
     if (res.success) {
       this.setState({
-        createFormVisible: false,
+        interfaceFormVisible: false,
       }, () => {
         callback();
         this.props.fetchInterfaceList();
@@ -204,10 +222,9 @@ class InterfaceList extends Component {
           key={index}
           placement="right"
           content={
-            <div>
-              <div>{value.pathname}</div>
+            <div style={{ maxWidth: '400px', wordBreak: 'break-all'}}>
+              <div>{value.pathname}</div><br/>
               <div>{value.description}</div>
-              <div>{value.method}</div>
             </div>
           }
           trigger="hover">
@@ -223,7 +240,10 @@ class InterfaceList extends Component {
               </p>
             </div>
             <div className="right">
-              <Icon type="setting" />
+              <Icon
+                type="setting"
+                onClick={() => this.showUpdateForm(value)}
+              />
               <Popconfirm
                 title={formatMessage('common.deleteTip')}
                 onConfirm={() => this.deleteInterface(value.uniqId)}
@@ -267,10 +287,11 @@ class InterfaceList extends Component {
         </ul>
 
         <InterfaceForm
-          visible={this.state.createFormVisible}
-          onCancel={this.cancelCreateInterface}
-          onOk={this.createInterface}
-          confirmLoading={this.state.createInterfaceConfirmLoading}
+          visible={this.state.interfaceFormVisible}
+          onCancel={this.closeInterfaceForm}
+          onOk={this.confirmInterfaceFormForm}
+          confirmLoading={this.state.interfaceFormLoading}
+          stageData={this.state.stageData}
         />
       </div>
     );

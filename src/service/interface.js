@@ -15,6 +15,14 @@ export async function createInterface ({ pathname, description, method = 'GET' }
   });
 };
 
+export async function updateInterface ({ stageData, pathname, description, method }) {
+  return request(`/api/interface/${stageData.uniqId}`, 'PUT', {
+    pathname,
+    description,
+    method,
+  });
+};
+
 export async function deleteInterface ({ uniqId }) {
   return request(`/api/interface/${uniqId}`, 'DELETE');
 };

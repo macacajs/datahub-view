@@ -44,6 +44,7 @@ const zhCN = {
   'project.add': '添加项目',
 
   'interfaceList.addInterface': '添加接口',
+  'interfaceList.updateInterface': '修改接口',
   'interfaceList.searchInterface': '查找接口',
   'interfaceList.interfacePathnameInput': '请输入接口 URL pathname',
   'interfaceList.interfaceDescription': '请输入接口描述',
