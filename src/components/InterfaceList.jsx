@@ -209,8 +209,8 @@ class InterfaceList extends Component {
           >
             <div className="left">
               <Tooltip title={value.pathname}>
-                  <h3>{value.method} {value.pathname}</h3>
-                  <p>{value.description}</p>
+                <h3>{value.method} {value.pathname}</h3>
+                <p>{value.description}</p>
               </Tooltip>
             </div>
             <div className="right">
