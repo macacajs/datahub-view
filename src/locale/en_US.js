@@ -36,12 +36,12 @@ const enUS = {
   'topNav.allProject': 'all projects',
   'topNav.projectConfig': 'project config',
 
-  'dashboard.modalTile': 'create a hub',
-  'dashboard.modalName': 'hub name',
-  'dashboard.modalNameTip': 'input cant be null',
-  'dashboard.modalDescription': 'hub description',
-  'dashboard.modalDescriptionTip': 'input cant be null',
-  'dashboard.tableAdd': 'add hub',
+  'project.create': 'create a hub',
+  'project.name': 'hub name',
+  'project.name.invalid': 'please input small letters and numbers',
+  'project.description': 'hub description',
+  'project.description.invalid': 'input cant be null',
+  'project.add': 'add hub',
 
   'interfaceList.addInterface': 'Add API',
   'interfaceList.searchInterface': 'search API',

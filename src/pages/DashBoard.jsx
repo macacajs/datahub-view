@@ -21,10 +21,10 @@ import {
   FormattedMessage,
 } from 'react-intl';
 
-import 'whatwg-fetch';
-
-import request from '../common/request';
-import { projectService } from '../service';
+import {
+  projectService,
+  globalService,
+} from '../service';
 
 import './DashBoard.less';
 
@@ -44,7 +44,7 @@ function CreateProjectComponent (props) {
   const formatMessage = id => props.intl.formatMessage({ id });
   return <Modal
     visible={visible}
-    title={formatMessage('dashboard.modalTile')}
+    title={formatMessage('project.create')}
     okText={formatMessage('common.confirm')}
     cancelText={formatMessage('common.cancel')}
     onCancel={() => {
@@ -65,12 +65,12 @@ function CreateProjectComponent (props) {
     confirmLoading={loading}
   >
     <Form layout="vertical">
-      <FormItem label={formatMessage('dashboard.modalName')}>
+      <FormItem label={formatMessage('project.name')}>
         {getFieldDecorator('projectName', {
           rules: [
             {
               required: true,
-              message: formatMessage('dashboard.modalNameTip'),
+              message: formatMessage('project.name.invalid'),
               pattern: /^[a-z0-9_-]+$/,
             },
           ],
@@ -78,12 +78,12 @@ function CreateProjectComponent (props) {
           <Input />
         )}
       </FormItem>
-      <FormItem label={formatMessage('dashboard.modalDescription')}>
+      <FormItem label={formatMessage('project.description')}>
         {getFieldDecorator('description', {
           rules: [
             {
               required: true,
-              message: formatMessage('dashboard.modalDescriptionTip'),
+              message: formatMessage('project.description.invalid'),
             },
           ],
         })(
@@ -102,7 +102,6 @@ class DashBoard extends Component {
     visible: false,
     loading: false,
     listData: [],
-    sizeMap: {},
   };
 
   async componentWillMount () {
@@ -157,34 +156,8 @@ class DashBoard extends Component {
     });
   }
 
-  fetchApiNumber (uniqId) {
-    if (this.state.sizeMap[uniqId]) {
-      return;
-    }
-    fetch(`/api/interface?projectUniqId=${uniqId}`)
-      .then(res => {
-        if (res.ok) {
-          const size = parseInt(res.headers.get('Content-length') || 0, 10);
-          const sizeStr = size >= 1024 ? `${(size / 1024).toFixed(2)}KB` : `${size}B`;
-          res.json().then(d => {
-            if (d.success) {
-              const obj = Object.assign({}, this.state.sizeMap);
-              const json = {
-                [uniqId]: {
-                  size: sizeStr,
-                  number: d.data.length || 0,
-                },
-              };
-              this.setState({
-                sizeMap: Object.assign(obj, json),
-              });
-            }
-          });
-          return res;
-        } else {
-          throw new Error('Network Errror');
-        }
-      });
+  renderProjectList () {
+
   }
 
   render () {
@@ -195,7 +168,6 @@ class DashBoard extends Component {
             <Row>
               {
                 this.state.listData.map((item, i) => {
-                  this.fetchApiNumber(item.uniqId);
                   return (
                     <Col span={8} key={i}>
                       <div className="content">
@@ -215,18 +187,8 @@ class DashBoard extends Component {
                               <Col span={22} key={item.projectName}>
                                 {item.projectName}
                                 <span className="main-info">
-                                  <Icon type="file" />
-                                  {
-                                    this.state.sizeMap[item.uniqId]
-                                      ? this.state.sizeMap[item.uniqId].number
-                                      : null
-                                  }
-                                  <Icon type="hdd" />
-                                  {
-                                    this.state.sizeMap[item.uniqId]
-                                      ? this.state.sizeMap[item.uniqId].size
-                                      : null
-                                  }
+                                  <Icon type="file" />{item.capacity && item.capacity.count}
+                                  <Icon type="hdd" />{item.capacity && item.capacity.size}
                                 </span>
                               </Col>
                               <Col span={2} style={{textAlign: 'right'}}>
@@ -250,7 +212,7 @@ class DashBoard extends Component {
               <Col span={8}>
                 <div className="content">
                   <Card
-                    title={<FormattedMessage id='dashboard.tableAdd' />}
+                    title={<FormattedMessage id='project.add' />}
                     bordered={ false }
                     style={{ color: '#000' }}
                   >

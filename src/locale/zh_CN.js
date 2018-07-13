@@ -36,12 +36,12 @@ const zhCN = {
   'topNav.allProject': '所有项目',
   'topNav.projectConfig': '项目配置',
 
-  'dashboard.modalTile': '创建新项目',
-  'dashboard.modalName': '项目名称',
-  'dashboard.modalNameTip': '请输入字母或者数字',
-  'dashboard.modalDescription': '项目描述',
-  'dashboard.modalDescriptionTip': '请输入中文或者数字',
-  'dashboard.tableAdd': '添加项目',
+  'project.create': '创建新项目',
+  'project.name': '项目名称',
+  'project.name.invalid': '请输入小写字母或者数字',
+  'project.description': '项目描述',
+  'project.description.invalid': '请输入中文或者数字',
+  'project.add': '添加项目',
 
   'interfaceList.addInterface': '添加接口',
   'interfaceList.searchInterface': '查找接口',
