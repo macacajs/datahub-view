@@ -11,7 +11,7 @@ import {
   Row,
   Col,
   Popconfirm,
-  Tooltip,
+  Popover,
   Select,
   Icon,
   Form,
@@ -31,7 +31,7 @@ const Search = Input.Search;
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-function CreateInterfaceComponent (props) {
+function InterfaceModalComponent (props) {
   const {
     visible,
     onCancel,
@@ -117,7 +117,7 @@ function CreateInterfaceComponent (props) {
   </Modal>;
 }
 
-const CreateInterfaceForm = Form.create()(injectIntl(CreateInterfaceComponent));
+const InterfaceForm = Form.create()(injectIntl(InterfaceModalComponent));
 
 class InterfaceList extends Component {
   state = {
@@ -200,31 +200,41 @@ class InterfaceList extends Component {
     ).map((value, index) => {
       const isSelected = value.uniqId === this.getSelectedInterface();
       return (
-        <li
-          className={isSelected ? 'clicked' : ''}
+        <Popover
           key={index}
-          data-accessbilityid={`project-add-api-list-${index}`}
-          onClick={() => this.selectInterface(value.uniqId)}
-        >
-          <div className="left">
-            <Tooltip title={value.pathname}>
+          placement="right"
+          content={
+            <div>
+              <div>{value.pathname}</div>
+              <div>{value.description}</div>
+              <div>{value.method}</div>
+            </div>
+          }
+          trigger="hover">
+          <li
+            className={isSelected ? 'clicked' : ''}
+            data-accessbilityid={`project-add-api-list-${index}`}
+            onClick={() => this.selectInterface(value.uniqId)}
+          >
+            <div className="left">
               <h3>{value.pathname}</h3>
-              <p>
-                <span> {value.method} </span> | {value.description}
+              <p>{value.description}</p>
+              <p>method: {value.method}
               </p>
-            </Tooltip>
-          </div>
-          <div className="right">
-            <Popconfirm
-              title={formatMessage('common.deleteTip')}
-              onConfirm={() => this.deleteInterface(value.uniqId)}
-              okText={formatMessage('common.confirm')}
-              cancelText={formatMessage('common.cancel')}
-            >
-              <Icon className="delete-icon" type="delete" />
-            </Popconfirm>
-          </div>
-        </li>
+            </div>
+            <div className="right">
+              <Icon type="setting" />
+              <Popconfirm
+                title={formatMessage('common.deleteTip')}
+                onConfirm={() => this.deleteInterface(value.uniqId)}
+                okText={formatMessage('common.confirm')}
+                cancelText={formatMessage('common.cancel')}
+              >
+                <Icon className="delete-icon" type="delete" />
+              </Popconfirm>
+            </div>
+          </li>
+        </Popover>
       );
     });
   }
@@ -233,15 +243,15 @@ class InterfaceList extends Component {
     const formatMessage = this.formatMessage;
     return (
       <div className="interface-list">
-        <Row gutter={8}>
-          <Col span={16}>
+        <Row className="interface-filter-row">
+          <Col span={15}>
             <Search
               data-accessbilityid="project-search-api"
               placeholder={formatMessage('interfaceList.searchInterface')}
               onChange={this.filterInterface}
             />
           </Col>
-          <Col span={8}>
+          <Col span={8} offset={1}>
             <Button
               type="primary"
               data-accessbilityid="project-add-api-list-btn"
@@ -256,7 +266,7 @@ class InterfaceList extends Component {
           { this.renderInterfaceList() }
         </ul>
 
-        <CreateInterfaceForm
+        <InterfaceForm
           visible={this.state.createFormVisible}
           onCancel={this.cancelCreateInterface}
           onOk={this.createInterface}

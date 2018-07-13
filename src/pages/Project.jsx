@@ -11,7 +11,6 @@ import {
   Alert,
   Layout,
   Tabs,
-  message,
 } from 'antd';
 
 import InterfaceList from '../components/InterfaceList';
@@ -97,23 +96,26 @@ class Project extends React.Component {
 
   render () {
     return (
-      <Layout style={{ padding: '10px 10px 0 10px' }}>
+      <Layout>
         <Sider
           width="300px"
           style={{
             background: 'none',
-            borderRight: '1px solid #eee',
-            paddingRight: '10px',
+            borderRight: '2px solid #eee',
           }}
+          className="project-sider"
         >
           <Tabs
             defaultActiveKey="apilist"
             onChange={this.tabOnChange.bind(this)}
             animated={false}
           >
-            <TabPane tab={this.props.intl.formatMessage({
-              id: 'project.apiList',
-            })} key="apilist">
+            <TabPane
+              tab={this.props.intl.formatMessage({
+                id: 'project.apiList',
+              })}
+              key="apilist"
+            >
               <InterfaceList
                 interfaceList={this.state.interfaceList}
                 fetchInterfaceList={this.fetchInterfaceList}
