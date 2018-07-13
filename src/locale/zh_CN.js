@@ -47,8 +47,10 @@ const zhCN = {
   'interfaceList.searchInterface': '查找接口',
   'interfaceList.interfacePathnameInput': '请输入接口 URL pathname',
   'interfaceList.interfaceDescription': '请输入接口描述',
+  'interfaceList.interfaceMethod': '请输入接口方法',
   'interfaceList.invalidPathname': 'pathname 格式不正确，请输入 path/name or path/:type/:id',
   'interfaceList.invalidDescription': '请输入接口描述',
+  'interfaceList.invalidMethod': '请输入接口方法',
 
   'apiConfig.title': '接口配置',
   'apiConfig.apiDoc': '接口文档',

@@ -12,6 +12,7 @@ import {
   Col,
   Popconfirm,
   Tooltip,
+  Select,
   Icon,
   Form,
   message,
@@ -28,6 +29,7 @@ import { interfaceService } from '../service';
 
 const Search = Input.Search;
 const FormItem = Form.Item;
+const Option = Select.Option;
 
 function CreateInterfaceComponent (props) {
   const {
@@ -91,6 +93,26 @@ function CreateInterfaceComponent (props) {
           <Input />
         )}
       </FormItem>
+      <FormItem label={formatMessage('interfaceList.interfaceMethod')}>
+        {getFieldDecorator('method', {
+          rules: [
+            {
+              required: true,
+              message: formatMessage('interfaceList.invalidMethod'),
+            },
+          ],
+          initialValue: 'ALL',
+        })(
+          <Select>
+            <Option value="ALL">ALL</Option>
+            <Option value="GET">GET</Option>
+            <Option value="POST">POST</Option>
+            <Option value="PUT">PUT</Option>
+            <Option value="DELETE">DELETE</Option>
+            <Option value="PATCH">PATCH</Option>
+          </Select>
+        )}
+      </FormItem>
     </Form>
   </Modal>;
 }
@@ -119,13 +141,14 @@ class InterfaceList extends Component {
     });
   }
 
-  createInterface = async ({ pathname, description }, callback = () => {}) => {
+  createInterface = async ({ pathname, description, method }, callback = () => {}) => {
     this.setState({
       createInterfaceConfirmLoading: true,
     });
     const res = await interfaceService.createInterface({
       pathname,
       description,
+      method,
     });
     this.setState({
       createInterfaceConfirmLoading: false,

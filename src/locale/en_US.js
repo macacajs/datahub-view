@@ -47,8 +47,10 @@ const enUS = {
   'interfaceList.searchInterface': 'search API',
   'interfaceList.interfacePathnameInput': 'please input API URL pathname',
   'interfaceList.interfaceDescription': 'please input API description',
+  'interfaceList.interfaceMethod': 'please input API method',
   'interfaceList.invalidPathname': 'pathname invalid, type path/name or path/:type/:id',
   'interfaceList.invalidDescription': 'please input description',
+  'interfaceList.invalidMethod': 'please input method',
 
   'apiConfig.title': 'API config',
   'apiConfig.apiDoc': 'API doc',
