@@ -7,15 +7,11 @@ import React, {
 import {
   Input,
   Button,
-  Modal,
   Row,
   Col,
   Popconfirm,
   Popover,
-  Select,
   Icon,
-  Form,
-  message,
 } from 'antd';
 
 import {
@@ -23,103 +19,13 @@ import {
   FormattedMessage,
 } from 'react-intl';
 
-import './InterfaceList.less';
+import InterfaceForm from './forms/InterfaceForm';
 
 import { interfaceService } from '../service';
 
+import './InterfaceList.less';
+
 const Search = Input.Search;
-const FormItem = Form.Item;
-const Option = Select.Option;
-
-function InterfaceModalComponent (props) {
-  const {
-    visible,
-    onCancel,
-    onOk,
-    form,
-    confirmLoading,
-    stageData,
-  } = props;
-  const {
-    getFieldDecorator,
-  } = form;
-  const formatMessage = id => props.intl.formatMessage({ id });
-  return <Modal
-    visible={visible}
-    title={formatMessage(stageData ? 'interfaceList.updateInterface' : 'interfaceList.addInterface')}
-    okText={formatMessage('common.confirm')}
-    cancelText={formatMessage('common.cancel')}
-    onCancel={() => {
-      onCancel();
-      props.form.resetFields();
-    }}
-    onOk={() => {
-      form.validateFields((err, values) => {
-        if (err) {
-          message.warn(formatMessage('common.input.invalid'));
-          return;
-        }
-        onOk(values, () => {
-          props.form.resetFields();
-        });
-      });
-    }}
-    confirmLoading={confirmLoading}
-  >
-    <Form layout="vertical">
-      <FormItem label={formatMessage('interfaceList.interfacePathnameInput')}>
-        {getFieldDecorator('pathname', {
-          initialValue: stageData && stageData.pathname,
-          rules: [
-            {
-              required: true,
-              message: formatMessage('interfaceList.invalidPathname'),
-              pattern: /^[A-Za-z0-9:_-]([.A-Za-z0-9:/_-]*[A-Za-z0-9:_-])?$/,
-            },
-          ],
-        })(
-          <Input
-            placeholder="path/name or path/:type/:id"
-          />
-        )}
-      </FormItem>
-      <FormItem label={formatMessage('interfaceList.interfaceDescription')}>
-        {getFieldDecorator('description', {
-          initialValue: stageData && stageData.description,
-          rules: [
-            {
-              required: true,
-              message: formatMessage('interfaceList.invalidDescription'),
-            },
-          ],
-        })(
-          <Input />
-        )}
-      </FormItem>
-      <FormItem label={formatMessage('interfaceList.interfaceMethod')}>
-        {getFieldDecorator('method', {
-          initialValue: stageData && stageData.method || 'ALL',
-          rules: [
-            {
-              required: true,
-              message: formatMessage('interfaceList.invalidMethod'),
-            },
-          ],
-        })(
-          <Select>
-            <Option value="ALL">ALL</Option>
-            <Option value="GET">GET</Option>
-            <Option value="POST">POST</Option>
-            <Option value="PUT">PUT</Option>
-            <Option value="DELETE">DELETE</Option>
-          </Select>
-        )}
-      </FormItem>
-    </Form>
-  </Modal>;
-}
-
-const InterfaceForm = Form.create()(injectIntl(InterfaceModalComponent));
 
 class InterfaceList extends Component {
   state = {

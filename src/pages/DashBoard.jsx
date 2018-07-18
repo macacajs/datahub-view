@@ -5,11 +5,12 @@ import React, {
 } from 'react';
 
 import {
-  Popconfirm,
   Row,
   Col,
   Icon,
   Card,
+  Tooltip,
+  Popconfirm,
 } from 'antd';
 
 import {
@@ -126,11 +127,13 @@ class DashBoard extends Component {
                   </span>
                 </Col>
                 <Col span={4} style={{ textAlign: 'right' }}>
-                  <Icon
-                    className="setting-icon"
-                    type="setting"
-                    onClick={() => this.updateProject(item)}
-                  />
+                  <Tooltip title={formatMessage('project.update')}>
+                    <Icon
+                      className="setting-icon"
+                      type="setting"
+                      onClick={() => this.updateProject(item)}
+                    />
+                  </Tooltip>
                   <Popconfirm
                     title={formatMessage('common.deleteTip')}
                     onConfirm={() => this.deleteProject(item.uniqId)}
