@@ -5,15 +5,11 @@ import React, {
 } from 'react';
 
 import {
-  Modal,
-  Form,
-  Input,
   Popconfirm,
   Row,
   Col,
   Icon,
   Card,
-  message,
 } from 'antd';
 
 import {
@@ -21,79 +17,13 @@ import {
   FormattedMessage,
 } from 'react-intl';
 
+import ProjectForm from '../components/forms/ProjectForm';
+
 import {
   projectService,
 } from '../service';
 
 import './DashBoard.less';
-
-const FormItem = Form.Item;
-
-function CreateProjectComponent (props) {
-  const {
-    visible,
-    onCancel,
-    onOk,
-    form,
-    loading,
-  } = props;
-  const {
-    getFieldDecorator,
-  } = form;
-  const formatMessage = id => props.intl.formatMessage({ id });
-  return <Modal
-    visible={visible}
-    title={formatMessage('project.create')}
-    okText={formatMessage('common.confirm')}
-    cancelText={formatMessage('common.cancel')}
-    onCancel={() => {
-      onCancel();
-      props.form.resetFields();
-    }}
-    onOk={() => {
-      form.validateFields((err, values) => {
-        if (err) {
-          message.warn(formatMessage('common.input.invalid'));
-          return;
-        }
-        onOk(values, () => {
-          props.form.resetFields();
-        });
-      });
-    }}
-    confirmLoading={loading}
-  >
-    <Form layout="vertical">
-      <FormItem label={formatMessage('project.name')}>
-        {getFieldDecorator('projectName', {
-          rules: [
-            {
-              required: true,
-              message: formatMessage('project.name.invalid'),
-              pattern: /^[a-z0-9_-]+$/,
-            },
-          ],
-        })(
-          <Input />
-        )}
-      </FormItem>
-      <FormItem label={formatMessage('project.description')}>
-        {getFieldDecorator('description', {
-          rules: [
-            {
-              required: true,
-              message: formatMessage('project.description.invalid'),
-            },
-          ],
-        })(
-          <Input />
-        )}
-      </FormItem>
-    </Form>
-  </Modal>;
-}
-
-const CreateProjectForm = Form.create()(injectIntl(CreateProjectComponent));
 
 class DashBoard extends Component {
   state = {
@@ -101,32 +31,37 @@ class DashBoard extends Component {
     visible: false,
     loading: false,
     listData: [],
+    stageData: null,
   };
 
   formatMessage = id => this.props.intl.formatMessage({ id });
 
   async componentWillMount () {
-    await this.updateProjects();
+    await this.fetchProjects();
   }
 
-  showModal = () => {
+  showCreateForm = () => {
     this.setState({
+      stageData: null,
       visible: true,
     });
   }
 
-  cancelCreateProject = () => {
+  closeProjectForm = () => {
     this.setState({
       visible: false,
     });
   }
 
-  createProject = async (values, callback = () => {}) => {
+  confirmProjectForm = async (values, callback = () => {}) => {
     this.setState({
       loading: true,
     });
-
-    const res = await projectService.createProject({
+    const apiName = this.state.stageData
+      ? 'updateProject'
+      : 'createProject';
+    const res = await projectService[apiName]({
+      uniqId: this.state.stageData && this.state.stageData.uniqId,
       projectName: values.projectName,
       description: values.description,
     });
@@ -140,20 +75,27 @@ class DashBoard extends Component {
         visible: false,
       }, () => {
         callback();
-        this.updateProjects();
+        this.fetchProjects();
       });
     }
   }
 
   deleteProject = async (uniqId) => {
     await projectService.deleteProject({ uniqId });
-    await this.updateProjects();
+    await this.fetchProjects();
   }
 
-  updateProjects = async () => {
+  fetchProjects = async () => {
     const res = await projectService.getProjectList();
     this.setState({
       listData: res.data || [],
+    });
+  }
+
+  updateProject = async value => {
+    this.setState({
+      stageData: value,
+      visible: true,
     });
   }
 
@@ -176,14 +118,19 @@ class DashBoard extends Component {
                 </a>
               </Col>
               <Row type="flex" className="sub-info">
-                <Col span={22} key={item.projectName}>
+                <Col span={20} key={item.projectName}>
                   {item.projectName}
                   <span className="main-info">
                     <Icon type="file" />{item.capacity && item.capacity.count}
                     <Icon type="hdd" />{item.capacity && item.capacity.size}
                   </span>
                 </Col>
-                <Col span={2} style={{ textAlign: 'right' }}>
+                <Col span={4} style={{ textAlign: 'right' }}>
+                  <Icon
+                    className="setting-icon"
+                    type="setting"
+                    onClick={() => this.updateProject(item)}
+                  />
                   <Popconfirm
                     title={formatMessage('common.deleteTip')}
                     onConfirm={() => this.deleteProject(item.uniqId)}
@@ -219,7 +166,7 @@ class DashBoard extends Component {
                       <Col span={24} className="main-icon">
                         <Icon
                           data-accessbilityid="dashboard-folder-add"
-                          onClick={this.showModal}
+                          onClick={this.showCreateForm}
                           type="folder-add"
                         />
                       </Col>
@@ -231,11 +178,12 @@ class DashBoard extends Component {
               </Col>
             </Row>
           </Col>
-          <CreateProjectForm
+          <ProjectForm
             visible={this.state.visible}
-            onCancel={this.cancelCreateProject}
-            onOk={this.createProject}
+            onCancel={this.closeProjectForm}
+            onOk={this.confirmProjectForm}
             loading={this.state.loading}
+            stageData={this.state.stageData}
           />
         </Row>
       </div>

@@ -37,6 +37,7 @@ const enUS = {
   'topNav.projectConfig': 'project config',
 
   'project.create': 'create a hub',
+  'project.update': 'update hub',
   'project.name': 'hub name',
   'project.name.invalid': 'please input small letters and numbers',
   'project.description': 'hub description',
@@ -53,11 +54,15 @@ const enUS = {
   'interfaceList.invalidDescription': 'please input description',
   'interfaceList.invalidMethod': 'please input method',
 
+  'sceneList.title': 'Manege Scene',
+  'sceneList.searchScene': 'search scene',
+  'sceneList.createScene': 'create scene',
+  'sceneList.deleteScene': 'delete scene',
+  'sceneList.updateScene': 'update scene',
+
   'apiConfig.title': 'API config',
   'apiConfig.apiDoc': 'API doc',
   'apiConfig.name': 'API name:',
-  'apiConfig.HTTP': 'HTTP method:',
-  'apiConfig.apiDescription': 'API description:',
   'apiConfig.apiDelay': 'API delay:',
   'apiConfig.statusCode': 'Response status code:',
   'apiConfig.second': 'secs',

@@ -52,7 +52,7 @@ export default async (url, method = 'GET', params = {}) => {
   }
 
   res = await res.json();
-  logger(url, method, res);
+  logger('%s %s %o', method, url, res);
   if (!res.success) {
     message.warn(res.message || 'Network Error');
   }

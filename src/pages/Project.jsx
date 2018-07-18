@@ -14,12 +14,16 @@ import {
 } from 'antd';
 
 import InterfaceList from '../components/InterfaceList';
+import InterfaceDetail from '../components/InterfaceDetail';
+
 import RealTime from '../components/RealTime';
-import DataInfo from '../components/DataInfo';
+
 import RealTimeDetail from '../components/RealTimeDetail';
 
-import _ from '../common/helper';
-import { interfaceService } from '../service';
+import {
+  interfaceService,
+  sceneService,
+} from '../service';
 
 import './Project.less';
 
@@ -29,19 +33,17 @@ const Content = Layout.Content;
 
 
 class Project extends React.Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      interfaceList: [],
+  state = {
+    interfaceList: [],
+    selectedInterface: {},
+    sceneList: [],
 
-
-      contentViewType: 'api', // display api content by default
-      data: [],
-      currentPathname: '',
-      REALTIME_MAXLINE: 10,
-      realTimeDataList: [],
-      realTimeIndex: 0,
-    };
+    contentViewType: 'api', // display api content by default
+    data: [],
+    currentPathname: '',
+    REALTIME_MAXLINE: 10,
+    realTimeDataList: [],
+    realTimeIndex: 0,
   }
 
   async componentDidMount () {
@@ -53,6 +55,15 @@ class Project extends React.Component {
     const res = await interfaceService.getInterfaceList();
     this.setState({
       interfaceList: res.data || [],
+      selectedInterface: (res.data && res.data[0]) || {},
+    });
+  }
+
+  setSelectedInterface = async (uniqId) => {
+    const res = await sceneService.getSceneList({ interfaceUniqId: uniqId });
+    this.setState({
+      selectedInterface: this.state.interfaceList.find(i => i.uniqId === uniqId) || {},
+      sceneList: res.data,
     });
   }
 
@@ -61,7 +72,6 @@ class Project extends React.Component {
     const host = `http://${location.hostname}:${pageConfig.socket.port}`;
     const socket = io(host);
     socket.on('push data', (data) => {
-      _.logger('socket', data);
       const newData = [
         ...this.state.realTimeDataList,
       ].slice(0, this.state.REALTIME_MAXLINE - 1);
@@ -74,7 +84,6 @@ class Project extends React.Component {
 
   tabOnChange (key) {
     if (key === 'realtimesnapshot' && this.state.realTimeDataList.length > 0) {
-      _.logger('this.state.realTimeDataList', this.state.realTimeDataList);
       this.setState({
         contentViewType: 'realTime',
         realTimeIndex: 0,
@@ -117,6 +126,8 @@ class Project extends React.Component {
               key="apilist"
             >
               <InterfaceList
+                selectedInterface={this.state.selectedInterface}
+                setSelectedInterface={this.setSelectedInterface}
                 interfaceList={this.state.interfaceList}
                 fetchInterfaceList={this.fetchInterfaceList}
               />
@@ -134,11 +145,13 @@ class Project extends React.Component {
         </Sider>
         <Content>
           {
-            this.state.data.length
+            this.state.interfaceList.length
               ? this.state.contentViewType === 'api' &&
-            <DataInfo
+            <InterfaceDetail
+              selectedInterface={this.state.selectedInterface}
+              sceneList={this.state.sceneList}
             />
-              : <div className="datainfo">
+              : <div className="interface-detail">
                 <Alert
                   className="add-api-hint"
                   message={this.props.intl.formatMessage({

@@ -26,11 +26,9 @@ import 'codemirror/addon/selection/active-line';
 import {
   Alert,
   Button,
-  Select,
   Radio,
   Input,
   Modal,
-  Tooltip,
   Popconfirm,
   Breadcrumb,
   InputNumber,
@@ -42,9 +40,10 @@ import _ from '../common/helper';
 import FieldTable from './FieldTable';
 import ProxyInputList from './ProxyInputList';
 
-import './DataInfo.less';
+import SceneForm from './forms/SceneForm';
 
-const Option = Select.Option;
+import './InterfaceDetail.less';
+
 const RadioGroup = Radio.Group;
 
 const codeMirrorOptions = {
@@ -69,7 +68,7 @@ const codeMirrorOptions = {
   ],
 };
 
-class DataInfo extends React.Component {
+class InterfaceDetail extends React.Component {
   constructor (props) {
     super(props);
     const currentData = props.currentData || {};
@@ -78,6 +77,9 @@ class DataInfo extends React.Component {
     const { statusCode } = this.parseHeaders(currentData);
 
     this.state = {
+      selectedScene: 'default',
+
+
       modalVisible: false,
       modalInfoTitle: '',
       modalInfoData: '',
@@ -267,7 +269,6 @@ class DataInfo extends React.Component {
       name: this.state.modalInfoTitle,
       data: JSON.parse(this.state._modalInfoData),
     };
-    _.logger('updateScene', updateScene.data);
     const newData = [...this.state.scenes];
     newData.splice(index, 1, updateScene);
     this.setState({
@@ -422,20 +423,19 @@ class DataInfo extends React.Component {
   }
 
   render () {
-    const projectId = window.pageConfig.projectId;
-    const apiHref = `//${location.host}/data/${projectId}/${this.state.pathname}`;
+    const { selectedInterface } = this.props;
+
+    const projectName = window.pageConfig.projectName;
+    const apiHref = `//${location.host}/data/${projectName}/${this.state.pathname}`;
     return (
-      <div className="datainfo">
+      <div className="interface-detail">
         <Breadcrumb>
           <Breadcrumb.Item>
             <a href="/dashboard"><FormattedMessage id="topNav.allProject" /></a>
           </Breadcrumb.Item>
           <Breadcrumb.Item>
-            {
-              this.state.description
-                ? this.state.description
-                : this.state.pathname
-            }
+            <a href="/dashboard"><FormattedMessage id="topNav.allProject" /></a>
+            {selectedInterface.description}
           </Breadcrumb.Item>
           <Breadcrumb.Item>
             <FormattedMessage id="topNav.projectConfig" />
@@ -447,7 +447,7 @@ class DataInfo extends React.Component {
               <FormattedMessage id='apiConfig.title' />
             </h1>
             <a
-              href={`/doc/${projectId}${location.hash.replace('#', '#api=')}`}
+              href={`/doc/${projectName}${location.hash.replace('#', '#api=')}`}
               target="_blank"
             >
               <Button className="right-button" type="primary">
@@ -458,51 +458,10 @@ class DataInfo extends React.Component {
             <div className="mock-address">
               <span><FormattedMessage id='apiConfig.name' /></span>
               <a target="_blank" href={apiHref}>
-                <Tooltip placement="top" title={`${this.props.intl.formatMessage({id: 'sceneMng.sceneName'})}：${this.state.currentScene || 'default'}`}>
-                  <span className="project-api">
-                    {`${this.state.pathname}`} | {`${this.state.currentScene || 'default'}`}
-                  </span>
-                </Tooltip>
+                <span className="project-api">
+                  {`${selectedInterface.pathname}`} | {`${this.state.selectedScene}`}
+                </span>
               </a>
-            </div>
-            <div>
-              <span>
-                <FormattedMessage id='apiConfig.HTTP' />
-              </span>
-              <span data-accessbilityid="project-api-method-select">
-                <Select
-                  defaultValue={this.state.method || 'ALL'}
-                  value={this.state.method || 'ALL'}
-                  style={{
-                    width: 120,
-                    marginLeft: 10,
-                  }}
-                  onChange={this.handleOptionChange.bind(this)}
-                >
-                  <Option value="ALL">ALL</Option>
-                  <Option value="GET">GET</Option>
-                  <Option value="POST">POST</Option>
-                  <Option value="PUT">PUT</Option>
-                  <Option value="DELETE">DELETE</Option>
-                  <Option value="PATCH">PATCH</Option>
-                </Select>
-              </span>
-            </div>
-            <div
-              data-accessbilityid="project-api-description"
-              className="api-description"
-            >
-              <span>
-                <FormattedMessage id='apiConfig.apiDescription' />
-              </span>
-              <Input className="des-content"
-                style={{
-                  marginLeft: 10,
-                }}
-                onBlur={this.handleDescriptionBlur.bind(this)}
-                onChange={this.handleDescriptionChange.bind(this)}
-                value={this.state.description}
-              />
             </div>
             <div
               className="api-delay"
@@ -560,6 +519,14 @@ class DataInfo extends React.Component {
               </Button>
 
             </div>
+          </section>
+          <section className="data-scene">
+            <h1>
+              <FormattedMessage id='sceneList.title' />
+            </h1>
+            <SceneForm
+              sceneList={this.props.sceneList}
+            />
           </section>
           <section className="data-scene">
             <h1>
@@ -695,4 +662,4 @@ class DataInfo extends React.Component {
   }
 }
 
-export default injectIntl(DataInfo);
+export default injectIntl(InterfaceDetail);

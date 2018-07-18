@@ -37,6 +37,7 @@ const zhCN = {
   'topNav.projectConfig': '项目配置',
 
   'project.create': '创建新项目',
+  'project.update': '更新项目',
   'project.name': '项目名称',
   'project.name.invalid': '请输入小写字母或者数字',
   'project.description': '项目描述',
@@ -53,11 +54,15 @@ const zhCN = {
   'interfaceList.invalidDescription': '请输入接口描述',
   'interfaceList.invalidMethod': '请选择请求方法',
 
+  'sceneList.title': '场景管理',
+  'sceneList.searchScene': '查找场景',
+  'sceneList.createScene': '新增场景',
+  'sceneList.deleteScene': '删除场景',
+  'sceneList.updateScene': '更新场景',
+
   'apiConfig.title': '接口配置',
   'apiConfig.apiDoc': '接口文档',
   'apiConfig.name': '接口名：',
-  'apiConfig.HTTP': 'HTTP 方法：',
-  'apiConfig.apiDescription': '接口说明：',
   'apiConfig.apiDelay': '接口延迟：',
   'apiConfig.statusCode': '服务端响应状态码：',
   'apiConfig.second': '秒',

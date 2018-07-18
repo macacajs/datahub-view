@@ -2,6 +2,9 @@
 
 import lodash from 'lodash';
 import typeDetect from 'type-detect';
+import debug from 'debug';
+const logger = debug('datahub');
+localStorage.debug = ('datahub*');
 
 const _ = lodash.merge({}, lodash);
 
@@ -216,8 +219,6 @@ _.operateSchema = (type, { item, data, index, key, value }) => {
   return res;
 };
 
-_.logger = (...content) => {
-  console.log(...content);
-};
+_.logger = logger;
 
 module.exports = _;

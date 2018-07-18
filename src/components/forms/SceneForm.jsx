@@ -1,20 +1,14 @@
-'use strict';
-
 import React, {
   Component,
 } from 'react';
 
 import {
-  Input,
-  Button,
-  Modal,
-  Row,
   Col,
-  Popconfirm,
-  Popover,
-  Select,
-  Icon,
+  Row,
   Form,
+  Input,
+  Modal,
+  Button,
   message,
 } from 'antd';
 
@@ -23,15 +17,12 @@ import {
   FormattedMessage,
 } from 'react-intl';
 
-import './InterfaceList.less';
-
-import { interfaceService } from '../service';
+import { sceneService } from '../../service';
 
 const Search = Input.Search;
 const FormItem = Form.Item;
-const Option = Select.Option;
 
-function InterfaceModalComponent (props) {
+function SceneFormModalComponent (props) {
   const {
     visible,
     onCancel,
@@ -46,7 +37,7 @@ function InterfaceModalComponent (props) {
   const formatMessage = id => props.intl.formatMessage({ id });
   return <Modal
     visible={visible}
-    title={formatMessage(stageData ? 'interfaceList.updateInterface' : 'interfaceList.addInterface')}
+    title={formatMessage(stageData ? 'sceneList.updateScene' : 'sceneList.createScene')}
     okText={formatMessage('common.confirm')}
     cancelText={formatMessage('common.cancel')}
     onCancel={() => {
@@ -96,35 +87,16 @@ function InterfaceModalComponent (props) {
           <Input />
         )}
       </FormItem>
-      <FormItem label={formatMessage('interfaceList.interfaceMethod')}>
-        {getFieldDecorator('method', {
-          initialValue: stageData && stageData.method || 'ALL',
-          rules: [
-            {
-              required: true,
-              message: formatMessage('interfaceList.invalidMethod'),
-            },
-          ],
-        })(
-          <Select>
-            <Option value="ALL">ALL</Option>
-            <Option value="GET">GET</Option>
-            <Option value="POST">POST</Option>
-            <Option value="PUT">PUT</Option>
-            <Option value="DELETE">DELETE</Option>
-          </Select>
-        )}
-      </FormItem>
     </Form>
   </Modal>;
 }
 
-const InterfaceForm = Form.create()(injectIntl(InterfaceModalComponent));
+const SceneFormModal = Form.create()(injectIntl(SceneFormModalComponent));
 
-class InterfaceList extends Component {
+class SceneForm extends Component {
   state = {
-    interfaceFormVisible: false,
-    interfaceFormLoading: false,
+    sceneFormVisible: false,
+    sceneFormLoading: false,
     filterString: '',
     stageData: null,
   }
@@ -133,71 +105,65 @@ class InterfaceList extends Component {
 
   showCreateForm = () => {
     this.setState({
+      formType: 'create',
       stageData: null,
-      interfaceFormVisible: true,
+      sceneFormVisible: true,
     });
   }
 
   showUpdateForm = async value => {
     this.setState({
+      formType: 'update',
       stageData: value,
-      interfaceFormVisible: true,
+      sceneFormVisible: true,
     });
   }
 
-  closeInterfaceForm = () => {
+  hideSceneForm = () => {
     this.setState({
-      interfaceFormVisible: false,
+      sceneFormVisible: false,
     });
   }
 
-  confirmInterfaceForm = async ({ pathname, description, method }, callback = () => {}) => {
+  confirmSceneForm = async ({ sceneName, data }, callback = () => {}) => {
     this.setState({
-      interfaceFormLoading: true,
+      sceneFormLoading: true,
     });
     const apiName = this.state.stageData
-      ? 'updateInterface'
-      : 'createInterface';
-    const res = await interfaceService[apiName]({
+      ? 'updateScene'
+      : 'createScene';
+    const res = await sceneService[apiName]({
       uniqId: this.state.stageData && this.state.stageData.uniqId,
-      pathname,
-      description,
-      method,
+      sceneName,
+      data,
     });
     this.setState({
-      interfaceFormLoading: false,
+      sceneFormLoading: false,
     });
     if (res.success) {
       this.setState({
-        interfaceFormVisible: false,
+        sceneFormVisible: false,
       }, () => {
         callback();
-        this.props.fetchInterfaceList();
+        this.props.fetchSceneList();
       });
     }
   }
 
-  deleteInterface = async (uniqId) => {
-    await interfaceService.deleteInterface({ uniqId });
-    await this.props.fetchInterfaceList();
-    this.props.setSelectedInterface();
-  }
-
-  filterInterface = (e) => {
+  filterScene = (e) => {
     const filter = e.target.value.toLowerCase();
     this.setState({
       filterString: filter,
     });
   }
 
-  renderInterfaceList = () => {
+  renderSceneList = () => {
     const formatMessage = this.formatMessage;
-    const { interfaceList } = this.props;
-    return interfaceList.filter(value =>
+    const { sceneList } = this.props;
+    return sceneList.filter(value =>
       value.pathname.toLowerCase().includes(this.state.filterString) ||
       value.description.toLowerCase().includes(this.state.filterString)
     ).map((value, index) => {
-      const isSelected = value.uniqId === this.props.selectedInterface.uniqId;
       return (
         <Popover
           key={index}
@@ -210,9 +176,7 @@ class InterfaceList extends Component {
           }
           trigger="hover">
           <li
-            className={isSelected ? 'clicked' : ''}
-            data-accessbilityid={`project-add-api-list-${index}`}
-            onClick={() => this.props.setSelectedInterface(value.uniqId)}
+            onClick={() => this.setSelectedScene(value.uniqId)}
           >
             <div className="left">
               <h3>{value.pathname}</h3>
@@ -227,7 +191,7 @@ class InterfaceList extends Component {
               />
               <Popconfirm
                 title={formatMessage('common.deleteTip')}
-                onConfirm={() => this.deleteInterface(value.uniqId)}
+                onConfirm={() => this.deleteScene(value.uniqId)}
                 okText={formatMessage('common.confirm')}
                 cancelText={formatMessage('common.cancel')}
               >
@@ -243,35 +207,33 @@ class InterfaceList extends Component {
   render () {
     const formatMessage = this.formatMessage;
     return (
-      <div className="interface-list">
-        <Row className="interface-filter-row">
-          <Col span={15}>
+      <div>
+        <Row>
+          <Col span={6}>
             <Search
-              data-accessbilityid="project-search-api"
-              placeholder={formatMessage('interfaceList.searchInterface')}
-              onChange={this.filterInterface}
+              placeholder={formatMessage('sceneList.searchScene')}
+              onChange={this.filterScene}
             />
           </Col>
-          <Col span={8} offset={1}>
+          <Col span={2}>
             <Button
               type="primary"
-              data-accessbilityid="project-add-api-list-btn"
               onClick={this.showCreateForm}
             >
-              <FormattedMessage id='interfaceList.addInterface' />
+              <FormattedMessage id='sceneList.createScene' />
             </Button>
           </Col>
         </Row>
 
-        <ul style={{ maxHeight: '500px', overflowY: 'scroll' }}>
-          { this.renderInterfaceList() }
+        <ul>
+          { this.renderSceneList() }
         </ul>
 
-        <InterfaceForm
-          visible={this.state.interfaceFormVisible}
-          onCancel={this.closeInterfaceForm}
-          onOk={this.confirmInterfaceForm}
-          confirmLoading={this.state.interfaceFormLoading}
+        <SceneFormModal
+          visible={this.state.sceneFormVisible}
+          onCancel={this.hideSceneForm}
+          onOk={this.confirmSceneForm}
+          confirmLoading={this.state.sceneFormLoading}
           stageData={this.state.stageData}
         />
       </div>
@@ -279,4 +241,4 @@ class InterfaceList extends Component {
   }
 }
 
-export default injectIntl(InterfaceList);
+export default injectIntl(SceneForm);

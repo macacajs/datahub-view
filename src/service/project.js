@@ -11,6 +11,13 @@ export async function createProject ({ projectName, description }) {
   });
 };
 
+export async function updateProject ({ uniqId, projectName, description }) {
+  return request(`/api/project/${uniqId}`, 'PUT', {
+    projectName,
+    description,
+  });
+};
+
 export async function deleteProject ({ uniqId }) {
   return request(`/api/project/${uniqId}`, 'DELETE');
 };

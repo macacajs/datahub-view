@@ -38,6 +38,7 @@
     "cross-env": "^5.1.1",
     "css-loader": "^0.14.5",
     "datahub-proxy-middleware": "^1.0.9",
+    "debug": "^3.1.0",
     "eslint": "^4.5.0",
     "eslint-config-antife": "^1.0.0",
     "eslint-plugin-react": "^7.2.1",
