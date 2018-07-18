@@ -14,7 +14,7 @@ import {
 } from 'antd';
 
 import InterfaceList from '../components/InterfaceList';
-import InterfaceDetail from '../components/InterfaceDetail';
+import InterfaceDetail from '../components/InterfaceDetail/';
 
 import RealTime from '../components/RealTime';
 
