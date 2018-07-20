@@ -32,22 +32,18 @@ function InterfaceFormComponent (props) {
   const formatMessage = id => props.intl.formatMessage({ id });
   return <Modal
     visible={visible}
+    destroyOnClose={true}
     title={formatMessage(stageData ? 'interfaceList.updateInterface' : 'interfaceList.addInterface')}
     okText={formatMessage('common.confirm')}
     cancelText={formatMessage('common.cancel')}
-    onCancel={() => {
-      onCancel();
-      props.form.resetFields();
-    }}
+    onCancel={onCancel}
     onOk={() => {
       form.validateFields((err, values) => {
         if (err) {
           message.warn(formatMessage('common.input.invalid'));
           return;
         }
-        onOk(values, () => {
-          props.form.resetFields();
-        });
+        onOk(values);
       });
     }}
     confirmLoading={confirmLoading}
@@ -60,7 +56,7 @@ function InterfaceFormComponent (props) {
             {
               required: true,
               message: formatMessage('interfaceList.invalidPathname'),
-              pattern: /^[A-Za-z0-9:_-]([.A-Za-z0-9:/_-]*[A-Za-z0-9:_-])?$/,
+              pattern: /^[a-z0-9:_-]([.a-z0-9:/_-]*[a-z0-9:_-])?$/,
             },
           ],
         })(
@@ -75,6 +71,7 @@ function InterfaceFormComponent (props) {
           rules: [
             {
               required: true,
+              pattern: /^[^\s].*[^\s]$/,
               message: formatMessage('interfaceList.invalidDescription'),
             },
           ],

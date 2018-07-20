@@ -30,22 +30,18 @@ function ProjectFormComponent (props) {
   const formatMessage = id => props.intl.formatMessage({ id });
   return <Modal
     visible={visible}
+    destroyOnClose={true}
     title={stageData ? formatMessage('project.update') : formatMessage('project.create')}
     okText={formatMessage('common.confirm')}
     cancelText={formatMessage('common.cancel')}
-    onCancel={() => {
-      onCancel();
-      props.form.resetFields();
-    }}
+    onCancel={onCancel}
     onOk={() => {
       form.validateFields((err, values) => {
         if (err) {
           message.warn(formatMessage('common.input.invalid'));
           return;
         }
-        onOk(values, () => {
-          props.form.resetFields();
-        });
+        onOk(values);
       });
     }}
     confirmLoading={loading}

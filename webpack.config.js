@@ -72,6 +72,9 @@ module.exports = {
             loader: 'css-loader',
           },
           {
+            loader: 'postcss-loader',
+          },
+          {
             loader: 'less-loader',
           },
         ],
@@ -80,6 +83,17 @@ module.exports = {
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
+        ],
+      },
+      {
+        test: /\.(png|jpg|gif)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8192,
+            },
+          },
         ],
       },
     ],

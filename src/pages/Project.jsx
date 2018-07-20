@@ -14,7 +14,7 @@ import {
 } from 'antd';
 
 import InterfaceList from '../components/InterfaceList';
-import InterfaceDetail from '../components/InterfaceDetail/';
+import InterfaceDetail from '../components/InterfaceDetail/index';
 
 import RealTime from '../components/RealTime';
 
@@ -22,7 +22,6 @@ import RealTimeDetail from '../components/RealTimeDetail';
 
 import {
   interfaceService,
-  sceneService,
 } from '../service';
 
 import './Project.less';
@@ -36,7 +35,6 @@ class Project extends React.Component {
   state = {
     interfaceList: [],
     selectedInterface: {},
-    sceneList: [],
 
     contentViewType: 'api', // display api content by default
     data: [],
@@ -59,11 +57,16 @@ class Project extends React.Component {
     });
   }
 
+  fetchOneInterface = async uniqId => {
+    const res = await interfaceService.getOneInterface({ uniqId });
+    this.setState({
+      selectedInterface: res.data,
+    });
+  }
+
   setSelectedInterface = async (uniqId) => {
-    const res = await sceneService.getSceneList({ interfaceUniqId: uniqId });
     this.setState({
       selectedInterface: this.state.interfaceList.find(i => i.uniqId === uniqId) || {},
-      sceneList: res.data,
     });
   }
 
@@ -121,7 +124,7 @@ class Project extends React.Component {
           >
             <TabPane
               tab={this.props.intl.formatMessage({
-                id: 'project.apiList',
+                id: 'project.interfaceList',
               })}
               key="apilist"
             >
@@ -149,7 +152,8 @@ class Project extends React.Component {
               ? this.state.contentViewType === 'api' &&
             <InterfaceDetail
               selectedInterface={this.state.selectedInterface}
-              sceneList={this.state.sceneList}
+              fetchOneInterface={this.fetchOneInterface}
+              key={this.state.selectedInterface.uniqId}
             />
               : <div className="interface-detail">
                 <Alert

@@ -1,23 +1,14 @@
-import React, {
-  Component,
-} from 'react';
+import React from 'react';
 
 import {
   injectIntl,
 } from 'react-intl';
 
-
-class InterfaceProxyConfig extends Component {
-  state = {
-  }
-
-  formatMessage = id => this.props.intl.formatMessage({ id });
-
-  render () {
-    return (
-      <div> proxy config </div>
-    );
-  }
-}
-
-export default injectIntl(InterfaceProxyConfig);
+export default injectIntl(props => {
+  const formatMessage = id => props.intl.formatMessage({ id });
+  return (
+    <section>
+      <h1> {formatMessage('interfaceDetail.proxyConfig')} </h1>
+    </section>
+  );
+});

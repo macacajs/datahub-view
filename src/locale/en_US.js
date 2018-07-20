@@ -1,6 +1,5 @@
 const enUS = {
   'common.delete': 'delete',
-  'common.look': 'look',
   'common.cancel': 'cancel',
   'common.confirm': 'confirm',
   'common.submite': 'submit',
@@ -36,10 +35,13 @@ const enUS = {
   'topNav.allProject': 'all projects',
   'topNav.projectConfig': 'project config',
 
+  'project.interfaceList': 'API list',
+  'project.realtimeList': 'realtime snapshot',
+  'project.createApi': 'please add API',
   'project.create': 'create a hub',
   'project.update': 'update hub',
   'project.name': 'hub name',
-  'project.name.invalid': 'please input small letters and numbers',
+  'project.name.invalid': 'please input lowercase letters and numbers',
   'project.description': 'hub description',
   'project.description.invalid': 'input cant be null',
   'project.add': 'add hub',
@@ -50,16 +52,26 @@ const enUS = {
   'interfaceList.interfacePathnameInput': 'please input API URL pathname',
   'interfaceList.interfaceDescription': 'please input API description',
   'interfaceList.interfaceMethod': 'please input API method',
-  'interfaceList.invalidPathname': 'pathname invalid, type path/name or path/:type/:id',
+  'interfaceList.invalidPathname': 'type path/name or path/:type/:id use lowercase letters',
   'interfaceList.invalidDescription': 'please input description',
   'interfaceList.invalidMethod': 'please input method',
+
+  'interfaceDetail.contextConfig': 'context config',
+  'interfaceDetail.previewData': 'preview(GET method)',
+  'interfaceDetail.proxyConfig': 'proxy config',
+  'interfaceDetail.schemaConfig': 'schema config',
 
   'sceneList.title': 'Manege Scene',
   'sceneList.searchScene': 'search scene',
   'sceneList.createScene': 'create scene',
   'sceneList.deleteScene': 'delete scene',
   'sceneList.updateScene': 'update scene',
+  'sceneList.sceneName': 'scene name',
+  'sceneList.sceneData': 'scene data',
+  'sceneList.invalidSceneName': 'scene name is invalid, type alphanum - _',
+  'sceneList.invalidSceneData': 'scene data is invalid, type JSON data',
 
+  // to be removed
   'apiConfig.title': 'API config',
   'apiConfig.apiDoc': 'API doc',
   'apiConfig.name': 'API name:',
@@ -73,14 +85,12 @@ const enUS = {
   'apiConfig.modifyResponseHeader': 'modify',
   'apiConfig.project': 'Project API',
   'apiConfig.validateError': 'API name is invalid, should not start with slash or end with slash',
-
   'sceneMng.title': 'scene manage',
   'sceneMng.sceneName': 'scene',
   'sceneMng.inputTip': 'please input scene name',
   'sceneMng.addSceneBtn': 'add scene',
   'sceneMng.nullError': 'scene name cant be empty！',
   'sceneMng.existError': 'scene name is existed',
-
   'proxyConfig.title': 'proxy config',
   'proxyConfig.isUseProxy': 'use proxy?',
   'proxyConfig.addProxy': 'add proxy',
@@ -108,10 +118,6 @@ const enUS = {
   'document.reqSchemaDes': ' request schema description',
   'document.schemaDes': 'schema description',
   'document.sceneData': 'scene data',
-
-  'project.apiList': 'API list',
-  'project.realtimeList': 'realtime snapshot',
-  'project.createApi': 'please add API',
 };
 
 export default enUS;

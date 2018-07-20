@@ -1,6 +1,5 @@
 const zhCN = {
   'common.delete': '删除',
-  'common.look': '查看',
   'common.cancel': '取消',
   'common.confirm': '确定',
   'common.submite': '提交',
@@ -36,6 +35,9 @@ const zhCN = {
   'topNav.allProject': '所有项目',
   'topNav.projectConfig': '项目配置',
 
+  'project.interfaceList': '接口列表',
+  'project.realtimeList': '实时快照',
+  'project.createApi': '请添加接口',
   'project.create': '创建新项目',
   'project.update': '更新项目',
   'project.name': '项目名称',
@@ -46,20 +48,30 @@ const zhCN = {
 
   'interfaceList.addInterface': '添加接口',
   'interfaceList.updateInterface': '修改接口',
-  'interfaceList.searchInterface': '查找接口',
+  'interfaceList.searchInterface': '搜索接口',
   'interfaceList.interfacePathnameInput': '请输入接口 URL pathname',
   'interfaceList.interfaceDescription': '请输入接口描述',
   'interfaceList.interfaceMethod': '请输入请求方法',
-  'interfaceList.invalidPathname': 'pathname 格式不正确，请输入 path/name or path/:type/:id',
+  'interfaceList.invalidPathname': '请输入 path/name 或 path/:type/:id 字母用小写',
   'interfaceList.invalidDescription': '请输入接口描述',
   'interfaceList.invalidMethod': '请选择请求方法',
 
+  'interfaceDetail.contextConfig': '状态配置',
+  'interfaceDetail.previewData': '预览（GET 请求）',
+  'interfaceDetail.proxyConfig': '代理配置',
+  'interfaceDetail.schemaConfig': '字段描述配置',
+
   'sceneList.title': '场景管理',
-  'sceneList.searchScene': '查找场景',
+  'sceneList.searchScene': '搜索场景',
   'sceneList.createScene': '新增场景',
   'sceneList.deleteScene': '删除场景',
   'sceneList.updateScene': '更新场景',
+  'sceneList.sceneName': '场景名称',
+  'sceneList.invalidSceneName': '格式不正确，请输入小写字母 数字 - _',
+  'sceneList.sceneData': '场景数据',
+  'sceneList.invalidSceneData': '格式错误，请输入 JSON 数据',
 
+  // to be removed
   'apiConfig.title': '接口配置',
   'apiConfig.apiDoc': '接口文档',
   'apiConfig.name': '接口名：',
@@ -73,14 +85,12 @@ const zhCN = {
   'apiConfig.modifyResponseHeader': '修改',
   'apiConfig.project': '项目配置',
   'apiConfig.validateError': '接口名不合法，不能以 / 开头或结尾',
-
   'sceneMng.title': '场景管理',
   'sceneMng.sceneName': '场景',
   'sceneMng.inputTip': '请输入场景名',
   'sceneMng.addSceneBtn': '新增场景',
   'sceneMng.nullError': '场景名不能为空！',
   'sceneMng.existError': '场景名称已存在！',
-
   'proxyConfig.title': '代理配置',
   'proxyConfig.isUseProxy': '是否使用代理',
   'proxyConfig.addProxy': '添加代理',
@@ -108,10 +118,6 @@ const zhCN = {
   'document.reqSchemaDes': '请求 Schema 描述',
   'document.schemaDes': 'Schema 描述',
   'document.sceneData': '场景数据',
-
-  'project.apiList': '接口列表',
-  'project.realtimeList': '实时快照',
-  'project.createApi': '请添加接口',
 };
 
 export default zhCN;

@@ -1,107 +1,73 @@
+/* code mirroe override start */
 .CodeMirror {
-  height: 420px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
+.CodeMirror-lint-tooltip { z-index: 9999; }
+.CodeMirror-lint-marker-error, .CodeMirror-lint-message-error {
+  background-image: url('./lint-error.png');
+  background-size: 16px;
+}
+.CodeMirror pre.CodeMirror-placeholder { color: #999; }
+.cm-trailingspace {
+  background-image: url('./whitespace.png');
+  background-position: bottom left;
+  background-repeat: repeat-x;
+}
+/* code mirroe override end */
+
 .interface-detail {
-  padding-top: 12px;
-  padding-left: 20px;
-
-  header {
-    overflow: hidden;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #ccc;
-
-    .user-info {
-      float: left;
-      line-height: 30px;
-    }
-
-    .btns {
-      float: right;
-
-      button {
-        margin-right: 5px;
-      }
-    }
-  }
-
+  padding: 12px 20px;
   section {
-    margin: 10px 0;
-
     > div {
       margin-top: 10px;
       overflow: hidden;
     }
+  }
+}
 
-    h1 {
-      margin-top: 12px;
-    }
+.interface-detail-content {
+  margin-top: 10px;
+  padding-top: 20px;
+  border-top: 1px solid #ddd;
+}
 
-    .des-content {
-      width: 325px;
-      display: inline-block;
-    }
+.scene-list-item {
+  cursor: pointer;
+  position: relative;
+  line-height: 40px;
+  padding: 0 60px 0 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  transition: all .3s;
+
+  display: flex;
+  flex-wrap: wrap;
+
+  .scene-name {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 40px;
+    white-space: nowrap;
+    word-break: break-all;
+  }
+  .scene-operation {
+    transition: all .3s;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    font-size: 16px;
   }
 
-  .base-info {
-    border-top: 1px solid rgba(0, 0, 0, 0.2);
-    line-height: 28px;
-    position: relative;
-
-    .mock-address a {
-      margin: 0 5px;
-    }
-
-    .right-button {
-      position: absolute;
-      top: 10px;
-      right: 0;
+  &:hover, &-active {
+    .scene-operation {
+      opacity: 1;
     }
   }
-
-  .data-scene {
-
-    p {
-      margin: 10px 0;
-    }
-
-    button {
-      margin-left: 7px;
-    }
-
-    .add-input {
-      vertical-align: bottom;
-      margin-bottom: 10px;
-    }
-
-    .ant-radio-wrapper {
-      margin-top: 12px;
-    }
-  }
-
-  .data-proxy {
-    button {
-      margin-left: 7px;
-    }
-  }
-
-  .api-status-code {
-    input {
-      width: 80px;
-    }
-  }
-
-  .ant-form-item {
-    margin-bottom: 5px;
-  }
-
-  .radio-container {
-    .view-icon {
-      margin-left: 4px;
-    }
-    .delete-icon {
-      color: #f5222d;
-      margin-left: 4px;
-    }
+  &-active {
+    border-color: #40a9ff;
+    border-left-width: 3px;
   }
 }

@@ -1,23 +1,15 @@
-import React, {
-  Component,
-} from 'react';
+import React from 'react';
 
 import {
   injectIntl,
 } from 'react-intl';
 
 
-class InterfaceContextConfig extends Component {
-  state = {
-  }
-
-  formatMessage = id => this.props.intl.formatMessage({ id });
-
-  render () {
-    return (
-      <div> context config </div>
-    );
-  }
-}
-
-export default injectIntl(InterfaceContextConfig);
+export default injectIntl(props => {
+  const formatMessage = id => props.intl.formatMessage({ id });
+  return (
+    <section>
+      <h1>{formatMessage('interfaceDetail.contextConfig')}</h1>
+    </section>
+  );
+});

@@ -54,7 +54,7 @@ class DashBoard extends Component {
     });
   }
 
-  confirmProjectForm = async (values, callback = () => {}) => {
+  confirmProjectForm = async values => {
     this.setState({
       loading: true,
     });
@@ -75,7 +75,6 @@ class DashBoard extends Component {
       this.setState({
         visible: false,
       }, () => {
-        callback();
         this.fetchProjects();
       });
     }

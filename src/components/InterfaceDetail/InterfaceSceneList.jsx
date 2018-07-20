@@ -3,11 +3,16 @@ import React, {
 } from 'react';
 
 import {
-  Col,
-  Row,
+  Icon,
   Input,
   Button,
+  Tooltip,
 } from 'antd';
+
+import {
+  Row,
+  Col,
+} from 'react-flexbox-grid';
 
 import {
   injectIntl,
@@ -27,9 +32,9 @@ class InterfaceSceneList extends Component {
     stageData: null,
   }
 
-  formatMessage = id => this.props.intl.formatMessage({ id });
+  formatMessage = id => this.props.intl.formatMessage({ id })
 
-  showCreateForm = () => {
+  showSceneForm = () => {
     this.setState({
       formType: 'create',
       stageData: null,
@@ -51,7 +56,8 @@ class InterfaceSceneList extends Component {
     });
   }
 
-  confirmSceneForm = async ({ sceneName, data }, callback = () => {}) => {
+  confirmSceneForm = async ({ sceneName, data }) => {
+    const { uniqId: interfaceUniqId } = this.props.interfaceData;
     this.setState({
       sceneFormLoading: true,
     });
@@ -60,6 +66,7 @@ class InterfaceSceneList extends Component {
       : 'createScene';
     const res = await sceneService[apiName]({
       uniqId: this.state.stageData && this.state.stageData.uniqId,
+      interfaceUniqId,
       sceneName,
       data,
     });
@@ -69,11 +76,12 @@ class InterfaceSceneList extends Component {
     if (res.success) {
       this.setState({
         sceneFormVisible: false,
-      }, () => {
-        callback();
-        this.props.fetchSceneList();
-      });
+      }, this.postCreate);
     }
+  }
+
+  postCreate = async value => {
+    await this.props.updateInterFaceAndScene();
   }
 
   filterScene = (e) => {
@@ -83,77 +91,84 @@ class InterfaceSceneList extends Component {
     });
   }
 
+  defaultColProps = {
+    xs: 12,
+    sm: 12,
+    md: 6,
+    lg: 3,
+  }
+
   renderSceneList = () => {
     const formatMessage = this.formatMessage;
-    const { sceneList } = this.props;
-    return sceneList.filter(value =>
-      value.pathname.toLowerCase().includes(this.state.filterString) ||
-      value.description.toLowerCase().includes(this.state.filterString)
-    ).map((value, index) => {
-      return (
-        <Popover
-          key={index}
-          placement="right"
-          content={
-            <div style={{ maxWidth: '400px', wordBreak: 'break-all'}}>
-              <div>{value.pathname}</div><br/>
-              <div>{value.description}</div>
-            </div>
-          }
-          trigger="hover">
-          <li
-            onClick={() => this.setSelectedScene(value.uniqId)}
-          >
-            <div className="left">
-              <h3>{value.pathname}</h3>
-              <p>{value.description}</p>
-              <p>method: {value.method}
-              </p>
-            </div>
-            <div className="right">
-              <Icon
-                type="setting"
-                onClick={() => this.showUpdateForm(value)}
-              />
-              <Popconfirm
-                title={formatMessage('common.deleteTip')}
-                onConfirm={() => this.deleteScene(value.uniqId)}
-                okText={formatMessage('common.confirm')}
-                cancelText={formatMessage('common.cancel')}
-              >
-                <Icon className="delete-icon" type="delete" />
-              </Popconfirm>
-            </div>
-          </li>
-        </Popover>
-      );
-    });
+    const { sceneList, selectedScene } = this.props;
+    return (
+      <Row>
+        {
+          sceneList.filter(value => {
+            return value.sceneName.toLowerCase().includes(this.state.filterString);
+          }).map(value => {
+            const isAvtive = selectedScene.uniqId === value.uniqId;
+            const classNames = isAvtive ? [
+              'scene-list-item',
+              'scene-list-item-active',
+            ] : [ 'scene-list-item' ];
+            return <Col
+              {...this.defaultColProps}
+              key={value.uniqId}
+            >
+              <div className={classNames.join(' ')}>
+                <div className="scene-name"
+                  title={`${formatMessage('sceneList.sceneName')} ${value.sceneName}`}
+                  onClick={() => this.props.changeSelectedScene(value)}
+                >
+                  {value.sceneName}
+                </div>
+                <div className="scene-operation">
+                  <Tooltip title={formatMessage('sceneList.updateScene')}>
+                    <Icon type="edit"
+                      style={{ lineHeight: '20px', padding: '10px 5px' }}
+                      onClick={() => this.showUpdateForm(value)}
+                    />
+                  </Tooltip>
+                  <Tooltip title={formatMessage('sceneList.deleteScene')}>
+                    <Icon type="delete"
+                      style={{ color: '#f5222d', lineHeight: '20px', padding: '10px 5px' }}
+                      onClick={() => this.props.deleteScene(value)}
+                    />
+                  </Tooltip>
+                </div>
+              </div>
+            </Col>;
+          })
+        }
+      </Row>
+    );
   }
 
   render () {
     const formatMessage = this.formatMessage;
     return (
-      <div>
-        <Row>
-          <Col span={6}>
+      <section>
+        <h1><FormattedMessage id='sceneList.title' /></h1>
+        <a href={this.props.previewLink} target="_blank">{formatMessage('interfaceDetail.previewData')}</a>
+        <Row style={{padding: '4px 0'}}>
+          <Col {...this.defaultColProps}>
             <Search
               placeholder={formatMessage('sceneList.searchScene')}
               onChange={this.filterScene}
             />
           </Col>
-          <Col span={2}>
+          <Col {...this.defaultColProps}>
             <Button
               type="primary"
-              onClick={this.showCreateForm}
+              onClick={this.showSceneForm}
             >
               <FormattedMessage id='sceneList.createScene' />
             </Button>
           </Col>
         </Row>
 
-        <ul>
-          { this.renderSceneList() }
-        </ul>
+        { this.renderSceneList() }
 
         <SceneForm
           visible={this.state.sceneFormVisible}
@@ -162,7 +177,7 @@ class InterfaceSceneList extends Component {
           confirmLoading={this.state.sceneFormLoading}
           stageData={this.state.stageData}
         />
-      </div>
+      </section>
     );
   }
 }

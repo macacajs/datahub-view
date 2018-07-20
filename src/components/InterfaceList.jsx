@@ -57,7 +57,7 @@ class InterfaceList extends Component {
     });
   }
 
-  confirmInterfaceForm = async ({ pathname, description, method }, callback = () => {}) => {
+  confirmInterfaceForm = async ({ pathname, description, method }) => {
     this.setState({
       interfaceFormLoading: true,
     });
@@ -77,7 +77,6 @@ class InterfaceList extends Component {
       this.setState({
         interfaceFormVisible: false,
       }, () => {
-        callback();
         this.props.fetchInterfaceList();
       });
     }
@@ -86,7 +85,6 @@ class InterfaceList extends Component {
   deleteInterface = async (uniqId) => {
     await interfaceService.deleteInterface({ uniqId });
     await this.props.fetchInterfaceList();
-    this.props.setSelectedInterface();
   }
 
   filterInterface = (e) => {
@@ -117,7 +115,6 @@ class InterfaceList extends Component {
           trigger="hover">
           <li
             className={isSelected ? 'clicked' : ''}
-            data-accessbilityid={`project-add-api-list-${index}`}
             onClick={() => this.props.setSelectedInterface(value.uniqId)}
           >
             <div className="left">
@@ -126,18 +123,19 @@ class InterfaceList extends Component {
               <p>method: {value.method}
               </p>
             </div>
-            <div className="right">
+            <div className="right" style={{fontSize: '16px'}}>
               <Icon
                 type="setting"
                 onClick={() => this.showUpdateForm(value)}
+                style={{marginRight: '4px'}}
               />
               <Popconfirm
                 title={formatMessage('common.deleteTip')}
-                onConfirm={() => this.deleteInterface(value.uniqId)}
+                onConfirm={e => this.deleteInterface(value.uniqId)}
                 okText={formatMessage('common.confirm')}
                 cancelText={formatMessage('common.cancel')}
               >
-                <Icon className="delete-icon" type="delete" />
+                <Icon style={{color: '#f5222d'}} className="delete-icon" type="delete" />
               </Popconfirm>
             </div>
           </li>
