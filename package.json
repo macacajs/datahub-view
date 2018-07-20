@@ -43,7 +43,6 @@
     "eslint-config-antife": "^1.0.0",
     "eslint-plugin-react": "^7.2.1",
     "git-contributor": "^1.0.8",
-    "intl": "^1.2.5",
     "json-loader": "^0.5.7",
     "less": "^2.7.2",
     "less-loader": "^4.1.0",
