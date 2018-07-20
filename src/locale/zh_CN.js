@@ -43,7 +43,7 @@ const zhCN = {
   'project.name': '项目名称',
   'project.name.invalid': '请输入小写字母或者数字',
   'project.description': '项目描述',
-  'project.description.invalid': '请输入中文或者数字',
+  'project.description.invalid': '请输入项目描述',
   'project.add': '添加项目',
 
   'interfaceList.addInterface': '添加接口',
