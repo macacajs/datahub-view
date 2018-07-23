@@ -168,6 +168,9 @@ class InterfaceSceneList extends Component {
           </Col>
         </Row>
 
+        <div>
+          <FormattedMessage id='sceneList.switchSceneHint'/>
+        </div>
         { this.renderSceneList() }
 
         <SceneForm

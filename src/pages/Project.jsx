@@ -37,8 +37,6 @@ class Project extends React.Component {
     selectedInterface: {},
 
     contentViewType: 'api', // display api content by default
-    data: [],
-    currentPathname: '',
     REALTIME_MAXLINE: 10,
     realTimeDataList: [],
     realTimeIndex: 0,
@@ -54,13 +52,6 @@ class Project extends React.Component {
     this.setState({
       interfaceList: res.data || [],
       selectedInterface: (res.data && res.data[0]) || {},
-    });
-  }
-
-  fetchOneInterface = async uniqId => {
-    const res = await interfaceService.getOneInterface({ uniqId });
-    this.setState({
-      selectedInterface: res.data,
     });
   }
 
@@ -86,15 +77,13 @@ class Project extends React.Component {
   }
 
   tabOnChange (key) {
-    if (key === 'realtimesnapshot' && this.state.realTimeDataList.length > 0) {
+    if (key === 'realtimesnapshot') {
       this.setState({
         contentViewType: 'realTime',
-        realTimeIndex: 0,
       });
-    } else if (key === 'apilist' && this.state.data.length) {
+    } else if (key === 'apilist') {
       this.setState({
         contentViewType: 'api',
-        currentPathname: this.state.data[0].pathname,
       });
     }
   }
@@ -152,7 +141,7 @@ class Project extends React.Component {
               ? this.state.contentViewType === 'api' &&
             <InterfaceDetail
               selectedInterface={this.state.selectedInterface}
-              fetchOneInterface={this.fetchOneInterface}
+              fetchInterfaceList={this.fetchInterfaceList}
               key={this.state.selectedInterface.uniqId}
             />
               : <div className="interface-detail">
@@ -167,13 +156,12 @@ class Project extends React.Component {
               </div>
           }
           {
-            this.state.data.length
-              ? this.state.contentViewType === 'realTime' &&
+            this.state.contentViewType === 'realTime' &&
             <RealTimeDetail
               handleAsynSecType={this.asynSecType.bind(this)}
               apis={this.state.data}
               data={this.state.realTimeDataList[this.state.realTimeIndex]}
-            /> : null
+            />
           }
         </Content>
       </Layout>

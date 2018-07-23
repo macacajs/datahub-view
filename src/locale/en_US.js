@@ -62,6 +62,7 @@ const enUS = {
   'interfaceDetail.schemaConfig': 'schema config',
 
   'sceneList.title': 'Manege Scene',
+  'sceneList.switchSceneHint': 'Click to switch scene:',
   'sceneList.searchScene': 'search scene',
   'sceneList.createScene': 'create scene',
   'sceneList.deleteScene': 'delete scene',

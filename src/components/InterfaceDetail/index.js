@@ -26,7 +26,7 @@ import {
 } from '../../service';
 class InterfaceDetail extends React.Component {
   state = {
-    selectedScene: '',
+    selectedScene: {},
     sceneList: [],
   }
 
@@ -35,13 +35,11 @@ class InterfaceDetail extends React.Component {
   }
 
   changeSelectedScene = async (value) => {
-    this.setState({
-      selectedScene: value,
-    });
     await interfaceService.updateInterface({
       uniqId: this.props.selectedInterface.uniqId,
       currentScene: value.uniqId,
     });
+    await this.updateInterFaceAndScene();
   }
 
   fetchSceneList = async () => {
@@ -67,7 +65,7 @@ class InterfaceDetail extends React.Component {
   }
 
   updateInterFaceAndScene = async () => {
-    await this.props.fetchOneInterface(this.props.selectedInterface.uniqId);
+    await this.props.fetchInterfaceList();
     await this.fetchSceneList();
   }
 

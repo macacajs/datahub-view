@@ -38,6 +38,7 @@ const Footer = Layout.Footer;
 const Content = Layout.Content;
 
 const pkg = require('../package.json');
+localStorage.debug = ('datahub*');
 
 class App extends React.Component {
   pageRouter () {

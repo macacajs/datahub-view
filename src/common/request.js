@@ -2,7 +2,8 @@
 
 import 'whatwg-fetch';
 import { message } from 'antd';
-import { logger } from '../common/helper';
+import debug from 'debug';
+const logger = debug('datahub:request');
 
 const verbs = {
   GET (url) {
@@ -52,7 +53,11 @@ export default async (url, method = 'GET', params = {}) => {
   }
 
   res = await res.json();
-  logger('%s %s %o %o', method, url, params, res);
+  if (Object.keys(params).length === 0) {
+    logger('%s %s %o', method, url, res);
+  } else {
+    logger('%s %s %o %o', method, url, params, res);
+  }
   if (!res.success) {
     message.warn(res.message || 'Network Error');
   }

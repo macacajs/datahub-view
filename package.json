@@ -76,9 +76,9 @@
     "lint"
   ],
   "scripts": {
-    "dev": "webpack-dev-server --mode=development",
+    "dev": "webpack-dev-server --mode development",
     "dev:test": "cross-env NODE_ENV=test npm run dev",
-    "build": "cross-env NODE_ENV=production webpack -p --hide-modules",
+    "build": "cross-env NODE_ENV=production webpack -p --mode production",
     "lint": "eslint . --ext js,jsx --fix && stylelint --fix src/**/*.less -s less",
     "prepublishOnly": "npm run build",
     "serve": "npm run dev:test &",

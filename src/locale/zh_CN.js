@@ -62,6 +62,7 @@ const zhCN = {
   'interfaceDetail.schemaConfig': '字段描述配置',
 
   'sceneList.title': '场景管理',
+  'sceneList.switchSceneHint': '点击场景进行切换：',
   'sceneList.searchScene': '搜索场景',
   'sceneList.createScene': '新增场景',
   'sceneList.deleteScene': '删除场景',
