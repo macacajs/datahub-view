@@ -1,6 +1,6 @@
 import request from '../common/request';
 
-const { uniqId: projectUniqId } = window.context;
+const { uniqId: projectUniqId } = window.context || {};
 
 export async function getInterfaceList () {
   return request(`/api/interface?projectUniqId=${projectUniqId}`, 'GET');
