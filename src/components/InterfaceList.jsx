@@ -77,14 +77,14 @@ class InterfaceList extends Component {
       this.setState({
         interfaceFormVisible: false,
       }, () => {
-        this.props.fetchInterfaceList();
+        this.props.updateInterfaceList();
       });
     }
   }
 
   deleteInterface = async (uniqId) => {
     await interfaceService.deleteInterface({ uniqId });
-    await this.props.fetchInterfaceList();
+    await this.props.updateInterfaceList();
   }
 
   filterInterface = (e) => {

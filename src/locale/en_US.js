@@ -72,6 +72,13 @@ const enUS = {
   'sceneList.invalidSceneName': 'scene name is invalid, type alphanum - _',
   'sceneList.invalidSceneData': 'scene data is invalid, type JSON data',
 
+  'proxyConfig.enable.true': 'proxy mode enabled',
+  'proxyConfig.enable.false': 'proxy mode disabled',
+  'proxyConfig.title': 'proxy config',
+  'proxyConfig.isUseProxy': 'use proxy?',
+  'proxyConfig.addProxy': 'add proxy',
+  'proxyConfig.inputTip': 'please input proxy url',
+
   // to be removed
   'apiConfig.title': 'API config',
   'apiConfig.apiDoc': 'API doc',
@@ -92,10 +99,6 @@ const enUS = {
   'sceneMng.addSceneBtn': 'add scene',
   'sceneMng.nullError': 'scene name cant be empty！',
   'sceneMng.existError': 'scene name is existed',
-  'proxyConfig.title': 'proxy config',
-  'proxyConfig.isUseProxy': 'use proxy?',
-  'proxyConfig.addProxy': 'add proxy',
-  'proxyConfig.inputTip': 'please input proxy url',
 
   'fieldDes.req.title': 'Request field description',
   'fieldDes.res.title': 'Response field description',

@@ -72,6 +72,13 @@ const zhCN = {
   'sceneList.sceneData': '场景数据',
   'sceneList.invalidSceneData': '格式错误，请输入 JSON 数据',
 
+  'proxyConfig.enable.true': '已开启代理',
+  'proxyConfig.enable.false': '已关闭代理',
+  'proxyConfig.title': '代理配置',
+  'proxyConfig.isUseProxy': '是否使用代理',
+  'proxyConfig.addProxy': '添加代理',
+  'proxyConfig.inputTip': '请填写代理地址',
+
   // to be removed
   'apiConfig.title': '接口配置',
   'apiConfig.apiDoc': '接口文档',
@@ -92,10 +99,6 @@ const zhCN = {
   'sceneMng.addSceneBtn': '新增场景',
   'sceneMng.nullError': '场景名不能为空！',
   'sceneMng.existError': '场景名称已存在！',
-  'proxyConfig.title': '代理配置',
-  'proxyConfig.isUseProxy': '是否使用代理',
-  'proxyConfig.addProxy': '添加代理',
-  'proxyConfig.inputTip': '请填写代理地址',
 
   'fieldDes.req.title': 'Request字段描述',
   'fieldDes.res.title': 'Response字段描述',

@@ -13,7 +13,7 @@ import {
 
 import InterfaceSceneList from './InterfaceSceneList';
 // import InterfaceContextConfig from './InterfaceContextConfig';
-// import InterfaceProxyConfig from './InterfaceProxyConfig';
+import InterfaceProxyConfig from './InterfaceProxyConfig';
 // import InterfaceSchema from './InterfaceSchema';
 
 import './index.less';
@@ -28,10 +28,15 @@ class InterfaceDetail extends React.Component {
   state = {
     selectedScene: {},
     sceneList: [],
+    enableProxy: false,
   }
 
-  async componentDidMount () {
-    await this.fetchSceneList();
+  get uniqId () {
+    return this.props.selectedInterface.uniqId;
+  }
+
+  get selectedInterface () {
+    return this.props.selectedInterface;
   }
 
   changeSelectedScene = async (value) => {
@@ -65,8 +70,22 @@ class InterfaceDetail extends React.Component {
   }
 
   updateInterFaceAndScene = async () => {
-    await this.props.fetchInterfaceList();
+    await this.props.updateInterfaceList();
     await this.fetchSceneList();
+  }
+
+  toggleProxy = async () => {
+    const flag = !this.state.enableProxy;
+    const selectedInterface = this.selectedInterface;
+    console.log('old value', selectedInterface.proxyConfig);
+    await interfaceService.updateInterface({
+      uniqId: this.uniqId,
+      proxyConfig: { enabled: flag },
+    });
+    await this.updateInterFaceAndScene();
+    this.setState({
+      enableProxy: flag,
+    });
   }
 
   render () {
@@ -88,16 +107,21 @@ class InterfaceDetail extends React.Component {
         </div>
         <div className="interface-detail-content">
           <InterfaceSceneList
+            disabled={this.state.enableProxy}
             previewLink={previewLink}
             sceneList={this.state.sceneList}
             selectedScene={this.state.selectedScene}
             interfaceData={selectedInterface}
             deleteScene={this.deleteScene}
+            fetchSceneList={this.fetchSceneList}
             changeSelectedScene={this.changeSelectedScene}
             updateInterFaceAndScene={this.updateInterFaceAndScene}
           />
           {/* <InterfaceContextConfig /> */}
-          {/* <InterfaceProxyConfig /> */}
+          <InterfaceProxyConfig
+            enableProxy={this.state.enableProxy}
+            toggleProxy={this.toggleProxy}
+          />
           {/* <InterfaceSchema /> */}
         </div>
       </div>

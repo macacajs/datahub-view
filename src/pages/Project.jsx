@@ -44,15 +44,30 @@ class Project extends React.Component {
 
   async componentDidMount () {
     this.initRealTimeDataList();
-    await this.fetchInterfaceList();
-  }
-
-  fetchInterfaceList = async () => {
-    const res = await interfaceService.getInterfaceList();
+    const res = await this.fetchInterfaceList();
     this.setState({
       interfaceList: res.data || [],
       selectedInterface: (res.data && res.data[0]) || {},
     });
+  }
+
+  fetchInterfaceList = async () => {
+    return await interfaceService.getInterfaceList();
+  }
+
+  updateInterfaceList = async () => {
+    const res = await this.fetchInterfaceList();
+    this.setState({
+      interfaceList: res.data || [],
+      selectedInterface: this.getSelectedInterface(res.data),
+    });
+  }
+
+  getSelectedInterface = data => {
+    if (!Array.isArray(data)) return {};
+    return data.find(value => {
+      return value.uniqId === this.state.selectedInterface.uniqId;
+    }) || data[0];
   }
 
   setSelectedInterface = async (uniqId) => {
@@ -121,7 +136,7 @@ class Project extends React.Component {
                 selectedInterface={this.state.selectedInterface}
                 setSelectedInterface={this.setSelectedInterface}
                 interfaceList={this.state.interfaceList}
-                fetchInterfaceList={this.fetchInterfaceList}
+                updateInterfaceList={this.updateInterfaceList}
               />
             </TabPane>
             <TabPane tab={this.props.intl.formatMessage({
@@ -141,7 +156,7 @@ class Project extends React.Component {
               ? this.state.contentViewType === 'api' &&
             <InterfaceDetail
               selectedInterface={this.state.selectedInterface}
-              fetchInterfaceList={this.fetchInterfaceList}
+              updateInterfaceList={this.updateInterfaceList}
               key={this.state.selectedInterface.uniqId}
             />
               : <div className="interface-detail">

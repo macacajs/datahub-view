@@ -19,18 +19,16 @@ export async function createInterface ({ pathname, description, method = 'GET' }
   });
 };
 
-export async function updateInterface ({
-  uniqId, pathname, description, method,
-  currentScene, proxyConfig, contextConfig,
-}) {
-  return request(`/api/interface/${uniqId}`, 'PUT', {
-    pathname,
-    description,
-    method,
-    currentScene,
-    proxyConfig,
-    contextConfig,
-  });
+export async function updateInterface ({ uniqId, ...payload }) {
+  const fileds = [
+    'pathname', 'description', 'method',
+    'currentScene', 'proxyConfig', 'contextConfig',
+  ];
+  const postData = {};
+  for (const field of fileds) {
+    if (payload[field]) postData[field] = payload[field];
+  }
+  return request(`/api/interface/${uniqId}`, 'PUT', postData);
 };
 
 export async function deleteInterface ({ uniqId }) {

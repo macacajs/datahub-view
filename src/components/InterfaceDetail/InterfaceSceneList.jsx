@@ -32,6 +32,10 @@ class InterfaceSceneList extends Component {
     stageData: null,
   }
 
+  componentDidMount () {
+    this.props.fetchSceneList();
+  }
+
   formatMessage = id => this.props.intl.formatMessage({ id })
 
   showSceneForm = () => {
@@ -101,6 +105,7 @@ class InterfaceSceneList extends Component {
   renderSceneList = () => {
     const formatMessage = this.formatMessage;
     const { sceneList, selectedScene } = this.props;
+    const disabled = this.props.disabled;
     return (
       <Row>
         {
@@ -112,31 +117,35 @@ class InterfaceSceneList extends Component {
               'scene-list-item',
               'scene-list-item-active',
             ] : [ 'scene-list-item' ];
+            if (disabled) classNames.push('disabled');
             return <Col
               {...this.defaultColProps}
               key={value.uniqId}
+              disabled={this.props.disabled}
             >
               <div className={classNames.join(' ')}>
                 <div className="scene-name ellipsis"
                   title={`${formatMessage('sceneList.sceneName')} ${value.sceneName}`}
-                  onClick={() => this.props.changeSelectedScene(value)}
+                  onClick={() => !disabled && this.props.changeSelectedScene(value)}
                 >
                   {value.sceneName}
                 </div>
-                <div className="scene-operation">
-                  <Tooltip title={formatMessage('sceneList.updateScene')}>
-                    <Icon type="edit"
-                      style={{ lineHeight: '20px', padding: '10px 5px' }}
-                      onClick={() => this.showUpdateForm(value)}
-                    />
-                  </Tooltip>
-                  <Tooltip title={formatMessage('sceneList.deleteScene')}>
-                    <Icon type="delete"
-                      style={{ color: '#f5222d', lineHeight: '20px', padding: '10px 5px' }}
-                      onClick={() => this.props.deleteScene(value)}
-                    />
-                  </Tooltip>
-                </div>
+                {
+                  !disabled && <div className="scene-operation">
+                    <Tooltip title={formatMessage('sceneList.updateScene')}>
+                      <Icon type="edit"
+                        style={{ lineHeight: '20px', padding: '10px 5px' }}
+                        onClick={() => this.showUpdateForm(value)}
+                      />
+                    </Tooltip>
+                    <Tooltip title={formatMessage('sceneList.deleteScene')}>
+                      <Icon type="delete"
+                        style={{ color: '#f5222d', lineHeight: '20px', padding: '10px 5px' }}
+                        onClick={() => this.props.deleteScene(value)}
+                      />
+                    </Tooltip>
+                  </div>
+                }
               </div>
             </Col>;
           })
@@ -154,12 +163,14 @@ class InterfaceSceneList extends Component {
         <Row style={{padding: '4px 0'}}>
           <Col {...this.defaultColProps}>
             <Search
+              disabled={this.props.disabled}
               placeholder={formatMessage('sceneList.searchScene')}
               onChange={this.filterScene}
             />
           </Col>
           <Col {...this.defaultColProps}>
             <Button
+              disabled={this.props.disabled}
               type="primary"
               onClick={this.showSceneForm}
             >
