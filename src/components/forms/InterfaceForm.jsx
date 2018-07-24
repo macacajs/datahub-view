@@ -58,6 +58,7 @@ function InterfaceFormComponent (props) {
               message: formatMessage('interfaceList.invalidPathname'),
               pattern: /^[a-z0-9:_-]([.a-z0-9:/_-]*[a-z0-9:_-])?$/,
             },
+            { max: 32 },
           ],
         })(
           <Input
@@ -71,9 +72,10 @@ function InterfaceFormComponent (props) {
           rules: [
             {
               required: true,
-              pattern: /^[^\s].*[^\s]$/,
+              pattern: /^[^\s].*$/,
               message: formatMessage('interfaceList.invalidDescription'),
             },
+            { max: 32 },
           ],
         })(
           <Input />

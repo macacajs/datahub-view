@@ -56,6 +56,7 @@ function ProjectFormComponent (props) {
               message: formatMessage('project.name.invalid'),
               pattern: /^[a-z0-9_-]+$/,
             },
+            { max: 32 },
           ],
         })(
           <Input />
@@ -67,8 +68,10 @@ function ProjectFormComponent (props) {
           rules: [
             {
               required: true,
+              pattern: /^[^\s].*$/,
               message: formatMessage('project.description.invalid'),
             },
+            { max: 32 },
           ],
         })(
           <Input />

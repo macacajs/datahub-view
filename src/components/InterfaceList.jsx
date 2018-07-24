@@ -118,7 +118,7 @@ class InterfaceList extends Component {
             onClick={() => this.props.setSelectedInterface(value.uniqId)}
           >
             <div className="left">
-              <h3>{value.pathname}</h3>
+              <h3 className="ellipsis">{value.pathname}</h3>
               <p>{value.description}</p>
               <p>method: {value.method}
               </p>

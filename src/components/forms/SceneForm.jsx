@@ -123,6 +123,7 @@ class SceneFormComponent extends Component {
                 message: formatMessage('sceneList.invalidSceneName'),
                 pattern: /^[a-z0-9_-]+$/,
               },
+              { max: 32 },
             ],
           })(
             <Input/>

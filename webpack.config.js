@@ -117,17 +117,6 @@ module.exports = (env, argv) => {
         chunkFilename: '[name].css',
       }),
     ],
-    optimization: {
-      minimizer: [
-        new UglifyJsPlugin({
-          uglifyOptions: {
-            compress: {
-              collapse_vars: false, // for https://github.com/visionmedia/debug/issues/547
-            },
-          },
-        }),
-      ],
-    },
     devServer: {
       hot: true,
       stats: 'errors-only',
@@ -147,6 +136,17 @@ module.exports = (env, argv) => {
 
   if (isProduction) {
     webpackConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
+    webpackConfig.optimization = {
+      minimizer: [
+        new UglifyJsPlugin({
+          uglifyOptions: {
+            compress: {
+              collapse_vars: false, // for https://github.com/visionmedia/debug/issues/547
+            },
+          },
+        }),
+      ],
+    };
   }
 
   if (process.env.npm_config_report) {

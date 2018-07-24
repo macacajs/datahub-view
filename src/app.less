@@ -1,4 +1,6 @@
-@import 'mixin.less';
+@import './common/style/variable.less';
+@import './common/style/mixin.less';
+@import './common/style/util.less';
 
 body {
   font-family: "ProximaNova-Light", "Avenir Next", -apple-system-body, "Helvetica Neue", "Helvetica", sans-serif;
@@ -44,40 +46,6 @@ body {
   a {
     color: #656565;
   }
-}
-
-.codemirror-modal {
-  .ant-modal-body {
-    padding: 0;
-  }
-}
-
-.ant-tabs-bar {
-  margin: 0;
-}
-
-
-.editable-cell {
-  height: auto;
-  &:hover {
-    .icon {
-      transition: opacity .5s linear;
-      opacity: 1;
-    }
-  }
-  .ant-input {
-    height: 26px;
-  }
-  .icon {
-    opacity: 0;
-  }
-  .icon-check {
-    margin-left: 4px;
-  }
-}
-
-.CodeMirror {
-  height: 420px;
 }
 
 .header {

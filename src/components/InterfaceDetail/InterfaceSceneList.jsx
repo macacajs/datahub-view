@@ -117,7 +117,7 @@ class InterfaceSceneList extends Component {
               key={value.uniqId}
             >
               <div className={classNames.join(' ')}>
-                <div className="scene-name"
+                <div className="scene-name ellipsis"
                   title={`${formatMessage('sceneList.sceneName')} ${value.sceneName}`}
                   onClick={() => this.props.changeSelectedScene(value)}
                 >

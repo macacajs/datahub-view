@@ -73,8 +73,6 @@ const genSchemaList = (data) => {
 
 _.genSchemaList = genSchemaList;
 
-_.typeof = typeDetect;
-
 _.isChineseChar = str => {
   const reg = /[\u4E00-\u9FA5\uF900-\uFA2D]/;
   return reg.test(str);
