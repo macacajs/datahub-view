@@ -74,10 +74,9 @@ const enUS = {
 
   'proxyConfig.enable.true': 'proxy mode enabled',
   'proxyConfig.enable.false': 'proxy mode disabled',
-  'proxyConfig.title': 'proxy config',
-  'proxyConfig.isUseProxy': 'use proxy?',
-  'proxyConfig.addProxy': 'add proxy',
-  'proxyConfig.inputTip': 'please input proxy url',
+  'proxyConfig.addProxyUrl': 'add proxy url',
+  'proxyConfig.invalidProxyUrl': 'please input valid url',
+  'proxyConfig.switchProxyUrlHint': 'Click to switch proxy url:',
 
   // to be removed
   'apiConfig.title': 'API config',

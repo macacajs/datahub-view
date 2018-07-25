@@ -1,24 +1,145 @@
-import React from 'react';
+import React, {
+  Component,
+} from 'react';
 
 import {
+  Icon,
   Switch,
+  Button,
+  Tooltip,
 } from 'antd';
+
+import {
+  Row,
+  Col,
+} from 'react-flexbox-grid';
 
 import {
   injectIntl,
 } from 'react-intl';
 
-export default injectIntl(props => {
-  const formatMessage = id => props.intl.formatMessage({ id });
-  return (
-    <section style={{marginTop: '20px'}}>
-      <h1> {formatMessage('interfaceDetail.proxyConfig')} </h1>
-      <Switch
-        onChange={props.toggleProxy}
-      />
-      <span style={{marginLeft: '10px', verticalAlign: 'middle'}}>
-        {formatMessage(`proxyConfig.enable.${props.enableProxy}`)}
-      </span>
-    </section>
-  );
-});
+import ProxyForm from '../forms/ProxyForm';
+
+class InterfaceProxyConfig extends Component {
+  state = {
+    proxyFormVisible: false,
+    proxyFormLoading: false,
+  }
+
+  defaultColProps = {
+    xs: 12,
+    sm: 12,
+    md: 6,
+    lg: 3,
+  }
+
+  formatMessage = id => this.props.intl.formatMessage({ id });
+
+  showProxyForm = () => {
+    this.setState({
+      proxyFormVisible: true,
+    });
+  }
+
+  hideProxyForm = () => {
+    this.setState({
+      proxyFormVisible: false,
+    });
+  }
+
+  confirmProxyForm = async value => {
+    this.setState({
+      proxyFormLoading: true,
+    });
+    await this.props.addProxy(value);
+    this.setState({
+      proxyFormLoading: false,
+    });
+    this.setState({
+      proxyFormVisible: false,
+    });
+  }
+
+  renderProxyList = () => {
+    const disabled = !this.props.selectedInterface.proxyConfig.enabled;
+    const { proxyList = [], activeIndex = 0 } = this.props.proxyConfig;
+    return <Row>
+      {proxyList.map((value, index) => {
+        const classNames = [
+          'common-list-item',
+        ];
+        if (disabled) classNames.push('disabled');
+        if (index === activeIndex) classNames.push('common-list-item-active');
+        return <Col
+          key={index}
+          {...this.defaultColProps}
+        >
+          <div className={classNames.join(' ')} >
+            <div className="common-list-item-name"
+              onClick={() => !disabled && this.props.selectProxy(index)}
+            >
+              {value.proxyUrl}
+            </div>
+            {
+              !disabled && <div className="common-list-item-operation">
+                <Tooltip title={this.formatMessage('sceneList.deleteScene')}>
+                  <Icon type="delete"
+                    style={{ color: '#f5222d', lineHeight: '20px', padding: '10px 5px' }}
+                    onClick={() => this.props.deleteProxy(index)}
+                  />
+                </Tooltip>
+              </div>
+            }
+          </div>
+        </Col>;
+      }
+      )}
+    </Row>;
+  }
+
+  render () {
+    const props = this.props;
+    const formatMessage = this.formatMessage;
+    const { enabled = false, proxyList = [] } = props.proxyConfig;
+    const switchProps = enabled ? { defaultChecked: true } : {};
+    const disabled = !props.selectedInterface.proxyConfig.enabled;
+
+    return (
+      <section style={{marginTop: '20px'}}>
+        <h1>{formatMessage('interfaceDetail.proxyConfig')}</h1>
+        <Row>
+          <Col {...this.defaultColProps} style={{ lineHeight: '30px'}}>
+            <Switch
+              {...switchProps}
+              onChange={props.toggleProxy}
+            />
+            <span style={{marginLeft: '10px', verticalAlign: 'middle'}}>
+              {formatMessage(`proxyConfig.enable.${enabled}`)}
+            </span>
+          </Col>
+          <Col {...this.defaultColProps} >
+            <Button
+              disabled={disabled}
+              type="primary"
+              onClick={this.showProxyForm}
+            >
+              {formatMessage('proxyConfig.addProxyUrl')}
+            </Button>
+          </Col>
+        </Row>
+        <div>
+          {proxyList.length ? formatMessage('proxyConfig.switchProxyUrlHint') : ''}
+        </div>
+        { this.renderProxyList() }
+        <ProxyForm
+          visible={this.state.proxyFormVisible}
+          confirmLoading={this.state.proxyFormLoading}
+          onCancel={this.hideProxyForm}
+          onOk={this.confirmProxyForm}
+        />
+      </section>
+    );
+  }
+}
+
+export default injectIntl(InterfaceProxyConfig);

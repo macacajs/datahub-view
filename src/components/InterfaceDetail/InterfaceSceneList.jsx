@@ -32,7 +32,7 @@ class InterfaceSceneList extends Component {
     stageData: null,
   }
 
-  componentDidMount () {
+  componentWillMount () {
     this.props.fetchSceneList();
   }
 
@@ -114,9 +114,9 @@ class InterfaceSceneList extends Component {
           }).map(value => {
             const isAvtive = selectedScene.uniqId === value.uniqId;
             const classNames = isAvtive ? [
-              'scene-list-item',
-              'scene-list-item-active',
-            ] : [ 'scene-list-item' ];
+              'common-list-item',
+              'common-list-item-active',
+            ] : [ 'common-list-item' ];
             if (disabled) classNames.push('disabled');
             return <Col
               {...this.defaultColProps}
@@ -124,14 +124,14 @@ class InterfaceSceneList extends Component {
               disabled={this.props.disabled}
             >
               <div className={classNames.join(' ')}>
-                <div className="scene-name ellipsis"
+                <div className="common-list-item-name"
                   title={`${formatMessage('sceneList.sceneName')} ${value.sceneName}`}
                   onClick={() => !disabled && this.props.changeSelectedScene(value)}
                 >
                   {value.sceneName}
                 </div>
                 {
-                  !disabled && <div className="scene-operation">
+                  !disabled && <div className="common-list-item-operation">
                     <Tooltip title={formatMessage('sceneList.updateScene')}>
                       <Icon type="edit"
                         style={{ lineHeight: '20px', padding: '10px 5px' }}

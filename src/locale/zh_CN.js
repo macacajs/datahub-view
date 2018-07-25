@@ -72,12 +72,11 @@ const zhCN = {
   'sceneList.sceneData': '场景数据',
   'sceneList.invalidSceneData': '格式错误，请输入 JSON 数据',
 
-  'proxyConfig.enable.true': '已开启代理',
-  'proxyConfig.enable.false': '已关闭代理',
-  'proxyConfig.title': '代理配置',
-  'proxyConfig.isUseProxy': '是否使用代理',
-  'proxyConfig.addProxy': '添加代理',
-  'proxyConfig.inputTip': '请填写代理地址',
+  'proxyConfig.enable.true': '代理模式已开启',
+  'proxyConfig.enable.false': '代理模式已关闭',
+  'proxyConfig.addProxyUrl': '添加代理 Url 地址',
+  'proxyConfig.invalidProxyUrl': '请输入 Url',
+  'proxyConfig.switchProxyUrlHint': '点击 Url 进行切换：',
 
   // to be removed
   'apiConfig.title': '接口配置',

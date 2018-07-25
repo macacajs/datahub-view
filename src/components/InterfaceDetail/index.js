@@ -28,15 +28,6 @@ class InterfaceDetail extends React.Component {
   state = {
     selectedScene: {},
     sceneList: [],
-    enableProxy: false,
-  }
-
-  get uniqId () {
-    return this.props.selectedInterface.uniqId;
-  }
-
-  get selectedInterface () {
-    return this.props.selectedInterface;
   }
 
   changeSelectedScene = async (value) => {
@@ -75,17 +66,56 @@ class InterfaceDetail extends React.Component {
   }
 
   toggleProxy = async () => {
-    const flag = !this.state.enableProxy;
-    const selectedInterface = this.selectedInterface;
-    console.log('old value', selectedInterface.proxyConfig);
+    const { enabled = false } = this.props.selectedInterface.proxyConfig;
+    const flag = !enabled;
+    const selectedInterface = this.props.selectedInterface;
     await interfaceService.updateInterface({
-      uniqId: this.uniqId,
-      proxyConfig: { enabled: flag },
+      uniqId: this.props.selectedInterface.uniqId,
+      proxyConfig: {
+        ...selectedInterface.proxyConfig,
+        enabled: flag,
+      },
     });
-    await this.updateInterFaceAndScene();
-    this.setState({
-      enableProxy: flag,
+    await this.props.updateInterfaceList();
+  }
+
+  changeProxyList = async newList => {
+    const selectedInterface = this.props.selectedInterface;
+    const payload = {
+      uniqId: selectedInterface.uniqId,
+      proxyConfig: {
+        ...selectedInterface.proxyConfig,
+        proxyList: newList,
+      },
+    };
+    await interfaceService.updateInterface(payload);
+    await this.props.updateInterfaceList();
+  }
+
+  deleteProxy = async index => {
+    const selectedInterface = this.props.selectedInterface;
+    const { proxyList = [] } = selectedInterface.proxyConfig;
+    proxyList.splice(index, 1);
+    await this.changeProxyList(proxyList);
+  }
+
+  addProxy = async value => {
+    const selectedInterface = this.props.selectedInterface;
+    const { proxyList = [] } = selectedInterface.proxyConfig;
+    proxyList.push(value);
+    await this.changeProxyList(proxyList);
+  }
+
+  selectProxy = async index => {
+    const selectedInterface = this.props.selectedInterface;
+    await interfaceService.updateInterface({
+      uniqId: selectedInterface.uniqId,
+      proxyConfig: {
+        ...selectedInterface.proxyConfig,
+        activeIndex: index,
+      },
     });
+    await this.props.updateInterfaceList();
   }
 
   render () {
@@ -107,7 +137,7 @@ class InterfaceDetail extends React.Component {
         </div>
         <div className="interface-detail-content">
           <InterfaceSceneList
-            disabled={this.state.enableProxy}
+            disabled={selectedInterface.proxyConfig.enabled}
             previewLink={previewLink}
             sceneList={this.state.sceneList}
             selectedScene={this.state.selectedScene}
@@ -119,8 +149,12 @@ class InterfaceDetail extends React.Component {
           />
           {/* <InterfaceContextConfig /> */}
           <InterfaceProxyConfig
-            enableProxy={this.state.enableProxy}
+            proxyConfig={this.props.selectedInterface.proxyConfig}
+            selectedInterface={this.props.selectedInterface}
             toggleProxy={this.toggleProxy}
+            deleteProxy={this.deleteProxy}
+            addProxy={this.addProxy}
+            selectProxy={this.selectProxy}
           />
           {/* <InterfaceSchema /> */}
         </div>
