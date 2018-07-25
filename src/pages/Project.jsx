@@ -139,7 +139,7 @@ class Project extends React.Component {
                 updateInterfaceList={this.updateInterfaceList}
               />
             </TabPane>
-            <TabPane tab={this.props.intl.formatMessage({
+            {/* <TabPane tab={this.props.intl.formatMessage({
               id: 'project.realtimeList',
             })} key="realtimesnapshot">
               <RealTime
@@ -147,7 +147,7 @@ class Project extends React.Component {
                 realTimeIndex={this.state.realTimeIndex || 0}
                 onSelect={this.selectRealTimeItem.bind(this)}
               />
-            </TabPane>
+            </TabPane> */}
           </Tabs>
         </Sider>
         <Content>
@@ -173,7 +173,6 @@ class Project extends React.Component {
           {
             this.state.contentViewType === 'realTime' &&
             <RealTimeDetail
-              handleAsynSecType={this.asynSecType.bind(this)}
               apis={this.state.data}
               data={this.state.realTimeDataList[this.state.realTimeIndex]}
             />
