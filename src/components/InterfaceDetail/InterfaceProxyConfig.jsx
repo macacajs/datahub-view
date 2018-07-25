@@ -6,6 +6,7 @@ import {
   Icon,
   Switch,
   Button,
+  Popover,
   Tooltip,
 } from 'antd';
 
@@ -78,7 +79,9 @@ class InterfaceProxyConfig extends Component {
             <div className="common-list-item-name"
               onClick={() => !disabled && this.props.selectProxy(index)}
             >
-              {value.proxyUrl}
+              <Popover content={value.proxyUrl}>
+                {value.proxyUrl}
+              </Popover>
             </div>
             {
               !disabled && <div className="common-list-item-operation">
