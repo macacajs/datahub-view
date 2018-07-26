@@ -156,31 +156,39 @@ class InterfaceSceneList extends Component {
 
   render () {
     const formatMessage = this.formatMessage;
+    const disabled = this.props.disabled;
     return (
-      <section>
+      <section style={{marginTop: '20px'}}>
         <h1><FormattedMessage id='sceneList.title' /></h1>
-        <a href={this.props.previewLink} target="_blank">{formatMessage('interfaceDetail.previewData')}</a>
+        {
+          ['GET', 'ALL'].includes(this.props.interfaceData.method)
+            ? <a href={this.props.previewLink} target="_blank">{formatMessage('interfaceDetail.previewData')}</a>
+            : ''
+        }
         <Row style={{padding: '4px 0'}}>
           <Col {...this.defaultColProps}>
             <Search
-              disabled={this.props.disabled}
+              disabled={disabled}
               placeholder={formatMessage('sceneList.searchScene')}
               onChange={this.filterScene}
             />
           </Col>
           <Col {...this.defaultColProps}>
             <Button
-              disabled={this.props.disabled}
+              disabled={disabled}
               type="primary"
               onClick={this.showSceneForm}
             >
-              <FormattedMessage id='sceneList.createScene' />
+              <Icon type="plus-circle-o" style={{lineHeight: '30px'}}/>
+              {formatMessage('sceneList.createScene')}
             </Button>
           </Col>
         </Row>
 
         <div>
-          <FormattedMessage id='sceneList.switchSceneHint'/>
+          { disabled
+            ? <FormattedMessage id='sceneList.switchSceneDisabledHint'/>
+            : <FormattedMessage id='sceneList.switchSceneHint'/> }
         </div>
         { this.renderSceneList() }
 

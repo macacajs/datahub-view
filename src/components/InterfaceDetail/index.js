@@ -12,7 +12,7 @@ import {
 } from 'antd';
 
 import InterfaceSceneList from './InterfaceSceneList';
-// import InterfaceContextConfig from './InterfaceContextConfig';
+import InterfaceContextConfig from './InterfaceContextConfig';
 import InterfaceProxyConfig from './InterfaceProxyConfig';
 // import InterfaceSchema from './InterfaceSchema';
 
@@ -118,6 +118,19 @@ class InterfaceDetail extends React.Component {
     await this.props.updateInterfaceList();
   }
 
+  updateContextConfig = async values => {
+    const selectedInterface = this.props.selectedInterface;
+    const res = await interfaceService.updateInterface({
+      uniqId: selectedInterface.uniqId,
+      contextConfig: {
+        ...selectedInterface.contextConfig,
+        ...values,
+      },
+    });
+    await this.props.updateInterfaceList();
+    return res;
+  }
+
   render () {
     const { selectedInterface } = this.props;
     const previewLink = `//${location.host}/data/${projectName}/${this.props.selectedInterface.pathname}`;
@@ -136,6 +149,10 @@ class InterfaceDetail extends React.Component {
           </Breadcrumb>
         </div>
         <div className="interface-detail-content">
+          <InterfaceContextConfig
+            interfaceData={selectedInterface}
+            updateContextConfig={this.updateContextConfig}
+          />
           <InterfaceSceneList
             disabled={selectedInterface.proxyConfig.enabled}
             previewLink={previewLink}
@@ -147,7 +164,6 @@ class InterfaceDetail extends React.Component {
             changeSelectedScene={this.changeSelectedScene}
             updateInterFaceAndScene={this.updateInterFaceAndScene}
           />
-          {/* <InterfaceContextConfig /> */}
           <InterfaceProxyConfig
             proxyConfig={this.props.selectedInterface.proxyConfig}
             selectedInterface={this.props.selectedInterface}

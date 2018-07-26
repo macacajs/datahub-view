@@ -5,13 +5,14 @@ import React, {
 } from 'react';
 
 import {
-  Input,
-  Button,
   Row,
   Col,
-  Popconfirm,
-  Popover,
   Icon,
+  Input,
+  Button,
+  Popover,
+  Tooltip,
+  Popconfirm,
 } from 'antd';
 
 import {
@@ -124,11 +125,13 @@ class InterfaceList extends Component {
               </p>
             </div>
             <div className="right" style={{fontSize: '16px'}}>
-              <Icon
-                type="setting"
-                onClick={() => this.showUpdateForm(value)}
-                style={{marginRight: '4px'}}
-              />
+              <Tooltip title={formatMessage('interfaceList.updateInterface')}>
+                <Icon
+                  type="setting"
+                  onClick={() => this.showUpdateForm(value)}
+                  style={{marginRight: '4px'}}
+                />
+              </Tooltip>
               <Popconfirm
                 title={formatMessage('common.deleteTip')}
                 onConfirm={e => this.deleteInterface(value.uniqId)}
@@ -162,7 +165,7 @@ class InterfaceList extends Component {
               data-accessbilityid="project-add-api-list-btn"
               onClick={this.showCreateForm}
             >
-              <FormattedMessage id='interfaceList.addInterface' />
+              <FormattedMessage id="interfaceList.addInterface" />
             </Button>
           </Col>
         </Row>
