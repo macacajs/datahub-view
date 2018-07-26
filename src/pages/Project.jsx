@@ -16,7 +16,7 @@ import {
 import InterfaceList from '../components/InterfaceList';
 import InterfaceDetail from '../components/InterfaceDetail/index';
 
-import RealTime from '../components/RealTime';
+// import RealTime from '../components/RealTime';
 
 import RealTimeDetail from '../components/RealTimeDetail';
 
