@@ -8,6 +8,7 @@ import {
   Button,
   Popover,
   Tooltip,
+  Popconfirm,
 } from 'antd';
 
 import {
@@ -86,10 +87,15 @@ class InterfaceProxyConfig extends Component {
             {
               !disabled && <div className="common-list-item-operation">
                 <Tooltip title={this.formatMessage('sceneList.deleteScene')}>
-                  <Icon type="delete"
-                    style={{ color: '#f5222d', lineHeight: '20px', padding: '10px 5px' }}
-                    onClick={() => this.props.deleteProxy(index)}
-                  />
+                  <Popconfirm
+                    placement="right"
+                    title={this.formatMessage('common.deleteTip')}
+                    onConfirm={() => this.props.deleteProxy(index)}
+                    okText={this.formatMessage('common.confirm')}
+                    cancelText={this.formatMessage('common.cancel')}
+                  >
+                    <Icon type="delete"/>
+                  </Popconfirm>
                 </Tooltip>
               </div>
             }
