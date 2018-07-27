@@ -7,6 +7,7 @@ import {
   Input,
   Button,
   Tooltip,
+  Popconfirm,
 } from 'antd';
 
 import {
@@ -134,15 +135,19 @@ class InterfaceSceneList extends Component {
                   !disabled && <div className="common-list-item-operation">
                     <Tooltip title={formatMessage('sceneList.updateScene')}>
                       <Icon type="edit"
-                        style={{ lineHeight: '20px', padding: '10px 5px' }}
                         onClick={() => this.showUpdateForm(value)}
                       />
                     </Tooltip>
-                    <Tooltip title={formatMessage('sceneList.deleteScene')}>
-                      <Icon type="delete"
-                        style={{ color: '#f5222d', lineHeight: '20px', padding: '10px 5px' }}
-                        onClick={() => this.props.deleteScene(value)}
-                      />
+                    <Tooltip title={this.formatMessage('sceneList.deleteScene')}>
+                      <Popconfirm
+                        placement="right"
+                        title={formatMessage('common.deleteTip')}
+                        onConfirm={() => this.props.deleteScene(value)}
+                        okText={formatMessage('common.confirm')}
+                        cancelText={formatMessage('common.cancel')}
+                      >
+                        <Icon type="delete"/>
+                      </Popconfirm>
                     </Tooltip>
                   </div>
                 }
