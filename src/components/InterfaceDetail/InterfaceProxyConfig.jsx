@@ -86,7 +86,7 @@ class InterfaceProxyConfig extends Component {
             </div>
             {
               !disabled && <div className="common-list-item-operation">
-                <Tooltip title={this.formatMessage('sceneList.deleteScene')}>
+                <Tooltip title={this.formatMessage('common.delete')}>
                   <Popconfirm
                     placement="right"
                     title={this.formatMessage('common.deleteTip')}
