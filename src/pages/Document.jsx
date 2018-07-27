@@ -3,6 +3,10 @@
 import React from 'react';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/javascript/javascript';
+import 'codemirror/addon/search/searchcursor.js';
+import 'codemirror/addon/search/search.js';
+import 'codemirror/addon/dialog/dialog.js';
+import 'codemirror/addon/dialog/dialog.css';
 
 import {
   FormattedMessage,
@@ -42,6 +46,9 @@ const codeMirrorOptions = {
   textWrapping: false,
   lineWrapping: true,
   readOnly: true,
+  extraKeys: {
+    'Alt-F': 'findPersistent',
+  },
 };
 
 const TabPane = Tabs.TabPane;
