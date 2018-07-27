@@ -34,7 +34,11 @@ export default class RealTime extends React.Component {
         {
           realTimeDataList.map((data, index) => {
             return (
-              <Row key={index} className={`real-time-line ${index === this.props.realTimeIndex ? 'clicked' : ''}`} onClick={this.props.onSelect.bind(this, index)}>
+              <Row
+                key={index}
+                className={`real-time-line ${index === this.props.realTimeIndex ? 'clicked' : ''}`}
+                onClick={this.props.onSelect.bind(this, index)}
+              >
                 <div>
                   <b className={`real-time-method ${data.req.method.toLowerCase()}`}>
                     {data.req.method}

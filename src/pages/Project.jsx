@@ -16,8 +16,7 @@ import {
 import InterfaceList from '../components/InterfaceList';
 import InterfaceDetail from '../components/InterfaceDetail/index';
 
-// import RealTime from '../components/RealTime';
-
+import RealTime from '../components/RealTime';
 import RealTimeDetail from '../components/RealTimeDetail';
 
 import {
@@ -139,15 +138,18 @@ class Project extends React.Component {
                 updateInterfaceList={this.updateInterfaceList}
               />
             </TabPane>
-            {/* <TabPane tab={this.props.intl.formatMessage({
-              id: 'project.realtimeList',
-            })} key="realtimesnapshot">
+            <TabPane
+              tab={this.props.intl.formatMessage({
+                id: 'project.realtimeList',
+              })}
+              key="realtimesnapshot"
+            >
               <RealTime
                 realTimeDataList={this.state.realTimeDataList}
                 realTimeIndex={this.state.realTimeIndex || 0}
                 onSelect={this.selectRealTimeItem.bind(this)}
               />
-            </TabPane> */}
+            </TabPane>
           </Tabs>
         </Sider>
         <Content>

@@ -20,7 +20,9 @@ import {
 
 import './RealTimeDetail.less';
 
-const Panel = Collapse.Panel;
+const {
+  Panel,
+} = Collapse;
 
 class RealTimeDetail extends React.Component {
   constructor (props) {
@@ -162,6 +164,9 @@ class RealTimeDetail extends React.Component {
   }
 
   render () {
+    if (!this.props.data) {
+      return null;
+    }
     const {
       req,
       res,
@@ -203,27 +208,27 @@ class RealTimeDetail extends React.Component {
         <h2 style={{marginTop: '10px'}}>Request</h2>
         <Collapse defaultActiveKey={['header', 'body']}>
           <Panel header="request header" key="header">
-            <p className="headers-list">
+            <div className="headers-list">
               {this.renderHeaders({ headers: req.headers })}
-            </p>
+            </div>
           </Panel>
           <Panel header="request body" key="body">
-            <p className="body-content">
+            <div className="body-content">
               {this.renderBody({ body: req.body })}
-            </p>
+            </div>
           </Panel>
         </Collapse>
         <h2 style={{marginTop: '10px'}}>Respose</h2>
         <Collapse defaultActiveKey={['header', 'body']}>
           <Panel header="response header" key="header">
-            <p className="headers-list">
+            <div className="headers-list">
               {this.renderHeaders({ headers: res.headers })}
-            </p>
+            </div>
           </Panel>
           <Panel header="response body" key="body">
-            <p className="body-content">
+            <div className="body-content">
               {this.renderBody({ body: res.body })}
-            </p>
+            </div>
           </Panel>
         </Collapse>
       </div>
