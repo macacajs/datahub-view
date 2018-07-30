@@ -2,6 +2,9 @@
 
 import React from 'react';
 import io from 'socket.io-client';
+import debug from 'debug';
+
+const logger = debug('datahub:socket.io');
 
 import {
   injectIntl,
@@ -80,6 +83,7 @@ class Project extends React.Component {
     const host = `http://${location.hostname}:${pageConfig.socket.port}`;
     const socket = io(host);
     socket.on('push data', (data) => {
+      logger(data);
       const newData = [
         ...this.state.realTimeDataList,
       ].slice(0, this.state.REALTIME_MAXLINE - 1);
