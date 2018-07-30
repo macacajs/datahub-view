@@ -32,13 +32,15 @@ const TabPane = Tabs.TabPane;
 const Sider = Layout.Sider;
 const Content = Layout.Content;
 
+const realTimeTabSymbol = 'REALTIME_TAB_KEY';
+const interfaceTabSymbol = 'INTERFACE_TAB_KEY';
 
 class Project extends React.Component {
   state = {
     interfaceList: [],
     selectedInterface: {},
 
-    contentViewType: 'api', // display api content by default
+    subRouter: interfaceTabSymbol,
     REALTIME_MAXLINE: 10,
     realTimeDataList: [],
     realTimeIndex: 0,
@@ -94,21 +96,15 @@ class Project extends React.Component {
     });
   }
 
-  tabOnChange (key) {
-    if (key === 'realtimesnapshot') {
-      this.setState({
-        contentViewType: 'realTime',
-      });
-    } else if (key === 'apilist') {
-      this.setState({
-        contentViewType: 'api',
-      });
-    }
+  tabOnChange = key => {
+    this.setState({
+      subRouter: key,
+    });
   }
 
-  selectRealTimeItem (index) {
+  selectRealTimeItem = index => {
     this.setState({
-      contentViewType: 'realTime',
+      subRouter: realTimeTabSymbol,
       realTimeIndex: index,
     });
   }
@@ -125,15 +121,15 @@ class Project extends React.Component {
           className="project-sider"
         >
           <Tabs
-            defaultActiveKey="apilist"
-            onChange={this.tabOnChange.bind(this)}
+            defaultActiveKey={interfaceTabSymbol}
+            onChange={this.tabOnChange}
             animated={false}
           >
             <TabPane
               tab={this.props.intl.formatMessage({
                 id: 'project.interfaceList',
               })}
-              key="apilist"
+              key={interfaceTabSymbol}
             >
               <InterfaceList
                 selectedInterface={this.state.selectedInterface}
@@ -146,12 +142,12 @@ class Project extends React.Component {
               tab={this.props.intl.formatMessage({
                 id: 'project.realtimeList',
               })}
-              key="realtimesnapshot"
+              key={realTimeTabSymbol}
             >
               <RealTime
                 realTimeDataList={this.state.realTimeDataList}
                 realTimeIndex={this.state.realTimeIndex || 0}
-                onSelect={this.selectRealTimeItem.bind(this)}
+                onSelect={this.selectRealTimeItem}
               />
             </TabPane>
           </Tabs>
@@ -159,7 +155,7 @@ class Project extends React.Component {
         <Content>
           {
             this.state.interfaceList.length
-              ? this.state.contentViewType === 'api' &&
+              ? this.state.subRouter === interfaceTabSymbol &&
             <InterfaceDetail
               selectedInterface={this.state.selectedInterface}
               updateInterfaceList={this.updateInterfaceList}
@@ -177,10 +173,10 @@ class Project extends React.Component {
               </div>
           }
           {
-            this.state.contentViewType === 'realTime' &&
+            this.state.subRouter === realTimeTabSymbol &&
             <RealTimeDetail
-              apis={this.state.data}
-              data={this.state.realTimeDataList[this.state.realTimeIndex]}
+              interfaceList={this.state.interfaceList}
+              realTimeData={this.state.realTimeDataList[this.state.realTimeIndex]}
             />
           }
         </Content>

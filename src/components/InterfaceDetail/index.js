@@ -142,9 +142,10 @@ class InterfaceDetail extends React.Component {
               <a href="/dashboard"><FormattedMessage id="topNav.allProject" /></a>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
-              <a href="/dashboard">
-                {selectedInterface.description}
-              </a>
+              {window.pageConfig && window.pageConfig.projectName}
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>
+              {selectedInterface.description}
             </Breadcrumb.Item>
           </Breadcrumb>
         </div>

@@ -60,6 +60,8 @@ const enUS = {
   'interfaceDetail.previewData': 'Preview scene data (GET|ALL method)',
   'interfaceDetail.proxyConfig': 'Proxy mode',
   'interfaceDetail.schemaConfig': 'Schema config',
+  'interfaceDetail.saveToScene': 'Save as scene data',
+  'interfaceDetail.selectInterface': 'Select interface',
 
   'sceneList.title': 'Manage Scene',
   'sceneList.switchSceneHint': 'Click to switch scene:',
@@ -98,13 +100,6 @@ const enUS = {
   'fieldDes.operation': 'operation',
   'fieldDes.pleaseInputArray': 'please input array',
   'fieldDes.jsonFormatError': 'JSON format error',
-
-  'realtimeProject.myProject': 'my hubs',
-  'realtimeProject.detailPhoto': 'detail snapshot',
-  'realtimeProject.saveToScene': 'save to scene list',
-  'realtimeProject.inputPlacehold': 'please input scene name',
-  'realtimeProject.validError': 'please input valid characters',
-  'realtimeProject.nullError': 'please add hub or API',
 
   'document.resSchemaDes': ' response schema description',
   'document.reqSchemaDes': ' request schema description',

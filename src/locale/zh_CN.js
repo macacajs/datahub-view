@@ -60,6 +60,8 @@ const zhCN = {
   'interfaceDetail.previewData': '预览场景数据（支持 GET|ALL 类型请求）',
   'interfaceDetail.proxyConfig': '代理模式',
   'interfaceDetail.schemaConfig': '字段描述配置',
+  'interfaceDetail.saveToScene': '保存为新场景',
+  'interfaceDetail.selectInterface': '选择接口',
 
   'sceneList.title': '场景管理',
   'sceneList.switchSceneHint': '点击场景进行切换：',
@@ -98,13 +100,6 @@ const zhCN = {
   'fieldDes.operation': '操作',
   'fieldDes.pleaseInputArray': '请输入数组',
   'fieldDes.jsonFormatError': 'JSON 格式错误',
-
-  'realtimeProject.myProject': '我的项目',
-  'realtimeProject.detailPhoto': '详情快照',
-  'realtimeProject.saveToScene': '保存到场景',
-  'realtimeProject.inputPlacehold': '请输入场景名称',
-  'realtimeProject.validError': '请输入合法字符',
-  'realtimeProject.nullError': '请先添加项目或者接口',
 
   'document.resSchemaDes': '响应 Schema 描述',
   'document.reqSchemaDes': '请求 Schema 描述',

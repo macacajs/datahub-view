@@ -53,11 +53,11 @@ function ContextFormComponent (props) {
           rules: [
             {
               message: formatMessage('contextConfig.invalidDelay'),
-              pattern: /^[1-9]\d?$/,
+              pattern: /^[0-9]{1,2}(\.\d)?$/,
             },
           ],
         })(
-          <Input maxLength="2"/>
+          <Input maxLength="4"/>
         )}
       </FormItem>
       <FormItem label={`${formatMessage('contextConfig.responseStatus')} 200-50x`}>
