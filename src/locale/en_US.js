@@ -83,7 +83,7 @@ const enUS = {
   'contextConfig.modifyProperty': 'Rewrite property',
   'contextConfig.responseDelay': 'response delay {seconds} seconds',
   'contextConfig.responseDelayField': 'response delay in seconds',
-  'contextConfig.responseStatus': 'response status code',
+  'contextConfig.responseStatus': 'rewrite response status code',
   'contextConfig.invalidDelay': 'Please input number, in seconds',
   'contextConfig.invalidStatus': 'Please input status code',
 

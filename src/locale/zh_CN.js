@@ -83,7 +83,7 @@ const zhCN = {
   'contextConfig.modifyProperty': '修改属性',
   'contextConfig.responseDelay': '响应延迟 {seconds} 秒',
   'contextConfig.responseDelayField': '增加响应延迟时间，单位秒',
-  'contextConfig.responseStatus': '响应状态码',
+  'contextConfig.responseStatus': '修改响应状态码',
   'contextConfig.invalidDelay': '请输入延迟时间，单位秒',
   'contextConfig.invalidStatus': '请输入状态码',
 

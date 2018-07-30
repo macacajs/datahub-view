@@ -62,11 +62,11 @@ class InterfaceProxyConfig extends Component {
               values={{ seconds: responseDelay }}
             />
           </div>
-          <div>
+          { responseStatus && <div>
             <FormattedMessage
               id="contextConfig.responseStatus"
             /> {responseStatus}
-          </div>
+          </div> }
           <Button
             type="primary"
             onClick={this.showContextConfigForm}
