@@ -10,7 +10,6 @@ import {
   Icon,
   Input,
   Button,
-  Popover,
   Tooltip,
   Popconfirm,
 } from 'antd';
@@ -104,45 +103,34 @@ class InterfaceList extends Component {
     ).map((value, index) => {
       const isSelected = value.uniqId === this.props.selectedInterface.uniqId;
       return (
-        <Popover
-          key={index}
-          placement="right"
-          content={
-            <div style={{ maxWidth: '400px', wordBreak: 'break-all'}}>
-              <div>{value.pathname}</div><br/>
-              <div>{value.description}</div>
-            </div>
-          }
-          trigger="hover">
-          <li
-            className={isSelected ? 'clicked' : ''}
-            onClick={() => this.props.setSelectedInterface(value.uniqId)}
-          >
-            <div className="left">
-              <h3 className="ellipsis">{value.pathname}</h3>
-              <p>{value.description}</p>
-              <p>method: {value.method}
-              </p>
-            </div>
-            <div className="right" style={{fontSize: '16px'}}>
-              <Tooltip title={formatMessage('interfaceList.updateInterface')}>
-                <Icon
-                  type="setting"
-                  onClick={() => this.showUpdateForm(value)}
-                  style={{marginRight: '4px'}}
-                />
-              </Tooltip>
-              <Popconfirm
-                title={formatMessage('common.deleteTip')}
-                onConfirm={e => this.deleteInterface(value.uniqId)}
-                okText={formatMessage('common.confirm')}
-                cancelText={formatMessage('common.cancel')}
-              >
-                <Icon style={{color: '#f5222d'}} className="delete-icon" type="delete" />
-              </Popconfirm>
-            </div>
-          </li>
-        </Popover>
+        <li
+          className={isSelected ? 'clicked' : ''}
+          onClick={() => this.props.setSelectedInterface(value.uniqId)}
+        >
+          <div className="left">
+            <h3 className="ellipsis">{value.pathname}</h3>
+            <p title={value.description}>{value.description}</p>
+            <p>method: {value.method}
+            </p>
+          </div>
+          <div className="right" style={{fontSize: '16px'}}>
+            <Tooltip title={formatMessage('interfaceList.updateInterface')}>
+              <Icon
+                type="setting"
+                onClick={() => this.showUpdateForm(value)}
+                style={{marginRight: '4px'}}
+              />
+            </Tooltip>
+            <Popconfirm
+              title={formatMessage('common.deleteTip')}
+              onConfirm={e => this.deleteInterface(value.uniqId)}
+              okText={formatMessage('common.confirm')}
+              cancelText={formatMessage('common.cancel')}
+            >
+              <Icon style={{color: '#f5222d'}} className="delete-icon" type="delete" />
+            </Popconfirm>
+          </div>
+        </li>
       );
     });
   }
