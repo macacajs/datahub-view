@@ -198,7 +198,7 @@ class RealTimeDetail extends React.Component {
         </section>
 
         <h2 style={{marginTop: '10px'}}>Request</h2>
-        <Collapse defaultActiveKey={['header', 'body']}>
+        <Collapse>
           <Panel header="request header" key="header">
             <div className="headers-list">
               {this.renderHeaders({ headers: req.headers })}
@@ -211,7 +211,7 @@ class RealTimeDetail extends React.Component {
           </Panel>
         </Collapse>
         <h2 style={{marginTop: '10px'}}>Respose</h2>
-        <Collapse defaultActiveKey={['header', 'body']}>
+        <Collapse defaultActiveKey={['body']}>
           <Panel header="response header" key="header">
             <div className="headers-list">
               {this.renderHeaders({ headers: res.headers })}

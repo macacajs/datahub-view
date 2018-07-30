@@ -41,7 +41,7 @@ class Project extends React.Component {
     selectedInterface: {},
 
     subRouter: interfaceTabSymbol,
-    REALTIME_MAXLINE: 10,
+    REALTIME_MAXLINE: 100,
     realTimeDataList: [],
     realTimeIndex: 0,
   }
