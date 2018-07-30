@@ -104,6 +104,7 @@ class InterfaceList extends Component {
       const isSelected = value.uniqId === this.props.selectedInterface.uniqId;
       return (
         <li
+          key={index}
           className={isSelected ? 'clicked' : ''}
           onClick={() => this.props.setSelectedInterface(value.uniqId)}
         >

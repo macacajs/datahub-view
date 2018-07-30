@@ -23,6 +23,7 @@ import 'codemirror/lib/codemirror.css';
 import 'codemirror/addon/edit/trailingspace';
 import 'codemirror/addon/scroll/simplescrollbars';
 import 'codemirror/addon/scroll/simplescrollbars.css';
+import 'codemirror/addon/scroll/annotatescrollbar';
 import 'codemirror/addon/fold/foldgutter';
 import 'codemirror/addon/fold/foldgutter.css';
 import 'codemirror/addon/fold/brace-fold';
@@ -32,6 +33,12 @@ import 'codemirror/addon/lint/lint';
 import 'codemirror/addon/lint/lint.css';
 import 'codemirror/addon/lint/json-lint';
 import 'codemirror/addon/display/placeholder';
+import 'codemirror/addon/search/searchcursor.js';
+import 'codemirror/addon/search/search.js';
+import 'codemirror/addon/search/matchesonscrollbar.js';
+import 'codemirror/addon/search/matchesonscrollbar.css';
+import 'codemirror/addon/dialog/dialog.js';
+import 'codemirror/addon/dialog/dialog.css';
 
 const codeMirrorOptions = {
   theme: 'default',
@@ -39,6 +46,7 @@ const codeMirrorOptions = {
   lint: true,
   autofocus: true,
   foldGutter: true,
+  lineNumbers: true,
   matchBrackets: true,
   styleActiveLine: true,
   autoCloseBrackets: true,
