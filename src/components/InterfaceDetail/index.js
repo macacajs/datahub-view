@@ -19,7 +19,7 @@ import InterfaceSchema from './InterfaceSchema';
 
 import './index.less';
 
-const projectName = window.pageConfig.projectName;
+const projectName = window.context.projectName;
 
 import {
   sceneService,
@@ -175,7 +175,7 @@ class InterfaceDetail extends React.Component {
               <a href="/dashboard"><FormattedMessage id="topNav.allProject" /></a>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
-              {window.pageConfig && window.pageConfig.projectName}
+              {window.context && window.context.projectName}
             </Breadcrumb.Item>
             <Breadcrumb.Item>
               <FormattedMessage id="topNav.projectConfig" />

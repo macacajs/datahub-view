@@ -82,7 +82,7 @@ class InterfaceList extends Component {
     }
   }
 
-  deleteInterface = async (uniqId) => {
+  deleteInterface = async uniqId => {
     await interfaceService.deleteInterface({ uniqId });
     await this.props.updateInterfaceList();
   }
@@ -106,9 +106,9 @@ class InterfaceList extends Component {
         <li
           key={index}
           className={isSelected ? 'clicked' : ''}
-          onClick={() => this.props.setSelectedInterface(value.uniqId)}
         >
-          <div className="left">
+          <div className="left"
+            onClick={() => this.props.setSelectedInterface(value.uniqId)}>
             <h3 className="ellipsis">{value.pathname}</h3>
             <p title={value.description}>{value.description}</p>
             <p>method: {value.method}
@@ -124,7 +124,7 @@ class InterfaceList extends Component {
             </Tooltip>
             <Popconfirm
               title={formatMessage('common.deleteTip')}
-              onConfirm={e => this.deleteInterface(value.uniqId)}
+              onConfirm={() => this.deleteInterface(value.uniqId)}
               okText={formatMessage('common.confirm')}
               cancelText={formatMessage('common.cancel')}
             >

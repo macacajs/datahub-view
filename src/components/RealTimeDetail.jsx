@@ -41,7 +41,7 @@ function SaveSceneFormComponent (props) {
   } = form;
   const formatMessage = id => props.intl.formatMessage({ id });
   let defaultInterface = '';
-  const projectName = window.pageConfig && window.pageConfig.projectName;
+  const projectName = window.context && window.context.projectName;
 
   for (const interfaceData of props.interfaceList) {
     const { method, path } = props.requestData;
@@ -188,7 +188,7 @@ class RealTimeDetail extends React.Component {
             <a href="/dashboard"><FormattedMessage id='topNav.allProject' /></a>
           </Breadcrumb.Item>
           <Breadcrumb.Item>
-            {window.pageConfig && window.pageConfig.projectName}
+            {window.context && window.context.projectName}
           </Breadcrumb.Item>
           <Breadcrumb.Item>
             <FormattedMessage id='topNav.realtimeList' />
