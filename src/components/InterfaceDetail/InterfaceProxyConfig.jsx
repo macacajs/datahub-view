@@ -114,7 +114,7 @@ class InterfaceProxyConfig extends Component {
     const disabled = !props.selectedInterface.proxyConfig.enabled;
 
     return (
-      <section style={{marginTop: '20px'}}>
+      <section>
         <h1>{formatMessage('interfaceDetail.proxyConfig')}</h1>
         <Row>
           <Col {...this.defaultColProps} style={{ lineHeight: '30px'}}>

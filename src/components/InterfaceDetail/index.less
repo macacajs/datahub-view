@@ -5,7 +5,6 @@
   border: 1px solid rgba(0, 0, 0, 0.2);
   height: 420px;
 }
-
 .CodeMirror-lint-tooltip { z-index: 9999; }
 .CodeMirror-lint-marker-error, .CodeMirror-lint-message-error {
   background-image: url('./lint-error.png');
@@ -16,6 +15,9 @@
   background-image: url('./whitespace.png');
   background-position: bottom left;
   background-repeat: repeat-x;
+}
+.schema-modal .CodeMirror {
+  height: 500px;
 }
 /* code mirroe override end */
 
@@ -42,6 +44,9 @@
   margin-top: 10px;
   padding-top: 20px;
   border-top: 1px solid #ddd;
+  > section:not(:first-child) {
+    margin-top: 20px;
+  }
 }
 
 .common-list-item.disabled {

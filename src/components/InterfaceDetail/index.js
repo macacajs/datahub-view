@@ -14,7 +14,7 @@ import {
 import InterfaceSceneList from './InterfaceSceneList';
 import InterfaceContextConfig from './InterfaceContextConfig';
 import InterfaceProxyConfig from './InterfaceProxyConfig';
-// import InterfaceSchema from './InterfaceSchema';
+import InterfaceSchema from './InterfaceSchema';
 
 import './index.less';
 
@@ -22,12 +22,19 @@ const projectName = window.pageConfig.projectName;
 
 import {
   sceneService,
+  schemaService,
   interfaceService,
 } from '../../service';
 class InterfaceDetail extends React.Component {
   state = {
     selectedScene: {},
     sceneList: [],
+    schemaData: [],
+  }
+
+  componentWillMount () {
+    this.fetchSceneList();
+    this.fetchSchema();
   }
 
   changeSelectedScene = async (value) => {
@@ -43,6 +50,13 @@ class InterfaceDetail extends React.Component {
     this.setState({
       sceneList: res.data || [],
       selectedScene: res.data && this.getDefaultScene(res.data),
+    });
+  }
+
+  fetchSchema = async () => {
+    const res = await schemaService.getSchema({ interfaceUniqId: this.props.selectedInterface.uniqId });
+    this.setState({
+      schemaData: res.data || [],
     });
   }
 
@@ -131,6 +145,20 @@ class InterfaceDetail extends React.Component {
     return res;
   }
 
+  toggleValidation = async (type, value) => {
+    console.log('toggle', type, 'to', value);
+  }
+
+  updateSchemaData = async ({ type, data }) => {
+    const selectedInterface = this.props.selectedInterface;
+    const res = await schemaService.updateSchema({
+      interfaceUniqId: selectedInterface.uniqId,
+      type, data,
+    });
+    await this.fetchSchema();
+    return res;
+  }
+
   render () {
     const { selectedInterface } = this.props;
     const previewLink = `//${location.host}/data/${projectName}/${this.props.selectedInterface.pathname}`;
@@ -161,7 +189,6 @@ class InterfaceDetail extends React.Component {
             selectedScene={this.state.selectedScene}
             interfaceData={selectedInterface}
             deleteScene={this.deleteScene}
-            fetchSceneList={this.fetchSceneList}
             changeSelectedScene={this.changeSelectedScene}
             updateInterFaceAndScene={this.updateInterFaceAndScene}
           />
@@ -173,7 +200,11 @@ class InterfaceDetail extends React.Component {
             addProxy={this.addProxy}
             selectProxy={this.selectProxy}
           />
-          {/* <InterfaceSchema /> */}
+          <InterfaceSchema
+            toggleValidation={this.toggleValidation}
+            schemaData={this.state.schemaData}
+            updateSchemaData={this.updateSchemaData}
+          />
         </div>
       </div>
     );

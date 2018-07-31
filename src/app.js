@@ -23,7 +23,7 @@ import en from 'react-intl/locale-data/en';
 
 import Home from './pages/Home';
 import Project from './pages/Project';
-import Document from './pages/Document';
+// import Document from './pages/Document';
 import DashBoard from './pages/DashBoard';
 
 import './app.less';
@@ -48,7 +48,8 @@ class App extends React.Component {
       case 'project':
         return <Project />;
       case 'doc':
-        return <Document />;
+        return <div>Document</div>;
+        // return <Document />;
       default:
         return <Home />;
     }

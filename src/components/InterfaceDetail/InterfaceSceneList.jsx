@@ -33,10 +33,6 @@ class InterfaceSceneList extends Component {
     stageData: null,
   }
 
-  componentWillMount () {
-    this.props.fetchSceneList();
-  }
-
   formatMessage = id => this.props.intl.formatMessage({ id })
 
   showSceneForm = () => {
@@ -163,7 +159,7 @@ class InterfaceSceneList extends Component {
     const formatMessage = this.formatMessage;
     const disabled = this.props.disabled;
     return (
-      <section style={{marginTop: '20px'}}>
+      <section>
         <h1><FormattedMessage id='sceneList.title' /></h1>
         {
           ['GET', 'ALL'].includes(this.props.interfaceData.method)
