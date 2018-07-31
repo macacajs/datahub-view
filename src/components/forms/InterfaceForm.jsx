@@ -84,12 +84,6 @@ function InterfaceFormComponent (props) {
       <FormItem label={formatMessage('interfaceList.interfaceMethod')}>
         {getFieldDecorator('method', {
           initialValue: stageData && stageData.method || 'ALL',
-          rules: [
-            {
-              required: true,
-              message: formatMessage('interfaceList.invalidMethod'),
-            },
-          ],
         })(
           <Select>
             <Option value="ALL">ALL</Option>
