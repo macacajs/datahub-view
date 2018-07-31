@@ -46,7 +46,8 @@ class SchemaFormComponent extends Component {
       schemaData,
       schemaFormType,
     } = this.props;
-    const stageData = schemaData.find(i => i.type === schemaFormType) || {};
+    const schemaObject = schemaData.find(i => i.type === schemaFormType) || {};
+    const stageData = schemaObject.data && schemaObject.data.schemaData;
     const formatMessage = this.formatMessage;
     return <Modal
       style={{top: '20px'}}
@@ -81,7 +82,7 @@ class SchemaFormComponent extends Component {
     >
       <Form layout="vertical">
         <CodeMirror
-          value={stageData && JSON.stringify(stageData.data, null, 2)}
+          value={stageData && JSON.stringify(stageData, null, 2)}
           options={codeMirrorOptions}
           editorDidMount={instance => {
             this.codeMirrorInstance = instance;

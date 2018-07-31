@@ -147,14 +147,22 @@ class InterfaceDetail extends React.Component {
   }
 
   toggleValidation = async (type, value) => {
-    console.log('toggle', type, 'to', value);
+    const selectedInterface = this.props.selectedInterface;
+    const res = await schemaService.updateSchema({
+      interfaceUniqId: selectedInterface.uniqId,
+      type,
+      enableSchemaValidate: value,
+    });
+    await this.fetchSchema();
+    return res;
   }
 
   updateSchemaData = async ({ type, data }) => {
     const selectedInterface = this.props.selectedInterface;
     const res = await schemaService.updateSchema({
       interfaceUniqId: selectedInterface.uniqId,
-      type, data,
+      type,
+      schemaData: data,
     });
     await this.fetchSchema();
     return res;

@@ -25,13 +25,19 @@ class InterfaceSchema extends Component {
 
   formatMessage = id => this.props.intl.formatMessage({ id });
 
+  isValidationEnabled = type => {
+    const { data = {} } = this.props.schemaData.find(i => i.type === type) || {};
+    return data.enableSchemaValidate;
+  }
+
   getDataSource = type => {
     const { data = {} } = this.props.schemaData.find(i => i.type === type) || {};
-    if (!data.properties && !data.items) {
+    if (!data.schemaData) return [];
+    if (!data.schemaData.properties && !data.schemaData.items) {
       return [];
     }
     try {
-      return genSchemaList(data);
+      return genSchemaList(data.schemaData);
     } catch (e) {
       console.log(e);
       return [];
@@ -109,10 +115,13 @@ class InterfaceSchema extends Component {
     const props = this.props;
     const unControlled = props.unControlled;
     const columns = this.getColumns();
+    const enableRequestSchemaValidation = this.isValidationEnabled('request');
+    const enableResponseSchemaValidation = this.isValidationEnabled('response');
     return <section>
 
       <h1>{this.formatMessage('interfaceDetail.requestSchema')}</h1>
       {!unControlled && <Checkbox
+        checked={enableRequestSchemaValidation}
         onChange={e => props.toggleValidation('request', e.target.checked)}
       >
         {this.formatMessage('schemaData.enableValidation')}
@@ -135,6 +144,8 @@ class InterfaceSchema extends Component {
         {this.formatMessage('interfaceDetail.responseSchema')}
       </h1>
       {!unControlled && <Checkbox
+        checked={enableResponseSchemaValidation}
+        onChange={e => props.toggleValidation('response', e.target.checked)}
       >
         {this.formatMessage('schemaData.enableValidation')}
       </Checkbox>}
