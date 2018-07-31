@@ -1,7 +1,3 @@
-// import {
-//   UnControlled,
-// } from 'react-codemirror2';
-
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/addon/edit/trailingspace';
