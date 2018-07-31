@@ -190,6 +190,9 @@ class RealTimeDetail extends React.Component {
           <Breadcrumb.Item>
             {window.pageConfig && window.pageConfig.projectName}
           </Breadcrumb.Item>
+          <Breadcrumb.Item>
+            <FormattedMessage id='topNav.realtimeList' />
+          </Breadcrumb.Item>
         </Breadcrumb>
         <section className="save-to">
           <Button type="primary" style={{ float: 'right' }} onClick={this.showSceneForm}>

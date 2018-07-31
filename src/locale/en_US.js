@@ -30,10 +30,10 @@ const enUS = {
   'home.icon.i18n': 'i18n support',
   'home.icon.github': 'open source',
 
-  'topNav.apiList': 'API list',
-  'topNav.realtimeList': 'Realtime snapshot',
   'topNav.allProject': 'All projects',
+  'topNav.apiList': 'API list',
   'topNav.projectConfig': 'Project config',
+  'topNav.documentation': 'Documentation',
 
   'project.interfaceList': 'API list',
   'project.realtimeList': 'Realtime snapshot',
@@ -99,16 +99,8 @@ const enUS = {
   'schemaData.edit': 'edit',
 
   // to be removed
-  'fieldDes.req.title': 'Request field description',
-  'fieldDes.res.title': 'Response field description',
-  'fieldDes.isUseCheck': 'use verify?',
-  'fieldDes.operation': 'operation',
-  'fieldDes.pleaseInputArray': 'please input array',
-  'fieldDes.jsonFormatError': 'JSON format error',
-
-  'document.resSchemaDes': ' response schema description',
-  'document.reqSchemaDes': ' request schema description',
-  'document.schemaDes': 'schema description',
+  'document.requestSchema': ' request schema description',
+  'document.responseSchema': ' response schema description',
   'document.sceneData': 'scene data',
 };
 

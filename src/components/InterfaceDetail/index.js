@@ -3,11 +3,12 @@
 import React from 'react';
 
 import {
-  injectIntl,
   FormattedMessage,
 } from 'react-intl';
 
 import {
+  Icon,
+  Button,
   Breadcrumb,
 } from 'antd';
 
@@ -159,6 +160,10 @@ class InterfaceDetail extends React.Component {
     return res;
   }
 
+  toDocPage = () => {
+    location.href = `//${location.host}/doc/${projectName}`;
+  }
+
   render () {
     const { selectedInterface } = this.props;
     const previewLink = `//${location.host}/data/${projectName}/${this.props.selectedInterface.pathname}`;
@@ -173,11 +178,19 @@ class InterfaceDetail extends React.Component {
               {window.pageConfig && window.pageConfig.projectName}
             </Breadcrumb.Item>
             <Breadcrumb.Item>
-              {selectedInterface.description}
+              <FormattedMessage id="topNav.projectConfig" />
             </Breadcrumb.Item>
           </Breadcrumb>
         </div>
         <div className="interface-detail-content">
+          <Button
+            type="primary"
+            className="scene-to-doc-button"
+            onClick={this.toDocPage}
+          >
+            <Icon type="book"/>
+            <FormattedMessage id="topNav.documentation"/>
+          </Button>
           <InterfaceContextConfig
             interfaceData={selectedInterface}
             updateContextConfig={this.updateContextConfig}
@@ -211,4 +224,4 @@ class InterfaceDetail extends React.Component {
   }
 }
 
-export default injectIntl(InterfaceDetail);
+export default InterfaceDetail;

@@ -30,10 +30,10 @@ const zhCN = {
   'home.icon.i18n': '多语言支持',
   'home.icon.github': '开源开放',
 
-  'topNav.apiList': '接口列表',
-  'topNav.realtimeList': '实时快照',
   'topNav.allProject': '所有项目',
   'topNav.projectConfig': '项目配置',
+  'topNav.realtimeList': '实时快照',
+  'topNav.documentation': '接口文档',
 
   'project.interfaceList': '接口列表',
   'project.realtimeList': '实时快照',
@@ -99,15 +99,8 @@ const zhCN = {
   'schemaData.edit': '编辑',
 
   // to be removed
-  'fieldDes.req.title': 'Request字段描述',
-  'fieldDes.res.title': 'Response字段描述',
-  'fieldDes.operation': '操作',
-  'fieldDes.pleaseInputArray': '请输入数组',
-  'fieldDes.jsonFormatError': 'JSON 格式错误',
-
-  'document.resSchemaDes': '响应 Schema 描述',
-  'document.reqSchemaDes': '请求 Schema 描述',
-  'document.schemaDes': 'Schema 描述',
+  'document.requestSchema': '请求 Schema 描述',
+  'document.responseSchema': '响应 Schema 描述',
   'document.sceneData': '场景数据',
 };
 
