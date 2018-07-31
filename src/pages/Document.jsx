@@ -8,6 +8,8 @@ import {
 
 import {
   Tabs,
+  Icon,
+  Button,
   Layout,
 } from 'antd';
 
@@ -29,6 +31,8 @@ const codeMirrorOptions = {
 };
 
 const TabPane = Tabs.TabPane;
+
+const projectName = window.context.projectName;
 
 import InterfaceList from '../components/InterfaceList';
 import InterfaceSchema from '../components/InterfaceDetail/InterfaceSchema';
@@ -92,6 +96,10 @@ class Document extends React.Component {
     await this.fetchSchemaAndScene(selectedInterface.uniqId);
   }
 
+  toProjectPage = () => {
+    location.href = `//${location.host}/project/${projectName}`;
+  }
+
   render () {
     return (
       <Layout>
@@ -108,6 +116,19 @@ class Document extends React.Component {
           />
         </Sider>
         <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280 }}>
+          <Button
+            className="scene-doc-button"
+            onClick={this.toProjectPage}
+          >
+            <Icon type="setting"/>
+            <FormattedMessage id="topNav.projectConfig"/>
+          </Button>
+          <h2>{
+            this.state.selectedInterface.method
+              ? `${this.state.selectedInterface.method} / ${this.state.selectedInterface.pathname}`
+              : '-'
+          }</h2>
+          <h3 style={{color: 'gray'}}>{ this.state.selectedInterface.description || '-'}</h3>
           <InterfaceSchema
             unControlled={true}
             schemaData={this.state.schemaData}

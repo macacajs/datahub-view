@@ -53,6 +53,9 @@ class InterfaceSchema extends Component {
       dataIndex: 'type',
       width: '15%',
       key: 'type',
+      render: (text, record, index) => {
+        return <span className="text-capitalize">{text}</span>;
+      },
     }, {
       title: this.props.intl.formatMessage({id: 'schemaData.required'}),
       dataIndex: 'required',

@@ -185,7 +185,7 @@ class InterfaceDetail extends React.Component {
         <div className="interface-detail-content">
           <Button
             type="primary"
-            className="scene-to-doc-button"
+            className="scene-doc-button"
             onClick={this.toDocPage}
           >
             <Icon type="book"/>
