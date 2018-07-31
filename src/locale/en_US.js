@@ -97,11 +97,6 @@ const enUS = {
   'schemaData.description': 'description',
   'schemaData.enableValidation': 'enable schema validation',
   'schemaData.edit': 'edit',
-
-  // to be removed
-  'document.requestSchema': ' request schema description',
-  'document.responseSchema': ' response schema description',
-  'document.sceneData': 'scene data',
 };
 
 export default enUS;

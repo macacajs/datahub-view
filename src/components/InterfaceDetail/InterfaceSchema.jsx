@@ -104,21 +104,22 @@ class InterfaceSchema extends Component {
 
   render () {
     const props = this.props;
+    const unControlled = props.unControlled;
     const columns = this.getColumns();
     return <section>
 
       <h1>{this.formatMessage('interfaceDetail.requestSchema')}</h1>
-      <Checkbox
+      {!unControlled && <Checkbox
         onChange={e => props.toggleValidation('request', e.target.checked)}
       >
         {this.formatMessage('schemaData.enableValidation')}
-      </Checkbox>
-      <Button
+      </Checkbox>}
+      {!unControlled && <Button
         type="primary"
         size="small"
         onClick={() => this.showSchemaForm('request')}
       > {this.formatMessage('schemaData.edit')}
-      </Button>
+      </Button>}
       <Table
         size="small"
         pagination={false}
@@ -130,16 +131,16 @@ class InterfaceSchema extends Component {
       <h1 style={{marginTop: '20px'}}>
         {this.formatMessage('interfaceDetail.responseSchema')}
       </h1>
-      <Checkbox
+      {!unControlled && <Checkbox
       >
         {this.formatMessage('schemaData.enableValidation')}
-      </Checkbox>
-      <Button
+      </Checkbox>}
+      {!unControlled && <Button
         type="primary"
         size="small"
         onClick={() => this.showSchemaForm('response')}
       > {this.formatMessage('schemaData.edit')}
-      </Button>
+      </Button>}
       <Table
         size="small"
         pagination={false}

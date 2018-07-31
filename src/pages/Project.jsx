@@ -115,7 +115,7 @@ class Project extends React.Component {
           width="300px"
           style={{
             background: 'none',
-            borderRight: '2px solid #eee',
+            borderRight: '1px solid rgba(0,0,0,0.05)',
           }}
           className="project-sider"
         >

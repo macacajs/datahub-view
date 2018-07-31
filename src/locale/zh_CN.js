@@ -93,15 +93,10 @@ const zhCN = {
   'schemaData.invalidSchemaData': '格式错误，请输入 JSON Schema',
   'schemaData.field': '字段',
   'schemaData.type': '类型',
-  'schemaData.required': '必须',
-  'schemaData.description': '说明',
+  'schemaData.required': '是否必需',
+  'schemaData.description': '参数说明',
   'schemaData.enableValidation': '是否开启校验',
   'schemaData.edit': '编辑',
-
-  // to be removed
-  'document.requestSchema': '请求 Schema 描述',
-  'document.responseSchema': '响应 Schema 描述',
-  'document.sceneData': '场景数据',
 };
 
 export default zhCN;

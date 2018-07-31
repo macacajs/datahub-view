@@ -95,6 +95,7 @@ class InterfaceList extends Component {
   }
 
   renderInterfaceList = () => {
+    const unControlled = this.props.unControlled;
     const formatMessage = this.formatMessage;
     const { interfaceList } = this.props;
     return interfaceList.filter(value =>
@@ -107,14 +108,14 @@ class InterfaceList extends Component {
           key={index}
           className={isSelected ? 'clicked' : ''}
         >
-          <div className="left"
+          <div className="interface-item"
             onClick={() => this.props.setSelectedInterface(value.uniqId)}>
             <h3 className="ellipsis">{value.pathname}</h3>
             <p title={value.description}>{value.description}</p>
             <p>method: {value.method}
             </p>
           </div>
-          <div className="right" style={{fontSize: '16px'}}>
+          {!unControlled && <div className="interface-control" style={{fontSize: '16px'}}>
             <Tooltip title={formatMessage('interfaceList.updateInterface')}>
               <Icon
                 type="setting"
@@ -130,7 +131,7 @@ class InterfaceList extends Component {
             >
               <Icon style={{color: '#f5222d'}} className="delete-icon" type="delete" />
             </Popconfirm>
-          </div>
+          </div>}
         </li>
       );
     });
@@ -138,9 +139,12 @@ class InterfaceList extends Component {
 
   render () {
     const formatMessage = this.formatMessage;
+    const unControlled = this.props.unControlled;
+    const interfaceListClassNames = ['interface-list'];
+    if (unControlled) interfaceListClassNames.push('uncontrolled');
     return (
-      <div className="interface-list">
-        <Row className="interface-filter-row">
+      <div className={`${interfaceListClassNames.join(' ')}`}>
+        {!unControlled && <Row className="interface-filter-row">
           <Col span={15}>
             <Search
               data-accessbilityid="project-search-api"
@@ -157,9 +161,9 @@ class InterfaceList extends Component {
               <FormattedMessage id="interfaceList.addInterface" />
             </Button>
           </Col>
-        </Row>
+        </Row>}
 
-        <ul style={{ maxHeight: '500px', overflowY: 'scroll' }}>
+        <ul style={{ maxHeight: '600px', overflowY: 'scroll' }}>
           { this.renderInterfaceList() }
         </ul>
 
