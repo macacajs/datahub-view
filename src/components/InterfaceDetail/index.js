@@ -41,7 +41,7 @@ class InterfaceDetail extends React.Component {
   changeSelectedScene = async (value) => {
     await interfaceService.updateInterface({
       uniqId: this.props.selectedInterface.uniqId,
-      currentScene: value.uniqId,
+      currentScene: value.sceneName,
     });
     await this.updateInterFaceAndScene();
   }
@@ -64,7 +64,7 @@ class InterfaceDetail extends React.Component {
   getDefaultScene = data => {
     if (!Array.isArray(data)) return {};
     return data.find(value => {
-      return value.uniqId === this.props.selectedInterface.currentScene;
+      return value.sceneName === this.props.selectedInterface.currentScene;
     }) || {};
   }
 
