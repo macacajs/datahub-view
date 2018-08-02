@@ -1,266 +1,163 @@
 'use strict';
 
 import React from 'react';
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/mode/javascript/javascript';
 
 import {
   FormattedMessage,
 } from 'react-intl';
 
 import {
-  Layout,
   Tabs,
-  Button,
   Icon,
+  Button,
+  Layout,
 } from 'antd';
 
-import _ from 'lodash';
+import {
+  Controlled as CodeMirror,
+} from '../common/codemirror';
+
+const codeMirrorOptions = {
+  theme: 'default',
+  mode: 'application/json',
+  foldGutter: true,
+  lineNumbers: true,
+  styleActiveLine: true,
+  showTrailingSpace: true,
+  scrollbarStyle: 'overlay',
+  gutters: [
+    'CodeMirror-foldgutter',
+  ],
+};
+
+const TabPane = Tabs.TabPane;
+
+const projectName = window.context.projectName;
+
+import InterfaceList from '../components/InterfaceList';
+import InterfaceSchema from '../components/InterfaceDetail/InterfaceSchema';
 
 import {
-  UnControlled as CodeMirror,
-} from 'react-codemirror2';
-
-import request from '../common/fetch';
-import CustomTable from '../components/CustomTable';
+  sceneService,
+  schemaService,
+  interfaceService,
+} from '../service';
 
 import './Document.less';
 
 const Sider = Layout.Sider;
 const Content = Layout.Content;
 
-const codeMirrorOptions = {
-  mode: 'javascript',
-  theme: 'default',
-  indentUnit: 2,
-  tabSize: 2,
-  lineNumbers: true,
-  styleActiveLine: true,
-  indentWithTabs: true,
-  matchBrackets: true,
-  smartIndent: true,
-  textWrapping: false,
-  lineWrapping: true,
-  readOnly: true,
-};
-
-const TabPane = Tabs.TabPane;
-
-const projectId = window.pageConfig.projectId;
-
-export default class Document extends React.Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      list: [],
-      slectedIndex: 0,
-      slectedName: '',
-      hashSceneIndex: 0,
-      hashSceneName: '',
-    };
+class Document extends React.Component {
+  state = {
+    interfaceList: [],
+    selectedInterface: {},
+    schemaData: [],
+    sceneList: [],
   }
 
-  componentDidMount () {
-    let pathname = '';
-    let scenename = '';
-    if (/scene=/.test(location.hash)) {
-      pathname = location.hash.replace(/#api=(.*)&scene=\w*/, '$1');
-      scenename = location.hash.split('&scene=')[1];
-    } else {
-      pathname = location.hash.split('api=')[1];
+  async componentDidMount () {
+    const interfaceRes = await this.initInterfaceList();
+    const selectedInterface = (interfaceRes.data && interfaceRes.data[0]) || {};
+    let schemaRes = {};
+    let sceneRes = {};
+    if (selectedInterface.uniqId) {
+      schemaRes = await schemaService.getSchema({ interfaceUniqId: selectedInterface.uniqId });
+      sceneRes = await sceneService.getSceneList({ interfaceUniqId: selectedInterface.uniqId });
     }
+    this.setState({
+      interfaceList: interfaceRes.data || [],
+      selectedInterface,
+      schemaData: schemaRes.data || [],
+      sceneList: sceneRes.data || [],
+    });
+  }
 
-    request(`/api/data/${projectId}`, 'GET')
-      .then((res) => {
-        let hashSceneIndex;
-        let slectedIndex;
-        if (res.success) {
-          res.data.forEach((item, index) => {
-            if (item.pathname === pathname) {
-              slectedIndex = index;
-              let scenes = [];
-              try {
-                scenes = JSON.parse(item.scenes);
-              } catch (e) {
-              }
-              scenes.forEach((scene, i) => {
-                if (scene.name === scenename) {
-                  hashSceneIndex = i;
-                }
-              });
-            }
-          });
-          this.setState({
-            slectedIndex: slectedIndex || 0,
-            slectedName: pathname,
-            hashSceneIndex: hashSceneIndex || 0,
-            hashSceneName: scenename,
-            list: res.data,
-          });
-        }
+  initInterfaceList = async () => {
+    return await interfaceService.getInterfaceList();
+  }
+
+  fetchSchemaAndScene = async (interfaceUniqId) => {
+    if (interfaceUniqId) {
+      const schemaRes = await schemaService.getSchema({ interfaceUniqId });
+      const sceneRes = await sceneService.getSceneList({ interfaceUniqId });
+      this.setState({
+        schemaData: schemaRes.data || [],
+        sceneList: sceneRes.data || [],
       });
+    }
   }
 
-  handletabClick (scenesData, tabIndex) {
-    const sceneIndex = tabIndex.replace('tab-', '');
-    const sceneName = scenesData[sceneIndex].name;
-    if (!/&scene=/.test(location.hash)) {
-      location.hash += `&scene=${sceneName}`;
-    } else {
-      const nowApi = location.hash.split('&scene=')[0];
-      location.hash = `${nowApi}&scene=${sceneName}`;
-    }
+  setSelectedInterface = async (uniqId) => {
+    const selectedInterface = this.state.interfaceList.find(i => i.uniqId === uniqId) || {};
     this.setState({
-      hashSceneIndex: sceneIndex,
-      hashSceneName: sceneName,
+      selectedInterface,
     });
+    await this.fetchSchemaAndScene(selectedInterface.uniqId);
   }
 
-  selectApiClick (index, pathname) {
-    this.setState({
-      slectedIndex: index,
-      slectedName: pathname,
-    });
-    location.hash = `api=${pathname}`;
-  }
-
-  renderDocument () {
-    const currentData = this.state.list.find(i => i.pathname === this.state.slectedName);
-
-    if (!currentData) {
-      return;
-    }
-
-    const {
-      method,
-      description,
-      pathname,
-      scenes,
-      resSchemaContent,
-      reqSchemaContent,
-    } = currentData;
-    const scenesData = JSON.parse(scenes);
-    const resSchemaContentObj = JSON.parse(resSchemaContent);
-    const reqSchemaContentObj = JSON.parse(reqSchemaContent);
-
-    return (
-      <div className="document">
-        <h1>
-          <span className={`method-${method.toLowerCase()}`}>
-            {method}
-          </span>&nbsp;/&nbsp;{pathname}
-        </h1>
-        <a
-          href={`/project/${projectId}#${pathname}`}
-        >
-          <Button className="right-button">
-            <Icon type="setting" />
-            <FormattedMessage id='apiConfig.project' />
-          </Button>
-        </a>
-
-        <h3>{description}</h3>
-        <h1>
-          <FormattedMessage id='document.reqSchemaDes' />
-        </h1>
-        <div className="req-shcema-doc">
-          <CustomTable
-            type="api"
-            disabeld={true}
-            className="schema-table"
-            schemaData={[]}
-            paramsData={reqSchemaContentObj}
-            disabled={true}
-          />
-        </div>
-        <h1>
-          <FormattedMessage id='document.resSchemaDes' />
-        </h1>
-        <div className="res-shcema-doc">
-          <CustomTable
-            type="api"
-            className="schema-table"
-            schemaData={scenesData}
-            paramsData={resSchemaContentObj}
-            disabled={true}
-          />
-        </div>
-        <h1>
-          <FormattedMessage id='document.sceneData' />
-        </h1>
-        <Tabs
-          defaultActiveKey={'tab-' + this.state.hashSceneIndex}
-          type="card"
-          animated={false}
-          onTabClick={this.handletabClick.bind(this, scenesData)}
-        >
-          {this.renderScene(scenesData)}
-        </Tabs>
-      </div>
-    );
-  }
-
-  renderScene (list) {
-    return (
-      list.map((item, index) => {
-        return (
-          <TabPane tab={item.name} key={`tab-${index}`}>
-            <CodeMirror
-              value={JSON.stringify(item.data, null, 2)}
-              options={{ ...codeMirrorOptions }}
-              onChange={() => {}}
-              viewportMargin={Infinity}
-            />
-          </TabPane>
-        );
-      })
-    );
-  }
-
-  handleApiSort () {
-    if (!this.state.list) {
-      return [];
-    }
-    const res = _.sortBy(this.state.list, item => item.pathname);
-    return res;
+  toProjectPage = () => {
+    location.href = `//${location.host}/project/${projectName}`;
   }
 
   render () {
     return (
-      <Layout style={{ padding: '10px 10px 0 10px'}}>
-        <Sider
-          width="300"
-          style={{
-            background: 'none',
-            borderRight: '1px solid #eee',
-            paddingRight: '10px',
-          }}
-        >
-          <div className="datalist">
-            <ul>
-              {
-                this.handleApiSort().map((api, index) => {
-                  return (
-                    <li
-                      className={api.pathname === this.state.slectedName ? 'clicked' : ''}
-                      key={index}
-                      onClick={this.selectApiClick.bind(this, index, api.pathname)}
-                    >
-                      <div className="left">
-                        <h3>{api.pathname}</h3>
-                        <p>{api.description}</p>
-                      </div>
-                    </li>
-                  );
-                })
-              }
-            </ul>
-          </div>
+      <Layout>
+        <Sider width={300} style={{
+          minHeight: '600px',
+          background: '#fff',
+          borderRight: '1px solid rgba(0,0,0,0.05)',
+        }}>
+          <InterfaceList
+            unControlled={true}
+            selectedInterface={this.state.selectedInterface}
+            setSelectedInterface={this.setSelectedInterface}
+            interfaceList={this.state.interfaceList}
+          />
         </Sider>
-        <Content>
-          {this.renderDocument()}
+        <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280 }}>
+          <Button
+            className="scene-doc-button"
+            onClick={this.toProjectPage}
+          >
+            <Icon type="setting"/>
+            <FormattedMessage id="topNav.projectConfig"/>
+          </Button>
+          <h2>{
+            this.state.selectedInterface.method
+              ? `${this.state.selectedInterface.method} / ${this.state.selectedInterface.pathname}`
+              : '-'
+          }</h2>
+          <h3 style={{color: 'gray'}}>{ this.state.selectedInterface.description || '-'}</h3>
+          <InterfaceSchema
+            unControlled={true}
+            schemaData={this.state.schemaData}
+          />
+          <section>
+            <h1 style={{marginTop: '20px'}}><FormattedMessage id="sceneList.sceneData"/></h1>
+            <Tabs
+              animated={false}
+            >
+              {
+                this.state.sceneList.map((sceneData, index) =>
+                  <TabPane
+                    size="small"
+                    tab={sceneData.sceneName}
+                    key={index}
+                  >
+                    <CodeMirror
+                      value={JSON.stringify(sceneData.data, null, 2)}
+                      options={codeMirrorOptions}
+                    />
+                  </TabPane>
+                )
+              }
+            </Tabs>
+          </section>
         </Content>
       </Layout>
     );
   }
 }
+
+export default Document;

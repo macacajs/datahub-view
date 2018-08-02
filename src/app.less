@@ -1,4 +1,6 @@
-@import 'mixin.less';
+@import './common/style/variable.less';
+@import './common/style/mixin.less';
+@import './common/style/util.less';
 
 body {
   font-family: "ProximaNova-Light", "Avenir Next", -apple-system-body, "Helvetica Neue", "Helvetica", sans-serif;
@@ -15,15 +17,7 @@ body {
 }
 
 .ant-layout-header {
-  z-index: 999;
-  width: 100%;
   background: #fff;
-  border-bottom: 1px solid #e0e0e0;
-  box-shadow: 0 3px 7px @bg-color;
-  padding: 0;
-  h1 {
-    margin: 0;
-  }
 }
 
 .ant-card-head-title {
@@ -46,42 +40,9 @@ body {
   }
 }
 
-.codemirror-modal {
-  .ant-modal-body {
-    padding: 0;
-  }
-}
-
-.ant-tabs-bar {
-  margin: 0;
-}
-
-
-.editable-cell {
-  height: auto;
-  &:hover {
-    .icon {
-      transition: opacity .5s linear;
-      opacity: 1;
-    }
-  }
-  .ant-input {
-    height: 26px;
-  }
-  .icon {
-    opacity: 0;
-  }
-  .icon-check {
-    margin-left: 4px;
-  }
-}
-
-.CodeMirror {
-  height: 420px;
-}
-
 .header {
-  min-height: @header-height;
+  height: @header-height;
+  border-bottom: 1px solid #f0f2f5;
   .title {
     display: inline-block;
     line-height: @header-height;
@@ -114,7 +75,6 @@ body {
       }
     }
     li {
-      display: inline-block;
       line-height: @header-height;
       float: right;
       list-style: none;

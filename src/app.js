@@ -1,12 +1,9 @@
 'use strict';
 
-import 'intl';
 import React from 'react';
 import ReactDom from 'react-dom';
 
 import {
-  Row,
-  Col,
   Layout,
   Tooltip,
 } from 'antd';
@@ -39,6 +36,7 @@ const Footer = Layout.Footer;
 const Content = Layout.Content;
 
 const pkg = require('../package.json');
+localStorage.debug = ('datahub*');
 
 class App extends React.Component {
   pageRouter () {
@@ -47,7 +45,7 @@ class App extends React.Component {
         return <DashBoard />;
       case 'project':
         return <Project />;
-      case 'doc':
+      case 'document':
         return <Document />;
       default:
         return <Home />;
@@ -72,32 +70,28 @@ class App extends React.Component {
     return (
       <Layout className={`page-${this.props.pageConfig.pageId}`}>
         <Header className="header">
-          <Row type="flex" justify="center">
-            <Col span={22}>
-              <a href="/">
-                <h1 className="title">DataHub</h1>
+          <a href="/">
+            <h1 className="title">DataHub</h1>
+          </a>
+          <ul className="nav">
+            <li className="portrait">
+              <Tooltip placement="bottom" title={'hi Macaca!'}>
+                <a className="mask">
+                  <img src="//npmcdn.com/macaca-logo@latest/svg/monkey.svg" />
+                </a>
+              </Tooltip>
+            </li>
+            <li>
+              <a href={ `${pkg.links.issue}?utf8=%E2%9C%93&q=` } target="_blank">
+                <h3><FormattedMessage id="common.issue" /></h3>
               </a>
-              <ul className="nav">
-                <li className="portrait">
-                  <Tooltip placement="bottom" title={'hi Macaca!'}>
-                    <a className="mask">
-                      <img src="//npmcdn.com/macaca-logo@latest/svg/monkey.svg" />
-                    </a>
-                  </Tooltip>
-                </li>
-                <li>
-                  <a href={ `${pkg.links.issue}?utf8=%E2%9C%93&q=` } target="_blank">
-                    <h3><FormattedMessage id="common.issue" /></h3>
-                  </a>
-                </li>
-                <li>
-                  <a href={ pkg.links.document } target="_blank">
-                    <h3><FormattedMessage id="common.guide" /></h3>
-                  </a>
-                </li>
-              </ul>
-            </Col>
-          </Row>
+            </li>
+            <li>
+              <a href={ pkg.links.document } target="_blank">
+                <h3><FormattedMessage id="common.guide" /></h3>
+              </a>
+            </li>
+          </ul>
         </Header>
         <Content className="main-content">
           { this.pageRouter() }

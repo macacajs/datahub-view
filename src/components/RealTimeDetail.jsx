@@ -3,46 +3,117 @@
 import React from 'react';
 
 import {
-  Breadcrumb,
-  Button,
-  Modal,
+  Form,
   Input,
-  Alert,
+  Modal,
+  Select,
+  Button,
   Collapse,
+  Breadcrumb,
+  message,
 } from 'antd';
-
-import _ from '../common/helper';
 
 import {
   injectIntl,
   FormattedMessage,
 } from 'react-intl';
 
+const FormItem = Form.Item;
+const Option = Select.Option;
+
+import { sceneService } from '../service';
 import './RealTimeDetail.less';
 
-const Panel = Collapse.Panel;
+const {
+  Panel,
+} = Collapse;
 
-class RealTimeDetail extends React.Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      modalVisible: false,
-      addingScene: '',
-      sceneError: null,
-    };
-    this.apis = props.apis;
-  }
+function SaveSceneFormComponent (props) {
+  const {
+    visible,
+    onCancel,
+    onOk,
+    form,
+    loading,
+  } = props;
+  const {
+    getFieldDecorator,
+  } = form;
+  const formatMessage = id => props.intl.formatMessage({ id });
+  let defaultInterface = '';
+  const projectName = window.context && window.context.projectName;
 
-  componentWillReceiveProps (props) {
-    this.apis = props.apis;
-
-    if (!this.currentData) {
-
+  for (const interfaceData of props.interfaceList) {
+    const { method, path } = props.requestData;
+    if ([method, 'ALL'].includes(interfaceData.method) && path === `/${projectName}/${interfaceData.pathname}`) {
+      defaultInterface = interfaceData.uniqId;
+      break;
     }
   }
 
-  renderHeaders ({ headers }) {
-    _.logger('renderHeaders', headers);
+  return <Modal
+    visible={visible}
+    destroyOnClose={true}
+    title={formatMessage('sceneList.createScene')}
+    okText={formatMessage('common.confirm')}
+    cancelText={formatMessage('common.cancel')}
+    onCancel={onCancel}
+    onOk={() => {
+      form.validateFields((err, values) => {
+        if (err) {
+          message.warn(formatMessage('common.input.invalid'));
+          return;
+        }
+        onOk(values);
+      });
+    }}
+    confirmLoading={loading}
+  >
+    <Form layout="vertical">
+      <FormItem
+        label={formatMessage('interfaceDetail.selectInterface')}
+      >
+        {getFieldDecorator('interfaceUniqId', {
+          initialValue: defaultInterface,
+        })(
+          <Select>
+            {
+              props.interfaceList.map((interfaceData, index) => {
+                return <Option
+                  key={index}
+                  value={interfaceData.uniqId}
+                >{`${interfaceData.pathname} (${interfaceData.method})`}</Option>;
+              })
+            }
+          </Select>
+        )}
+      </FormItem>
+      <FormItem label={formatMessage('sceneList.sceneName')}>
+        {getFieldDecorator('sceneName', {
+          rules: [
+            {
+              required: true,
+              message: formatMessage('sceneList.invalidSceneName'),
+              pattern: /^[a-z0-9_-]+$/,
+            },
+            { max: 32 },
+          ],
+        })(
+          <Input />
+        )}
+      </FormItem>
+    </Form>
+  </Modal>;
+};
+
+const SaveSceneForm = Form.create()(injectIntl(SaveSceneFormComponent));
+class RealTimeDetail extends React.Component {
+  state = {
+    sceneFormVisible: false,
+    sceneFormLoading: false,
+  }
+
+  renderHeaders = ({ headers }) => {
     return Object.keys(headers).map(key => {
       return (
         <div key={key}>
@@ -53,8 +124,7 @@ class RealTimeDetail extends React.Component {
     });
   }
 
-  renderBody ({ body }) {
-    _.logger('renderBody', body);
+  renderBody = ({ body }) => {
     let result = null;
     if (typeof body === 'object') {
       result = JSON.stringify(body, {}, 2);
@@ -72,162 +142,98 @@ class RealTimeDetail extends React.Component {
     );
   }
 
-  onChangeScene (e) {
+  closeSceneForm = () => {
     this.setState({
-      addingScene: e.target.value,
+      sceneFormVisible: false,
     });
   }
 
-  showModal () {
+  confirmSceneForm = async ({ sceneName, interfaceUniqId }) => {
     this.setState({
-      modalVisible: true,
-      addingScene: '',
-      sceneError: null,
+      sceneFormLoading: true,
     });
+    const res = await sceneService.createScene({
+      interfaceUniqId,
+      sceneName,
+      data: this.props.realTimeData.res.body,
+    });
+    this.setState({
+      sceneFormLoading: false,
+    });
+    if (res.success) {
+      this.setState({
+        sceneFormVisible: false,
+      });
+    }
   }
 
-  handleModalOk () {
-    const projectId = window.pageConfig.projectId;
-    const pathname = this.props.data.req.path;
-    const apiName = pathname && pathname.replace(`/${projectId}/`, '');
-    let apiIndex = -1;
-
-    this.apis.forEach((api, index) => {
-      if (api.identifer === projectId && api.pathname === apiName) {
-        apiIndex = index;
-      }
-    });
-
-    if (_.isChineseChar(this.state.addingScene) || /\W+/.test(this.state.addingScene)) {
-      this.setState({
-        sceneError: {
-          message: this.props.intl.formatMessage({id: 'realtimeProject.validError'}),
-          type: 'error',
-        },
-      });
-      return;
-    }
-
-    if (apiIndex === -1) {
-      this.setState({
-        sceneError: {
-          message: this.props.intl.formatMessage({id: 'realtimeProject.nullError'}),
-          type: 'error',
-        },
-      });
-      return;
-    }
-
-    const currentApiData = this.apis[apiIndex];
-    const index = _.findIndex(currentApiData.scenes,
-      o => o.name === this.state.addingScene);
-
-    if (index !== -1) {
-      this.setState({
-        sceneError: {
-          message: this.props.intl.formatMessage({id: 'sceneMng.existError'}),
-          type: 'error',
-        },
-      });
-      return;
-    }
-
-    if (!this.state.addingScene) {
-      this.setState({
-        sceneError: {
-          message: this.props.intl.formatMessage({id: 'sceneMng.nullError'}),
-          type: 'error',
-        },
-      });
-      return;
-    }
-
-    const newScene = {
-      name: this.state.addingScene,
-      data: this.props.data.res.body,
-    };
-    const newData = [...currentApiData.scenes, newScene];
-    this.props.handleAsynSecType({
-      scenes: newData,
-    }, apiIndex);
-
+  showSceneForm = () => {
     this.setState({
-      sceneError: null,
-      modalVisible: false,
-    });
-  }
-
-  handleModalCancel () {
-    this.setState({
-      modalVisible: false,
+      sceneFormVisible: true,
     });
   }
 
   render () {
+    if (!this.props.realTimeData) {
+      return null;
+    }
     const {
       req,
       res,
-    } = this.props.data;
+    } = this.props.realTimeData;
     return (
       <div className="real-time-detail">
         <Breadcrumb>
           <Breadcrumb.Item>
-            <a href="/dashboard"><FormattedMessage id='realtimeProject.myProject' /></a>
+            <a href="/dashboard"><FormattedMessage id='topNav.allProject' /></a>
           </Breadcrumb.Item>
           <Breadcrumb.Item>
-            <FormattedMessage id='realtimeProject.detailPhoto' />
+            {window.context && window.context.projectName}
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>
+            <FormattedMessage id='topNav.realtimeList' />
           </Breadcrumb.Item>
         </Breadcrumb>
         <section className="save-to">
-          <Button type="primary" style={{ verticalAlign: 'super', float: 'right' }} onClick={this.showModal.bind(this)}>
-            <FormattedMessage id='realtimeProject.saveToScene' />
+          <Button type="primary" style={{ float: 'right' }} onClick={this.showSceneForm}>
+            <FormattedMessage id='interfaceDetail.saveToScene' />
           </Button>
-          <Modal
-            title={this.props.intl.formatMessage({id: 'realtimeProject.saveToScene'})}
-            visible={this.state.modalVisible}
-            onOk={this.handleModalOk.bind(this)}
-            onCancel={this.handleModalCancel.bind(this)}
-          >
-            <Input
-              placeholder={this.props.intl.formatMessage({id: 'realtimeProject.inputPlacehold'})}
-              value={this.state.addingScene}
-              onChange={this.onChangeScene.bind(this)}
-              style={{ marginBottom: '10px' }}
-            />
-            {this.state.sceneError
-              ? <Alert
-                message={this.state.sceneError.message}
-                type={this.state.sceneError.type}
-                showIcon /> : null}
-          </Modal>
         </section>
 
         <h2 style={{marginTop: '10px'}}>Request</h2>
-        <Collapse defaultActiveKey={['header', 'body']}>
+        <Collapse>
           <Panel header="request header" key="header">
-            <p className="headers-list">
+            <div className="headers-list">
               {this.renderHeaders({ headers: req.headers })}
-            </p>
+            </div>
           </Panel>
           <Panel header="request body" key="body">
-            <p className="body-content">
+            <div className="body-content">
               {this.renderBody({ body: req.body })}
-            </p>
+            </div>
           </Panel>
         </Collapse>
         <h2 style={{marginTop: '10px'}}>Respose</h2>
-        <Collapse defaultActiveKey={['header', 'body']}>
+        <Collapse defaultActiveKey={['body']}>
           <Panel header="response header" key="header">
-            <p className="headers-list">
+            <div className="headers-list">
               {this.renderHeaders({ headers: res.headers })}
-            </p>
+            </div>
           </Panel>
           <Panel header="response body" key="body">
-            <p className="body-content">
+            <div className="body-content">
               {this.renderBody({ body: res.body })}
-            </p>
+            </div>
           </Panel>
         </Collapse>
+        <SaveSceneForm
+          visible={this.state.sceneFormVisible}
+          onCancel={this.closeSceneForm}
+          onOk={this.confirmSceneForm}
+          confirmLoading={this.state.sceneFormLoading}
+          interfaceList={this.props.interfaceList}
+          requestData={this.props.realTimeData.req}
+        />
       </div>
     );
   }

@@ -1,0 +1,77 @@
+.interface-list {
+  margin-top: 10px;
+
+  .interface-filter-row {
+    margin: 20px 6px;
+  }
+
+  .add-input {
+    vertical-align: bottom;
+    margin: 10px 0;
+  }
+
+  .ant-btn {
+    width: 100%;
+  }
+
+  ul {
+    background-color: #eee;
+    margin-top: 10px;
+    padding: 0;
+
+    li {
+      background-color: #fff;
+      position: relative;
+      padding: 12px 20px 12px 16px;
+      margin-top: 1px;
+      margin-bottom: 1px;
+      height: 100px;
+      overflow: hidden;
+      &:hover {
+        .interface-control {
+          opacity: 1;
+        }
+      }
+
+      .interface-item {
+        cursor: pointer;
+        margin-right: 40px;
+      }
+      .interface-control {
+        position: absolute;
+        bottom: 10px;
+        right: 14px;
+        transition: opacity .5s linear;
+        opacity: 0;
+        margin-right: 5px;
+      }
+    }
+
+    .clicked {
+      .interface-control {
+        opacity: 1;
+      }
+      background: linear-gradient(
+        to right, #1890ff 0, #1890ff 6px, #fff 4px, #fff 100%
+      ) no-repeat;
+    }
+
+    h3 {
+      font-size: 14px;
+      font-weight: 400;
+      margin-bottom: 14px;
+      color: #1890ff;
+    }
+    p {
+      color: #888;
+      margin: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  &.uncontrolled .interface-item {
+    margin-right: initial;
+  }
+}

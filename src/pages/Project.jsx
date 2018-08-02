@@ -2,6 +2,9 @@
 
 import React from 'react';
 import io from 'socket.io-client';
+import debug from 'debug';
+
+const logger = debug('datahub:socket.io');
 
 import {
   injectIntl,
@@ -11,16 +14,17 @@ import {
   Alert,
   Layout,
   Tabs,
-  message,
 } from 'antd';
 
-import DataList from '../components/DataList';
+import InterfaceList from '../components/InterfaceList';
+import InterfaceDetail from '../components/InterfaceDetail/index';
+
 import RealTime from '../components/RealTime';
-import DataInfo from '../components/DataInfo';
 import RealTimeDetail from '../components/RealTimeDetail';
 
-import _ from '../common/helper';
-import request from '../common/fetch';
+import {
+  interfaceService,
+} from '../service';
 
 import './Project.less';
 
@@ -28,49 +32,59 @@ const TabPane = Tabs.TabPane;
 const Sider = Layout.Sider;
 const Content = Layout.Content;
 
-const projectId = window.pageConfig.projectId;
+const realTimeTabSymbol = 'REALTIME_TAB_KEY';
+const interfaceTabSymbol = 'INTERFACE_TAB_KEY';
 
 class Project extends React.Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      contentViewType: 'api', // display api content by default
-      data: [],
-      currentPathname: '',
-      REALTIME_MAXLINE: 10,
-      realTimeDataList: [],
-      realTimeIndex: 0,
-    };
+  state = {
+    interfaceList: [],
+    selectedInterface: {},
+
+    subRouter: interfaceTabSymbol,
+    REALTIME_MAXLINE: 100,
+    realTimeDataList: [],
+    realTimeIndex: 0,
   }
 
-  componentDidMount () {
-    request(`/api/data/${projectId}`, 'GET')
-      .then((res) => {
-        _.logger(`/api/data/${projectId} GET`, res);
-        res.data.forEach(item => {
-          item.params = item.params;
-          item.scenes = JSON.parse(item.scenes);
-        });
-        if (res.success) {
-          this.setState({
-            data: res.data,
-          });
-          res.data.forEach((api, index) => {
-            if (api.pathname === location.hash.replace('#', '')) {
-              this.handleApiClick(api.pathname);
-            }
-          });
-        }
-      });
+  async componentDidMount () {
     this.initRealTimeDataList();
+    const res = await this.fetchInterfaceList();
+    this.setState({
+      interfaceList: res.data || [],
+      selectedInterface: (res.data && res.data[0]) || {},
+    });
+  }
+
+  fetchInterfaceList = async () => {
+    return await interfaceService.getInterfaceList();
+  }
+
+  updateInterfaceList = async () => {
+    const res = await this.fetchInterfaceList();
+    this.setState({
+      interfaceList: res.data || [],
+      selectedInterface: this.getSelectedInterface(res.data),
+    });
+  }
+
+  getSelectedInterface = data => {
+    if (!Array.isArray(data)) return {};
+    return data.find(value => {
+      return value.uniqId === this.state.selectedInterface.uniqId;
+    }) || data[0];
+  }
+
+  setSelectedInterface = async (uniqId) => {
+    this.setState({
+      selectedInterface: this.state.interfaceList.find(i => i.uniqId === uniqId) || {},
+    });
   }
 
   initRealTimeDataList () {
-    const pageConfig = window.pageConfig;
-    const host = `http://${location.hostname}:${pageConfig.socket.port}`;
+    const host = `http://${location.hostname}:${window.context.socket.port}`;
     const socket = io(host);
     socket.on('push data', (data) => {
-      _.logger('socket', data);
+      logger(data);
       const newData = [
         ...this.state.realTimeDataList,
       ].slice(0, this.state.REALTIME_MAXLINE - 1);
@@ -81,156 +95,72 @@ class Project extends React.Component {
     });
   }
 
-  addApi (allData, newApi) {
-    return request(`/api/data/${projectId}`, 'POST', {
-      pathname: newApi.pathname,
-      description: newApi.description,
-    })
-      .then((res) => {
-        _.logger(`/api/data/${projectId} POST`, res);
-        if (res.success) {
-          message.success('add api success');
-          this.setState({
-            data: allData,
-          });
-        } else {
-          message.error('add api fail');
-        }
-        return res;
-      });
-  }
-
-  deleteApi (allData, newApi) {
-    request(`/api/data/${projectId}/${newApi.pathname}`, 'DELETE')
-      .then((res) => {
-        _.logger(`/api/data/${projectId}/${newApi.pathname} DELETE`, res);
-        if (res.success) {
-          message.success('delete api success');
-          this.setState({
-            data: allData,
-          });
-        } else {
-          message.error('delete api fail');
-        }
-      });
-  }
-
-  asynSecType (obj, index) {
-    const apis = [...this.state.data];
-    let apiIndex = 0;
-    apis.forEach((api, index) => {
-      if (api.pathname === this.state.currentPathname) {
-        apiIndex = index;
-      }
-    });
-
-    if (typeof index === 'number') {
-      apiIndex = index;
-    };
-
-    Object.keys(obj).forEach(item => {
-      apis[apiIndex][item] = obj[item];
-      if (obj[item] instanceof Object) {
-        obj[item] = JSON.stringify(obj[item]);
-      }
-    });
-
-    const currentPathname = this.state.data[apiIndex].pathname;
-
-    _.logger('asynSecType', { index, obj });
-    request(`/api/data/${projectId}/${currentPathname}`, 'POST', obj).then((res) => {
-      if (res.success) {
-        this.setState({
-          data: apis,
-        });
-        message.success('update api success');
-      } else {
-        message.error('update api fail');
-      }
-    });
-  }
-
-  handleApiClick (pathname) {
+  tabOnChange = key => {
     this.setState({
-      contentViewType: 'api',
-      currentPathname: pathname,
+      subRouter: key,
     });
   }
 
-  tabOnChange (key) {
-    if (key === 'realtimesnapshot' && this.state.realTimeDataList.length > 0) {
-      _.logger('this.state.realTimeDataList', this.state.realTimeDataList);
-      this.setState({
-        contentViewType: 'realTime',
-        realTimeIndex: 0,
-      });
-    } else if (key === 'apilist' && this.state.data.length) {
-      this.setState({
-        contentViewType: 'api',
-        currentPathname: this.state.data[0].pathname,
-      });
-    }
-  }
-
-  selectRealTimeItem (index) {
+  selectRealTimeItem = index => {
     this.setState({
-      contentViewType: 'realTime',
+      subRouter: realTimeTabSymbol,
       realTimeIndex: index,
     });
   }
 
   render () {
-    let currentData = {};
-    this.state.data.forEach((api, index) => {
-      if (api.pathname === this.state.currentPathname) {
-        currentData = api;
-      }
-    });
     return (
-      <Layout style={{ padding: '10px 10px 0 10px' }}>
+      <Layout>
         <Sider
           width="300px"
           style={{
             background: 'none',
-            borderRight: '1px solid #eee',
-            paddingRight: '10px',
+            borderRight: '1px solid rgba(0,0,0,0.05)',
           }}
+          className="project-sider"
         >
           <Tabs
-            defaultActiveKey="apilist"
-            onChange={this.tabOnChange.bind(this)}
+            defaultActiveKey={interfaceTabSymbol}
+            onChange={this.tabOnChange}
             animated={false}
           >
-            <TabPane tab={this.props.intl.formatMessage({
-              id: 'project.apiList',
-            })} key="apilist">
-              <DataList
-                apis={this.state.data}
-                handleAddApi={this.addApi.bind(this)}
-                handleDeleteApi={this.deleteApi.bind(this)}
-                handleApiClick={this.handleApiClick.bind(this)}
+            <TabPane
+              tab={this.props.intl.formatMessage({
+                id: 'project.interfaceList',
+              })}
+              key={interfaceTabSymbol}
+            >
+              <InterfaceList
+                selectedInterface={this.state.selectedInterface}
+                setSelectedInterface={this.setSelectedInterface}
+                interfaceList={this.state.interfaceList}
+                updateInterfaceList={this.updateInterfaceList}
               />
             </TabPane>
-            <TabPane tab={this.props.intl.formatMessage({
-              id: 'project.realtimeList',
-            })} key="realtimesnapshot">
+            <TabPane
+              tab={this.props.intl.formatMessage({
+                id: 'project.realtimeList',
+              })}
+              key={realTimeTabSymbol}
+            >
               <RealTime
                 realTimeDataList={this.state.realTimeDataList}
                 realTimeIndex={this.state.realTimeIndex || 0}
-                onSelect={this.selectRealTimeItem.bind(this)}
+                onSelect={this.selectRealTimeItem}
               />
             </TabPane>
           </Tabs>
         </Sider>
         <Content>
           {
-            this.state.data.length
-              ? this.state.contentViewType === 'api' &&
-            <DataInfo
-              currentData={ currentData }
-              handleAsynSecType={this.asynSecType.bind(this)}
+            this.state.interfaceList.length
+              ? this.state.subRouter === interfaceTabSymbol &&
+            <InterfaceDetail
+              selectedInterface={this.state.selectedInterface}
+              updateInterfaceList={this.updateInterfaceList}
+              key={this.state.selectedInterface.uniqId}
             />
-              : <div className="datainfo">
+              : <div className="interface-detail">
                 <Alert
                   className="add-api-hint"
                   message={this.props.intl.formatMessage({
@@ -242,13 +172,11 @@ class Project extends React.Component {
               </div>
           }
           {
-            this.state.data.length
-              ? this.state.contentViewType === 'realTime' &&
+            this.state.subRouter === realTimeTabSymbol &&
             <RealTimeDetail
-              handleAsynSecType={this.asynSecType.bind(this)}
-              apis={this.state.data}
-              data={this.state.realTimeDataList[this.state.realTimeIndex]}
-            /> : null
+              interfaceList={this.state.interfaceList}
+              realTimeData={this.state.realTimeDataList[this.state.realTimeIndex]}
+            />
           }
         </Content>
       </Layout>

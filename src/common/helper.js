@@ -16,8 +16,9 @@ _.guid = () => {
 const genSchemaList = (data) => {
   const res = [];
   let level = -1;
+  let tableIndex = 0;
 
-  const schemaWalker = (schema, title, requiredList) => {
+  const schemaWalker = (schema, field, requiredList) => {
     const {
       type,
       description,
@@ -25,12 +26,12 @@ const genSchemaList = (data) => {
       items,
     } = schema;
     res.push({
-      title,
+      field,
       type: items && items.type ? `${type}<{${items.type}}>` : type,
       description,
       level,
-      key: `${_.guid()}`,
-      required: !!~requiredList.indexOf(title),
+      key: tableIndex++,
+      required: !!~requiredList.indexOf(field),
     });
 
     if (items || properties) {
@@ -43,9 +44,9 @@ const genSchemaList = (data) => {
     if (data.properties) {
       const requiredList = data.required || [];
       level++;
-      Object.keys(data.properties).forEach(title => {
-        const schema = data.properties[title];
-        schemaWalker(schema, title, requiredList);
+      Object.keys(data.properties).forEach(field => {
+        const schema = data.properties[field];
+        schemaWalker(schema, field, requiredList);
       });
     } else if (data.items) {
       const distObj = data.items.length ? data.items[0] : data.items;
@@ -72,13 +73,6 @@ const genSchemaList = (data) => {
 };
 
 _.genSchemaList = genSchemaList;
-
-_.typeof = typeDetect;
-
-_.isChineseChar = str => {
-  const reg = /[\u4E00-\u9FA5\uF900-\uFA2D]/;
-  return reg.test(str);
-};
 
 _.genApiList = (schemaData, paramsData) => {
   if (!paramsData.schemaData || !schemaData.length) {
@@ -167,63 +161,5 @@ _.genApiList = (schemaData, paramsData) => {
   };
   return walker(json);
 };
-
-_.operateSchema = (type, { item, data, index, key, value }) => {
-  const res = data;
-  let count = -1;
-
-  const walker = data => {
-    Object.keys(data.properties).forEach((_current, currentIndex) => {
-      const current = data.properties[_current];
-      count++;
-      if (index === count) {
-        switch (type) {
-          case 'add': {
-            current.properties[new Date().getTime()] = {
-              type: 'string',
-              description: '',
-              properties: {},
-            };
-            break;
-          }
-          case 'delete': {
-            delete data.properties[_current];
-            break;
-          }
-          case 'modify': {
-            if (key === 'required') {
-              if (value) {
-                data.required.push(item.title);
-              } else {
-                data.required.splice(data.required.indexOf(item.title), 1);
-              }
-            } else if (key === 'field') { // modify key
-              data.properties[value] = data.properties[item.title];
-              delete data.properties[item.title];
-            } else { // modify property
-              current[key] = value;
-            }
-            break;
-          }
-        }
-      }
-      if (current.properties) {
-        walker(current);
-      }
-    });
-  };
-  walker(res);
-  return res;
-};
-
-_.logger = (...content) => {
-  const debugMode = location.href.indexOf('__debug') > -1;
-
-  if (!debugMode) {
-    return;
-  }
-  console.log(...content);
-};
-
 
 module.exports = _;
