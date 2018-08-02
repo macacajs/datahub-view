@@ -52,7 +52,7 @@ const enUS = {
   'interfaceList.interfacePathnameInput': 'Please input API URL pathname',
   'interfaceList.interfaceDescription': 'Please input API description',
   'interfaceList.interfaceMethod': 'Please select API method',
-  'interfaceList.invalidPathname': 'Type path/name or path/:type/:id use lowercase letters',
+  'interfaceList.invalidPathname': 'Please input pathname, use lowercase letters',
   'interfaceList.invalidDescription': 'Please input description',
 
   'interfaceDetail.contextConfig': 'Rewrite response',

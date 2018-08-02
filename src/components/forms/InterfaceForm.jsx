@@ -56,13 +56,13 @@ function InterfaceFormComponent (props) {
             {
               required: true,
               message: formatMessage('interfaceList.invalidPathname'),
-              pattern: /^[a-z0-9:_-]([.a-z0-9:/_-]*[a-z0-9:_-])?$/,
+              pattern: /^[a-z0-9_-]([.a-z0-9/_-]*[a-z0-9_-])?$/,
             },
-            { max: 32 },
+            { max: 128 },
           ],
         })(
           <Input
-            placeholder="path/name or path/:type/:id"
+            placeholder="path/name"
           />
         )}
       </FormItem>
