@@ -58,7 +58,7 @@ class SchemaFormComponent extends Component {
       title={
         <span>Schema&nbsp;&nbsp;
           <a target="_blank"
-            href="https://github.com/macacajs/macaca-datahub/blob/2.x/README.md#schema-syntax">
+            href="https://github.com/macacajs/macaca-datahub/blob/master/README.md#schema-syntax">
             syntax docs
           </a>
         </span>}
