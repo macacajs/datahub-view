@@ -52,7 +52,7 @@ const zhCN = {
   'interfaceList.interfacePathnameInput': '请输入接口 URL pathname',
   'interfaceList.interfaceDescription': '请输入接口描述',
   'interfaceList.interfaceMethod': '请选择请求方法',
-  'interfaceList.invalidPathname': '请输入 pathname 字母用小写',
+  'interfaceList.invalidPathname': '请输入 pathname',
   'interfaceList.invalidDescription': '请输入接口描述',
 
   'interfaceDetail.contextConfig': 'Rewrite response',
