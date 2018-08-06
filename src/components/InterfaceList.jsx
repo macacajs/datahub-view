@@ -163,7 +163,7 @@ class InterfaceList extends Component {
           </Col>
         </Row>}
 
-        <ul style={{ maxHeight: '600px', overflowY: 'scroll' }}>
+        <ul>
           { this.renderInterfaceList() }
         </ul>
 

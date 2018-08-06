@@ -11,6 +11,7 @@ import {
 } from 'react-intl';
 
 import {
+  Affix,
   Alert,
   Layout,
   Tabs,
@@ -119,37 +120,39 @@ class Project extends React.Component {
           }}
           className="project-sider"
         >
-          <Tabs
-            defaultActiveKey={interfaceTabSymbol}
-            onChange={this.tabOnChange}
-            animated={false}
-          >
-            <TabPane
-              tab={this.props.intl.formatMessage({
-                id: 'project.interfaceList',
-              })}
-              key={interfaceTabSymbol}
+          <Affix>
+            <Tabs
+              defaultActiveKey={interfaceTabSymbol}
+              onChange={this.tabOnChange}
+              animated={false}
             >
-              <InterfaceList
-                selectedInterface={this.state.selectedInterface}
-                setSelectedInterface={this.setSelectedInterface}
-                interfaceList={this.state.interfaceList}
-                updateInterfaceList={this.updateInterfaceList}
-              />
-            </TabPane>
-            <TabPane
-              tab={this.props.intl.formatMessage({
-                id: 'project.realtimeList',
-              })}
-              key={realTimeTabSymbol}
-            >
-              <RealTime
-                realTimeDataList={this.state.realTimeDataList}
-                realTimeIndex={this.state.realTimeIndex || 0}
-                onSelect={this.selectRealTimeItem}
-              />
-            </TabPane>
-          </Tabs>
+              <TabPane
+                tab={this.props.intl.formatMessage({
+                  id: 'project.interfaceList',
+                })}
+                key={interfaceTabSymbol}
+              >
+                <InterfaceList
+                  selectedInterface={this.state.selectedInterface}
+                  setSelectedInterface={this.setSelectedInterface}
+                  interfaceList={this.state.interfaceList}
+                  updateInterfaceList={this.updateInterfaceList}
+                />
+              </TabPane>
+              <TabPane
+                tab={this.props.intl.formatMessage({
+                  id: 'project.realtimeList',
+                })}
+                key={realTimeTabSymbol}
+              >
+                <RealTime
+                  realTimeDataList={this.state.realTimeDataList}
+                  realTimeIndex={this.state.realTimeIndex || 0}
+                  onSelect={this.selectRealTimeItem}
+                />
+              </TabPane>
+            </Tabs>
+          </Affix>
         </Sider>
         <Content>
           {
