@@ -17,6 +17,11 @@ import {
   Controlled as CodeMirror,
 } from '../common/codemirror';
 
+import {
+  queryParse,
+  serialize,
+} from '../common/helper';
+
 const codeMirrorOptions = {
   theme: 'default',
   mode: 'application/json',
@@ -56,9 +61,30 @@ class Document extends React.Component {
     sceneList: [],
   }
 
+  // 根据 hash 值初始化数据
+  getIndexByHash (res) {
+    const params = queryParse(location.hash);
+
+    if (!res.success || !res.data) {
+      return 0;
+    }
+
+    for (let i = 0; i < res.data.length; i++) {
+      const item = res.data[i];
+
+      if (item.method === params.method &&
+        item.pathname === decodeURI(params.pathname)) {
+        return i;
+      }
+    }
+
+    return 0;
+  }
+
   async componentDidMount () {
     const interfaceRes = await this.initInterfaceList();
-    const selectedInterface = (interfaceRes.data && interfaceRes.data[0]) || {};
+    const index = this.getIndexByHash(interfaceRes);
+    const selectedInterface = (interfaceRes.data && interfaceRes.data[index]) || {};
     let schemaRes = {};
     let sceneRes = {};
     if (selectedInterface.uniqId) {
@@ -90,9 +116,18 @@ class Document extends React.Component {
 
   setSelectedInterface = async (uniqId) => {
     const selectedInterface = this.state.interfaceList.find(i => i.uniqId === uniqId) || {};
+
     this.setState({
       selectedInterface,
     });
+
+    let hashInfo = `pathname=${encodeURI(selectedInterface.pathname)}&method=${selectedInterface.method}`;
+
+    if (selectedInterface.currentScene) {
+      hashInfo += `&scene=${encodeURI(selectedInterface.currentScene)}`;
+    }
+    location.hash = `#/?${hashInfo}`;
+
     await this.fetchSchemaAndScene(selectedInterface.uniqId);
   }
 
@@ -100,7 +135,25 @@ class Document extends React.Component {
     location.href = `//${location.host}/project/${projectName}`;
   }
 
+  changeSceneDoc (value) {
+    console.log(value);
+    const params = queryParse(location.hash);
+    params.scene = value;
+    location.hash = `#/?${serialize(params)}`;
+  }
+
   render () {
+    const params = queryParse(location.hash);
+    const sceneList = this.state.sceneList;
+    const sceneData = sceneList.find(item => item.sceneName === params.scene);
+    let currentScene;
+
+    if (sceneData && sceneData.sceneName) {
+      currentScene = sceneData.sceneName;
+    } else {
+      currentScene = sceneList[0] && sceneList[0].sceneName;
+    }
+
     return (
       <Layout>
         <Sider width={300} style={{
@@ -136,14 +189,16 @@ class Document extends React.Component {
           <section>
             <h1 style={{marginTop: '20px'}}><FormattedMessage id="sceneList.sceneData"/></h1>
             <Tabs
+              onChange={this.changeSceneDoc.bind(this)}
               animated={false}
+              activeKey={currentScene}
             >
               {
-                this.state.sceneList.map((sceneData, index) =>
+                sceneList.map((sceneData, index) =>
                   <TabPane
                     size="small"
                     tab={sceneData.sceneName}
-                    key={index}
+                    key={sceneData.sceneName}
                   >
                     <CodeMirror
                       value={JSON.stringify(sceneData.data, null, 2)}

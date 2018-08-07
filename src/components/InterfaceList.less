@@ -1,4 +1,5 @@
 .interface-list {
+  margin-bottom: 10vh;
 
   .interface-filter-row {
     margin: 20px 6px;
@@ -14,19 +15,21 @@
   }
 
   ul {
-    background-color: #eee;
     padding: 0;
     height: calc(100vh - 116px);
-    overflow-y: scroll;
+    overflow-y: auto;
 
     li {
-      background-color: #fff;
       position: relative;
       padding: 12px 20px 12px 16px;
-      margin-top: 1px;
-      margin-bottom: 1px;
-      height: 100px;
+      border-top: 1px solid rgba(0, 0, 0, .05);
+      min-height: 100px;
       overflow: hidden;
+
+      &:last-child {
+        border-bottom: 1px solid rgba(0, 0, 0, .05);
+      }
+
       &:hover {
         .interface-control {
           opacity: 1;
@@ -35,8 +38,8 @@
 
       .interface-item {
         cursor: pointer;
-        margin-right: 40px;
       }
+
       .interface-control {
         position: absolute;
         bottom: 10px;
@@ -60,14 +63,14 @@
       font-size: 14px;
       font-weight: 400;
       margin-bottom: 14px;
+      word-wrap: break-word;
       color: #1890ff;
     }
+
     p {
       color: #888;
       margin: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      word-wrap: break-word;
     }
   }
 

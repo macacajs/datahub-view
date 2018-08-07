@@ -26,6 +26,13 @@ import {
   schemaService,
   interfaceService,
 } from '../../service';
+
+import {
+  queryParse,
+  serialize,
+} from '../../common/helper';
+
+
 class InterfaceDetail extends React.Component {
   state = {
     selectedScene: {},
@@ -38,11 +45,20 @@ class InterfaceDetail extends React.Component {
     this.fetchSchema();
   }
 
-  changeSelectedScene = async (value) => {
+  updateSceneFetch = async (scene) => {
     await interfaceService.updateInterface({
       uniqId: this.props.selectedInterface.uniqId,
-      currentScene: value.sceneName,
+      currentScene: scene,
     });
+  }
+
+  changeSelectedScene = async (value) => {
+    const params = queryParse(location.hash);
+
+    params.scene = value.sceneName;
+    location.hash = `#/?${serialize(params)}`;
+
+    await this.updateSceneFetch(value.sceneName);
     await this.updateInterFaceAndScene();
   }
 
@@ -63,6 +79,20 @@ class InterfaceDetail extends React.Component {
 
   getDefaultScene = data => {
     if (!Array.isArray(data)) return {};
+    const params = queryParse(location.hash);
+
+    if (params.scene) {
+      const result = data.find(item => item.sceneName === params.scene);
+
+      if (result) {
+        // 若参数与当前场景不同，需要更新场景
+        if (params.scene !== this.props.selectedInterface.currentScene) {
+          this.updateSceneFetch(params.scene);
+        }
+        return result;
+      }
+    }
+
     return data.find(value => {
       return value.sceneName === this.props.selectedInterface.currentScene;
     }) || {};

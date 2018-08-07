@@ -9,28 +9,27 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const pkg = require('./package');
 
 
-// const DataHub = require('macaca-datahub');
-// const datahubProxyMiddle = require('datahub-proxy-middleware');
+const DataHub = require('macaca-datahub');
+const datahubProxyMiddle = require('datahub-proxy-middleware');
 
-// const datahubConfig = {
-//   port: 5678,
-//   hostname: 'localhost',
-//   store: path.join(__dirname, 'data'),
-//   proxy: {
-//     '^/datahubview': {
-//       hub: 'datahubview',
-//     },
-//   },
-//   showBoard: true,
-//   view: {
-//     // use local resource for test
-//     assetsUrl: 'http://localhost:8080',
-//   },
-// };
+const datahubConfig = {
+  port: 5678,
+  hostname: 'localhost',
+  store: path.join(__dirname, 'data'),
+  proxy: {
+    '^/datahubview': {
+      hub: 'datahubview',
+    },
+  },
+  view: {
+    // use local resource for test
+    assetsUrl: 'http://localhost:8080',
+  },
+};
 
-// const defaultDatahub = new DataHub({
-//   port: datahubConfig.port,
-// });
+const defaultDatahub = new DataHub({
+  port: datahubConfig.port,
+});
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
 
@@ -121,11 +120,11 @@ module.exports = (env, argv) => {
       hot: true,
       stats: 'errors-only',
       before: app => {
-      // datahubProxyMiddle(app)(datahubConfig);
+        datahubProxyMiddle(app)(datahubConfig);
       },
       after: () => {
-      // defaultDatahub.startServer(datahubConfig).then(() => {
-      // });
+        defaultDatahub.startServer(datahubConfig).then(() => {
+        });
       },
     },
   };

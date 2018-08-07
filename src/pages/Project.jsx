@@ -27,6 +27,10 @@ import {
   interfaceService,
 } from '../service';
 
+import {
+  queryParse,
+} from '../common/helper';
+
 import './Project.less';
 
 const TabPane = Tabs.TabPane;
@@ -47,12 +51,33 @@ class Project extends React.Component {
     realTimeIndex: 0,
   }
 
+  // 根据 hash 值初始化数据
+  getIndexByHash (res) {
+    const params = queryParse(location.hash);
+
+    if (!res.success) return 0;
+
+    for (let i = 0; i < res.data.length; i++) {
+      const item = res.data[i];
+
+      if (item.method === params.method &&
+        item.pathname === decodeURI(params.pathname)) {
+        return i;
+      }
+    }
+
+    return 0;
+  }
+
   async componentDidMount () {
     this.initRealTimeDataList();
+
     const res = await this.fetchInterfaceList();
+    const index = this.getIndexByHash(res);
+
     this.setState({
       interfaceList: res.data || [],
-      selectedInterface: (res.data && res.data[0]) || {},
+      selectedInterface: (res.data && res.data[index]) || {},
     });
   }
 
@@ -76,9 +101,18 @@ class Project extends React.Component {
   }
 
   setSelectedInterface = async (uniqId) => {
+    const selectedInterface = this.state.interfaceList.find(i => i.uniqId === uniqId) || {};
+
     this.setState({
-      selectedInterface: this.state.interfaceList.find(i => i.uniqId === uniqId) || {},
+      selectedInterface,
     });
+
+    let hashInfo = `pathname=${encodeURI(selectedInterface.pathname)}&method=${selectedInterface.method}`;
+
+    if (selectedInterface.currentScene) {
+      hashInfo += `&scene=${encodeURI(selectedInterface.currentScene)}`;
+    }
+    location.hash = `#/?${hashInfo}`;
   }
 
   initRealTimeDataList () {

@@ -19,14 +19,11 @@ import {
 } from 'react-intl';
 
 const FormItem = Form.Item;
+const Panel = Collapse.Panel;
 const Option = Select.Option;
 
 import { sceneService } from '../service';
 import './RealTimeDetail.less';
-
-const {
-  Panel,
-} = Collapse;
 
 function SaveSceneFormComponent (props) {
   const {
