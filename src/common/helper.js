@@ -74,6 +74,32 @@ const genSchemaList = (data) => {
 
 _.genSchemaList = genSchemaList;
 
+_.queryParse = url => {
+  const qs = {};
+  if (!url) {
+    return qs;
+  }
+  url.replace(/([^?=&]+)(=([^&]*))?/g, ($0, $1, $2, $3) => {
+    if ($3 === undefined) {
+      return;
+    }
+    qs[$1] = decodeURIComponent($3);
+  });
+  return qs;
+};
+
+_.serialize = obj => {
+  const s = [];
+
+  for (const item in obj) {
+    const k = encodeURIComponent(item);
+    const v = encodeURIComponent(obj[item] == null ? '' : obj[item]);
+    s.push(`${k}=${v}`);
+  }
+
+  return s.join('&');
+};
+
 _.genApiList = (schemaData, paramsData) => {
   if (!paramsData.schemaData || !schemaData.length) {
     return [];
