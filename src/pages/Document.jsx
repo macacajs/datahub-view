@@ -59,6 +59,7 @@ class Document extends React.Component {
     selectedInterface: {},
     schemaData: [],
     sceneList: [],
+    currentScene: '',
   }
 
   // 根据 hash 值初始化数据
@@ -135,18 +136,21 @@ class Document extends React.Component {
     location.href = `//${location.host}/project/${projectName}`;
   }
 
-  changeSceneDoc (value) {
-    console.log(value);
+  changeSceneDoc = value => {
     const params = queryParse(location.hash);
     params.scene = value;
     location.hash = `#/?${serialize(params)}`;
+
+    this.setState({
+      currentScene: value,
+    });
   }
 
   render () {
     const params = queryParse(location.hash);
     const sceneList = this.state.sceneList;
     const sceneData = sceneList.find(item => item.sceneName === params.scene);
-    let currentScene;
+    let currentScene = this.state.currentScene;
 
     if (sceneData && sceneData.sceneName) {
       currentScene = sceneData.sceneName;
@@ -189,7 +193,7 @@ class Document extends React.Component {
           <section>
             <h1 style={{marginTop: '20px'}}><FormattedMessage id="sceneList.sceneData"/></h1>
             <Tabs
-              onChange={this.changeSceneDoc.bind(this)}
+              onChange={this.changeSceneDoc}
               animated={false}
               activeKey={currentScene}
             >
