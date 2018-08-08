@@ -117,9 +117,14 @@ const jsonToSchema = jsonData => {
     }
     case 'object': {
       if (Array.isArray(jsonData)) {
+        let data = jsonData[0];
+
+        if (typeof jsonData[0] === 'object') {
+          data = deepMerge(jsonData);
+        }
         contextSchema = {
           type: 'array',
-          items: jsonToSchema(deepMerge(jsonData)),
+          items: jsonToSchema(data),
         };
       } else {
         contextSchema = {
