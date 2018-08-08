@@ -16,6 +16,7 @@ import InterfaceSceneList from './InterfaceSceneList';
 import InterfaceContextConfig from './InterfaceContextConfig';
 import InterfaceProxyConfig from './InterfaceProxyConfig';
 import InterfaceSchema from './InterfaceSchema';
+import deepMerge from '../../common/deepmerge';
 
 import './index.less';
 
@@ -30,6 +31,7 @@ import {
 import {
   queryParse,
   serialize,
+  jsonToSchema,
 } from '../../common/helper';
 
 
@@ -42,7 +44,6 @@ class InterfaceDetail extends React.Component {
 
   componentWillMount () {
     this.fetchSceneList();
-    this.fetchSchema();
   }
 
   updateSceneFetch = async (scene) => {
@@ -68,12 +69,48 @@ class InterfaceDetail extends React.Component {
       sceneList: res.data || [],
       selectedScene: res.data && this.getDefaultScene(res.data),
     });
+    this.fetchSchema();
+  }
+
+  getInitResSchema = (sceneData, schemaData) => {
+    let resIndex = -1;
+    schemaData.forEach((item, index) => {
+      if (item.type === 'response') {
+        resIndex = index;
+      }
+    });
+    const resSchema = schemaData[resIndex];
+
+    if (!sceneData || !sceneData.length) {
+      return;
+    }
+
+    const obj = sceneData.length > 1 ? deepMerge(sceneData) : sceneData[0];
+    const schema = jsonToSchema(obj);
+    const result = {
+      type: 'response',
+      data: {
+        enableSchemaValidate: true,
+        schemaData: schema,
+      },
+    };
+
+    if (resIndex === -1) {
+      schemaData.push(result);
+    } else {
+      schemaData[resIndex] = deepMerge([result, schemaData[resIndex]]);
+    }
   }
 
   fetchSchema = async () => {
+    const sceneData = this.state.sceneList.map(item => item.data);
     const res = await schemaService.getSchema({ interfaceUniqId: this.props.selectedInterface.uniqId });
+    const schemaData = res.data || [];
+
+    this.getInitResSchema(sceneData, schemaData);
+
     this.setState({
-      schemaData: res.data || [],
+      schemaData,
     });
   }
 
