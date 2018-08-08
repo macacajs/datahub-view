@@ -2,6 +2,7 @@
 
 import lodash from 'lodash';
 import typeDetect from 'type-detect';
+import deepMerge from './deepmerge';
 
 const _ = lodash.merge({}, lodash);
 
@@ -118,7 +119,7 @@ const jsonToSchema = jsonData => {
       if (Array.isArray(jsonData)) {
         contextSchema = {
           type: 'array',
-          items: jsonToSchema(jsonData[0]),
+          items: jsonToSchema(deepMerge(jsonData)),
         };
       } else {
         contextSchema = {
