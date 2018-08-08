@@ -100,6 +100,48 @@ _.serialize = obj => {
   return s.join('&');
 };
 
+// 转换 JSON 为 Schema
+const jsonToSchema = jsonData => {
+  let contextSchema = {};
+  const itemType = typeof (jsonData);
+  switch (itemType) {
+    case 'string':
+    case 'boolean':
+    case 'number': {
+      contextSchema = {
+        type: itemType,
+        description: '',
+      };
+      break;
+    }
+    case 'object': {
+      if (Array.isArray(jsonData)) {
+        contextSchema = {
+          type: 'array',
+          items: jsonToSchema(jsonData[0]),
+        };
+      } else {
+        contextSchema = {
+          type: 'object',
+          properties: {},
+          required: [],
+        };
+
+        for (const key in jsonData) {
+          if (!jsonData.hasOwnProperty(key)) {
+            continue;
+          }
+          contextSchema.properties[key] = jsonToSchema(jsonData[key]);
+        }
+        break;
+      }
+    }
+  }
+  return contextSchema;
+};
+
+_.jsonToSchema = jsonToSchema;
+
 _.genApiList = (schemaData, paramsData) => {
   if (!paramsData.schemaData || !schemaData.length) {
     return [];
