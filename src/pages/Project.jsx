@@ -144,6 +144,8 @@ class Project extends React.Component {
   }
 
   render () {
+    const globalProxyEnabled = this.state.interfaceList.every(item => item.proxyConfig.enabled);
+
     return (
       <Layout>
         <Sider
@@ -195,6 +197,7 @@ class Project extends React.Component {
             <InterfaceDetail
               selectedInterface={this.state.selectedInterface}
               updateInterfaceList={this.updateInterfaceList}
+              globalProxyEnabled={globalProxyEnabled}
               key={this.state.selectedInterface.uniqId}
             />
               : <div className="interface-detail">

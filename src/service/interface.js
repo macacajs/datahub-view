@@ -19,6 +19,13 @@ export async function createInterface ({ pathname, description, method = 'GET' }
   });
 };
 
+export async function updateAllProxy ({ projectUniqId, enabled, method = 'POST' }) {
+  return request('/api/sdk/switch_all_proxy', 'POST', {
+    projectUniqId,
+    enabled,
+  });
+};
+
 export async function updateInterface ({ uniqId, ...payload }) {
   const fileds = [
     'pathname', 'description', 'method',

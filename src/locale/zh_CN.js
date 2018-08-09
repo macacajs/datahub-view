@@ -77,6 +77,8 @@ const zhCN = {
 
   'proxyConfig.enable.true': '代理模式已开启，自动转发请求',
   'proxyConfig.enable.false': '代理模式已关闭',
+  'proxyConfig.globalEnable.true': '全局代理模式已开启',
+  'proxyConfig.globalEnable.false': '全局代理模式已关闭',
   'proxyConfig.addProxyUrl': '添加代理 Url 地址',
   'proxyConfig.invalidProxyUrl': '请输入 Url',
   'proxyConfig.switchProxyUrlHint': '点击 Url 进行切换：',

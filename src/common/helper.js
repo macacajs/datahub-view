@@ -37,7 +37,6 @@ const genSchemaList = (data) => {
 
     if (items || properties) {
       walker(schema);
-      level--;
     }
   };
 
@@ -120,7 +119,7 @@ const jsonToSchema = jsonData => {
         let data = jsonData[0];
 
         if (typeof jsonData[0] === 'object') {
-          data = deepMerge(jsonData);
+          data = jsonData.length > 1 ? deepMerge(jsonData) : jsonData[0];
         }
         contextSchema = {
           type: 'array',
