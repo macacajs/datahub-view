@@ -124,7 +124,7 @@ class InterfaceProxyConfig extends Component {
               onChange={props.toggleProxy}
             />
             <span style={{marginLeft: '10px', verticalAlign: 'middle'}}>
-              {formatMessage(`proxyConfig.enable.${enabled}`)}
+              {formatMessage(`proxyConfig.enable.${enabled || false}`)}
             </span>
           </Col>
           <Col {...this.defaultColProps} >
@@ -142,7 +142,7 @@ class InterfaceProxyConfig extends Component {
               onChange={props.toggleGlobalProxy}
             />
             <span style={{marginLeft: '10px', verticalAlign: 'middle'}}>
-              {formatMessage(`proxyConfig.globalEnable.${enabled}`)}
+              {formatMessage(`proxyConfig.globalEnable.${props.globalProxyEnabled || false}`)}
             </span>
           </Col>
         </Row>
