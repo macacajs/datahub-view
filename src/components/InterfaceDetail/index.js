@@ -79,7 +79,6 @@ class InterfaceDetail extends React.Component {
         resIndex = index;
       }
     });
-    const resSchema = schemaData[resIndex];
 
     if (!sceneData || !sceneData.length) {
       return;

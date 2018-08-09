@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDom from 'react-dom';
 
 import {
+  Alert,
   Layout,
   Tooltip,
 } from 'antd';
@@ -69,6 +70,17 @@ class App extends React.Component {
   render () {
     return (
       <Layout className={`page-${this.props.pageConfig.pageId}`}>
+        {window.pageConfig.version[0] === '1' && <Alert
+          banner={true}
+          message={
+            <div>
+              <span>{`当前版本 DataHub v${window.pageConfig.version}，已停止维护。请升级到 DataHub 2.x，参考升级指南：`}</span>
+              <a target="_blank" href="https://github.com/macacajs/macaca-datahub/issues/77">https://github.com/macacajs/macaca-datahub/issues/77</a>
+            </div>
+          }
+          type="error"
+          showIcon
+        />}
         <Header className="header">
           <a href="/">
             <h1 className="title">DataHub</h1>
