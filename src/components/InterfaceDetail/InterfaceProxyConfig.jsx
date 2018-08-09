@@ -110,7 +110,6 @@ class InterfaceProxyConfig extends Component {
     const props = this.props;
     const formatMessage = this.formatMessage;
     const { enabled, proxyList = [] } = props.proxyConfig;
-    const { totalProxyEnabled } = props.proxyConfig;
     const globalSwitchProps = { checked: props.globalProxyEnabled };
     const switchProps = { checked: enabled };
     const disabled = !props.selectedInterface.proxyConfig.enabled;
