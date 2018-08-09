@@ -70,15 +70,15 @@ class App extends React.Component {
   render () {
     return (
       <Layout className={`page-${this.props.pageConfig.pageId}`}>
-        {window.pageConfig.version[0] === '1' && <Alert
+        {window.pageConfig.version[0] === '2' && <Alert
           banner={true}
           message={
             <div>
-              <span>{`Current DataHub v${window.pageConfig.version}，Please upgrade to DataHub 2.x: `}</span>
+              <span>{`Your datahub version is ${window.pageConfig.version}, please upgrade to datahub@2: `}</span>
               <a target="_blank" href="https://github.com/macacajs/macaca-datahub/issues/77">https://github.com/macacajs/macaca-datahub/issues/77</a>
             </div>
           }
-          type="error"
+          type="warning"
           showIcon
         />}
         <Header className="header">
