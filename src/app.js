@@ -74,7 +74,7 @@ class App extends React.Component {
           banner={true}
           message={
             <div>
-              <span>{`当前版本 DataHub v${window.pageConfig.version}，已停止维护。请升级到 DataHub 2.x，参考升级指南：`}</span>
+              <span>{`Current DataHub v${window.pageConfig.version}，Please upgrade to DataHub 2.x: `}</span>
               <a target="_blank" href="https://github.com/macacajs/macaca-datahub/issues/77">https://github.com/macacajs/macaca-datahub/issues/77</a>
             </div>
           }
