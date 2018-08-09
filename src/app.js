@@ -70,7 +70,7 @@ class App extends React.Component {
   render () {
     return (
       <Layout className={`page-${this.props.pageConfig.pageId}`}>
-        {window.pageConfig.version[0] === '2' && <Alert
+        {window.pageConfig.version[0] === '1' && <Alert
           banner={true}
           message={
             <div>
