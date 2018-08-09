@@ -161,6 +161,15 @@ class InterfaceDetail extends React.Component {
     await this.props.updateInterfaceList();
   }
 
+  toggleGlobalProxy = async () => {
+    const enabled = !this.props.globalProxyEnabled;
+    await interfaceService.updateAllProxy({
+      projectUniqId: window.context.uniqId,
+      enabled,
+    });
+    await this.props.updateInterfaceList();
+  }
+
   changeProxyList = async newList => {
     const selectedInterface = this.props.selectedInterface;
     const payload = {
@@ -283,7 +292,9 @@ class InterfaceDetail extends React.Component {
           <InterfaceProxyConfig
             proxyConfig={this.props.selectedInterface.proxyConfig}
             selectedInterface={this.props.selectedInterface}
+            globalProxyEnabled={this.props.globalProxyEnabled}
             toggleProxy={this.toggleProxy}
+            toggleGlobalProxy={this.toggleGlobalProxy}
             deleteProxy={this.deleteProxy}
             addProxy={this.addProxy}
             selectProxy={this.selectProxy}

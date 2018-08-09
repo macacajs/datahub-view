@@ -77,6 +77,8 @@ const enUS = {
 
   'proxyConfig.enable.true': 'Proxy mode enabled',
   'proxyConfig.enable.false': 'Proxy mode disabled',
+  'proxyConfig.globalEnable.true': 'Global proxy mode enabled',
+  'proxyConfig.globalEnable.false': 'Global proxy mode disabled',
   'proxyConfig.addProxyUrl': 'Add proxy url',
   'proxyConfig.invalidProxyUrl': 'Please input valid url',
   'proxyConfig.switchProxyUrlHint': 'Click to switch proxy url:',

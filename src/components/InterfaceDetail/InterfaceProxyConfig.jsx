@@ -109,8 +109,10 @@ class InterfaceProxyConfig extends Component {
   render () {
     const props = this.props;
     const formatMessage = this.formatMessage;
-    const { enabled = false, proxyList = [] } = props.proxyConfig;
-    const switchProps = enabled ? { defaultChecked: true } : {};
+    const { enabled, proxyList = [] } = props.proxyConfig;
+    const { totalProxyEnabled } = props.proxyConfig;
+    const globalSwitchProps = { checked: props.globalProxyEnabled };
+    const switchProps = { checked: enabled };
     const disabled = !props.selectedInterface.proxyConfig.enabled;
 
     return (
@@ -134,6 +136,15 @@ class InterfaceProxyConfig extends Component {
             >
               {formatMessage('proxyConfig.addProxyUrl')}
             </Button>
+          </Col>
+          <Col {...this.defaultColProps} >
+            <Switch
+              {...globalSwitchProps}
+              onChange={props.toggleGlobalProxy}
+            />
+            <span style={{marginLeft: '10px', verticalAlign: 'middle'}}>
+              {formatMessage(`proxyConfig.globalEnable.${enabled}`)}
+            </span>
           </Col>
         </Row>
         <div>
