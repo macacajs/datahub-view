@@ -138,6 +138,7 @@ describe('test/datahub-api-operate.test.js', () => {
         .sleep(1500)
         // check 1 proxy
         .refresh()
+        .sleep(1500)
         .waitForElementByCss('[data-accessbilityid="project-api-proxy-list-0"] .common-list-item-name span')
         .hasText('http://datahub1.com')
 
@@ -154,6 +155,7 @@ describe('test/datahub-api-operate.test.js', () => {
         .sleep(1500)
         // check 2 proxy
         .refresh()
+        .sleep(1500)
         .waitForElementByCss('[data-accessbilityid="project-api-proxy-list-1"] .common-list-item-name span')
         .hasText('http://datahub2.com')
 
