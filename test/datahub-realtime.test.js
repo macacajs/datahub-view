@@ -19,7 +19,7 @@ describe('test/datahub-realtime.test.js', () => {
 
     afterEach(function () {
       return driver
-        .sleep(1000)
+        .sleep(1500)
         .coverage()
         .saveScreenshots(this);
     });

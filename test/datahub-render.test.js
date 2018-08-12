@@ -25,7 +25,7 @@ describe('test/datahub-render.test.js', () => {
 
     after(() => {
       return driver
-        .sleep(1000)
+        .sleep(1500)
         .openReporter(false)
         .quit();
     });

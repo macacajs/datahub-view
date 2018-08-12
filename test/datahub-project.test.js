@@ -7,7 +7,7 @@ import {
   BASE_URL,
 } from './helper';
 
-describe('test/datahub-project.test.js', () => {
+describe.only('test/datahub-project.test.js', () => {
   describe('project page render testing', () => {
     before(() => {
       return driver
@@ -40,24 +40,24 @@ describe('test/datahub-project.test.js', () => {
         .elementByCss('#projectName')
         .click()
         .formatInput('datahubview')
-        .sleep(500)
+        .sleep(1500)
         .elementByCss('#description')
         .click()
         .formatInput('DataHub Mock Data')
-        .sleep(500)
+        .sleep(1500)
         .waitForElementByCss('button.ant-btn.ant-btn-primary')
         .click()
-        .sleep(500)
+        .sleep(1500)
         .waitForElementByCss('[data-accessbilityid="dashboard-content-card-0"] div.ant-card-head')
         .hasText('DataHub Mock Data')
-        .sleep(1000)
+        .sleep(1500)
         // input should be empty after add projct
         .waitForElementByCss('[data-accessbilityid="dashboard-folder-add"]')
         .click()
         .waitForElementByCss('#projectName')
         .text()
         .then(value => assert.equal(value, ''))
-        .sleep(500)
+        .sleep(1500)
         .waitForElementByCss('#description')
         .text()
         .then(value => assert.equal(value, ''));
@@ -69,21 +69,21 @@ describe('test/datahub-project.test.js', () => {
         .getUrl(`${BASE_URL}/dashboard`)
         .waitForElementByCss('[data-accessbilityid="dashboard-content-card-0"] .anticon-setting')
         .click()
-        .sleep(500)
+        .sleep(1500)
         .elementByCss('#projectName')
         .click()
         .formatInput('new_datahubview')
-        .sleep(500)
+        .sleep(1500)
         .elementByCss('#description')
         .click()
         .formatInput('New DataHub Mock Data')
-        .sleep(500)
+        .sleep(1500)
         .waitForElementByCss('button.ant-btn.ant-btn-primary')
         .click()
-        .sleep(500)
+        .sleep(1500)
         .waitForElementByCss('[data-accessbilityid="dashboard-content-card-0"] div.ant-card-head')
         .hasText('New DataHub Mock Data')
-        .sleep(1000);
+        .sleep(1500);
     });
 
     // depend on add project successfully
@@ -92,10 +92,10 @@ describe('test/datahub-project.test.js', () => {
         .getUrl(`${BASE_URL}/dashboard`)
         .waitForElementByCss('[data-accessbilityid="dashboard-content-card-0"] .delete-icon')
         .click()
-        .sleep(500)
+        .sleep(1500)
         .waitForElementByCss('.ant-popover-buttons .ant-btn-primary')
         .click()
-        .sleep(500)
+        .sleep(1500)
         .hasElementByCss('[data-accessbilityid="dashboard-content-card-0"] .ant-card-head')
         .then(value => assert.equal(value, false));
     });
