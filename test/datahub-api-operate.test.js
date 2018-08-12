@@ -18,8 +18,8 @@ describe('test/datahub-api-operate.test.js', () => {
     before(() => {
       return driver
         .initWindow({
-          width: 1000,
-          height: 800,
+          width: 960,
+          height: 720,
           deviceScaleFactor: 2,
           userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36 Language/zh-CN',
         });
@@ -138,6 +138,7 @@ describe('test/datahub-api-operate.test.js', () => {
         .sleep(1500)
         // check 1 proxy
         .refresh()
+        .sleep(1500)
         .waitForElementByCss('[data-accessbilityid="project-api-proxy-list-0"] .common-list-item-name span')
         .hasText('http://datahub1.com')
 
@@ -154,6 +155,7 @@ describe('test/datahub-api-operate.test.js', () => {
         .sleep(1500)
         // check 2 proxy
         .refresh()
+        .sleep(1500)
         .waitForElementByCss('[data-accessbilityid="project-api-proxy-list-1"] .common-list-item-name span')
         .hasText('http://datahub2.com')
 
