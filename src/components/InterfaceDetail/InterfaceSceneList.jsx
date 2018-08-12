@@ -108,7 +108,7 @@ class InterfaceSceneList extends Component {
         {
           sceneList.filter(value => {
             return value.sceneName.toLowerCase().includes(this.state.filterString);
-          }).map(value => {
+          }).map((value, index) => {
             const isAvtive = selectedScene.uniqId === value.uniqId;
             const classNames = isAvtive ? [
               'common-list-item',
@@ -118,6 +118,7 @@ class InterfaceSceneList extends Component {
             return <Col
               {...this.defaultColProps}
               key={value.uniqId}
+              data-accessbilityid={`project-api-scene-list-${index}`}
               disabled={this.props.disabled}
             >
               <div className={classNames.join(' ')}>
@@ -178,6 +179,7 @@ class InterfaceSceneList extends Component {
             <Button
               disabled={disabled}
               type="primary"
+              data-accessbilityid="project-api-scene-add-btn"
               onClick={this.showSceneForm}
             >
               <Icon type="plus-circle-o" style={{lineHeight: '30px'}}/>

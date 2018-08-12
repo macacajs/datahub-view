@@ -106,6 +106,7 @@ class InterfaceList extends Component {
       return (
         <li
           key={index}
+          data-accessbilityid={`project-add-api-list-${index}`}
           className={isSelected ? 'clicked' : ''}
         >
           <div className="interface-item"

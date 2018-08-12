@@ -74,6 +74,7 @@ class InterfaceProxyConfig extends Component {
         if (index === activeIndex) classNames.push('common-list-item-active');
         return <Col
           key={index}
+          data-accessbilityid={`project-api-proxy-list-${index}`}
           {...this.defaultColProps}
         >
           <div className={classNames.join(' ')} >
@@ -120,6 +121,7 @@ class InterfaceProxyConfig extends Component {
         <Row>
           <Col {...this.defaultColProps} style={{ lineHeight: '30px'}}>
             <Switch
+              data-accessbilityid="project-api-solo-switch"
               {...switchProps}
               onChange={props.toggleProxy}
             />
@@ -129,6 +131,7 @@ class InterfaceProxyConfig extends Component {
           </Col>
           <Col {...this.defaultColProps} >
             <Button
+              data-accessbilityid="project-api-add-proxy-btn"
               disabled={disabled}
               type="primary"
               onClick={this.showProxyForm}
@@ -138,6 +141,7 @@ class InterfaceProxyConfig extends Component {
           </Col>
           <Col {...this.defaultColProps} >
             <Switch
+              data-accessbilityid="project-api-global-switch"
               {...globalSwitchProps}
               onChange={props.toggleGlobalProxy}
             />

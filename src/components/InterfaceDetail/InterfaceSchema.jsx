@@ -119,49 +119,55 @@ class InterfaceSchema extends Component {
     const enableResponseSchemaValidation = this.isValidationEnabled('response');
     return <section>
 
-      <h1>{this.formatMessage('interfaceDetail.requestSchema')}</h1>
-      {!unControlled && <Checkbox
-        checked={enableRequestSchemaValidation}
-        onChange={e => props.toggleValidation('request', e.target.checked)}
-      >
-        {this.formatMessage('schemaData.enableValidation')}
-      </Checkbox>}
-      {!unControlled && <Button
-        type="primary"
-        size="small"
-        onClick={() => this.showSchemaForm('request')}
-      > {this.formatMessage('schemaData.edit')}
-      </Button>}
-      <Table
-        size="small"
-        pagination={false}
-        dataSource={this.getDataSource('request')}
-        bordered
-        columns={columns}
-      />
+      <div className="api-schema-req">
+        <h1>{this.formatMessage('interfaceDetail.requestSchema')}</h1>
+        {!unControlled && <Checkbox
+          checked={enableRequestSchemaValidation}
+          onChange={e => props.toggleValidation('request', e.target.checked)}
+        >
+          {this.formatMessage('schemaData.enableValidation')}
+        </Checkbox>}
+        {!unControlled && <Button
+          type="primary"
+          size="small"
+          data-accessbilityid="project-api-schema-edit-btn"
+          onClick={() => this.showSchemaForm('request')}
+        > {this.formatMessage('schemaData.edit')}
+        </Button>}
+        <Table
+          size="small"
+          pagination={false}
+          dataSource={this.getDataSource('request')}
+          bordered
+          columns={columns}
+        />
+      </div>
 
-      <h1 style={{marginTop: '20px'}}>
-        {this.formatMessage('interfaceDetail.responseSchema')}
-      </h1>
-      {!unControlled && <Checkbox
-        checked={enableResponseSchemaValidation}
-        onChange={e => props.toggleValidation('response', e.target.checked)}
-      >
-        {this.formatMessage('schemaData.enableValidation')}
-      </Checkbox>}
-      {!unControlled && <Button
-        type="primary"
-        size="small"
-        onClick={() => this.showSchemaForm('response')}
-      > {this.formatMessage('schemaData.edit')}
-      </Button>}
-      <Table
-        size="small"
-        pagination={false}
-        dataSource={this.getDataSource('response')}
-        bordered
-        columns={columns}
-      />
+      <div className="api-schema-res">
+        <h1 style={{marginTop: '20px'}}>
+          {this.formatMessage('interfaceDetail.responseSchema')}
+        </h1>
+        {!unControlled && <Checkbox
+          checked={enableResponseSchemaValidation}
+          onChange={e => props.toggleValidation('response', e.target.checked)}
+        >
+          {this.formatMessage('schemaData.enableValidation')}
+        </Checkbox>}
+        {!unControlled && <Button
+          type="primary"
+          size="small"
+          data-accessbilityid="project-api-schema-edit-btn"
+          onClick={() => this.showSchemaForm('response')}
+        > {this.formatMessage('schemaData.edit')}
+        </Button>}
+        <Table
+          size="small"
+          pagination={false}
+          dataSource={this.getDataSource('response')}
+          bordered
+          columns={columns}
+        />
+      </div>
 
       <SchemaForm
         visible={this.state.schemaFormVisible}

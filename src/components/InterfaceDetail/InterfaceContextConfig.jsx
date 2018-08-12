@@ -56,19 +56,20 @@ class InterfaceProxyConfig extends Component {
       <section>
         <h1><FormattedMessage id="interfaceDetail.contextConfig"/></h1>
         <div className="context-config-fields">
-          <div>
+          <div data-accessbilityid="project-api-rewrite-delay">
             <FormattedMessage
               id="contextConfig.responseDelay"
               values={{ seconds: responseDelay }}
             />
           </div>
-          { responseStatus && <div>
+          { responseStatus && <div data-accessbilityid="project-api-rewrite-status">
             <FormattedMessage
               id="contextConfig.responseStatus"
             /> {responseStatus}
           </div> }
           <Button
             type="primary"
+            data-accessbilityid="project-api-rewrite-response"
             onClick={this.showContextConfigForm}
           > <FormattedMessage id="contextConfig.modify" />
           </Button>
