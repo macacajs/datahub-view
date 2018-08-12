@@ -48,13 +48,13 @@
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
     "lodash": "^4.17.4",
-    "macaca-cli": "^2.0.12",
-    "macaca-datahub": "^2.0.0",
+    "macaca-cli": "2",
+    "macaca-datahub": "2",
     "macaca-electron": "2",
-    "macaca-wd": "1",
+    "macaca-wd": "2",
     "mini-css-extract-plugin": "^0.4.0",
     "postcss-loader": "^2.1.6",
-    "pre-commit": "^1.2.2",
+    "pre-commit": "1",
     "react": "^15.6.1",
     "react-codemirror2": "^5.1.0",
     "react-dom": "^15.6.1",
@@ -72,7 +72,7 @@
     "webpack-cli": "^3.0.1",
     "webpack-dev-server": "^3.1.4",
     "whatwg-fetch": "^2.0.3",
-    "xutil": "^1.0.9"
+    "xutil": "1"
   },
   "pre-commit": [
     "lint"
