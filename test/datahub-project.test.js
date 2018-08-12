@@ -7,7 +7,7 @@ import {
   BASE_URL,
 } from './helper';
 
-describe.only('test/datahub-project.test.js', () => {
+describe('test/datahub-project.test.js', () => {
   describe('project page render testing', () => {
     before(() => {
       return driver
