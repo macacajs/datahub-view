@@ -14,7 +14,7 @@ const datahubProxyMiddle = require('datahub-proxy-middleware');
 
 const datahubConfig = {
   port: 5678,
-  hostname: 'localhost',
+  mode: 'local',
   store: path.join(__dirname, 'data'),
   proxy: {
     '^/datahubview': {
@@ -27,9 +27,6 @@ const datahubConfig = {
   },
 };
 
-const defaultDatahub = new DataHub({
-  port: datahubConfig.port,
-});
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
 
@@ -123,8 +120,7 @@ module.exports = (env, argv) => {
         datahubProxyMiddle(app)(datahubConfig);
       },
       after: () => {
-        defaultDatahub.startServer(datahubConfig).then(() => {
-        });
+        new DataHub().startServer(datahubConfig);
       },
     },
   };

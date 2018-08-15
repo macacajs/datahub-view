@@ -10,7 +10,6 @@ import {
 
 import {
   schemaData,
-  apiHeader,
 } from './fixture/data';
 
 describe('test/datahub-api-operate.test.js', () => {
