@@ -5,19 +5,32 @@
   border: 1px solid rgba(0, 0, 0, 0.2);
   height: 420px;
 }
-.CodeMirror-lint-tooltip { z-index: 9999; }
+
+.CodeMirror-lint-tooltip {
+  z-index: 9999;
+}
+
 .CodeMirror-lint-marker-error, .CodeMirror-lint-message-error {
-  background-image: url('./lint-error.png');
+  background-image: url(./lint-error.png);
   background-size: 16px;
 }
-.CodeMirror pre.CodeMirror-placeholder { color: #999; }
+
+.CodeMirror pre.CodeMirror-placeholder {
+  color: #999;
+}
+
 .cm-trailingspace {
-  background-image: url('./whitespace.png');
+  background-image: url(./whitespace.png);
   background-position: bottom left;
   background-repeat: repeat-x;
 }
+
 .schema-modal .CodeMirror {
   height: 500px;
+}
+
+.context-config-modal .CodeMirror {
+  height: 200px;
 }
 /* code mirroe override end */
 
@@ -34,7 +47,7 @@
 .context-config-fields > div {
   display: inline-block;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 0px 10px;
+  padding: 0 10px;
   margin-right: 8px;
   line-height: 30px;
   cursor: default;
@@ -55,6 +68,7 @@
   border-color: #d9d9d9;
   cursor: not-allowed;
 }
+
 .common-list-item {
   cursor: pointer;
   position: relative;
@@ -103,4 +117,8 @@
 .scene-doc-button {
   position: absolute;
   right: 20px;
+}
+
+.context-config-modal  .ant-form-item {
+  margin-bottom: 0;
 }

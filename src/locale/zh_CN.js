@@ -90,6 +90,7 @@ const zhCN = {
   'contextConfig.responseStatus': '修改响应状态码',
   'contextConfig.invalidDelay': '请输入延迟时间，单位秒',
   'contextConfig.invalidStatus': '请输入状态码',
+  'contextConfig.invalidResponseHeaders': '请输入 key-value 键值对',
 
   'schemaData.invalidSchemaData': '格式错误，请输入 JSON Schema',
   'schemaData.field': '字段',
