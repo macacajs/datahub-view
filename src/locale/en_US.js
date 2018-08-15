@@ -90,6 +90,7 @@ const enUS = {
   'contextConfig.responseStatus': 'rewrite response status code',
   'contextConfig.invalidDelay': 'Please input number, in seconds',
   'contextConfig.invalidStatus': 'Please input status code',
+  'contextConfig.invalidResponseHeaders': 'Please input key-value pairs',
 
   'schemaData.invalidSchemaData': 'please input JSON Schema',
   'schemaData.field': 'field',
