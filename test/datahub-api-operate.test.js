@@ -144,7 +144,7 @@ describe('test/datahub-api-operate.test.js', () => {
         .waitForElementByCss('[data-accessbilityid="project-api-add-proxy-btn"]')
         .click()
         .sleep(1500)
-        .elementByCss('#proxyUrl')
+        .waitForElementByCss('#proxyUrl')
         .clear()
         .formatInput('http://datahub2.com')
         .sleep(1500)
