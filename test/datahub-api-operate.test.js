@@ -127,8 +127,7 @@ describe('test/datahub-api-operate.test.js', () => {
         // add 1 proxy
         .waitForElementByCss('[data-accessbilityid="project-api-add-proxy-btn"]')
         .click()
-        .sleep(1500)
-        .elementByCss('#proxyUrl')
+        .waitForElementByCss('#proxyUrl')
         .clear()
         .formatInput('http://datahub1.com')
         .sleep(1500)
@@ -213,4 +212,3 @@ describe('test/datahub-api-operate.test.js', () => {
     });
   });
 });
-
