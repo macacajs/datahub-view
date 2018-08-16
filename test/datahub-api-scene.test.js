@@ -180,7 +180,7 @@ describe('test/datahub-api-scene.test.js', () => {
         .sleep(1500)
         .waitForElementByCss('.ant-popover-buttons .ant-btn-primary')
         .click()
-        .sleep(1500)
+        .sleep(3000)
         .hasElementByCss('[data-accessbilityid="project-api-scene-list-0"] .anticon-delete')
         .then(value => assert.equal(value, false));
     });
