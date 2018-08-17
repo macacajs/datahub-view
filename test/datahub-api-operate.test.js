@@ -125,9 +125,9 @@ describe('test/datahub-api-operate.test.js', () => {
         .waitForElementByCss('[data-accessbilityid="project-api-solo-switch"]')
         .click()
         // add 1 proxy
-        .waitForElementByCss('[data-accessbilityid="project-api-add-proxy-btn"]')
+        .waitForElementByCss('[data-accessbilityid="project-api-add-proxy-btn"]:not([disabled])')
         .click()
-        .waitForElementByCss('#proxyUrl')
+        .waitForElementByCss('#proxyUrl', 4000)
         .clear()
         .formatInput('http://datahub1.com')
         .sleep(1500)
@@ -143,8 +143,7 @@ describe('test/datahub-api-operate.test.js', () => {
         // add 2 proxy
         .waitForElementByCss('[data-accessbilityid="project-api-add-proxy-btn"]')
         .click()
-        .sleep(1500)
-        .waitForElementByCss('#proxyUrl')
+        .waitForElementByCss('#proxyUrl', 4000)
         .clear()
         .formatInput('http://datahub2.com')
         .sleep(1500)
