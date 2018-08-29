@@ -34,15 +34,10 @@ describe('test/datahub-render.test.js', () => {
       return driver
         .getUrl(BASE_URL)
         .waitForElementByCss('[data-accessbilityid="go-btn-dashboard"]')
-        .hasText('立即开始');
-    });
-
-    it('home page render should be ok', () => {
-      return driver
-        .getUrl(BASE_URL)
-        .waitForElementByCss('[data-accessbilityid="go-btn-dashboard"]')
+        .hasText('立即开始')
+        .elementByCss('[data-accessbilityid="go-btn-dashboard"]')
         .click()
-        .waitForElementByCss('h1.title')
+        .waitForElementByCss('.title')
         .hasText('DataHub');
     });
   });
