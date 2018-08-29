@@ -235,4 +235,6 @@ _.genApiList = (schemaData, paramsData) => {
   return walker(json);
 };
 
-export default _;
+// revert this first
+// FIXME
+module.exports = _;
