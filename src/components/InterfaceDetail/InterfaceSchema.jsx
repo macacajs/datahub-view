@@ -130,6 +130,7 @@ class InterfaceSchema extends Component {
         {!unControlled && <Button
           type="primary"
           size="small"
+          style={{marginBottom: '5px'}}
           data-accessbilityid="project-api-schema-edit-btn"
           onClick={() => this.showSchemaForm('request')}
         > {this.formatMessage('schemaData.edit')}
@@ -156,6 +157,7 @@ class InterfaceSchema extends Component {
         {!unControlled && <Button
           type="primary"
           size="small"
+          style={{marginBottom: '5px'}}
           data-accessbilityid="project-api-schema-edit-btn"
           onClick={() => this.showSchemaForm('response')}
         > {this.formatMessage('schemaData.edit')}
