@@ -6,7 +6,7 @@ import deepMerge from './deepmerge';
 
 const _ = lodash.merge({}, lodash);
 
-_.guid = () => {
+const guid = () => {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
     const r = Math.random() * 16 | 0;
     const v = c === 'x' ? r : r & 0x3 | 0x8;
@@ -72,9 +72,7 @@ const genSchemaList = (data) => {
   return walker(data);
 };
 
-_.genSchemaList = genSchemaList;
-
-_.queryParse = url => {
+const queryParse = url => {
   const qs = {};
   if (!url) {
     return qs;
@@ -88,7 +86,7 @@ _.queryParse = url => {
   return qs;
 };
 
-_.serialize = obj => {
+const serialize = obj => {
   const s = [];
 
   for (const item in obj) {
@@ -145,9 +143,7 @@ const jsonToSchema = jsonData => {
   return contextSchema;
 };
 
-_.jsonToSchema = jsonToSchema;
-
-_.genApiList = (schemaData, paramsData) => {
+const genApiList = (schemaData, paramsData) => {
   if (!paramsData.schemaData || !schemaData.length) {
     return [];
   }
@@ -235,6 +231,20 @@ _.genApiList = (schemaData, paramsData) => {
   return walker(json);
 };
 
-// revert this first
-// FIXME
-module.exports = _;
+_.guid = guid;
+_.genSchemaList = genSchemaList;
+_.queryParse = queryParse;
+_.serialize = serialize;
+_.jsonToSchema = jsonToSchema;
+_.genApiList = genApiList;
+
+export {
+  guid,
+  genSchemaList,
+  queryParse,
+  serialize,
+  jsonToSchema,
+  genApiList,
+};
+
+export default _;
