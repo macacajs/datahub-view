@@ -43,10 +43,28 @@ body {
 .header {
   height: @header-height;
   border-bottom: 1px solid #f0f2f5;
-  .title {
-    display: inline-block;
-    line-height: @header-height;
-    height: @header-height;
+
+  .title-con {
+    & a {
+      color: #000;
+    }
+    margin: 0px 0 0 18px;
+
+    .title {
+      display: inline-block;
+      font-size: 1.5em;
+      font-weight: 500;
+      line-height: @header-height;
+      height: @header-height;
+      margin-left: 6px;
+      color: rgba(0, 0, 0, .85);
+    }
+
+    img {
+      position: relative;
+      top: -5px;
+    }
+
   }
 
   .nav {
@@ -54,6 +72,7 @@ body {
     padding: 0;
     margin: 0;
     .portrait {
+      display: none;
       .mask {
         display: inline-block;
         background: #f3f3f3;

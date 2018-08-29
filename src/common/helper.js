@@ -235,4 +235,4 @@ _.genApiList = (schemaData, paramsData) => {
   return walker(json);
 };
 
-module.exports = _;
+export default _;

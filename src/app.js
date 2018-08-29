@@ -82,8 +82,9 @@ class App extends React.Component {
           showIcon
         />}
         <Header className="header">
-          <a href="/">
-            <h1 className="title">DataHub</h1>
+          <a href="/" className="title-con">
+            <img src="//macacajs.github.io/macaca-datahub/logo/logo-color.svg" height="30" />
+            <span className="title">DataHub</span>
           </a>
           <ul className="nav">
             <li className="portrait">
