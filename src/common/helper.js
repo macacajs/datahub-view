@@ -37,7 +37,9 @@ const genSchemaList = (data) => {
 
     if (items || properties) {
       walker(schema);
-      level--;
+      if (level > 0) {
+        level--;
+      }
     }
   };
 
