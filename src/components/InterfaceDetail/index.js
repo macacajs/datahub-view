@@ -55,8 +55,6 @@ class InterfaceDetail extends React.Component {
 
   changeSelectedScene = async (value) => {
     const params = queryParse(location.hash);
-
-    params.scene = value.sceneName;
     location.hash = `#/?${serialize(params)}`;
 
     await this.updateSceneFetch(value.sceneName);

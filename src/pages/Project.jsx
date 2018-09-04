@@ -107,11 +107,8 @@ class Project extends React.Component {
       selectedInterface,
     });
 
-    let hashInfo = `pathname=${encodeURI(selectedInterface.pathname)}&method=${selectedInterface.method}`;
+    const hashInfo = `pathname=${encodeURI(selectedInterface.pathname)}&method=${selectedInterface.method}`;
 
-    if (selectedInterface.currentScene) {
-      hashInfo += `&scene=${encodeURI(selectedInterface.currentScene)}`;
-    }
     location.hash = `#/?${hashInfo}`;
   }
 
