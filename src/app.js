@@ -2,6 +2,7 @@
 
 import React from 'react';
 import ReactDom from 'react-dom';
+import GitHubButton from 'react-github-button';
 
 import {
   Alert,
@@ -24,6 +25,8 @@ import Home from './pages/Home';
 import Project from './pages/Project';
 import Document from './pages/Document';
 import DashBoard from './pages/DashBoard';
+
+import 'react-github-button/assets/style.css';
 
 import './app.less';
 
@@ -87,6 +90,13 @@ class App extends React.Component {
             <span className="title">DataHub</span>
           </a>
           <ul className="nav">
+            <li style={{marginTop: '30px'}}>
+              <GitHubButton
+                type="stargazers"
+                namespace="macacajs"
+                repo="macaca-datahub"
+              />
+            </li>
             <li className="portrait">
               <Tooltip placement="bottom" title={'hi Macaca!'}>
                 <a className="mask">
