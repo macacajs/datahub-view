@@ -1,6 +1,6 @@
 {
   "name": "datahub-view",
-  "version": "2.1.22",
+  "version": "2.1.23",
   "description": "view layer for DataHub",
   "eggPlugin": {
     "name": "dataHubView"
@@ -59,6 +59,7 @@
     "react-codemirror2": "^5.1.0",
     "react-dom": "^15.6.1",
     "react-flexbox-grid": "^2.1.2",
+    "react-github-button": "0.1.11",
     "react-intl": "^2.4.0",
     "react-syntax-highlighter": "^5.6.3",
     "socket.io": "^2.0.4",
