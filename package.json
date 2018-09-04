@@ -5,6 +5,10 @@
   "eggPlugin": {
     "name": "dataHubView"
   },
+  "files": [
+    "dist",
+    "lib"
+  ],
   "keywords": [
     "datahub",
     "view"
