@@ -1,6 +1,6 @@
 {
   "name": "datahub-view",
-  "version": "2.1.27",
+  "version": "2.1.28",
   "description": "view layer for DataHub",
   "eggPlugin": {
     "name": "dataHubView"
@@ -36,7 +36,7 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.0.0",
     "@babel/runtime": "^7.0.0",
-    "antd": "^3.6.1",
+    "antd": "^3.9.1",
     "autoprefixer": "^9.0.1",
     "babel-loader": "^8.0.0",
     "babel-plugin-import": "^1.2.1",

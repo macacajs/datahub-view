@@ -1,8 +1,8 @@
 'use strict';
 
 import React from 'react';
-import io from 'socket.io-client';
 import debug from 'debug';
+import io from 'socket.io-client';
 
 const logger = debug('datahub:socket.io');
 
@@ -15,6 +15,8 @@ import {
   Alert,
   Layout,
   Tabs,
+  Drawer,
+  Icon,
 } from 'antd';
 
 import InterfaceList from '../components/InterfaceList';
@@ -49,9 +51,9 @@ class Project extends React.Component {
     REALTIME_MAXLINE: 100,
     realTimeDataList: [],
     realTimeIndex: 0,
+    showRightSide: false,
   }
 
-  // 根据 hash 值初始化数据
   getIndexByHash (res) {
     const params = queryParse(location.hash);
 
@@ -140,11 +142,53 @@ class Project extends React.Component {
     });
   }
 
+  onDrawerClose = () => {
+    this.setState({
+      showRightSide: false,
+    });
+  }
+
+  toggleRightSide = () => {
+    this.setState({
+      showRightSide: true,
+    });
+  }
+
   render () {
     const globalProxyEnabled = this.state.interfaceList.every(item => item.proxyConfig.enabled);
 
     return (
       <Layout>
+        <Drawer
+          title="Experiment"
+          placement="right"
+          closable={true}
+          onClose={this.onDrawerClose}
+          visible={this.state.showRightSide}
+          width="30%"
+        >
+          <p>Coming soon</p>
+          <p>Global Settings</p>
+          <p>Current Data View</p>
+          <p>Tell me want you want?
+            <a
+              href="https://github.com/macacajs/macaca-datahub/issues"
+              target="_blank"
+            >
+             issue
+            </a>
+          </p>
+        </Drawer>
+        <Affix
+          style={{
+            position: 'fixed',
+            top: '50%',
+            right: '20px',
+            zIndex: 999,
+          }}
+        >
+          <Icon onClick={this.toggleRightSide} type="experiment" theme="twoTone" />
+        </Affix>
         <Sider
           width="300px"
           style={{
