@@ -4,11 +4,15 @@ import 'whatwg-fetch';
 import { message } from 'antd';
 import debug from 'debug';
 const logger = debug('datahub:request');
+const COMMON_HEADER = {
+  'x-datahub-client': 'datahub-view',
+};
 
 const verbs = {
   GET (url) {
     return fetch(url, {
       credentials: 'same-origin',
+      headers: COMMON_HEADER,
     });
   },
 
@@ -17,6 +21,7 @@ const verbs = {
       method: 'POST',
       credentials: 'same-origin',
       headers: {
+        ...COMMON_HEADER,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(params),
@@ -28,6 +33,7 @@ const verbs = {
       method: 'PUT',
       credentials: 'same-origin',
       headers: {
+        ...COMMON_HEADER,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(params),
@@ -36,6 +42,7 @@ const verbs = {
 
   DELETE (url) {
     return fetch(url, {
+      headers: COMMON_HEADER,
       method: 'DELETE',
       credentials: 'same-origin',
     });
