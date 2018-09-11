@@ -167,10 +167,10 @@ class Project extends React.Component {
           visible={this.state.showRightSide}
           width="30%"
         >
-          <p>Coming soon</p>
+          <p>Coming soon, Show something here:</p>
           <p>Global Settings</p>
           <p>Current Data View</p>
-          <p>Tell me want you want?
+          <p>Tell me what you want?
             <a
               href="https://github.com/macacajs/macaca-datahub/issues"
               target="_blank"
