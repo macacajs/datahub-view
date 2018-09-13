@@ -12,8 +12,9 @@ export async function createScene ({ interfaceUniqId, sceneName, data }) {
   });
 };
 
-export async function updateScene ({ uniqId, sceneName, data }) {
+export async function updateScene ({ uniqId, interfaceUniqId, sceneName, data }) {
   return request(`/api/scene/${uniqId}`, 'PUT', {
+    interfaceUniqId,
     sceneName,
     data,
   });
