@@ -115,7 +115,7 @@ class Project extends React.Component {
   }
 
   initRealTimeDataList () {
-    const host = `http://${location.hostname}:${window.context.socket.port}`;
+    const host = `//${location.hostname}:${window.context.socket.port}`;
     const socket = io(host);
     socket.on('push data', (data) => {
       logger(data);

@@ -31,8 +31,8 @@ const enUS = {
   'home.icon.github': 'open source',
 
   'topNav.allProject': 'All projects',
-  'topNav.apiList': 'API list',
   'topNav.projectConfig': 'Project config',
+  'topNav.realtimeList': 'Realtime snapshot',
   'topNav.documentation': 'Documentation',
 
   'project.interfaceList': 'API list',
