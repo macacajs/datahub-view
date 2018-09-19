@@ -6,9 +6,10 @@
     "name": "dataHubView"
   },
   "files": [
-    "app",
-    "dist",
-    "lib",
+    "app/*.js",
+    "dist/*.js",
+    "dist/*.css",
+    "lib/*.js",
     "index.html"
   ],
   "keywords": [
