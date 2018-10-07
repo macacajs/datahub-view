@@ -25,6 +25,7 @@ import Home from './pages/Home';
 import Project from './pages/Project';
 import Document from './pages/Document';
 import DashBoard from './pages/DashBoard';
+import SelectHub from './components/SelectHub';
 
 import 'react-github-button/assets/style.css';
 
@@ -89,6 +90,13 @@ class App extends React.Component {
             <img src="//macacajs.github.io/macaca-datahub/logo/logo-color.svg" />
             <span className="title">DataHub</span>
           </a>
+          {
+            this.props.pageConfig.pageId === 'project' &&
+            <SelectHub
+              allProjects={this.props.context.allProjects}
+              projectName={this.props.context.projectName}
+            />
+          }
           <ul className="nav">
             <li style={{marginTop: '30px'}}>
               <GitHubButton
