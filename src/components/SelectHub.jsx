@@ -12,6 +12,11 @@ import {
 
 export default class SelectHub extends PureComponent {
   render () {
+
+    if (this.props.allProjects) {
+      return null;
+    }
+
     const list = this.props.allProjects
       .map(item => item.projectName);
     const projectName = this.props.projectName;
