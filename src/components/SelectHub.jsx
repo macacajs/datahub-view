@@ -12,7 +12,7 @@ import {
 
 export default class SelectHub extends PureComponent {
   render () {
-    if (this.props.allProjects) {
+    if (!this.props.allProjects) {
       return null;
     }
 
