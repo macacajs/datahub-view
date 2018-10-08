@@ -6,7 +6,7 @@
     "name": "dataHubView"
   },
   "files": [
-    "app/*.js",
+    "app/**/*.js",
     "dist/*.js",
     "dist/*.css",
     "lib/*.js",
