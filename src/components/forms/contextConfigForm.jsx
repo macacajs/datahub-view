@@ -107,7 +107,7 @@ class ContextFormComponent extends Component {
             <Input maxLength="3"/>
           )}
         </FormItem>
-        <FormItem label='Rewrite response headers, in key-value pairs form'>
+        <FormItem label='Rewrite response headers in JSON format'>
           <CodeMirror
             value={stageData && stageData.responseHeaders ? JSON.stringify(stageData.responseHeaders, null, 2) : '{}'}
             options={{
