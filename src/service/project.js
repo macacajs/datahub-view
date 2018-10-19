@@ -21,3 +21,9 @@ export async function updateProject ({ uniqId, projectName, description }) {
 export async function deleteProject ({ uniqId }) {
   return request(`/api/project/${uniqId}`, 'DELETE');
 };
+
+export const uploadServer = '/api/project/upload';
+
+export function getDownloadAddress ({ uniqId }) {
+  return `/api/project/download/${uniqId}`;
+};

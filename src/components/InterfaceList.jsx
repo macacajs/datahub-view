@@ -9,7 +9,9 @@ import {
   Col,
   Icon,
   Input,
+  Upload,
   Button,
+  message,
   Tooltip,
   Popconfirm,
 } from 'antd';
@@ -87,6 +89,42 @@ class InterfaceList extends Component {
     await this.props.updateInterfaceList();
   }
 
+  downloadInterface = value => {
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute('href', interfaceService.getDownloadAddress({
+      uniqId: value.uniqId,
+    }));
+    downloadAnchorNode.setAttribute('download', `interface_${value.description}_${value.pathname}_${value.method}.json`);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  }
+
+  uploadProps = () => {
+    return {
+      accept: 'text',
+      action: interfaceService.uploadServer,
+      showUploadList: false,
+      headers: {
+        authorization: 'authorization-text',
+      },
+      onChange (info) {
+        if (info.file.status === 'done') {
+          if (info.file.response.success &&
+            info.file.response.data.status &&
+            info.file.response.data.status === 'success'
+          ) {
+            message.success(`${info.file.name} file uploaded successfully`);
+            location.reload();
+          } else {
+            message.error(info.file.response.message);
+          }
+        } else if (info.file.status === 'error') {
+          message.error(`${info.file.name} file upload failed.`);
+        }
+      },
+    };
+  }
+
   filterInterface = (e) => {
     const filter = e.target.value.toLowerCase();
     this.setState({
@@ -117,6 +155,14 @@ class InterfaceList extends Component {
             </p>
           </div>
           {!unControlled && <div className="interface-control" style={{fontSize: '16px'}}>
+            <Upload name={ value.uniqId } {...this.uploadProps()}>
+              <Icon style={{marginRight: '4px', fontSize: '16px'}} type="upload" />
+            </Upload>
+            <Icon
+              type="download"
+              style={{marginRight: '4px'}}
+              onClick={() => this.downloadInterface(value)}
+            />
             <Tooltip title={formatMessage('interfaceList.updateInterface')}>
               <Icon
                 type="setting"
