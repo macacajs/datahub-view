@@ -102,13 +102,9 @@ class DashBoard extends Component {
   }
 
   downloadProject = value => {
-    const downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute('href', projectService.getDownloadAddress({
+    location.href = projectService.getDownloadAddress({
       uniqId: value.uniqId,
-    }));
-    downloadAnchorNode.setAttribute('download', `project_${value.projectName}_${value.description}.json`);
-    downloadAnchorNode.click();
-    downloadAnchorNode.remove();
+    });
   }
 
   uploadProps = () => {
@@ -121,10 +117,7 @@ class DashBoard extends Component {
       },
       onChange (info) {
         if (info.file.status === 'done') {
-          if (info.file.response.success &&
-            info.file.response.data.status &&
-            info.file.response.data.status === 'success'
-          ) {
+          if (info.file.response.success) {
             message.success(`${info.file.name} file uploaded successfully`);
           } else {
             message.error(info.file.response.message);

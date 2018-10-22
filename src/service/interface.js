@@ -45,5 +45,5 @@ export async function deleteInterface ({ uniqId }) {
 export const uploadServer = '/api/interface/upload';
 
 export function getDownloadAddress ({ uniqId }) {
-  return `/api/scene?interfaceUniqId=${uniqId}`;
+  return `/api/interface/download?interfaceUniqId=${uniqId}`;
 };

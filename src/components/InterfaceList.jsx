@@ -90,13 +90,9 @@ class InterfaceList extends Component {
   }
 
   downloadInterface = value => {
-    const downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute('href', interfaceService.getDownloadAddress({
+    location.href = interfaceService.getDownloadAddress({
       uniqId: value.uniqId,
-    }));
-    downloadAnchorNode.setAttribute('download', `interface_${value.description}_${value.pathname}_${value.method}.json`);
-    downloadAnchorNode.click();
-    downloadAnchorNode.remove();
+    });
   }
 
   uploadProps = () => {
@@ -109,10 +105,7 @@ class InterfaceList extends Component {
       },
       onChange (info) {
         if (info.file.status === 'done') {
-          if (info.file.response.success &&
-            info.file.response.data.status &&
-            info.file.response.data.status === 'success'
-          ) {
+          if (info.file.response.success) {
             message.success(`${info.file.name} file uploaded successfully`);
             location.reload();
           } else {
