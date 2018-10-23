@@ -182,7 +182,7 @@ class InterfaceSceneList extends Component {
               data-accessbilityid="project-api-scene-add-btn"
               onClick={this.showSceneForm}
             >
-              <Icon type="plus-circle-o" style={{lineHeight: '30px'}}/>
+              <Icon type="plus-circle-o" />
               {formatMessage('sceneList.createScene')}
             </Button>
           </Col>

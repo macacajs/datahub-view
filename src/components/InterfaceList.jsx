@@ -149,18 +149,18 @@ class InterfaceList extends Component {
           </div>
           {!unControlled && <div className="interface-control" style={{fontSize: '16px'}}>
             <Upload name={ value.uniqId } {...this.uploadProps()}>
-              <Icon style={{marginRight: '4px', fontSize: '16px'}} type="upload" />
+              <Icon className="upload-icon" type="upload" />
             </Upload>
             <Icon
               type="download"
-              style={{marginRight: '4px'}}
+              className="download-icon"
               onClick={() => this.downloadInterface(value)}
             />
             <Tooltip title={formatMessage('interfaceList.updateInterface')}>
               <Icon
                 type="setting"
+                className="setting-icon"
                 onClick={() => this.showUpdateForm(value)}
-                style={{marginRight: '4px'}}
               />
             </Tooltip>
             <Popconfirm
