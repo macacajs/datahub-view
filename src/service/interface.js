@@ -41,3 +41,9 @@ export async function updateInterface ({ uniqId, ...payload }) {
 export async function deleteInterface ({ uniqId }) {
   return request(`/api/interface/${uniqId}`, 'DELETE');
 };
+
+export const uploadServer = '/api/interface/upload';
+
+export function getDownloadAddress ({ uniqId }) {
+  return `/api/interface/download?interfaceUniqId=${uniqId}`;
+};

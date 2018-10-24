@@ -9,6 +9,8 @@ import {
   Col,
   Icon,
   Card,
+  Upload,
+  message,
   Tooltip,
   Popconfirm,
 } from 'antd';
@@ -99,9 +101,38 @@ class DashBoard extends Component {
     });
   }
 
+  downloadProject = value => {
+    location.href = projectService.getDownloadAddress({
+      uniqId: value.uniqId,
+    });
+  }
+
+  uploadProps = () => {
+    return {
+      accept: 'text',
+      action: projectService.uploadServer,
+      showUploadList: false,
+      headers: {
+        authorization: 'authorization-text',
+      },
+      onChange (info) {
+        if (info.file.status === 'done') {
+          if (info.file.response.success) {
+            message.success(`${info.file.name} file uploaded successfully`);
+          } else {
+            message.error(info.file.response.message);
+          }
+        } else if (info.file.status === 'error') {
+          message.error(`${info.file.name} file upload failed.`);
+        }
+      },
+    };
+  }
+
   renderProjectList () {
     const formatMessage = this.formatMessage;
     const { listData } = this.state;
+
     return listData.map((item, index) => {
       return <Col span={8} key={index}>
         <div className="content">
@@ -118,14 +149,14 @@ class DashBoard extends Component {
                 </a>
               </Col>
               <Row type="flex" className="sub-info">
-                <Col span={20} key={item.projectName}>
+                <Col span={15} key={item.projectName}>
                   {item.projectName}
                   <span className="main-info">
                     <Icon type="file" />{item.capacity && item.capacity.count}
                     <Icon type="hdd" />{item.capacity && item.capacity.size}
                   </span>
                 </Col>
-                <Col span={4} style={{ textAlign: 'right' }}>
+                <Col span={9} style={{ textAlign: 'right' }}>
                   <Tooltip title={formatMessage('project.update')}>
                     <Icon
                       className="setting-icon"
@@ -133,6 +164,15 @@ class DashBoard extends Component {
                       onClick={() => this.updateProject(item)}
                     />
                   </Tooltip>
+                  <Upload name={ item.uniqId } {...this.uploadProps()}>
+                    <Icon className="setting-icon" type="upload" />
+                  </Upload>
+                  <Icon
+                    type="download"
+                    className="setting-icon"
+                    theme="outlined"
+                    onClick={() => this.downloadProject(item)}
+                  />
                   <Popconfirm
                     title={formatMessage('common.deleteTip')}
                     onConfirm={() => this.deleteProject(item.uniqId)}

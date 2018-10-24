@@ -166,8 +166,8 @@ describe('test/datahub-api-operate.test.js', () => {
         // can't delete proxy after close proxy
         .waitForElementByCss('[data-accessbilityid="project-api-solo-switch"]')
         .click()
-        .hasElementByCss('[data-accessbilityid="project-api-proxy-list-0"] .common-list-item.disabled')
-        .then(value => assert.equal(value, true))
+        .elementOrNull('[data-accessbilityid="project-api-proxy-list-0"] .common-list-item.disabled')
+        .then(value => assert.equal(value, null))
         .sleep(1500);
     });
 

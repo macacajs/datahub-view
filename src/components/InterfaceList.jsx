@@ -9,7 +9,9 @@ import {
   Col,
   Icon,
   Input,
+  Upload,
   Button,
+  message,
   Tooltip,
   Popconfirm,
 } from 'antd';
@@ -87,6 +89,35 @@ class InterfaceList extends Component {
     await this.props.updateInterfaceList();
   }
 
+  downloadInterface = value => {
+    location.href = interfaceService.getDownloadAddress({
+      uniqId: value.uniqId,
+    });
+  }
+
+  uploadProps = () => {
+    return {
+      accept: 'text',
+      action: interfaceService.uploadServer,
+      showUploadList: false,
+      headers: {
+        authorization: 'authorization-text',
+      },
+      onChange (info) {
+        if (info.file.status === 'done') {
+          if (info.file.response.success) {
+            message.success(`${info.file.name} file uploaded successfully`);
+            location.reload();
+          } else {
+            message.error(info.file.response.message);
+          }
+        } else if (info.file.status === 'error') {
+          message.error(`${info.file.name} file upload failed.`);
+        }
+      },
+    };
+  }
+
   filterInterface = (e) => {
     const filter = e.target.value.toLowerCase();
     this.setState({
@@ -117,11 +148,19 @@ class InterfaceList extends Component {
             </p>
           </div>
           {!unControlled && <div className="interface-control" style={{fontSize: '16px'}}>
+            <Upload name={ value.uniqId } {...this.uploadProps()}>
+              <Icon className="upload-icon" type="upload" />
+            </Upload>
+            <Icon
+              type="download"
+              className="download-icon"
+              onClick={() => this.downloadInterface(value)}
+            />
             <Tooltip title={formatMessage('interfaceList.updateInterface')}>
               <Icon
                 type="setting"
+                className="setting-icon"
                 onClick={() => this.showUpdateForm(value)}
-                style={{marginRight: '4px'}}
               />
             </Tooltip>
             <Popconfirm
