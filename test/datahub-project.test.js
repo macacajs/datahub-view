@@ -96,8 +96,8 @@ describe('test/datahub-project.test.js', () => {
         .waitForElementByCss('.ant-popover-buttons .ant-btn-primary')
         .click()
         .sleep(1500)
-        .hasElementByCss('[data-accessbilityid="dashboard-content-card-0"] .ant-card-head')
-        .then(value => assert.equal(value, false));
+        .elementOrNull('[data-accessbilityid="dashboard-content-card-0"] .ant-card-head')
+        .then(value => assert.equal(value, null));
     });
   });
 });

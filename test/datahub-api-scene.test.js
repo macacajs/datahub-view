@@ -168,8 +168,8 @@ describe('test/datahub-api-scene.test.js', () => {
         .waitForElementByCss('.ant-popover-buttons .ant-btn-primary')
         .click()
         .sleep(1500)
-        .hasElementByCss('[data-accessbilityid="project-api-scene-list-1"] .scene-name')
-        .then(value => assert.equal(value, false));
+        .elementOrNull('[data-accessbilityid="project-api-scene-list-1"] .scene-name')
+        .then(value => assert.equal(value, null));
     });
 
     it('delete default scene should be ok', () => {
@@ -181,8 +181,8 @@ describe('test/datahub-api-scene.test.js', () => {
         .waitForElementByCss('.ant-popover-buttons .ant-btn-primary')
         .click()
         .sleep(3000)
-        .hasElementByCss('[data-accessbilityid="project-api-scene-list-0"] .anticon-delete')
-        .then(value => assert.equal(value, false));
+        .elementOrNull('[data-accessbilityid="project-api-scene-list-0"] .anticon-delete')
+        .then(value => assert.equal(value, null));
     });
   });
 });
