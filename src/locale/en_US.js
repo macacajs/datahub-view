@@ -99,6 +99,14 @@ const enUS = {
   'schemaData.description': 'description',
   'schemaData.enableValidation': 'enable schema validation',
   'schemaData.edit': 'edit',
+
+  'expriment.description': 'Show something here:',
+  'expriment.downloadAndUpload': 'Download and Upload: ',
+  'expriment.open': 'Open',
+  'expriment.close': 'Close',
+  'expriment.tips1': 'Global Settings',
+  'expriment.tips2': 'Current Data View',
+  'expriment.tips3': 'Tell me what you want?',
 };
 
 export default enUS;
