@@ -103,7 +103,7 @@ class Project extends React.Component {
     if (this.state.selectedInterface && this.state.selectedInterface.uniqId) {
       return data.find(value => {
         return value.uniqId === this.state.selectedInterface.uniqId;
-      })
+      });
     }
     return data[0];
   }
