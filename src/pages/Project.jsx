@@ -100,10 +100,12 @@ class Project extends React.Component {
 
   getSelectedInterface = data => {
     if (!Array.isArray(data)) return {};
-    return data.find(value => {
-      return value.uniqId === this.state.selectedInterface &&
-        this.state.selectedInterface.uniqId;
-    }) || data[0];
+    if (this.state.selectedInterface && this.state.selectedInterface.uniqId) {
+      return data.find(value => {
+        return value.uniqId === this.state.selectedInterface.uniqId;
+      })
+    }
+    return data[0];
   }
 
   setSelectedInterface = async (uniqId) => {
