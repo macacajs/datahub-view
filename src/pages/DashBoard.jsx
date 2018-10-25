@@ -26,6 +26,10 @@ import {
   projectService,
 } from '../service';
 
+import {
+  isOpenDownloadAndUpload,
+} from '../common/helper';
+
 import './DashBoard.less';
 
 class DashBoard extends Component {
@@ -164,15 +168,17 @@ class DashBoard extends Component {
                       onClick={() => this.updateProject(item)}
                     />
                   </Tooltip>
-                  <Upload name={ item.uniqId } {...this.uploadProps()}>
-                    <Icon className="setting-icon" type="upload" />
-                  </Upload>
-                  <Icon
-                    type="download"
-                    className="setting-icon"
-                    theme="outlined"
-                    onClick={() => this.downloadProject(item)}
-                  />
+                  {isOpenDownloadAndUpload ? <span>
+                    <Upload name={ item.uniqId } {...this.uploadProps()}>
+                      <Icon className="setting-icon" type="upload" />
+                    </Upload>
+                    <Icon
+                      type="download"
+                      className="setting-icon"
+                      theme="outlined"
+                      onClick={() => this.downloadProject(item)}
+                    />
+                  </span> : null}
                   <Popconfirm
                     title={formatMessage('common.deleteTip')}
                     onConfirm={() => this.deleteProject(item.uniqId)}

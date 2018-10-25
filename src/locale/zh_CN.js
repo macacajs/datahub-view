@@ -99,6 +99,14 @@ const zhCN = {
   'schemaData.description': '参数说明',
   'schemaData.enableValidation': '是否开启校验',
   'schemaData.edit': '编辑',
+
+  'expriment.description': '显示一些功能',
+  'expriment.downloadAndUpload': '上传和下载功能：',
+  'expriment.open': '开',
+  'expriment.close': '关',
+  'expriment.tips1': '全局设置',
+  'expriment.tips2': '当前数据',
+  'expriment.tips3': '你需要什么功能？',
 };
 
 export default zhCN;

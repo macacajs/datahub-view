@@ -19,6 +19,7 @@ import {
   Icon,
 } from 'antd';
 
+import Experiment from '../components/Experiment';
 import InterfaceList from '../components/InterfaceList';
 import InterfaceDetail from '../components/InterfaceDetail/index';
 
@@ -31,6 +32,7 @@ import {
 
 import {
   queryParse,
+  isOpenDownloadAndUpload,
 } from '../common/helper';
 
 import './Project.less';
@@ -52,6 +54,7 @@ class Project extends React.Component {
     realTimeDataList: [],
     realTimeIndex: 0,
     showRightSide: false,
+    isOpenDownloadAndUpload,
   }
 
   getIndexByHash (res) {
@@ -98,7 +101,8 @@ class Project extends React.Component {
   getSelectedInterface = data => {
     if (!Array.isArray(data)) return {};
     return data.find(value => {
-      return value.uniqId === this.state.selectedInterface.uniqId;
+      return value.uniqId === this.state.selectedInterface &&
+        this.state.selectedInterface.uniqId;
     }) || data[0];
   }
 
@@ -154,6 +158,12 @@ class Project extends React.Component {
     });
   }
 
+  setDownloadAndUpload = value => {
+    this.setState({
+      isOpenDownloadAndUpload: value,
+    });
+  }
+
   render () {
     const globalProxyEnabled = this.state.interfaceList.every(item => item.proxyConfig.enabled);
 
@@ -167,17 +177,9 @@ class Project extends React.Component {
           visible={this.state.showRightSide}
           width="30%"
         >
-          <p>Coming soon, Show something here:</p>
-          <p>Global Settings</p>
-          <p>Current Data View</p>
-          <p>Tell me what you want?
-            <a
-              href="https://github.com/macacajs/macaca-datahub/issues"
-              target="_blank"
-            >
-             issue
-            </a>
-          </p>
+          <Experiment
+            setDownloadAndUpload={this.setDownloadAndUpload}
+          />
         </Drawer>
         <Affix
           style={{
@@ -212,6 +214,7 @@ class Project extends React.Component {
                 <InterfaceList
                   selectedInterface={this.state.selectedInterface}
                   setSelectedInterface={this.setSelectedInterface}
+                  isOpenDownloadAndUpload={this.state.isOpenDownloadAndUpload}
                   interfaceList={this.state.interfaceList}
                   updateInterfaceList={this.updateInterfaceList}
                 />
