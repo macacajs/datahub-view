@@ -1,6 +1,6 @@
 {
   "name": "datahub-view",
-  "version": "2.1.38",
+  "version": "2.1.39",
   "description": "view layer for DataHub",
   "eggPlugin": {
     "name": "dataHubView"
