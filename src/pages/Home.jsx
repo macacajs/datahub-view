@@ -36,7 +36,7 @@ function Home (props) {
     { icon: 'code-o', text: 'home.icon.cli' },
     { icon: 'global', text: 'home.icon.i18n' },
     { icon: 'github', text: 'home.icon.github' },
-    { icon: 'download', text: 'home.icon.download' },
+    { icon: 'download', text: 'home.icon.download', experiment: true },
   ];
   return (
     <Row type="flex" justify="center">
@@ -85,11 +85,16 @@ function Home (props) {
           <Col span={18}>
             <Row className="desc-icons">
               {
-                features.map(({ icon, text }) => {
+                features.map(({ icon, text, experiment = false }) => {
                   return (
                     <Col key={`${icon}-${text}`} span={4}>
                       <Icon type={icon} />
-                      <div className="text">{formatMessage({ id: text })}</div>
+                      <div className="text">{formatMessage({ id: text })}
+                        { experiment && <Icon type="experiment" style={{
+                          fontSize: '12px',
+                          transform: 'scale(.6)',
+                        }}/> }
+                      </div>
                     </Col>
                   );
                 })
