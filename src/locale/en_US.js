@@ -29,6 +29,7 @@ const enUS = {
   'home.icon.cli': 'cli tool',
   'home.icon.i18n': 'i18n support',
   'home.icon.github': 'open source',
+  'home.icon.download': 'export data',
 
   'topNav.allProject': 'All projects',
   'topNav.projectConfig': 'Project config',

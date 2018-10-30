@@ -29,6 +29,7 @@ const zhCN = {
   'home.icon.cli': '命令行工具',
   'home.icon.i18n': '多语言支持',
   'home.icon.github': '开源开放',
+  'home.icon.download': '导入导出',
 
   'topNav.allProject': '所有项目',
   'topNav.projectConfig': '项目配置',
