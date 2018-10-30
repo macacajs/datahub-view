@@ -158,7 +158,9 @@ const chooseLocale = () => {
   if (ua.indexOf('en-US') !== -1) return en;
   if (ua.indexOf('zh-CN') !== -1) return zh;
 
-  switch (window.navigator.language) {
+  const language = window.localStorage.DATAHUB_LANGUAGE || window.navigator.language;
+
+  switch (language) {
     case 'zh-CN':
     case 'zh-HK':
     case 'zh-TW':
