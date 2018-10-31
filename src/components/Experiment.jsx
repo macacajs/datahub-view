@@ -15,6 +15,19 @@ import {
   FormattedMessage,
 } from 'react-intl';
 
+const isSemverLessThan = (left, right) => {
+  // assuming simple semver
+  if ((/^\d+\.\d+\.\d+$/).test(left) && (/^\d+\.\d+\.\d+$/).test(right)) {
+    const [lMajor, lMinor, lPatch] = left.split('.');
+    const [rMajor, rMinor, rPatch] = right.split('.');
+    return Number(lMajor) < Number(rMajor) ||
+      Number(lMinor) < Number(rMinor) ||
+      Number(lPatch) < Number(rPatch);
+  }
+  return false;
+};
+
+
 class Experiment extends Component {
   state = {
     showPanel: false,
@@ -48,7 +61,9 @@ class Experiment extends Component {
             onChange={this.toggleDownloadAndUpload}
             defaultChecked={this.props.experimentConfig.isOpenDownloadAndUpload}
           />
-
+          {isSemverLessThan(window.pageConfig.version, '2.2.10') &&
+            <span style={{marginLeft: '8px'}}>(Only for Datahub>=2.2.10)</span>
+          }
           <hr />
           <p><FormattedMessage id="expriment.description" /></p>
           <p><FormattedMessage id="expriment.tips1" /></p>
