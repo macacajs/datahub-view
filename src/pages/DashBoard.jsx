@@ -26,10 +26,6 @@ import {
   projectService,
 } from '../service';
 
-import {
-  isOpenDownloadAndUpload,
-} from '../common/helper';
-
 import './DashBoard.less';
 
 class DashBoard extends Component {
@@ -168,7 +164,7 @@ class DashBoard extends Component {
                       onClick={() => this.updateProject(item)}
                     />
                   </Tooltip>
-                  {isOpenDownloadAndUpload ? <span>
+                  {this.props.experimentConfig.isOpenDownloadAndUpload ? <span>
                     <Upload name={ item.uniqId } {...this.uploadProps()}>
                       <Icon className="setting-icon" type="upload" />
                     </Upload>

@@ -1,9 +1,11 @@
-@import './common/style/variable.less';
 @import './common/style/mixin.less';
 @import './common/style/util.less';
 
+@header-height: 80px;
+
 body {
-  font-family: "ProximaNova-Light", "Avenir Next", -apple-system-body, "Helvetica Neue", "Helvetica", sans-serif;
+  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  background-color: #f0f2f5;
 }
 
 .ant-layout {
@@ -26,18 +28,6 @@ body {
 
 .ant-layout-content {
   min-height: 80vh;
-}
-
-.ant-layout-footer {
-  height: 10vh;
-  line-height: 10vh;
-  padding: 0;
-  text-align: center;
-  background-color: @bg-color;
-  letter-spacing: 1px;
-  a {
-    color: #656565;
-  }
 }
 
 .header {
@@ -105,7 +95,6 @@ body {
     }
   }
 }
-
 .main-content-mobile {
   padding-top: 30%;
   display: none;

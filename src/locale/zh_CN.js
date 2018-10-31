@@ -106,8 +106,7 @@ const zhCN = {
   'expriment.open': '开',
   'expriment.close': '关',
   'expriment.tips1': '全局设置',
-  'expriment.tips2': '当前数据',
-  'expriment.tips3': '你需要什么功能？',
+  'expriment.tips2': '你需要什么功能？',
 };
 
 export default zhCN;

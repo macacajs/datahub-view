@@ -106,8 +106,7 @@ const enUS = {
   'expriment.open': 'Open',
   'expriment.close': 'Close',
   'expriment.tips1': 'Global Settings',
-  'expriment.tips2': 'Current Data View',
-  'expriment.tips3': 'Tell me what you want?',
+  'expriment.tips2': 'Tell me what you want?',
 };
 
 export default enUS;

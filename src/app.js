@@ -2,18 +2,16 @@
 
 import React from 'react';
 import ReactDom from 'react-dom';
-import GitHubButton from 'react-github-button';
 
 import {
   Alert,
   Layout,
-  Tooltip,
 } from 'antd';
 
 import {
+  intlShape,
   addLocaleData,
   IntlProvider,
-  FormattedMessage,
 } from 'react-intl';
 
 import zhCN from './locale/zh_CN';
@@ -25,7 +23,10 @@ import Home from './pages/Home';
 import Project from './pages/Project';
 import Document from './pages/Document';
 import DashBoard from './pages/DashBoard';
-import SelectHub from './components/SelectHub';
+import Header from './components/layout/Header';
+import Footer from './components/layout/Footer';
+
+import { initialExperimentConfig } from './common/helper';
 
 import 'react-github-button/assets/style.css';
 
@@ -36,20 +37,32 @@ addLocaleData([
   ...zh,
 ]);
 
-const Header = Layout.Header;
-const Footer = Layout.Footer;
 const Content = Layout.Content;
 
 const pkg = require('../package.json');
 localStorage.debug = ('datahub*');
 
 class App extends React.Component {
-  pageRouter () {
+  // Should use react context in the future
+  state = {
+    experimentConfig: initialExperimentConfig,
+  }
+
+  updateExperimentConfig = payload => {
+    this.setState({
+      experimentConfig: {
+        ...this.state.experimentConfig,
+        ...payload,
+      },
+    });
+  }
+
+  pageRouter = () => {
     switch (this.props.pageConfig.pageId) {
       case 'dashboard':
-        return <DashBoard />;
+        return <DashBoard experimentConfig={this.state.experimentConfig}/>;
       case 'project':
-        return <Project />;
+        return <Project experimentConfig={this.state.experimentConfig}/>;
       case 'document':
         return <Document />;
       default:
@@ -57,7 +70,7 @@ class App extends React.Component {
     }
   }
 
-  renderInfo () {
+  renderInfo = () => {
     const link = location.href;
     return (
       <div className="info">
@@ -69,6 +82,11 @@ class App extends React.Component {
         </p>
       </div>
     );
+  }
+
+  changeLang = lang => {
+    window.localStorage.DATAHUB_LANGUAGE = lang;
+    location.reload();
   }
 
   render () {
@@ -85,56 +103,25 @@ class App extends React.Component {
           type="warning"
           showIcon
         />}
-        <Header className="header">
-          <a href="/" className="title-con">
-            <img src="//macacajs.github.io/macaca-datahub/logo/logo-color.svg" />
-            <span className="title">DataHub</span>
-          </a>
-          {
-            this.props.pageConfig.pageId === 'project' &&
-            <SelectHub
-              allProjects={this.props.context.allProjects}
-              projectName={this.props.context.projectName}
-            />
-          }
-          <ul className="nav">
-            <li style={{marginTop: '30px'}}>
-              <GitHubButton
-                type="stargazers"
-                namespace="macacajs"
-                repo="macaca-datahub"
-              />
-            </li>
-            <li className="portrait">
-              <Tooltip placement="bottom" title={'hi Macaca!'}>
-                <a className="mask">
-                  <img src="//npmcdn.com/macaca-logo@latest/svg/monkey.svg" />
-                </a>
-              </Tooltip>
-            </li>
-            <li>
-              <a href={ `${pkg.links.issue}?utf8=%E2%9C%93&q=` } target="_blank">
-                <h3><FormattedMessage id="common.issue" /></h3>
-              </a>
-            </li>
-            <li>
-              <a href={ pkg.links.document } target="_blank">
-                <h3><FormattedMessage id="common.guide" /></h3>
-              </a>
-            </li>
-          </ul>
-        </Header>
+        <Header
+          links={pkg.links}
+          pageConfig={window.pageConfig}
+          context={this.props.context}
+        />
         <Content className="main-content">
           { this.pageRouter() }
         </Content>
         <Content className="main-content-mobile">
           { this.renderInfo() }
         </Content>
-        <Footer>
-          &copy;&nbsp;<a target="_blank" href={ pkg.links.homepage }>
-            Macaca Team
-          </a> 2015-{ new Date().getFullYear() }
-        </Footer>
+        <Footer
+          experimentConfig={this.state.experimentConfig}
+          updateExperimentConfig={this.updateExperimentConfig}
+          showSideItems={window.pageConfig && window.pageConfig.pageId !== 'home'}
+          changeLang={this.changeLang}
+          currentLocale={this.context.intl.locale}
+          links ={pkg.links}
+        />
       </Layout>
     );
   }
@@ -143,6 +130,12 @@ class App extends React.Component {
 App.defaultProps = {
   context: window.context,
   pageConfig: window.pageConfig,
+};
+
+// This is just for <Footer/> component
+// react-intl will use new context API, watch on it
+App.contextTypes = {
+  intl: intlShape.isRequired,
 };
 
 const chooseLocale = () => {
@@ -172,11 +165,11 @@ const chooseLocale = () => {
 };
 
 if (window.pageConfig) {
-  const lang = chooseLocale();
+  const { locale, messages } = chooseLocale();
   ReactDom.render(
     <IntlProvider
-      locale={lang.locale}
-      messages={lang.messages}
+      locale={locale}
+      messages={messages}
     >
       <App />
     </IntlProvider>,

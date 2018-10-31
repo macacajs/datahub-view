@@ -148,7 +148,7 @@ class InterfaceList extends Component {
             </p>
           </div>
           {!unControlled && <div className="interface-control" style={{fontSize: '16px'}}>
-            {this.props.isOpenDownloadAndUpload ? <span>
+            {this.props.experimentConfig.isOpenDownloadAndUpload ? <span>
               <Upload name={ value.uniqId } {...this.uploadProps()}>
                 <Icon className="upload-icon" type="upload" />
               </Upload>

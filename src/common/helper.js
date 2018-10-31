@@ -234,7 +234,9 @@ const genApiList = (schemaData, paramsData) => {
   return walker(json);
 };
 
-const isOpenDownloadAndUpload = localStorage.getItem('isOpenDownloadAndUpload') === 'true';
+const initialExperimentConfig = {
+  isOpenDownloadAndUpload: localStorage.getItem('DATAHUB_FEATURE_DOWNLOAD_AND_UPLOAD') === 'true',
+};
 
 _.guid = guid;
 _.genSchemaList = genSchemaList;
@@ -242,7 +244,6 @@ _.queryParse = queryParse;
 _.serialize = serialize;
 _.jsonToSchema = jsonToSchema;
 _.genApiList = genApiList;
-_.isOpenDownloadAndUpload = isOpenDownloadAndUpload;
 
 export {
   guid,
@@ -251,7 +252,7 @@ export {
   serialize,
   jsonToSchema,
   genApiList,
-  isOpenDownloadAndUpload,
+  initialExperimentConfig,
 };
 
 export default _;
