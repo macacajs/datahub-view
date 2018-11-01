@@ -12,6 +12,8 @@ import {
 
 import SelectHub from '../SelectHub';
 
+import './header.less';
+
 const Header = Layout.Header;
 
 export default ({ links, pageConfig, context }) => {

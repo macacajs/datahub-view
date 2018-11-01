@@ -115,6 +115,7 @@ module.exports = (env, argv) => {
     ],
     devServer: {
       hot: true,
+      host: '0.0.0.0',
       stats: 'errors-only',
       before: app => {
         datahubProxyMiddle(app)(datahubConfig);
