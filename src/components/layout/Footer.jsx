@@ -46,21 +46,21 @@ export default ({
         target="_blank"
         href={ links.homepage }
       > &copy;&nbsp; Macaca Team 2015-{ new Date().getFullYear() } </a>
-      { showSideItems &&
-        <ul className="footer-side-items">
-          <li>
-            <Dropdown overlay={menu} placement="topCenter">
-              <a rel="noopener noreferrer">{ <Icon type="global"/> } { currentLocale }</a>
-            </Dropdown>
-          </li>
+      <ul className="footer-side-items">
+        <li>
+          <Dropdown overlay={menu} placement="topCenter">
+            <a rel="noopener noreferrer">{ <Icon type="global"/> } { currentLocale }</a>
+          </Dropdown>
+        </li>
+        { showSideItems &&
           <li>
             <Experiment
               experimentConfig={experimentConfig}
               updateExperimentConfig={updateExperimentConfig}
             />
           </li>
-        </ul>
-      }
+        }
+      </ul>
     </div>
   );
 };

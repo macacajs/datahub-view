@@ -86,7 +86,7 @@ class App extends React.Component {
 
   changeLang = lang => {
     window.localStorage.DATAHUB_LANGUAGE = lang;
-    location.reload();
+    location.href = `/?locale=${lang}`;
   }
 
   render () {
@@ -110,18 +110,18 @@ class App extends React.Component {
         />
         <Content className="main-content">
           { this.pageRouter() }
-          <Footer
-            experimentConfig={this.state.experimentConfig}
-            updateExperimentConfig={this.updateExperimentConfig}
-            showSideItems={window.pageConfig && window.pageConfig.pageId !== 'home'}
-            changeLang={this.changeLang}
-            currentLocale={this.context.intl.locale}
-            links ={pkg.links}
-          />
         </Content>
         <Content className="main-content-mobile">
           { this.renderInfo() }
         </Content>
+        <Footer
+          experimentConfig={this.state.experimentConfig}
+          updateExperimentConfig={this.updateExperimentConfig}
+          showSideItems={window.pageConfig && window.pageConfig.pageId !== 'home'}
+          changeLang={this.changeLang}
+          currentLocale={this.context.intl.locale}
+          links ={pkg.links}
+        />
       </Layout>
     );
   }
