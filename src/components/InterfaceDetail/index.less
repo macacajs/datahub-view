@@ -35,7 +35,7 @@
 /* code mirroe override end */
 
 .interface-detail {
-  padding: 12px 20px;
+  padding: 12px 0;
   section {
     > div {
       margin-top: 10px;
@@ -44,6 +44,21 @@
   }
 }
 
+.interface-detail-navigation {
+  padding-left: 20px;
+}
+
+.interface-detail-content {
+  margin-top: 10px;
+  padding-left: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #f0f2f5;
+  > section:not(:first-of-type) {
+    margin-top: 20px;
+  }
+}
+
+
 .context-config-fields > div {
   display: inline-block;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -51,15 +66,6 @@
   margin-right: 8px;
   line-height: 30px;
   cursor: default;
-}
-
-.interface-detail-content {
-  margin-top: 10px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(0,0,0,0.1);
-  > section:not(:first-of-type) {
-    margin-top: 20px;
-  }
 }
 
 .common-list-item.disabled {

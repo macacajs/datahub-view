@@ -29,6 +29,7 @@ const zhCN = {
   'home.icon.cli': '命令行工具',
   'home.icon.i18n': '多语言支持',
   'home.icon.github': '开源开放',
+  'home.icon.download': '导出接口',
 
   'topNav.allProject': '所有项目',
   'topNav.projectConfig': '项目配置',
@@ -105,8 +106,7 @@ const zhCN = {
   'expriment.open': '开',
   'expriment.close': '关',
   'expriment.tips1': '全局设置',
-  'expriment.tips2': '当前数据',
-  'expriment.tips3': '你需要什么功能？',
+  'expriment.tips2': '你需要什么功能？',
 };
 
 export default zhCN;

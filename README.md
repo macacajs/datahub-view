@@ -2,16 +2,16 @@
 
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
-[![Test coverage][coveralls-image]][coveralls-url]
+[![Test coverage][codecov-image]][codecov-url]
 [![npm download][download-image]][download-url]
 
-[npm-image]: https://img.shields.io/npm/v/datahub-view.svg?style=flat-square
+[npm-image]: https://img.shields.io/npm/v/datahub-view.svg?style=flat-square&logo=npm
 [npm-url]: https://npmjs.org/package/datahub-view
-[travis-image]: https://img.shields.io/travis/macacajs/datahub-view.svg?style=flat-square
+[travis-image]: https://img.shields.io/travis/macacajs/datahub-view.svg?style=flat-square&logo=travis
 [travis-url]: https://travis-ci.org/macacajs/datahub-view
-[coveralls-image]: https://img.shields.io/coveralls/macacajs/datahub-view.svg?style=flat-square
-[coveralls-url]: https://coveralls.io/r/macacajs/datahub-view?branch=master
-[download-image]: https://img.shields.io/npm/dm/datahub-view.svg?style=flat-square
+[codecov-image]: https://img.shields.io/codecov/c/github/macacajs/datahub-view.svg?style=flat-square&logo=javascript
+[codecov-url]: https://codecov.io/gh/macacajs/datahub-view
+[download-image]: https://img.shields.io/npm/dm/datahub-view.svg?style=flat-square&logo=npm
 [download-url]: https://npmjs.org/package/datahub-view
 
 ---

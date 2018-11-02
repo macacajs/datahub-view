@@ -15,11 +15,8 @@ import {
   Alert,
   Layout,
   Tabs,
-  Drawer,
-  Icon,
 } from 'antd';
 
-import Experiment from '../components/Experiment';
 import InterfaceList from '../components/InterfaceList';
 import InterfaceDetail from '../components/InterfaceDetail/index';
 
@@ -32,7 +29,6 @@ import {
 
 import {
   queryParse,
-  isOpenDownloadAndUpload,
 } from '../common/helper';
 
 import './Project.less';
@@ -54,7 +50,6 @@ class Project extends React.Component {
     realTimeDataList: [],
     realTimeIndex: 0,
     showRightSide: false,
-    isOpenDownloadAndUpload,
   }
 
   getIndexByHash (res) {
@@ -160,39 +155,11 @@ class Project extends React.Component {
     });
   }
 
-  setDownloadAndUpload = value => {
-    this.setState({
-      isOpenDownloadAndUpload: value,
-    });
-  }
-
   render () {
     const globalProxyEnabled = this.state.interfaceList.every(item => item.proxyConfig.enabled);
 
     return (
       <Layout>
-        <Drawer
-          title="Experiment"
-          placement="right"
-          closable={true}
-          onClose={this.onDrawerClose}
-          visible={this.state.showRightSide}
-          width="30%"
-        >
-          <Experiment
-            setDownloadAndUpload={this.setDownloadAndUpload}
-          />
-        </Drawer>
-        <Affix
-          style={{
-            position: 'fixed',
-            top: '50%',
-            right: '20px',
-            zIndex: 999,
-          }}
-        >
-          <Icon onClick={this.toggleRightSide} type="experiment" theme="twoTone" />
-        </Affix>
         <Sider
           width="300px"
           style={{
@@ -216,7 +183,7 @@ class Project extends React.Component {
                 <InterfaceList
                   selectedInterface={this.state.selectedInterface}
                   setSelectedInterface={this.setSelectedInterface}
-                  isOpenDownloadAndUpload={this.state.isOpenDownloadAndUpload}
+                  experimentConfig={this.props.experimentConfig}
                   interfaceList={this.state.interfaceList}
                   updateInterfaceList={this.updateInterfaceList}
                 />

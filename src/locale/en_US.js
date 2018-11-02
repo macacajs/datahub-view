@@ -29,6 +29,7 @@ const enUS = {
   'home.icon.cli': 'cli tool',
   'home.icon.i18n': 'i18n support',
   'home.icon.github': 'open source',
+  'home.icon.download': 'export data',
 
   'topNav.allProject': 'All projects',
   'topNav.projectConfig': 'Project config',
@@ -105,8 +106,7 @@ const enUS = {
   'expriment.open': 'Open',
   'expriment.close': 'Close',
   'expriment.tips1': 'Global Settings',
-  'expriment.tips2': 'Current Data View',
-  'expriment.tips3': 'Tell me what you want?',
+  'expriment.tips2': 'Tell me what you want?',
 };
 
 export default enUS;

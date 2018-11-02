@@ -1,9 +1,9 @@
-@import './common/style/variable.less';
 @import './common/style/mixin.less';
 @import './common/style/util.less';
 
 body {
-  font-family: "ProximaNova-Light", "Avenir Next", -apple-system-body, "Helvetica Neue", "Helvetica", sans-serif;
+  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  background-color: #f0f2f5;
 }
 
 .ant-layout {
@@ -25,85 +25,13 @@ body {
 }
 
 .ant-layout-content {
-  min-height: 80vh;
+  min-height: 90vh;
 }
 
-.ant-layout-footer {
-  height: 10vh;
-  line-height: 10vh;
-  padding: 0;
-  text-align: center;
-  background-color: @bg-color;
-  letter-spacing: 1px;
-  a {
-    color: #656565;
-  }
-}
-
-.header {
-  height: @header-height;
-  border-bottom: 1px solid #f0f2f5;
-
-  .title-con {
-    & a {
-      color: #000;
-    }
-
-    .title {
-      display: inline-block;
-      font-size: 1.5em;
-      font-weight: 500;
-      line-height: @header-height;
-      height: @header-height;
-      margin-left: 6px;
-      color: rgba(0, 0, 0, .85);
-    }
-
-    img {
-      width: 29.45px;
-      height: 30px;
-      position: relative;
-      top: -5px;
-    }
-
-  }
-
-  .nav {
-    float: right;
-    padding: 0;
-    margin: 0;
-    .portrait {
-      display: none;
-      .mask {
-        display: inline-block;
-        background: #f3f3f3;
-        margin: 0;
-        padding: 0;
-        width: 40px;
-        height: 40px;
-        line-height: 40px;
-        margin-top: 20px;
-        border-radius: 100%;
-        overflow: hidden;
-        text-align: center;
-      }
-      img {
-        display: inline-block;
-        vertical-align: middle;
-        margin: 0;
-        width: 80%;
-      }
-    }
-    li {
-      line-height: @header-height;
-      float: right;
-      list-style: none;
-      margin-left: 30px;
-      a h3 {
-        margin: 0;
-      }
-    }
-  }
+.main-content {
+  padding-bottom: 20px;
+  margin-top: -20px;
+  padding-top: 20px;
 }
 
 .main-content-mobile {
@@ -121,9 +49,11 @@ body {
 }
 
 @media only screen and (max-width: 500px) {
+  .footer-side-items,
   .main-content {
-    display: none;
+    display: none !important;
   }
+
 
   .main-content-mobile {
     display: block;
