@@ -28,7 +28,7 @@ export default class SelectHub extends PureComponent {
       <Menu>
         {list.map((item, key) => {
           return (
-            <Menu.Item key={key}>
+            <Menu.Item key={key} data-accessbilityid={`dropdonw-list-${key}`}>
               <a href={`./${item}`}>{item}</a>
             </Menu.Item>
           );
@@ -38,7 +38,7 @@ export default class SelectHub extends PureComponent {
     return (
       <span style={{ marginLeft: '20px' }}>
         <Dropdown overlay={menu}>
-          <span>
+          <span data-accessbilityid="dropdonw-list">
             { projectName } <Icon type="down" />
           </span>
         </Dropdown>

@@ -56,6 +56,7 @@ class Experiment extends Component {
             <FormattedMessage id="expriment.downloadAndUpload" />
           </label>
           <Switch
+            data-accessbilityid="experiment-donwloadupload-switch"
             checkedChildren={this.formatMessage('expriment.open')}
             unCheckedChildren={this.formatMessage('expriment.close')}
             onChange={this.toggleDownloadAndUpload}
@@ -76,7 +77,7 @@ class Experiment extends Component {
             </a>
           </p>
         </Drawer>
-        <a onClick={() => this.setState({ showPanel: true })}>
+        <a data-accessbilityid="experiment-container" onClick={() => this.setState({ showPanel: true })}>
           <Icon type="experiment" />
           { 'Lab' }
         </a>

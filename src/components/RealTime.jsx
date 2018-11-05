@@ -36,6 +36,7 @@ export default class RealTime extends React.Component {
             return (
               <Row
                 key={index}
+                data-accessbilityid={`real-time-line-${index}`}
                 className={`real-time-line ${index === this.props.realTimeIndex ? 'clicked' : ''}`}
                 onClick={this.props.onSelect.bind(this, index)}
               >

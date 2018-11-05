@@ -173,6 +173,7 @@ class Project extends React.Component {
               defaultActiveKey={interfaceTabSymbol}
               onChange={this.tabOnChange}
               animated={false}
+              data-accessbilityid="tabs-container"
             >
               <TabPane
                 tab={this.props.intl.formatMessage({

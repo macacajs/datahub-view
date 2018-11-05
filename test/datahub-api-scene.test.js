@@ -148,6 +148,28 @@ describe('test/datahub-api-scene.test.js', () => {
         /* eslint-enable */
     });
 
+    it('realtime should be ok', () => {
+      return driver
+        .getUrl(`${BASE_URL}/project/datahubview`)
+        .waitForElementByCss('[data-accessbilityid="tabs-container"] [role="tab"]:last-child')
+        .click()
+        .execute('fetch("http://localhost:5678/data/datahubview/init")')
+        .sleep(1000)
+        .execute('fetch("http://localhost:5678/data/datahubview/init")')
+        .sleep(1000)
+        .waitForElementByCss('[data-accessbilityid="real-time-line-1"]')
+        .click()
+        .waitForElementByCss('[data-accessbilityid="real-time-save-to"] button')
+        .click()
+        .waitForElementByCss('#sceneName')
+        .click()
+        .formatInput('realtime')
+        .sleep(1500)
+        .waitForElementByCss('.ant-modal-footer .ant-btn.ant-btn-primary')
+        .click()
+        .sleep(1500);
+    });
+
     it('switch error scene should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/project/datahubview`)
@@ -160,15 +182,28 @@ describe('test/datahub-api-scene.test.js', () => {
         /* eslint-enable */
     });
 
-    it('delete error scene should be ok', () => {
+    it('delete realtime scene should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/project/datahubview`)
-        .waitForElementByCss('[data-accessbilityid="project-api-scene-list-1"] .anticon-delete')
+        .waitForElementByCss('[data-accessbilityid="project-api-scene-list-2"] .anticon-delete')
         .click()
         .waitForElementByCss('.ant-popover-buttons .ant-btn-primary')
         .click()
         .sleep(1500)
-        .elementOrNull('[data-accessbilityid="project-api-scene-list-1"] .scene-name')
+        .elementOrNull('[data-accessbilityid="project-api-scene-list-2"] .scene-name')
+        .then(value => assert.equal(value, null));
+    });
+
+    it('delete default scene should be ok', () => {
+      return driver
+        .getUrl(`${BASE_URL}/project/datahubview`)
+        .waitForElementByCss('[data-accessbilityid="project-api-scene-list-1"] .anticon-delete')
+        .click()
+        .sleep(1500)
+        .waitForElementByCss('.ant-popover-buttons .ant-btn-primary')
+        .click()
+        .sleep(3000)
+        .elementOrNull('[data-accessbilityid="project-api-scene-list-1"] .anticon-delete')
         .then(value => assert.equal(value, null));
     });
 
