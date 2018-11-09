@@ -103,6 +103,7 @@ const enUS = {
 
   'expriment.description': 'Show something here:',
   'expriment.downloadAndUpload': 'Download and Upload: ',
+  'expriment.compactView': 'Compact View: ',
   'expriment.open': 'Open',
   'expriment.close': 'Close',
   'expriment.tips1': 'Global Settings',

@@ -116,6 +116,26 @@ describe('test/datahub-project.test.js', () => {
         .click();
     });
 
+    it('open compact view should be ok', () => {
+      return driver
+        .getUrl(`${BASE_URL}/dashboard`)
+        .waitForElementByCss('[data-accessbilityid="experiment-container"] i.anticon-experiment')
+        .click()
+        .sleep(1500)
+        .waitForElementByCss('[data-accessbilityid="experiment-compactview-switch"]')
+        .click();
+    });
+
+    it('close compact view should be ok', () => {
+      return driver
+        .getUrl(`${BASE_URL}/dashboard`)
+        .waitForElementByCss('[data-accessbilityid="experiment-container"] i.anticon-experiment')
+        .click()
+        .sleep(1500)
+        .waitForElementByCss('[data-accessbilityid="experiment-compactview-switch"]')
+        .click();
+    });
+
     // depend on add project successfully
     it('delete project should be ok', () => {
       return driver

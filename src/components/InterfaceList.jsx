@@ -134,17 +134,21 @@ class InterfaceList extends Component {
       value.description.toLowerCase().includes(this.state.filterString)
     ).map((value, index) => {
       const isSelected = value.uniqId === this.props.selectedInterface.uniqId;
+      const isOpenCompactView = this.props.experimentConfig.isOpenCompactView;
+
       return (
         <li
           key={index}
           data-accessbilityid={`project-add-api-list-${index}`}
-          className={isSelected ? 'clicked' : ''}
+          className={[isSelected ? 'clicked' : '', isOpenCompactView ? 'is-compact-view' : ''].join(' ')}
+          onClick={() => this.props.setSelectedInterface(value.uniqId)}
         >
-          <div className="interface-item"
-            onClick={() => this.props.setSelectedInterface(value.uniqId)}>
-            <h3 title={value.pathname}>{value.pathname}</h3>
-            <p title={value.description}>{value.description}</p>
-            <p>method: {value.method}
+          <div className="interface-item">
+            <h3 className="interface-item-title" title={value.pathname}>{value.pathname}</h3>
+            <p className="interface-item-desc" title={value.description}>{value.description}</p>
+            <p className="interface-item-method">
+              <span className="interface-item-method-name">method: </span>
+              <span className="interface-item-method-value">{value.method}</span>
             </p>
           </div>
           {!unControlled && <div className="interface-control" style={{fontSize: '16px'}}>
