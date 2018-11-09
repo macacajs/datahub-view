@@ -236,8 +236,12 @@ const genApiList = (schemaData, paramsData) => {
 
 const getExperimentConfig = () => {
   let experimentConfig = {};
+  const config = localStorage.getItem('DATAHUB_EXPERIMENT_CONFIG')
+
+  if (!config) return experimentConfig
+
   try {
-    experimentConfig = JSON.parse(localStorage.getItem('DATAHUB_EXPERIMENT_CONFIG') || '{}');
+    experimentConfig = JSON.parse(config);
   } catch (e) {
     console.error('It is error to parse JSON with experimentConfig');
   }
