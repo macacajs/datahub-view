@@ -15,18 +15,24 @@ import {
   FormattedMessage,
 } from 'react-intl';
 
-const isSemverLessThan = (left, right) => {
+const compareVersion = (base, target) => {
   // assuming simple semver
-  if ((/^\d+\.\d+\.\d+$/).test(left) && (/^\d+\.\d+\.\d+$/).test(right)) {
-    const [lMajor, lMinor, lPatch] = left.split('.');
-    const [rMajor, rMinor, rPatch] = right.split('.');
-    return Number(lMajor) < Number(rMajor) ||
-      Number(lMinor) < Number(rMinor) ||
-      Number(lPatch) < Number(rPatch);
+  if (!((/^\d+\.\d+\.\d+$/).test(base) && (/^\d+\.\d+\.\d+$/).test(target))) {
+    return;
   }
-  return false;
-};
+  const baseVersion = base.split('.');
+  const targetVersion = target.split('.');
 
+  for (let i = 0, n1, n2; i < baseVersion.length; i++) {
+    n1 = parseInt(targetVersion[i], 10) || 0;
+    n2 = parseInt(baseVersion[i], 10) || 0;
+
+    if (n1 > n2) return -1;
+    if (n1 < n2) return 1;
+  }
+
+  return 0;
+};
 
 class Experiment extends Component {
   state = {
@@ -62,7 +68,7 @@ class Experiment extends Component {
             onChange={this.toggleDownloadAndUpload}
             defaultChecked={this.props.experimentConfig.isOpenDownloadAndUpload}
           />
-          {isSemverLessThan(window.pageConfig.version, '2.2.10') &&
+          {compareVersion(window.pageConfig.version, '2.2.10') === -1 &&
             <span style={{marginLeft: '8px'}}>(Only for Datahub>=2.2.10)</span>
           }
           <hr />
