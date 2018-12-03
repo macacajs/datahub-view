@@ -26,7 +26,7 @@ import DashBoard from './pages/DashBoard';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 
-import { initialExperimentConfig } from './common/helper';
+import { getExperimentConfig } from './common/helper';
 
 import 'react-github-button/assets/style.css';
 
@@ -45,7 +45,7 @@ localStorage.debug = ('datahub*');
 class App extends React.Component {
   // Should use react context in the future
   state = {
-    experimentConfig: initialExperimentConfig,
+    experimentConfig: getExperimentConfig(),
   }
 
   updateExperimentConfig = payload => {

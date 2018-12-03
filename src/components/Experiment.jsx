@@ -15,6 +15,8 @@ import {
   FormattedMessage,
 } from 'react-intl';
 
+import { setExperimentConfig } from '../common/helper';
+
 const compareVersion = (base, target) => {
   // assuming simple semver
   if (!((/^\d+\.\d+\.\d+$/).test(base) && (/^\d+\.\d+\.\d+$/).test(target))) {
@@ -42,9 +44,20 @@ class Experiment extends Component {
   formatMessage = id => this.props.intl.formatMessage({ id });
 
   toggleDownloadAndUpload = value => {
-    localStorage.setItem('DATAHUB_FEATURE_DOWNLOAD_AND_UPLOAD', value);
+    setExperimentConfig({
+      isOpenDownloadAndUpload: value,
+    });
     this.props.updateExperimentConfig({
       isOpenDownloadAndUpload: value,
+    });
+  }
+
+  toggleCompactView = value => {
+    setExperimentConfig({
+      isOpenCompactView: value,
+    });
+    this.props.updateExperimentConfig({
+      isOpenCompactView: value,
     });
   }
 
@@ -58,19 +71,33 @@ class Experiment extends Component {
           visible={this.state.showPanel}
           width="30%"
         >
-          <label style={{ verticalAlign: 'middle' }}>
-            <FormattedMessage id="expriment.downloadAndUpload" />
-          </label>
-          <Switch
-            data-accessbilityid="experiment-donwloadupload-switch"
-            checkedChildren={this.formatMessage('expriment.open')}
-            unCheckedChildren={this.formatMessage('expriment.close')}
-            onChange={this.toggleDownloadAndUpload}
-            defaultChecked={this.props.experimentConfig.isOpenDownloadAndUpload}
-          />
-          {compareVersion(window.pageConfig.version, '2.2.10') === -1 &&
-            <span style={{marginLeft: '8px'}}>(Only for Datahub>=2.2.10)</span>
-          }
+          <section>
+            <label style={{ verticalAlign: 'middle' }}>
+              <FormattedMessage id="expriment.downloadAndUpload" />
+            </label>
+            <Switch
+              data-accessbilityid="experiment-donwloadupload-switch"
+              checkedChildren={this.formatMessage('expriment.open')}
+              unCheckedChildren={this.formatMessage('expriment.close')}
+              onChange={this.toggleDownloadAndUpload}
+              defaultChecked={this.props.experimentConfig.isOpenDownloadAndUpload}
+            />
+            {compareVersion(window.pageConfig.version, '2.2.10') === -1 &&
+              <span style={{marginLeft: '8px'}}>(Only for Datahub>=2.2.10)</span>
+            }
+          </section>
+          <section style={{ marginTop: '10px' }}>
+            <label style={{ verticalAlign: 'middle' }}>
+              <FormattedMessage id="expriment.compactView" />
+            </label>
+            <Switch
+              data-accessbilityid="experiment-compactview-switch"
+              checkedChildren={this.formatMessage('expriment.open')}
+              unCheckedChildren={this.formatMessage('expriment.close')}
+              onChange={this.toggleCompactView}
+              defaultChecked={this.props.experimentConfig.isOpenCompactView}
+            />
+          </section>
           <hr />
           <p><FormattedMessage id="expriment.description" /></p>
           <p><FormattedMessage id="expriment.tips1" /></p>

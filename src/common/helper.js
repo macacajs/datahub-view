@@ -234,8 +234,24 @@ const genApiList = (schemaData, paramsData) => {
   return walker(json);
 };
 
-const initialExperimentConfig = {
-  isOpenDownloadAndUpload: localStorage.getItem('DATAHUB_FEATURE_DOWNLOAD_AND_UPLOAD') === 'true',
+const getExperimentConfig = () => {
+  let experimentConfig = {};
+  const config = localStorage.getItem('DATAHUB_EXPERIMENT_CONFIG');
+
+  if (!config) return experimentConfig;
+
+  try {
+    experimentConfig = JSON.parse(config);
+  } catch (e) {
+    console.error('It is error to parse JSON with experimentConfig');
+  }
+  return experimentConfig;
+};
+
+const setExperimentConfig = option => {
+  const experimentConfig = getExperimentConfig();
+  const result = Object.assign(experimentConfig, option);
+  localStorage.setItem('DATAHUB_EXPERIMENT_CONFIG', JSON.stringify(result));
 };
 
 _.guid = guid;
@@ -252,7 +268,8 @@ export {
   serialize,
   jsonToSchema,
   genApiList,
-  initialExperimentConfig,
+  getExperimentConfig,
+  setExperimentConfig,
 };
 
 export default _;
