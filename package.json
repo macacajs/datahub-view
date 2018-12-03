@@ -1,6 +1,6 @@
 {
   "name": "datahub-view",
-  "version": "2.2.3",
+  "version": "2.2.5",
   "description": "view layer for DataHub",
   "eggPlugin": {
     "name": "dataHubView"
@@ -74,6 +74,7 @@
     "stylelint": "^9.3.0",
     "stylelint-config-antife": "^1.0.0",
     "type-detect": "^4.0.8",
+    "uglifyjs-webpack-plugin": "^2.0.1",
     "url-loader": "^1.0.1",
     "webpack": "^4.10.0",
     "webpack-bundle-analyzer": "^2.13.1",

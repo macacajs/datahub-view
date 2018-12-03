@@ -236,9 +236,9 @@ const genApiList = (schemaData, paramsData) => {
 
 const getExperimentConfig = () => {
   let experimentConfig = {};
-  const config = localStorage.getItem('DATAHUB_EXPERIMENT_CONFIG')
+  const config = localStorage.getItem('DATAHUB_EXPERIMENT_CONFIG');
 
-  if (!config) return experimentConfig
+  if (!config) return experimentConfig;
 
   try {
     experimentConfig = JSON.parse(config);
