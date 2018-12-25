@@ -196,7 +196,7 @@ class DashBoard extends Component {
     return (
       <div className="dashboard">
         <Row type="flex" justify="center">
-          <Col span="22">
+          <Col span={22}>
             <Row type="flex">
               { this.renderProjectList() }
               <Col span={8}>
