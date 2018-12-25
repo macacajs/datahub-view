@@ -198,7 +198,7 @@ describe('test/datahub-api-list.test.js', () => {
         .waitForElementByCss('[data-accessbilityid="project-add-api-list-0"] .anticon-delete')
         .click()
         .waitForElementByCss('.ant-popover-buttons .ant-btn-primary')
-        .click()
+        .click();
     });
   });
 });
