@@ -169,6 +169,7 @@ class Document extends React.Component {
             unControlled={true}
             selectedInterface={this.state.selectedInterface}
             setSelectedInterface={this.setSelectedInterface}
+            experimentConfig={this.props.experimentConfig}
             interfaceList={this.state.interfaceList}
           />
         </Sider>

@@ -64,7 +64,7 @@ class App extends React.Component {
       case 'project':
         return <Project experimentConfig={this.state.experimentConfig}/>;
       case 'document':
-        return <Document />;
+        return <Document experimentConfig={this.state.experimentConfig}/>;
       default:
         return <Home />;
     }

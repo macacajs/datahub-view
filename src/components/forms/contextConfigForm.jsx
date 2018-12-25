@@ -91,7 +91,7 @@ class ContextFormComponent extends Component {
               },
             ],
           })(
-            <Input maxLength="4"/>
+            <Input maxLength={4}/>
           )}
         </FormItem>
         <FormItem label={`${formatMessage('contextConfig.responseStatus')} 200-50x`}>
@@ -104,7 +104,7 @@ class ContextFormComponent extends Component {
               },
             ],
           })(
-            <Input maxLength="3"/>
+            <Input maxLength={3}/>
           )}
         </FormItem>
         <FormItem label='Rewrite response headers in JSON format'>
