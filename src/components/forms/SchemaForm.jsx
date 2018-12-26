@@ -5,6 +5,8 @@ import React, {
 import {
   Form,
   Modal,
+  Table,
+  Alert,
   message,
 } from 'antd';
 
@@ -13,16 +15,44 @@ import {
 } from 'react-intl';
 
 import '../../common/jsonlint';
+import { genSchemaList, throttle } from '../../common/helper';
 
 import {
   UnControlled as CodeMirror,
   defaultCodeMirrorOptions as codeMirrorOptions,
 } from '../../common/codemirror';
 
+import './SchemaForm.less';
+
 class SchemaFormComponent extends Component {
   constructor (props) {
     super(props);
     this.codeMirrorInstance = null;
+
+    this.state = {
+      stageData: null,
+      cursor: null,
+      schemaFormType: '',
+    };
+  }
+
+  componentWillReceiveProps (nextProps) {
+    const {
+      schemaData,
+      schemaFormType,
+    } = nextProps;
+
+    if (this.state.stageData && this.state.schemaFormType === schemaFormType) return;
+
+    const schemaObject = schemaData.find(i => i.type === schemaFormType) || {};
+    const stageData = schemaObject.data && schemaObject.data.schemaData;
+
+    this.setState({
+      stageData,
+      schemaFormType,
+    });
+
+    this.handleCodeMirrorChange = throttle(this.handleCodeMirrorChange, 50);
   }
 
   formatMessage = id => this.props.intl.formatMessage({ id });
@@ -37,6 +67,45 @@ class SchemaFormComponent extends Component {
     return { data, error };
   }
 
+  handleCodeMirrorChange = (editor, data, value) => {
+    this.setState({
+      cursor: editor.getCursor(),
+    });
+    try {
+      const stageData = JSON.parse(value);
+      this.setState({
+        stageData,
+      });
+    } catch (e) {
+    }
+  }
+
+  handleClickTableRow = e => {
+    const text = e.target.innerText;
+    let lastPos = null;
+    let lastQuery = null;
+    const editor = this.codeMirrorInstance;
+
+    function search () {
+      if (!text) return;
+      if (lastQuery !== text) lastPos = null;
+
+      let cursor = editor.getSearchCursor(text, lastPos || editor.getCursor());
+
+      if (!cursor.findNext()) {
+        cursor = editor.getSearchCursor(text);
+        if (!cursor.findNext()) return;
+      }
+
+      editor.setSelection(cursor.from(), cursor.to());
+      lastQuery = text;
+      lastPos = cursor.to();
+      editor.focus();
+      editor.doc.setCursor(cursor.pos.to);
+    }
+    search();
+  }
+
   render () {
     const {
       visible,
@@ -46,12 +115,14 @@ class SchemaFormComponent extends Component {
       schemaData,
       schemaFormType,
     } = this.props;
+
+    const formatMessage = this.formatMessage;
     const schemaObject = schemaData.find(i => i.type === schemaFormType) || {};
     const stageData = schemaObject.data && schemaObject.data.schemaData;
-    const formatMessage = this.formatMessage;
+    const schemaTableData = this.state.stageData && genSchemaList(this.state.stageData);
     return <Modal
-      style={{top: '20px'}}
-      width='80%'
+      style={{top: '10px'}}
+      width='95%'
       wrapClassName='schema-modal'
       visible={visible}
       destroyOnClose={true}
@@ -80,15 +151,37 @@ class SchemaFormComponent extends Component {
       }}
       confirmLoading={confirmLoading}
     >
-      <Form layout="vertical">
-        <CodeMirror
-          value={stageData && JSON.stringify(stageData, null, 2)}
-          options={codeMirrorOptions}
-          editorDidMount={instance => {
-            this.codeMirrorInstance = instance;
-            instance.focus();
-          }}
-        />
+      <Form layout="vertical" className="schema-content-form">
+        <div className="schema-left-content">
+          <CodeMirror
+            style={{ height: `${window.document.body.clientHeight}px` }}
+            value={stageData && JSON.stringify(stageData, null, 2)}
+            options={codeMirrorOptions}
+            editorDidMount={instance => {
+              this.codeMirrorInstance = instance;
+              instance.focus();
+            }}
+            cursor={this.state.cursor}
+            onChange={this.handleCodeMirrorChange}
+          />
+        </div>
+        <div className="schema-right-content">
+          <Alert
+            message={formatMessage('schemaData.tableJumpInfo')}
+            type="info"
+            style={{ marginBottom: '10px' }}
+          />
+          <Table
+            size="small"
+            pagination={false}
+            dataSource={schemaTableData}
+            bordered
+            columns={this.props.columns}
+            onRow={record => ({
+              onClick: this.handleClickTableRow,
+            })}
+          />
+        </div>
       </Form>
     </Modal>;
   }

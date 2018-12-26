@@ -100,6 +100,7 @@ const zhCN = {
   'schemaData.description': '参数说明',
   'schemaData.enableValidation': '是否开启校验',
   'schemaData.edit': '编辑',
+  'schemaData.tableJumpInfo': '点击单元格，跳转到 Schema 编辑（支持重复点击）',
 
   'expriment.description': '显示一些功能',
   'expriment.downloadAndUpload': '上传和下载功能：',

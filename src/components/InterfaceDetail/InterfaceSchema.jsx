@@ -177,6 +177,7 @@ class InterfaceSchema extends Component {
         onOk={this.confirmSchemaForm}
         confirmLoading={this.state.schemaFormLoading}
         schemaFormType={this.state.schemaFormType}
+        columns={columns}
         schemaData={this.props.schemaData}
       />
     </section>;
