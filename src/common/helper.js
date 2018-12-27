@@ -254,12 +254,23 @@ const setExperimentConfig = option => {
   localStorage.setItem('DATAHUB_EXPERIMENT_CONFIG', JSON.stringify(result));
 };
 
+const throttle = (action, delay) => {
+  let timer = null;
+  return function () {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      action.apply(this, arguments);
+    }, delay);
+  };
+};
+
 _.guid = guid;
 _.genSchemaList = genSchemaList;
 _.queryParse = queryParse;
 _.serialize = serialize;
 _.jsonToSchema = jsonToSchema;
 _.genApiList = genApiList;
+_.throttle = throttle;
 
 export {
   guid,
@@ -270,6 +281,7 @@ export {
   genApiList,
   getExperimentConfig,
   setExperimentConfig,
+  throttle,
 };
 
 export default _;

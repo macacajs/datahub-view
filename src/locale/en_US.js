@@ -100,6 +100,7 @@ const enUS = {
   'schemaData.description': 'description',
   'schemaData.enableValidation': 'enable schema validation',
   'schemaData.edit': 'edit',
+  'schemaData.tableJumpInfo': 'Click on the cell will jump to Schema (support repeat click)',
 
   'expriment.description': 'Show something here:',
   'expriment.downloadAndUpload': 'Download and Upload: ',
