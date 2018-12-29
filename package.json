@@ -1,6 +1,6 @@
 {
   "name": "datahub-view",
-  "version": "2.2.10",
+  "version": "2.2.11",
   "description": "view layer for DataHub",
   "eggPlugin": {
     "name": "dataHubView"
@@ -22,7 +22,7 @@
     "url": "https://github.com/macacajs/datahub-view"
   },
   "links": {
-    "document": "//macacajs.github.io/datahub",
+    "document": "//macacajs.github.io/macaca-datahub",
     "issue": "//github.com/macacajs/macaca-datahub/issues",
     "homepage": "//github.com/macacajs/macaca-datahub",
     "macaca": "//macacajs.github.io"
