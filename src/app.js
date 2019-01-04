@@ -119,7 +119,7 @@ class App extends React.Component {
           message={
             <div>
               <span>{`Your DataHub server version is ${window.pageConfig.version}, please upgrade to datahub@${this.state.latestVesion} `}</span>
-              <a target="_blank" href="https://github.com/macacajs/macavica-datahub">https://www.npmjs.com/package/macaca-datahub</a>
+              <a target="_blank" href="https://www.npmjs.com/package/macaca-datahub">https://www.npmjs.com/package/macaca-datahub</a>
             </div>
           }
           type="warning"
