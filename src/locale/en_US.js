@@ -46,6 +46,8 @@ const enUS = {
   'project.description': 'Hub description',
   'project.description.invalid': 'Description can\'t be empty',
   'project.add': 'Add hub',
+  'project.globalProxy': 'Global proxy',
+  'project.globalProxy.invalid': 'Please input URL',
 
   'interfaceList.addInterface': 'Add API',
   'interfaceList.updateInterface': 'Update API',

@@ -59,6 +59,10 @@ describe('test/datahub-api-operate.test.js', () => {
         .click()
         .formatInput('DataHub Mock Data')
         .sleep(1500)
+        .elementByCss('#globalProxy')
+        .click()
+        .formatInput('http://127.0.0.1')
+        .sleep(1500)
         .waitForElementByCss('button.ant-btn.ant-btn-primary')
         .click()
         .sleep(1500);
@@ -124,6 +128,9 @@ describe('test/datahub-api-operate.test.js', () => {
         // open proxy
         .waitForElementByCss('[data-accessbilityid="project-api-solo-switch"]')
         .click()
+        // check global proxy
+        .waitForElementByCss('[data-accessbilityid="project-api-proxy-list-0"] .common-list-item-name span')
+        .hasText('http://127.0.0.1')
         // add 1 proxy
         .waitForElementByCss('[data-accessbilityid="project-api-add-proxy-btn"]:not([disabled])')
         .click()
@@ -137,7 +144,7 @@ describe('test/datahub-api-operate.test.js', () => {
         // check 1 proxy
         .refresh()
         .sleep(1500)
-        .waitForElementByCss('[data-accessbilityid="project-api-proxy-list-0"] .common-list-item-name span')
+        .waitForElementByCss('[data-accessbilityid="project-api-proxy-list-1"] .common-list-item-name span')
         .hasText('http://datahub1.com')
 
         // add 2 proxy
@@ -153,11 +160,11 @@ describe('test/datahub-api-operate.test.js', () => {
         // check 2 proxy
         .refresh()
         .sleep(1500)
-        .waitForElementByCss('[data-accessbilityid="project-api-proxy-list-1"] .common-list-item-name span')
+        .waitForElementByCss('[data-accessbilityid="project-api-proxy-list-2"] .common-list-item-name span')
         .hasText('http://datahub2.com')
 
         // delete 2 proxy
-        .waitForElementByCss('[data-accessbilityid="project-api-proxy-list-1"] .anticon-delete')
+        .waitForElementByCss('[data-accessbilityid="project-api-proxy-list-2"] .anticon-delete')
         .click()
         .waitForElementByCss('.ant-popover-buttons .ant-btn-primary')
         .click()
@@ -166,7 +173,7 @@ describe('test/datahub-api-operate.test.js', () => {
         // can't delete proxy after close proxy
         .waitForElementByCss('[data-accessbilityid="project-api-solo-switch"]')
         .click()
-        .elementOrNull('[data-accessbilityid="project-api-proxy-list-0"] .common-list-item.disabled')
+        .elementOrNull('[data-accessbilityid="project-api-proxy-list-1"] .common-list-item.disabled')
         .then(value => assert.equal(value, null))
         .sleep(1500);
     });

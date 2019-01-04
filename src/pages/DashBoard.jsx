@@ -67,6 +67,7 @@ class DashBoard extends Component {
       uniqId: this.state.stageData && this.state.stageData.uniqId,
       projectName: values.projectName,
       description: values.description,
+      globalProxy: values.globalProxy,
     });
 
     this.setState({
