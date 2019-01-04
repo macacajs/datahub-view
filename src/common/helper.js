@@ -1,10 +1,25 @@
 'use strict';
 
 import lodash from 'lodash';
+import semver from 'semver';
 import typeDetect from 'type-detect';
 import deepMerge from './deepmerge';
 
 const _ = lodash.merge({}, lodash);
+
+const compareServerVersion = () => {
+  return new Promise((resolve, reject) => {
+    const serverPkg = 'https://unpkg.com/macaca-datahub@latest/package.json';
+    fetch(serverPkg).then(res => res.json()).then(res => {
+      const latestVesion = res.version;
+      const currentVersion = window.pageConfig.version;
+      resolve({
+        shouldUpdate: semver.gt(latestVesion, currentVersion),
+        latestVesion,
+      });
+    });
+  });
+};
 
 const guid = () => {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
@@ -271,6 +286,7 @@ _.serialize = serialize;
 _.jsonToSchema = jsonToSchema;
 _.genApiList = genApiList;
 _.throttle = throttle;
+_.compareServerVersion = compareServerVersion;
 
 export {
   guid,
@@ -282,6 +298,7 @@ export {
   getExperimentConfig,
   setExperimentConfig,
   throttle,
+  compareServerVersion,
 };
 
 export default _;

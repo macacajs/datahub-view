@@ -77,6 +77,20 @@ function ProjectFormComponent (props) {
           <Input />
         )}
       </FormItem>
+      <FormItem label={formatMessage('project.globalProxy')}>
+        {getFieldDecorator('globalProxy', {
+          initialValue: stageData && stageData.globalProxy,
+          rules: [
+            {
+              required: false,
+              pattern: /^https?:\/\/.+$/,
+              message: formatMessage('project.globalProxy.invalid'),
+            },
+          ],
+        })(
+          <Input />
+        )}
+      </FormItem>
     </Form>
   </Modal>;
 };

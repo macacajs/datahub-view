@@ -46,6 +46,8 @@ const zhCN = {
   'project.description': '项目描述',
   'project.description.invalid': '请输入项目描述',
   'project.add': '添加项目',
+  'project.globalProxy': '全局项目代理',
+  'project.globalProxy.invalid': '请输入 URL',
 
   'interfaceList.addInterface': '添加接口',
   'interfaceList.updateInterface': '修改接口',

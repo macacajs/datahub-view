@@ -27,7 +27,9 @@
     "homepage": "//github.com/macacajs/macaca-datahub",
     "macaca": "//macacajs.github.io"
   },
-  "dependencies": {},
+  "dependencies": {
+    "semver": "^5.6.0"
+  },
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/plugin-proposal-class-properties": "^7.0.0",

@@ -26,7 +26,7 @@ import DashBoard from './pages/DashBoard';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 
-import { getExperimentConfig } from './common/helper';
+import { getExperimentConfig, compareServerVersion } from './common/helper';
 
 import 'react-github-button/assets/style.css';
 
@@ -46,6 +46,17 @@ class App extends React.Component {
   // Should use react context in the future
   state = {
     experimentConfig: getExperimentConfig(),
+    shouldUpdate: false,
+    latestVesion: '',
+  }
+
+  componentDidMount () {
+    compareServerVersion().then((res) => {
+      this.setState({
+        shouldUpdate: res.shouldUpdate,
+        latestVesion: res.latestVesion,
+      });
+    });
   }
 
   updateExperimentConfig = payload => {
@@ -96,8 +107,19 @@ class App extends React.Component {
           banner={true}
           message={
             <div>
-              <span>{`Your datahub version is ${window.pageConfig.version}, please upgrade to datahub@2: `}</span>
+              <span>{`Your DataHub server version is ${window.pageConfig.version}, please upgrade to datahub@2: `}</span>
               <a target="_blank" href="https://github.com/macacajs/macaca-datahub/issues/77">https://github.com/macacajs/macaca-datahub/issues/77</a>
+            </div>
+          }
+          type="warning"
+          showIcon
+        />}
+        {this.state.shouldUpdate && <Alert
+          banner={true}
+          message={
+            <div>
+              <span>{`Your DataHub server version is ${window.pageConfig.version}, please upgrade to datahub@${this.state.latestVesion} `}</span>
+              <a target="_blank" href="https://www.npmjs.com/package/macaca-datahub">https://www.npmjs.com/package/macaca-datahub</a>
             </div>
           }
           type="warning"

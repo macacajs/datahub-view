@@ -29,6 +29,8 @@ import './InterfaceList.less';
 
 const Search = Input.Search;
 
+const globalProxy = window.context && window.context.globalProxy;
+
 class InterfaceList extends Component {
   state = {
     interfaceFormVisible: false,
@@ -72,6 +74,24 @@ class InterfaceList extends Component {
       description,
       method,
     });
+
+    // Add Global Proxy
+    if (res.data &&
+      res.data.uniqId &&
+      apiName === 'createInterface' &&
+      globalProxy
+    ) {
+      await interfaceService.updateInterface({
+        uniqId: res.data.uniqId,
+        proxyConfig: {
+          enabled: false,
+          proxyList: [{
+            proxyUrl: globalProxy,
+          }],
+        },
+      });
+    }
+
     this.setState({
       interfaceFormLoading: false,
     });
