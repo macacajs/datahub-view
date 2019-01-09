@@ -100,6 +100,16 @@ class App extends React.Component {
     location.href = `/?locale=${lang}`;
   }
 
+  closeTip = () => {
+    localStorage.setItem(this.getCloseTipFlag(), true);
+  }
+
+  getCloseTipFlag = () => {
+    const date = new Date();
+    const info = `notice-${date.getFullYear()}-${date.getMonth() + 1}`;
+    return info;
+  }
+
   render () {
     return (
       <Layout className={`page-${this.props.pageConfig.pageId}`}>
@@ -114,7 +124,7 @@ class App extends React.Component {
           type="warning"
           showIcon
         />}
-        {this.state.shouldUpdate && <Alert
+        {this.state.shouldUpdate && !localStorage.getItem(this.getCloseTipFlag()) && <Alert
           banner={true}
           message={
             <div>
@@ -123,7 +133,9 @@ class App extends React.Component {
             </div>
           }
           type="warning"
+          closable
           showIcon
+          onClose={this.closeTip}
         />}
         <Header
           links={pkg.links}
