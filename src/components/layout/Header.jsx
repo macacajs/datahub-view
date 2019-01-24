@@ -50,7 +50,7 @@ export default ({ links, pageConfig, context }) => {
           </a>
         </li>
         <li>
-          <a href={ links.document } target="_blank">
+          <a href={ navigator.language === 'zh-CN' ? `${links.document}/zh` : links.document } target="_blank">
             <h3><FormattedMessage id="common.guide" /></h3>
           </a>
         </li>
