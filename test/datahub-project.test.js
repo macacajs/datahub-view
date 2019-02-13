@@ -105,6 +105,7 @@ describe('test/datahub-project.test.js', () => {
         .formatInput('New DataHub Mock Data')
         .waitForElementByCss('button.ant-btn.ant-btn-primary')
         .click()
+        .sleep(1000)
         .waitForElementByCss('[data-accessbilityid="dashboard-content-card-0"] div.ant-card-head')
         .hasText('New DataHub Mock Data');
     });
