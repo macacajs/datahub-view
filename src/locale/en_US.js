@@ -75,8 +75,10 @@ const enUS = {
   'sceneList.updateScene': 'Update scene',
   'sceneList.sceneName': 'Scene name',
   'sceneList.sceneData': 'Scene data',
-  'sceneList.invalidSceneName': 'scene name is invalid, please input alphanum - _',
-  'sceneList.invalidSceneData': 'scene data is invalid, please input JSON data',
+  'sceneList.invalidSceneName': 'Scene name is invalid, please input alphanum - _',
+  'sceneList.invalidSceneData': 'Scene data is invalid, please input JSON data',
+  'sceneList.rewriteResponseHeader': 'Rewrite response headers in JSON format',
+  'sceneList.responseData': 'Response data in JSON format',
 
   'proxyConfig.enable.true': 'Proxy mode enabled',
   'proxyConfig.enable.false': 'Proxy mode disabled',

@@ -57,7 +57,7 @@ class InterfaceSceneList extends Component {
     });
   }
 
-  confirmSceneForm = async ({ sceneName, data }) => {
+  confirmSceneForm = async ({ sceneName, contextConfig, data }) => {
     const { uniqId: interfaceUniqId } = this.props.interfaceData;
     this.setState({
       sceneFormLoading: true,
@@ -65,10 +65,12 @@ class InterfaceSceneList extends Component {
     const apiName = this.state.stageData
       ? 'updateScene'
       : 'createScene';
+
     const res = await sceneService[apiName]({
       uniqId: this.state.stageData && this.state.stageData.uniqId,
       interfaceUniqId,
       sceneName,
+      contextConfig,
       data,
     });
     this.setState({

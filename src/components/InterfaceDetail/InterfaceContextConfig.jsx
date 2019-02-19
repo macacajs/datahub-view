@@ -36,25 +36,22 @@ class InterfaceProxyConfig extends Component {
     this.setState({
       contextConfigFormLoading: true,
     });
-    const res = await this.props.updateContextConfig(values);
+    await this.props.updateContextConfig(values);
     this.setState({
       contextConfigFormLoading: false,
     });
-    if (res.success) {
-      this.setState({
-        contextConfigFormVisible: false,
-      });
-    }
+    this.setState({
+      contextConfigFormVisible: false,
+    });
   }
 
   render () {
     const {
       responseDelay = 0,
       responseStatus,
-    } = this.props.interfaceData.contextConfig;
+    } = this.props.contextConfigData;
     return (
       <section>
-        <h1><FormattedMessage id="interfaceDetail.contextConfig"/></h1>
         <div className="context-config-fields">
           <div data-accessbilityid="project-api-rewrite-delay">
             <FormattedMessage
@@ -79,7 +76,7 @@ class InterfaceProxyConfig extends Component {
           onCancel={this.hideContextConfigForm}
           onOk={this.confirmContextConfigForm}
           confirmLoading={this.state.contextConfigFormLoading}
-          stageData={this.props.interfaceData.contextConfig}
+          stageData={this.props.contextConfigData}
         />
       </section>
     );
