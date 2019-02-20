@@ -7,7 +7,10 @@ import {
   Input,
   Modal,
   message,
+  Collapse,
 } from 'antd';
+
+const Panel = Collapse.Panel;
 
 import {
   injectIntl,
@@ -40,6 +43,18 @@ class SceneFormComponent extends Component {
       error = err;
     }
     return { data, responseHeaders, error };
+  }
+
+  isOpenCollapse (config) {
+    if (!config) {
+      return false
+    }
+    if (config.responseDelay ||
+      config.responseStatus !== 200 ||
+      JSON.stringify(config.responseHeaders) !== '{}'
+    ) {
+      return true
+    }
   }
 
   render () {
@@ -105,41 +120,46 @@ class SceneFormComponent extends Component {
             <Input style={{display: "inline"}}/>
           )}
         </FormItem>
-        <FormItem label={formatMessage('contextConfig.responseDelayField')}>
-          {getFieldDecorator('responseDelay', {
-            initialValue: stageData && stageData.contextConfig && stageData.contextConfig.responseDelay || 0,
-            rules: [
-              {
-                message: formatMessage('contextConfig.invalidDelay'),
-                pattern: /^[0-9]{1,2}(\.\d)?$/,
-              },
-            ],
-          })(
-            <Input maxLength={4}/>
-          )}
-        </FormItem>
-        <FormItem label={`${formatMessage('contextConfig.responseStatus')} 200-50x`}>
-          {getFieldDecorator('responseStatus', {
-            initialValue: stageData && stageData.contextConfig && stageData.contextConfig.responseStatus || 200,
-            rules: [
-              {
-                pattern: /^[1-5]\d{2}$/,
-                message: formatMessage('contextConfig.invalidStatus'),
-              },
-            ],
-          })(
-            <Input maxLength={3}/>
-          )}
-        </FormItem>
-        <FormItem className="context-config" label={formatMessage('sceneList.rewriteResponseHeader')}>
-          <CodeMirror
-            value={stageData && stageData.contextConfig && stageData.contextConfig.responseHeaders ? JSON.stringify(stageData.contextConfig.responseHeaders, null, 2) : '{}'}
-            options={codeMirrorOptions}
-            editorDidMount={instance => {
-              this.codeMirrorResHeaderInstance = instance;
-            }}
-          />
-        </FormItem>
+
+        <Collapse defaultActiveKey={this.isOpenCollapse(stageData && stageData.contextConfig) ? '0' : ''}>
+          <Panel header={formatMessage('sceneList.rewriteResponse')} key="0">
+            <FormItem label={formatMessage('contextConfig.responseDelayField')}>
+              {getFieldDecorator('responseDelay', {
+                initialValue: stageData && stageData.contextConfig && stageData.contextConfig.responseDelay || 0,
+                rules: [
+                  {
+                    message: formatMessage('contextConfig.invalidDelay'),
+                    pattern: /^[0-9]{1,2}(\.\d)?$/,
+                  },
+                ],
+              })(
+                <Input maxLength={4}/>
+              )}
+            </FormItem>
+            <FormItem label={`${formatMessage('contextConfig.responseStatus')} 200-50x`}>
+              {getFieldDecorator('responseStatus', {
+                initialValue: stageData && stageData.contextConfig && stageData.contextConfig.responseStatus || 200,
+                rules: [
+                  {
+                    pattern: /^[1-5]\d{2}$/,
+                    message: formatMessage('contextConfig.invalidStatus'),
+                  },
+                ],
+              })(
+                <Input maxLength={3}/>
+              )}
+            </FormItem>
+            <FormItem className="context-config" label={formatMessage('sceneList.rewriteResponseHeader')}>
+              <CodeMirror
+                value={stageData && stageData.contextConfig && stageData.contextConfig.responseHeaders ? JSON.stringify(stageData.contextConfig.responseHeaders, null, 2) : '{}'}
+                options={codeMirrorOptions}
+                editorDidMount={instance => {
+                  this.codeMirrorResHeaderInstance = instance;
+                }}
+              />
+            </FormItem>
+          </Panel>
+        </Collapse>
         <FormItem className="res-data" label={formatMessage('sceneList.responseData')}>
           <CodeMirror
             value={stageData && JSON.stringify(stageData.data, null, 2)}

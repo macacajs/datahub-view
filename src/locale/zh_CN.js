@@ -77,6 +77,7 @@ const zhCN = {
   'sceneList.invalidSceneName': '格式不正确，请输入小写字母 数字 - _',
   'sceneList.sceneData': '场景数据',
   'sceneList.invalidSceneData': '格式错误，请输入 JSON 数据',
+  'sceneList.rewriteResponse': '覆盖响应数据',
   'sceneList.rewriteResponseHeader': '覆盖响应头（JSON 格式）',
   'sceneList.responseData': '响应数据（JSON 格式）',
 
