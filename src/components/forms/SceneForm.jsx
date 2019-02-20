@@ -38,7 +38,7 @@ class SceneFormComponent extends Component {
     let [data, responseHeaders, error] = [{}, {}, null];
     try {
       data = JSON.parse(this.codeMirrorInstance.doc.getValue());
-      responseHeaders = JSON.parse(this.codeMirrorResHeaderInstance.doc.getValue());
+      responseHeaders = JSON.parse(this.codeMirrorResHeaderInstance ? this.codeMirrorResHeaderInstance.doc.getValue() : '{}');
     } catch (err) {
       error = err;
     }
