@@ -47,13 +47,13 @@ class SceneFormComponent extends Component {
 
   isOpenCollapse (config) {
     if (!config) {
-      return false
+      return false;
     }
     if (config.responseDelay ||
       config.responseStatus !== 200 ||
       JSON.stringify(config.responseHeaders) !== '{}'
     ) {
-      return true
+      return true;
     }
   }
 
@@ -98,7 +98,7 @@ class SceneFormComponent extends Component {
             responseDelay: values.responseDelay,
             responseStatus: values.responseStatus,
             responseHeaders,
-          }
+          };
           onOk(values);
         });
       }}
@@ -117,7 +117,7 @@ class SceneFormComponent extends Component {
               { max: 128 },
             ],
           })(
-            <Input style={{display: "inline"}}/>
+            <Input style={{display: 'inline'}}/>
           )}
         </FormItem>
 
