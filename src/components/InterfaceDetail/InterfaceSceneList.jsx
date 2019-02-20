@@ -8,6 +8,7 @@ import {
   Button,
   Tooltip,
   Popconfirm,
+  Card,
 } from 'antd';
 
 import {
@@ -161,6 +162,9 @@ class InterfaceSceneList extends Component {
   render () {
     const formatMessage = this.formatMessage;
     const disabled = this.props.disabled;
+    const selectedScene = this.props.selectedScene;
+    const contextConfig = selectedScene && selectedScene.contextConfig;
+
     return (
       <section>
         <h1><FormattedMessage id='sceneList.title' /></h1>
@@ -169,6 +173,38 @@ class InterfaceSceneList extends Component {
             ? <a href={this.props.previewLink} target="_blank">{formatMessage('interfaceDetail.previewData')}</a>
             : ''
         }
+
+        {contextConfig && contextConfig.responseStatus ?
+        <Row gutter={16}>
+          <Col span={12}>
+            <Card
+              size="small"
+              title={formatMessage('sceneList.responseDelayShowInfo')}
+              style={{height: '100%'}}
+            >
+            <p>{contextConfig.responseDelay}s</p>
+            </Card>
+          </Col>
+          <Col span={12}>
+            <Card
+              size="small"
+              title={formatMessage('sceneList.responseStatusShowInfo')}
+              style={{height: '100%'}}
+            >
+            <p>{contextConfig.responseStatus}</p>
+            </Card>
+          </Col>
+          <Col span={24}>
+            <Card
+              size="small"
+              title={formatMessage('sceneList.responseDataShowInfo')}
+            >
+              <pre>{JSON.stringify(contextConfig.responseHeaders, null, 2)}</pre>
+            </Card>
+          </Col>
+        </Row>
+        : ''}
+
         <Row style={{padding: '4px 0'}}>
           <Col {...this.defaultColProps}>
             <Search

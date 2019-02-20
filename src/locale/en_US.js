@@ -80,6 +80,9 @@ const enUS = {
   'sceneList.rewriteResponse': 'Rewrite response',
   'sceneList.rewriteResponseHeader': 'Rewrite response headers in JSON format',
   'sceneList.responseData': 'Response data in JSON format',
+  'sceneList.responseDelayShowInfo': 'Response delay time',
+  'sceneList.responseStatusShowInfo': 'Response status',
+  'sceneList.responseDataShowInfo': 'Response data',
 
   'proxyConfig.enable.true': 'Proxy mode enabled',
   'proxyConfig.enable.false': 'Proxy mode disabled',
