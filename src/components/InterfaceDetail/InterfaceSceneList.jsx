@@ -174,36 +174,36 @@ class InterfaceSceneList extends Component {
             : ''
         }
 
-        {contextConfig && contextConfig.responseStatus ?
-        <Row gutter={16}>
-          <Col span={12}>
-            <Card
-              size="small"
-              title={formatMessage('sceneList.responseDelayShowInfo')}
-              style={{height: '100%'}}
-            >
-            <p>{contextConfig.responseDelay}s</p>
-            </Card>
-          </Col>
-          <Col span={12}>
-            <Card
-              size="small"
-              title={formatMessage('sceneList.responseStatusShowInfo')}
-              style={{height: '100%'}}
-            >
-            <p>{contextConfig.responseStatus}</p>
-            </Card>
-          </Col>
-          <Col span={24}>
-            <Card
-              size="small"
-              title={formatMessage('sceneList.responseDataShowInfo')}
-            >
-              <pre>{JSON.stringify(contextConfig.responseHeaders, null, 2)}</pre>
-            </Card>
-          </Col>
-        </Row>
-        : ''}
+        {contextConfig && contextConfig.responseStatus
+          ? <Row gutter={16}>
+            <Col span={12}>
+              <Card
+                size="small"
+                title={formatMessage('sceneList.responseDelayShowInfo')}
+                style={{height: '100%'}}
+              >
+                <p>{contextConfig.responseDelay}s</p>
+              </Card>
+            </Col>
+            <Col span={12}>
+              <Card
+                size="small"
+                title={formatMessage('sceneList.responseStatusShowInfo')}
+                style={{height: '100%'}}
+              >
+                <p>{contextConfig.responseStatus}</p>
+              </Card>
+            </Col>
+            <Col span={24}>
+              <Card
+                size="small"
+                title={formatMessage('sceneList.responseDataShowInfo')}
+              >
+                <pre>{JSON.stringify(contextConfig.responseHeaders, null, 2)}</pre>
+              </Card>
+            </Col>
+          </Row>
+          : ''}
 
         <Row style={{padding: '4px 0'}}>
           <Col {...this.defaultColProps}>
