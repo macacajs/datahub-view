@@ -94,34 +94,6 @@ describe('test/datahub-api-operate.test.js', () => {
         .sleep(1500);
     });
 
-    it('rewrite response config should be ok', () => {
-      return driver
-        .getUrl(`${BASE_URL}/project/datahubview`)
-        // modify api delay and res
-        .elementByCss('[data-accessbilityid="project-api-rewrite-response"]')
-        .click()
-        .sleep(1500)
-        .elementByCss('#responseDelay')
-        .click()
-        .formatInput('2')
-        .sleep(1500)
-        .elementByCss('#responseStatus')
-        .click()
-        .formatInput('404')
-        .sleep(1500)
-        .waitForElementByCss('.ant-modal-footer .ant-btn-primary')
-        .click()
-        .sleep(1500)
-        .refresh()
-        // check HTTP method
-        .waitForElementByCss('[data-accessbilityid="project-api-rewrite-delay"]')
-        .hasText('2')
-        .sleep(1500)
-        .waitForElementByCss('[data-accessbilityid="project-api-rewrite-status"]')
-        .hasText('404')
-        .sleep(1500);
-    });
-
     it('modify api proxy config should be ok', () => {
       return driver
         .getUrl(`${BASE_URL}/project/datahubview`)

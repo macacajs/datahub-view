@@ -7,7 +7,10 @@ import {
   Input,
   Modal,
   message,
+  Collapse,
 } from 'antd';
+
+const Panel = Collapse.Panel;
 
 import {
   injectIntl,
@@ -18,24 +21,40 @@ import {
   defaultCodeMirrorOptions as codeMirrorOptions,
 } from '../../common/codemirror';
 
+import './SceneForm.less';
+
 const FormItem = Form.Item;
 
 class SceneFormComponent extends Component {
   constructor (props) {
     super(props);
     this.codeMirrorInstance = null;
+    this.codeMirrorResHeaderInstance = null;
   }
 
   formatMessage = id => this.props.intl.formatMessage({ id });
 
   validateCode = () => {
-    let [data, error] = [{}, null];
+    let [data, responseHeaders, error] = [{}, {}, null];
     try {
       data = JSON.parse(this.codeMirrorInstance.doc.getValue());
+      responseHeaders = JSON.parse(this.codeMirrorResHeaderInstance ? this.codeMirrorResHeaderInstance.doc.getValue() : '{}');
     } catch (err) {
       error = err;
     }
-    return { data, error };
+    return { data, responseHeaders, error };
+  }
+
+  isOpenCollapse (config) {
+    if (!config) {
+      return false;
+    }
+    if (config.responseDelay ||
+      config.responseStatus !== 200 ||
+      JSON.stringify(config.responseHeaders) !== '{}'
+    ) {
+      return true;
+    }
   }
 
   render () {
@@ -51,10 +70,11 @@ class SceneFormComponent extends Component {
       getFieldDecorator,
     } = form;
     const formatMessage = this.formatMessage;
+
     return <Modal
       style={{top: '20px'}}
       width='80%'
-      wrapClassName='code-modal'
+      wrapClassName='code-modal scene-form-modal'
       visible={visible}
       destroyOnClose={true}
       title={formatMessage(stageData ? 'sceneList.updateScene' : 'sceneList.createScene')}
@@ -68,12 +88,17 @@ class SceneFormComponent extends Component {
             message.warn(formatMessage('common.input.invalid'));
             return;
           }
-          const { data, error } = this.validateCode();
+          const { data, responseHeaders, error } = this.validateCode();
           if (error) {
             message.warn(formatMessage('sceneList.invalidSceneData'));
             return;
           }
           values.data = data;
+          values.contextConfig = {
+            responseDelay: values.responseDelay,
+            responseStatus: values.responseStatus,
+            responseHeaders,
+          };
           onOk(values);
         });
       }}
@@ -92,17 +117,59 @@ class SceneFormComponent extends Component {
               { max: 128 },
             ],
           })(
-            <Input/>
+            <Input style={{display: 'inline'}}/>
           )}
         </FormItem>
-        <CodeMirror
-          value={stageData && JSON.stringify(stageData.data, null, 2)}
-          options={codeMirrorOptions}
-          editorDidMount={instance => {
-            this.codeMirrorInstance = instance;
-            instance.focus();
-          }}
-        />
+
+        <Collapse defaultActiveKey={this.isOpenCollapse(stageData && stageData.contextConfig) ? '0' : ''}>
+          <Panel header={formatMessage('sceneList.rewriteResponse')} key="0">
+            <FormItem label={formatMessage('contextConfig.responseDelayField')}>
+              {getFieldDecorator('responseDelay', {
+                initialValue: stageData && stageData.contextConfig && stageData.contextConfig.responseDelay || 0,
+                rules: [
+                  {
+                    message: formatMessage('contextConfig.invalidDelay'),
+                    pattern: /^[0-9]{1,2}(\.\d)?$/,
+                  },
+                ],
+              })(
+                <Input maxLength={4}/>
+              )}
+            </FormItem>
+            <FormItem label={`${formatMessage('contextConfig.responseStatus')} 200-50x`}>
+              {getFieldDecorator('responseStatus', {
+                initialValue: stageData && stageData.contextConfig && stageData.contextConfig.responseStatus || 200,
+                rules: [
+                  {
+                    pattern: /^[1-5]\d{2}$/,
+                    message: formatMessage('contextConfig.invalidStatus'),
+                  },
+                ],
+              })(
+                <Input maxLength={3}/>
+              )}
+            </FormItem>
+            <FormItem className="context-config" label={formatMessage('sceneList.rewriteResponseHeader')}>
+              <CodeMirror
+                value={stageData && stageData.contextConfig && stageData.contextConfig.responseHeaders ? JSON.stringify(stageData.contextConfig.responseHeaders, null, 2) : '{}'}
+                options={codeMirrorOptions}
+                editorDidMount={instance => {
+                  this.codeMirrorResHeaderInstance = instance;
+                }}
+              />
+            </FormItem>
+          </Panel>
+        </Collapse>
+        <FormItem className="res-data" label={formatMessage('sceneList.responseData')}>
+          <CodeMirror
+            value={stageData && JSON.stringify(stageData.data, null, 2)}
+            options={codeMirrorOptions}
+            editorDidMount={instance => {
+              this.codeMirrorInstance = instance;
+              instance.focus();
+            }}
+          />
+        </FormItem>
       </Form>
     </Modal>;
   }

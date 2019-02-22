@@ -5,7 +5,7 @@ import assert from 'assert';
 import {
   driver,
   BASE_URL,
-  setCodeMirror,
+  setSceneCodeMirror,
 } from './helper';
 
 import {
@@ -103,7 +103,7 @@ describe('test/datahub-api-scene.test.js', () => {
         .click()
         .formatInput('default')
         .sleep(1500)
-        .execute(setCodeMirror(successScene))
+        .execute(setSceneCodeMirror(successScene))
         .sleep(1500)
         .waitForElementByCss('.ant-modal-footer .ant-btn-primary')
         .click()
@@ -125,7 +125,7 @@ describe('test/datahub-api-scene.test.js', () => {
         .click()
         .formatInput('error')
         .sleep(1500)
-        .execute(setCodeMirror(failScene))
+        .execute(setSceneCodeMirror(failScene))
         .sleep(1500)
         .waitForElementByCss('.ant-modal-footer .ant-btn-primary')
         .click()

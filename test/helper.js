@@ -24,3 +24,9 @@ exports.setCodeMirror = d => {
   return `document.querySelector('.CodeMirror').CodeMirror.setValue(\'${JSON.stringify(d)}\')`
   /* eslint-enable */
 };
+
+exports.setSceneCodeMirror = d => {
+  /* eslint-disable */
+  return `document.querySelector('.res-data .CodeMirror').CodeMirror.setValue(\'${JSON.stringify(d)}\')`
+  /* eslint-enable */
+};

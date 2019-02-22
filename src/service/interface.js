@@ -29,7 +29,7 @@ export async function updateAllProxy ({ projectUniqId, enabled, method = 'POST' 
 export async function updateInterface ({ uniqId, ...payload }) {
   const fileds = [
     'pathname', 'description', 'method',
-    'currentScene', 'proxyConfig', 'contextConfig',
+    'currentScene', 'proxyConfig',
   ];
   const postData = {};
   for (const field of fileds) {

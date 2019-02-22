@@ -77,6 +77,12 @@ const zhCN = {
   'sceneList.invalidSceneName': '格式不正确，请输入小写字母 数字 - _',
   'sceneList.sceneData': '场景数据',
   'sceneList.invalidSceneData': '格式错误，请输入 JSON 数据',
+  'sceneList.rewriteResponse': '设置响应延迟时间、响应头、状态码',
+  'sceneList.rewriteResponseHeader': '覆盖响应头（JSON 格式）',
+  'sceneList.responseData': '响应数据（JSON 格式）',
+  'sceneList.responseDelayShowInfo': '响应延迟时间',
+  'sceneList.responseStatusShowInfo': '响应状态码',
+  'sceneList.responseDataShowInfo': '响应头数据',
 
   'proxyConfig.enable.true': '代理模式已开启，自动转发请求',
   'proxyConfig.enable.false': '代理模式已关闭',
