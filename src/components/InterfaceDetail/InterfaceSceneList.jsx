@@ -165,6 +165,16 @@ class InterfaceSceneList extends Component {
     const selectedScene = this.props.selectedScene;
     const contextConfig = selectedScene && selectedScene.contextConfig;
 
+    let showResInfo = false;
+    if (contextConfig) {
+      const {
+        responseDelay,
+        responseStatus,
+        responseHeaders,
+      } = contextConfig;
+      showResInfo = responseDelay || responseStatus && responseStatus !== 200 || JSON.stringify(responseHeaders) !== '{}'
+    }
+
     return (
       <section>
         <h1><FormattedMessage id='sceneList.title' /></h1>
@@ -174,35 +184,21 @@ class InterfaceSceneList extends Component {
             : ''
         }
 
-        {contextConfig && contextConfig.responseStatus
-          ? <Row gutter={16}>
-            <Col span={12}>
-              <Card
-                size="small"
-                title={formatMessage('sceneList.responseDelayShowInfo')}
-                style={{height: '100%'}}
-              >
-                <p>{contextConfig.responseDelay}s</p>
-              </Card>
-            </Col>
-            <Col span={12}>
-              <Card
-                size="small"
-                title={formatMessage('sceneList.responseStatusShowInfo')}
-                style={{height: '100%'}}
-              >
-                <p>{contextConfig.responseStatus}</p>
-              </Card>
-            </Col>
-            <Col span={24}>
-              <Card
-                size="small"
-                title={formatMessage('sceneList.responseDataShowInfo')}
-              >
-                <pre>{JSON.stringify(contextConfig.responseHeaders, null, 2)}</pre>
-              </Card>
-            </Col>
-          </Row>
+        {contextConfig && showResInfo
+          ? <div>
+            <div className="res-header-info">
+              <span>{formatMessage('sceneList.responseDelayShowInfo')}：</span>
+              <span>{contextConfig.responseDelay}s</span>
+            </div>
+            <div className="res-header-info">
+              <span>{formatMessage('sceneList.responseStatusShowInfo')}：</span>
+              <span>{contextConfig.responseStatus}</span>
+            </div>
+            <div className="res-header-info">
+              <span>{formatMessage('sceneList.responseDataShowInfo')}：</span>
+              <span>{JSON.stringify(contextConfig.responseHeaders)}</span>
+            </div>
+          </div>
           : ''}
 
         <Row style={{padding: '4px 0'}}>
