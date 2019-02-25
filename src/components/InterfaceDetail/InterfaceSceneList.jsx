@@ -172,7 +172,7 @@ class InterfaceSceneList extends Component {
         responseStatus,
         responseHeaders,
       } = contextConfig;
-      showResInfo = responseDelay || responseStatus && responseStatus !== 200 || JSON.stringify(responseHeaders) !== '{}';
+      showResInfo = responseDelay || responseStatus && responseStatus !== 200 || responseHeaders && JSON.stringify(responseHeaders) !== '{}';
     }
 
     return (
