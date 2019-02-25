@@ -8,7 +8,6 @@ import {
   Button,
   Tooltip,
   Popconfirm,
-  Card,
 } from 'antd';
 
 import {
@@ -172,7 +171,7 @@ class InterfaceSceneList extends Component {
         responseStatus,
         responseHeaders,
       } = contextConfig;
-      showResInfo = responseDelay || responseStatus && responseStatus !== 200 || responseHeaders && JSON.stringify(responseHeaders) !== '{}';
+      showResInfo = responseDelay && responseDelay.toString() !== '0' || responseStatus && responseStatus.toString() !== '200' || responseHeaders && JSON.stringify(responseHeaders) !== '{}';
     }
 
     return (
