@@ -45,18 +45,6 @@ class SceneFormComponent extends Component {
     return { data, responseHeaders, error };
   }
 
-  isOpenCollapse (config) {
-    if (!config) {
-      return false;
-    }
-    if (config.responseDelay ||
-      config.responseStatus !== 200 ||
-      JSON.stringify(config.responseHeaders) !== '{}'
-    ) {
-      return true;
-    }
-  }
-
   render () {
     const {
       visible,
@@ -70,6 +58,16 @@ class SceneFormComponent extends Component {
       getFieldDecorator,
     } = form;
     const formatMessage = this.formatMessage;
+
+    let showResInfo = false;
+    if (stageData && stageData.contextConfig) {
+      const {
+        responseDelay,
+        responseStatus,
+        responseHeaders,
+      } = stageData.contextConfig;
+      showResInfo = responseDelay && responseDelay !== '0' || responseStatus && responseStatus !== '200' || responseHeaders && JSON.stringify(responseHeaders) !== '{}';
+    }
 
     return <Modal
       style={{top: '20px'}}
@@ -121,7 +119,7 @@ class SceneFormComponent extends Component {
           )}
         </FormItem>
 
-        <Collapse defaultActiveKey={this.isOpenCollapse(stageData && stageData.contextConfig) ? '0' : ''}>
+        <Collapse defaultActiveKey={showResInfo ? '0' : ''}>
           <Panel header={formatMessage('sceneList.rewriteResponse')} key="0">
             <FormItem label={formatMessage('contextConfig.responseDelayField')}>
               {getFieldDecorator('responseDelay', {
