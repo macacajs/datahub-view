@@ -45,7 +45,7 @@ function Home (props) {
           <Col span={16}>
             <Row type="flex" justify="center">
               <Col span={12} className="big-image">
-                <img src="//wx4.sinaimg.cn/large/6d308bd9gy1fokqvum2gsj20s10l70vh.jpg" />
+                <img src="//wx1.sinaimg.cn/large/bceaad1fly1g1oex3z7ftj20s10l7di2.jpg" />
               </Col>
               <Col span={12}>
                 <p className="slogan">
