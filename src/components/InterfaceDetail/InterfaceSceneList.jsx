@@ -179,7 +179,7 @@ class InterfaceSceneList extends Component {
         <h1><FormattedMessage id='sceneList.title' /></h1>
         {
           ['GET', 'ALL'].includes(this.props.interfaceData.method)
-            ? <a href={this.props.previewLink} target="_blank">{formatMessage('interfaceDetail.previewData')}</a>
+            ? <a href={this.props.previewLink} target="_blank">{formatMessage('interfaceDetail.previewData')}{`/${window.context.projectName}/${this.props.interfaceData.pathname}`}</a>
             : ''
         }
 

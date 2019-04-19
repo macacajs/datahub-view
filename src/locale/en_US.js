@@ -59,7 +59,7 @@ const enUS = {
   'interfaceList.invalidDescription': 'Please input description',
 
   'interfaceDetail.contextConfig': 'Rewrite response',
-  'interfaceDetail.previewData': 'Preview scene data (GET|ALL method)',
+  'interfaceDetail.previewData': 'Preview scene data: ',
   'interfaceDetail.proxyConfig': 'Proxy mode',
   'interfaceDetail.saveToScene': 'Save as scene data',
   'interfaceDetail.selectInterface': 'Select interface',

@@ -59,7 +59,7 @@ const zhCN = {
   'interfaceList.invalidDescription': '请输入接口描述',
 
   'interfaceDetail.contextConfig': 'Rewrite response',
-  'interfaceDetail.previewData': '预览场景数据（支持 GET|ALL 类型请求）',
+  'interfaceDetail.previewData': '预览场景数据：',
   'interfaceDetail.proxyConfig': '代理模式',
   'interfaceDetail.saveToScene': '保存为新场景',
   'interfaceDetail.selectInterface': '选择接口',
