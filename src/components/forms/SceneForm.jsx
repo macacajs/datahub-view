@@ -110,7 +110,7 @@ class SceneFormComponent extends Component {
               {
                 required: true,
                 message: formatMessage('sceneList.invalidSceneName'),
-                pattern: /^[a-zA-Z0-9_-]+$/,
+                pattern: /^[\u4e00-\u9fa5-_a-zA-Z0-9]+$/,
               },
               { max: 128 },
             ],

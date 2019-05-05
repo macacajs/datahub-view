@@ -74,7 +74,7 @@ const zhCN = {
   'sceneList.deleteScene': '删除场景',
   'sceneList.updateScene': '更新场景',
   'sceneList.sceneName': '场景名称',
-  'sceneList.invalidSceneName': '格式不正确，请输入小写字母 数字 - _',
+  'sceneList.invalidSceneName': '格式不正确，请输入中文/字母/数字/中划线/下划线',
   'sceneList.sceneData': '场景数据',
   'sceneList.invalidSceneData': '格式错误，请输入 JSON 数据',
   'sceneList.rewriteResponse': '设置响应延迟时间、响应头、状态码',
