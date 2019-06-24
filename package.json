@@ -47,7 +47,7 @@
     "codemirror": "^5.39.0",
     "cross-env": "^5.1.1",
     "css-loader": "^0.28.11",
-    "datahub-proxy-middleware": "1",
+    "datahub-proxy-middleware": "2",
     "debug": "^3.1.0",
     "eslint": "^4.5.0",
     "eslint-config-antife": "^1.0.0",
