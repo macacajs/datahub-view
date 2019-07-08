@@ -152,6 +152,11 @@ class RealTimeDetail extends React.Component {
     const res = await sceneService.createScene({
       interfaceUniqId,
       sceneName,
+      contextConfig: {
+        responseDelay: 0,
+        responseStatus: 200,
+        responseHeaders: {},
+      },
       data: this.props.realTimeData.res.body,
     });
     this.setState({

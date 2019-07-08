@@ -13,7 +13,6 @@ import {
 } from 'antd';
 
 import InterfaceSceneList from './InterfaceSceneList';
-import InterfaceContextConfig from './InterfaceContextConfig';
 import InterfaceProxyConfig from './InterfaceProxyConfig';
 import InterfaceSchema from './InterfaceSchema';
 import deepMerge from '../../common/deepmerge';
@@ -206,19 +205,6 @@ class InterfaceDetail extends React.Component {
     await this.props.updateInterfaceList();
   }
 
-  updateContextConfig = async values => {
-    const selectedInterface = this.props.selectedInterface;
-    const res = await interfaceService.updateInterface({
-      uniqId: selectedInterface.uniqId,
-      contextConfig: {
-        ...selectedInterface.contextConfig,
-        ...values,
-      },
-    });
-    await this.props.updateInterfaceList();
-    return res;
-  }
-
   toggleValidation = async (type, value) => {
     const selectedInterface = this.props.selectedInterface;
     const res = await schemaService.updateSchema({
@@ -272,10 +258,6 @@ class InterfaceDetail extends React.Component {
             <Icon type="book"/>
             <FormattedMessage id="topNav.documentation"/>
           </Button>
-          <InterfaceContextConfig
-            interfaceData={selectedInterface}
-            updateContextConfig={this.updateContextConfig}
-          />
           <InterfaceSceneList
             disabled={selectedInterface.proxyConfig.enabled}
             previewLink={previewLink}

@@ -57,7 +57,7 @@ class InterfaceSceneList extends Component {
     });
   }
 
-  confirmSceneForm = async ({ sceneName, data }) => {
+  confirmSceneForm = async ({ sceneName, contextConfig, data }) => {
     const { uniqId: interfaceUniqId } = this.props.interfaceData;
     this.setState({
       sceneFormLoading: true,
@@ -65,10 +65,12 @@ class InterfaceSceneList extends Component {
     const apiName = this.state.stageData
       ? 'updateScene'
       : 'createScene';
+
     const res = await sceneService[apiName]({
       uniqId: this.state.stageData && this.state.stageData.uniqId,
       interfaceUniqId,
       sceneName,
+      contextConfig,
       data,
     });
     this.setState({
@@ -159,14 +161,45 @@ class InterfaceSceneList extends Component {
   render () {
     const formatMessage = this.formatMessage;
     const disabled = this.props.disabled;
+    const selectedScene = this.props.selectedScene;
+    const contextConfig = selectedScene && selectedScene.contextConfig;
+
+    let showResInfo = false;
+    if (contextConfig) {
+      const {
+        responseDelay,
+        responseStatus,
+        responseHeaders,
+      } = contextConfig;
+      showResInfo = responseDelay && responseDelay.toString() !== '0' || responseStatus && responseStatus.toString() !== '200' || responseHeaders && JSON.stringify(responseHeaders) !== '{}';
+    }
+
     return (
       <section>
         <h1><FormattedMessage id='sceneList.title' /></h1>
         {
           ['GET', 'ALL'].includes(this.props.interfaceData.method)
-            ? <a href={this.props.previewLink} target="_blank">{formatMessage('interfaceDetail.previewData')}</a>
+            ? <a href={this.props.previewLink} target="_blank">{formatMessage('interfaceDetail.previewData')}{`/${window.context.projectName}/${this.props.interfaceData.pathname}`}</a>
             : ''
         }
+
+        {contextConfig && showResInfo
+          ? <div>
+            <div className="res-header-info">
+              <span>{formatMessage('sceneList.responseDelayShowInfo')}：</span>
+              <span>{contextConfig.responseDelay}s</span>
+            </div>
+            <div className="res-header-info">
+              <span>{formatMessage('sceneList.responseStatusShowInfo')}：</span>
+              <span>{contextConfig.responseStatus}</span>
+            </div>
+            <div className="res-header-info">
+              <span>{formatMessage('sceneList.responseDataShowInfo')}：</span>
+              <span>{JSON.stringify(contextConfig.responseHeaders)}</span>
+            </div>
+          </div>
+          : ''}
+
         <Row style={{padding: '4px 0'}}>
           <Col {...this.defaultColProps}>
             <Search
