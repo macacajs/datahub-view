@@ -110,13 +110,14 @@ const enUS = {
   'schemaData.edit': 'edit',
   'schemaData.tableJumpInfo': 'Click on the cell will jump to Schema (support repeat click)',
 
-  'expriment.description': 'Show something here:',
-  'expriment.downloadAndUpload': 'Download and Upload: ',
-  'expriment.compactView': 'Compact View: ',
-  'expriment.open': 'Open',
-  'expriment.close': 'Close',
-  'expriment.tips1': 'Global Settings',
-  'expriment.tips2': 'Tell me what you want?',
+  'experiment.title': 'Experiment',
+  'experiment.description': 'Show something here:',
+  'experiment.downloadAndUpload': 'Download and Upload: ',
+  'experiment.compactView': 'Compact View: ',
+  'experiment.open': 'Open',
+  'experiment.close': 'Close',
+  'experiment.tips1': 'Global Settings',
+  'experiment.tips2': 'Tell me what you want?',
 };
 
 export default enUS;

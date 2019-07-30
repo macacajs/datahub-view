@@ -65,7 +65,7 @@ class Experiment extends Component {
     return (
       <div>
         <Drawer
-          title="Experiment"
+          title={this.formatMessage('experiment.title')}
           placement="right"
           onClose={() => { this.setState({ showPanel: false }); }}
           visible={this.state.showPanel}
@@ -73,12 +73,12 @@ class Experiment extends Component {
         >
           <section>
             <label style={{ verticalAlign: 'middle' }}>
-              <FormattedMessage id="expriment.downloadAndUpload" />
+              <FormattedMessage id="experiment.downloadAndUpload" />
             </label>
             <Switch
               data-accessbilityid="experiment-donwloadupload-switch"
-              checkedChildren={this.formatMessage('expriment.open')}
-              unCheckedChildren={this.formatMessage('expriment.close')}
+              checkedChildren={this.formatMessage('experiment.open')}
+              unCheckedChildren={this.formatMessage('experiment.close')}
               onChange={this.toggleDownloadAndUpload}
               defaultChecked={this.props.experimentConfig.isOpenDownloadAndUpload}
             />
@@ -88,20 +88,20 @@ class Experiment extends Component {
           </section>
           <section style={{ marginTop: '10px' }}>
             <label style={{ verticalAlign: 'middle' }}>
-              <FormattedMessage id="expriment.compactView" />
+              <FormattedMessage id="experiment.compactView" />
             </label>
             <Switch
               data-accessbilityid="experiment-compactview-switch"
-              checkedChildren={this.formatMessage('expriment.open')}
-              unCheckedChildren={this.formatMessage('expriment.close')}
+              checkedChildren={this.formatMessage('experiment.open')}
+              unCheckedChildren={this.formatMessage('experiment.close')}
               onChange={this.toggleCompactView}
               defaultChecked={this.props.experimentConfig.isOpenCompactView}
             />
           </section>
           <hr />
-          <p><FormattedMessage id="expriment.description" /></p>
-          <p><FormattedMessage id="expriment.tips1" /></p>
-          <p><FormattedMessage id="expriment.tips2" />
+          <p><FormattedMessage id="experiment.description" /></p>
+          <p><FormattedMessage id="experiment.tips1" /></p>
+          <p><FormattedMessage id="experiment.tips2" />
             <a
               href="https://github.com/macacajs/macaca-datahub/issues"
               target="_blank"
