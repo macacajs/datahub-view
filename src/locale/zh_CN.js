@@ -110,13 +110,14 @@ const zhCN = {
   'schemaData.edit': '编辑',
   'schemaData.tableJumpInfo': '点击单元格，跳转到 Schema 编辑（支持重复点击）',
 
-  'expriment.description': '显示一些功能',
-  'expriment.downloadAndUpload': '上传和下载功能：',
-  'expriment.compactView': '紧凑模式：',
-  'expriment.open': '开',
-  'expriment.close': '关',
-  'expriment.tips1': '全局设置',
-  'expriment.tips2': '你需要什么功能？',
+  'experiment.title': '实验功能',
+  'experiment.description': '显示一些功能',
+  'experiment.downloadAndUpload': '上传和下载功能：',
+  'experiment.compactView': '紧凑模式：',
+  'experiment.open': '开',
+  'experiment.close': '关',
+  'experiment.tips1': '全局设置',
+  'experiment.tips2': '你需要什么功能？',
 };
 
 export default zhCN;
