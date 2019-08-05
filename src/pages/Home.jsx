@@ -45,7 +45,7 @@ function Home (props) {
           <Col span={16}>
             <Row type="flex" justify="center">
               <Col span={12} className="big-image">
-                <img src="//cdn.nlark.com/yuque/0/2019/jpeg/95383/1555398329812-df0534ae-5d60-4c0f-9561-51dcad8ffb5c.jpeg" />
+                <img src="//macacajs.github.io/macaca-datahub/assets/1556086490725-acfac2d7-cf35-487a-969c-808c1f8ade72.png" />
               </Col>
               <Col span={12}>
                 <p className="slogan">
