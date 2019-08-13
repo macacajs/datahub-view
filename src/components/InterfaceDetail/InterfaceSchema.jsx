@@ -50,10 +50,7 @@ class InterfaceSchema extends Component {
       dataIndex: 'field',
       width: '30%',
       key: 'field',
-      render: (text, record) =>
-        <span style={{marginLeft: `${record.level * 15}px`}}>
-          {text}
-        </span>,
+      render: (text, record) => <span>{text}</span>,
     }, {
       title: this.props.intl.formatMessage({id: 'schemaData.type'}),
       dataIndex: 'type',

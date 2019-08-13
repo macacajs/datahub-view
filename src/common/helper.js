@@ -29,65 +29,52 @@ const guid = () => {
   });
 };
 
-const genSchemaList = (data) => {
+const getSchemaChildren = (properties, requiredList = []) => {
+  if (!properties) return null;
+
   const res = [];
-  let level = -1;
-  let tableIndex = 0;
 
-  const schemaWalker = (schema, field, requiredList) => {
-    const {
-      type,
-      description,
-      properties,
-      items,
-    } = schema;
+  Object.keys(properties).forEach(item => {
+    const itemData = properties[item];
+    const isArray = itemData.type === 'array' && itemData.items;
+    const isArrayObj = isArray && itemData.items.type === 'object';
+    const type = isArray ? `${itemData.type}<{${itemData.items.type || 'String'}}>` : itemData.type;
+
+    const children = isArrayObj
+      ? getSchemaChildren(itemData.items.properties, itemData.items.required)
+      : getSchemaChildren(itemData.properties, itemData.required);
+
     res.push({
-      field,
-      type: items && items.type ? `${type}<{${items.type}}>` : type,
-      description,
-      level,
-      key: tableIndex++,
-      required: !!~requiredList.indexOf(field),
+      key: guid(),
+      field: item,
+      type,
+      description: itemData.description,
+      required: !!~requiredList.indexOf(item),
+      children,
     });
+  });
+  return res;
+};
 
-    if (items || properties) {
-      walker(schema);
-      if (level > 0) {
-        level--;
-      }
-    }
-  };
+const genSchemaList = (data) => {
+  if (data.type === 'object') { // Object
+    return getSchemaChildren(data.properties, data.required);
+  } else if (data.type === 'array') { // Array
+    const isArrayObj = data.items.type === 'object';
 
-  const walker = (data) => {
-    if (data.properties) {
-      const requiredList = data.required || [];
-      level++;
-      Object.keys(data.properties).forEach(field => {
-        const schema = data.properties[field];
-        schemaWalker(schema, field, requiredList);
-      });
-    } else if (data.items) {
-      const distObj = data.items.length ? data.items[0] : data.items;
-      walker(distObj);
-    } else {
-      return [];
-    }
-    return res;
-  };
-  /**
-   pass the root schema
-   {
-    "type": "object",
-    "properties": {
-      "success": {
-        "type": "boolean",
-        "description": "",
-        "properties": {
-        }
-      }
-    }
-   */
-  return walker(data);
+    return [{
+      key: guid(),
+      field: 'root(virtual)',
+      type: `Array<{${data.items.type || 'String'}}>`,
+      description: 'Array',
+      required: false,
+      children: isArrayObj
+        ? getSchemaChildren(data.items.properties, data.items.required)
+        : null,
+    }];
+  } else {
+    return [];
+  }
 };
 
 const queryParse = url => {
@@ -139,11 +126,13 @@ const jsonToSchema = jsonData => {
         }
         contextSchema = {
           type: 'array',
+          description: '',
           items: jsonToSchema(data),
         };
       } else {
         contextSchema = {
           type: 'object',
+          description: '',
           properties: {},
           required: [],
         };
