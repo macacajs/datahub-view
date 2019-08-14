@@ -51,8 +51,6 @@ class SchemaFormComponent extends Component {
       stageData,
       schemaFormType,
     });
-
-    this.handleCodeMirrorChange = throttle(this.handleCodeMirrorChange, 50);
   }
 
   formatMessage = id => this.props.intl.formatMessage({ id });
@@ -67,12 +65,12 @@ class SchemaFormComponent extends Component {
     return { data, error };
   }
 
-  handleCodeMirrorChange = (editor, data, value) => {
+  handleCodeMirrorBlur = editor => {
     this.setState({
       cursor: editor.getCursor(),
     });
     try {
-      const stageData = JSON.parse(value);
+      const stageData = JSON.parse(editor.getValue());
       this.setState({
         stageData,
       });
@@ -162,7 +160,7 @@ class SchemaFormComponent extends Component {
               instance.focus();
             }}
             cursor={this.state.cursor}
-            onChange={this.handleCodeMirrorChange}
+            onBlur={this.handleCodeMirrorBlur}
           />
         </div>
         <div className="schema-right-content">
@@ -174,7 +172,7 @@ class SchemaFormComponent extends Component {
           <Table
             size="small"
             pagination={false}
-            expandedRowKeys={schemaTableData && schemaTableData.expandedRowKeys || []}
+            defaultExpandedRowKeys={schemaTableData && schemaTableData.expandedRowKeys || []}
             dataSource={schemaTableData && schemaTableData.schema}
             bordered
             columns={this.props.columns}
