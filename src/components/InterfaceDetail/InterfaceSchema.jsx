@@ -155,14 +155,24 @@ class InterfaceSchema extends Component {
           onClick={() => this.showSchemaForm('request')}
         > {this.formatMessage('schemaData.edit')}
         </Button>}
-        <Table
-          size="small"
-          pagination={false}
-          expandedRowKeys={this.state.expandedAllRowKeysForRequest ? responseSchemaData.expandedRowKeys : []}
-          dataSource={requestSchemaData.schema}
-          bordered
-          columns={columns}
-        />
+        {requestSchemaData && requestSchemaData.schema && this.state.expandedAllRowKeysForRequest
+          ? <div>
+            <Table
+              size="small"
+              pagination={false}
+              defaultExpandedRowKeys={requestSchemaData.expandedRowKeys}
+              dataSource={requestSchemaData.schema}
+              bordered
+              columns={columns}
+            />
+          </div>
+          : <Table
+            size="small"
+            pagination={false}
+            dataSource={requestSchemaData.schema}
+            bordered
+            columns={columns}
+          />}
       </div>
 
       <div className="api-schema-res">
@@ -189,14 +199,24 @@ class InterfaceSchema extends Component {
           onClick={() => this.showSchemaForm('response')}
         > {this.formatMessage('schemaData.edit')}
         </Button>}
-        <Table
-          size="small"
-          pagination={false}
-          expandedRowKeys={this.state.expandedAllRowKeysForResponse ? responseSchemaData.expandedRowKeys : []}
-          dataSource={responseSchemaData.schema}
-          bordered
-          columns={columns}
-        />
+        {responseSchemaData && responseSchemaData.schema && this.state.expandedAllRowKeysForResponse
+          ? <div>
+            <Table
+              size="small"
+              pagination={false}
+              defaultExpandedRowKeys={responseSchemaData.expandedRowKeys}
+              dataSource={responseSchemaData.schema}
+              bordered
+              columns={columns}
+            />
+          </div>
+          : <Table
+            size="small"
+            pagination={false}
+            dataSource={responseSchemaData.schema}
+            bordered
+            columns={columns}
+          />}
       </div>
 
       <SchemaForm
