@@ -29,7 +29,7 @@ const guid = () => {
   });
 };
 
-const getSchemaChildren = (properties, requiredList = []) => {
+const getSchemaChildren = (properties, requiredList = [], expandedRowKeys) => {
   if (!properties) return null;
 
   const res = [];
@@ -41,11 +41,15 @@ const getSchemaChildren = (properties, requiredList = []) => {
     const type = isArray ? `${itemData.type}<{${itemData.items.type || 'String'}}>` : itemData.type;
 
     const children = isArrayObj
-      ? getSchemaChildren(itemData.items.properties, itemData.items.required)
-      : getSchemaChildren(itemData.properties, itemData.required);
+      ? getSchemaChildren(itemData.items.properties, itemData.items.required, expandedRowKeys)
+      : getSchemaChildren(itemData.properties, itemData.required, expandedRowKeys);
+
+    const key = guid();
+
+    expandedRowKeys.push(key);
 
     res.push({
-      key: guid(),
+      key,
       field: item,
       type,
       description: itemData.description,
@@ -57,24 +61,31 @@ const getSchemaChildren = (properties, requiredList = []) => {
 };
 
 const genSchemaList = (data) => {
+  const result = {
+    schema: [],
+    expandedRowKeys: [],
+  };
+
   if (data.type === 'object') { // Object
-    return getSchemaChildren(data.properties, data.required);
+    result.schema = getSchemaChildren(data.properties, data.required, result.expandedRowKeys);
   } else if (data.type === 'array') { // Array
     const isArrayObj = data.items.type === 'object';
+    const rootKey = guid();
 
-    return [{
-      key: guid(),
+    result.expandedRowKeys.push(rootKey);
+
+    result.schema = [{
+      key: rootKey,
       field: 'root(virtual)',
       type: `Array<{${data.items.type || 'String'}}>`,
       description: 'Array',
       required: false,
       children: isArrayObj
-        ? getSchemaChildren(data.items.properties, data.items.required)
+        ? getSchemaChildren(data.items.properties, data.items.required, result.expandedRowKeys)
         : null,
     }];
-  } else {
-    return [];
   }
+  return result;
 };
 
 const queryParse = url => {
@@ -150,94 +161,6 @@ const jsonToSchema = jsonData => {
   return contextSchema;
 };
 
-const genApiList = (schemaData, paramsData) => {
-  if (!paramsData.schemaData || !schemaData.length) {
-    return [];
-  }
-  const paramsMap = _.groupBy(genSchemaList(paramsData.schemaData), 'level');
-  const json = {};
-  schemaData.forEach(item => {
-    try {
-      const o = item.data;
-      _.mergeWith(json, o, (obj, src) => {
-        if (_.isArray(obj)) {
-          return obj.concat(src);
-        }
-      });
-    } catch (e) {
-      console.log(e.message);
-    }
-  });
-
-  const res = [];
-  let level = -1;
-
-  const walker = (data) => {
-    level++;
-
-    const keys = Object.keys(data);
-
-    keys.forEach(key => {
-      const value = data[key];
-      const map = {
-        title: key,
-        type: typeDetect(value),
-        level,
-        key: `${_.guid()}`,
-      };
-
-      const paramsList = paramsMap[level];
-
-      if (paramsList && paramsList.length) {
-        paramsList.forEach(item => {
-          if (item.title === map.title) {
-            map.description = item.description;
-            map.required = item.required;
-          }
-        });
-      }
-
-      res.push(map);
-
-      if (_.isPlainObject(value)) {
-        const keys = Object.keys(value);
-        if (keys.length) {
-          walker(value);
-          level--;
-        }
-      } else if (_.isArray(value)) {
-        if (!value.length) {
-          return;
-        }
-
-        const first = value[0];
-
-        if (_.isObject(first)) {
-          const json = {};
-          value.forEach(item => {
-            if (!_.isObject(first)) {
-              console.log('data ignore', first);
-              return;
-            }
-            _.mergeWith(json, item, (obj, src) => {
-              if (_.isArray(obj)) {
-                return obj.concat(src);
-              }
-            });
-          });
-          res[res.length - 1].type = `${res[res.length - 1].type}<{${typeDetect(first)}}>`;
-          walker(json);
-          level--;
-        } else {
-          res[res.length - 1].type = `${res[res.length - 1].type}<{${typeDetect(first)}}>`;
-        }
-      }
-    });
-    return res;
-  };
-  return walker(json);
-};
-
 const getExperimentConfig = () => {
   let experimentConfig = {};
   const config = localStorage.getItem('DATAHUB_EXPERIMENT_CONFIG');
@@ -273,7 +196,6 @@ _.genSchemaList = genSchemaList;
 _.queryParse = queryParse;
 _.serialize = serialize;
 _.jsonToSchema = jsonToSchema;
-_.genApiList = genApiList;
 _.throttle = throttle;
 _.compareServerVersion = compareServerVersion;
 
@@ -283,7 +205,6 @@ export {
   queryParse,
   serialize,
   jsonToSchema,
-  genApiList,
   getExperimentConfig,
   setExperimentConfig,
   throttle,

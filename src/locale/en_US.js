@@ -109,6 +109,7 @@ const enUS = {
   'schemaData.enableValidation': 'enable schema validation',
   'schemaData.edit': 'edit',
   'schemaData.tableJumpInfo': 'Click on the cell will jump to Schema (support repeat click)',
+  'schemaData.enableExpandedAllRowKeys': 'enable expanded all row?',
 
   'experiment.title': 'Experiment',
   'experiment.description': 'Show something here:',

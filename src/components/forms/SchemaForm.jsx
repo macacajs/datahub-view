@@ -174,7 +174,8 @@ class SchemaFormComponent extends Component {
           <Table
             size="small"
             pagination={false}
-            dataSource={schemaTableData}
+            expandedRowKeys={schemaTableData && schemaTableData.expandedRowKeys || []}
+            dataSource={schemaTableData && schemaTableData.schema}
             bordered
             columns={this.props.columns}
             onRow={record => ({
