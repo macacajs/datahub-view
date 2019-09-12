@@ -29,7 +29,7 @@ const guid = () => {
   });
 };
 
-const getSchemaChildren = (properties, requiredList = [], expandedRowKeys) => {
+const getSchemaChildren = (properties, requiredList = [], result) => {
   if (!properties) return null;
 
   const res = [];
@@ -41,12 +41,12 @@ const getSchemaChildren = (properties, requiredList = [], expandedRowKeys) => {
     const type = isArray ? `${itemData.type}<{${itemData.items.type || 'String'}}>` : itemData.type;
 
     const children = isArrayObj
-      ? getSchemaChildren(itemData.items.properties, itemData.items.required, expandedRowKeys)
-      : getSchemaChildren(itemData.properties, itemData.required, expandedRowKeys);
+      ? getSchemaChildren(itemData.items.properties, itemData.items.required, result)
+      : getSchemaChildren(itemData.properties, itemData.required, result);
 
-    const key = guid();
+    const key = result.number++;
 
-    expandedRowKeys.push(key);
+    result.expandedRowKeys.push(key);
 
     res.push({
       key,
@@ -64,10 +64,11 @@ const genSchemaList = (data) => {
   const result = {
     schema: [],
     expandedRowKeys: [],
+    number: 0,
   };
 
   if (data.type === 'object') { // Object
-    result.schema = getSchemaChildren(data.properties, data.required, result.expandedRowKeys);
+    result.schema = getSchemaChildren(data.properties, data.required, result);
   } else if (data.type === 'array') { // Array
     const isArrayObj = data.items.type === 'object';
     const rootKey = guid();
@@ -81,7 +82,7 @@ const genSchemaList = (data) => {
       description: 'Array',
       required: false,
       children: isArrayObj
-        ? getSchemaChildren(data.items.properties, data.items.required, result.expandedRowKeys)
+        ? getSchemaChildren(data.items.properties, data.items.required, result)
         : null,
     }];
   }
