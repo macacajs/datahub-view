@@ -4,6 +4,10 @@ export async function getProjectList () {
   return request('/api/project', 'GET');
 };
 
+export async function getProjectCapacityList () {
+  return request('/api/project/capacity', 'GET');
+};
+
 export async function createProject ({ projectName, description, globalProxy }) {
   return request('/api/project', 'POST', {
     projectName,

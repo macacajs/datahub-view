@@ -66,7 +66,7 @@ class SceneFormComponent extends Component {
         responseStatus,
         responseHeaders,
       } = stageData.contextConfig;
-      showResInfo = responseDelay && responseDelay !== '0' || responseStatus && responseStatus !== '200' || responseHeaders && JSON.stringify(responseHeaders) !== '{}';
+      showResInfo = responseDelay && `${responseDelay}` !== '0' || responseStatus && `${responseStatus}` !== '200' || responseHeaders && JSON.stringify(responseHeaders) !== '{}';
     }
 
     return <Modal
