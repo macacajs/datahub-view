@@ -31,18 +31,19 @@ function defaultArrayMerge (target, source, optionsArgument) {
 
 function mergeObject (target, source, optionsArgument) {
   const destination = {};
-  if (isMergeableObject(target)) {
+  if (target && isMergeableObject(target)) {
     Object.keys(target).forEach(function (key) {
       destination[key] = cloneIfNecessary(target[key], optionsArgument);
     });
+  } else if (source) {
+    Object.keys(source).forEach(function (key) {
+      if (!isMergeableObject(source[key]) || !target[key]) {
+        destination[key] = cloneIfNecessary(source[key], optionsArgument);
+      } else {
+        destination[key] = deepmerge(target[key], source[key], optionsArgument);
+      }
+    });
   }
-  Object.keys(source).forEach(function (key) {
-    if (!isMergeableObject(source[key]) || !target[key]) {
-      destination[key] = cloneIfNecessary(source[key], optionsArgument);
-    } else {
-      destination[key] = deepmerge(target[key], source[key], optionsArgument);
-    }
-  });
   return destination;
 }
 
