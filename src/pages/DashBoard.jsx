@@ -95,7 +95,7 @@ class DashBoard extends Component {
     });
 
     // set project size with async
-    projectService.getProjectCapacityList().then(res => {
+    projectService.getProjectStatisticsList().then(res => {
       if (res.success && res.data) {
         this.setState({
           listData: res.data || [],
