@@ -109,6 +109,7 @@ const zhCN = {
   'schemaData.enableValidation': '是否开启校验',
   'schemaData.edit': '编辑',
   'schemaData.tableJumpInfo': '点击单元格，跳转到 Schema 编辑（支持重复点击）',
+  'schemaData.enableExpandedAllRowKeys': '是否展开所有行',
 
   'experiment.title': '实验功能',
   'experiment.description': '显示一些功能',

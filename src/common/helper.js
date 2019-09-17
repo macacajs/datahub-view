@@ -29,65 +29,64 @@ const guid = () => {
   });
 };
 
-const genSchemaList = (data) => {
+const getSchemaChildren = (properties, requiredList = [], result) => {
+  if (!properties) return null;
+
   const res = [];
-  let level = -1;
-  let tableIndex = 0;
 
-  const schemaWalker = (schema, field, requiredList) => {
-    const {
-      type,
-      description,
-      properties,
-      items,
-    } = schema;
+  Object.keys(properties).forEach(item => {
+    const itemData = properties[item];
+    const isArray = itemData.type === 'array' && itemData.items;
+    const isArrayObj = isArray && itemData.items.type === 'object';
+    const type = isArray ? `${itemData.type}<{${itemData.items.type || 'String'}}>` : itemData.type;
+
+    const children = isArrayObj
+      ? getSchemaChildren(itemData.items.properties, itemData.items.required, result)
+      : getSchemaChildren(itemData.properties, itemData.required, result);
+
+    const key = result.number++;
+
+    result.expandedRowKeys.push(key);
+
     res.push({
-      field,
-      type: items && items.type ? `${type}<{${items.type}}>` : type,
-      description,
-      level,
-      key: tableIndex++,
-      required: !!~requiredList.indexOf(field),
+      key,
+      field: item,
+      type,
+      description: itemData.description,
+      required: !!~requiredList.indexOf(item),
+      children,
     });
+  });
+  return res;
+};
 
-    if (items || properties) {
-      walker(schema);
-      if (level > 0) {
-        level--;
-      }
-    }
+const genSchemaList = (data) => {
+  const result = {
+    schema: [],
+    expandedRowKeys: [],
+    number: 0,
   };
 
-  const walker = (data) => {
-    if (data.properties) {
-      const requiredList = data.required || [];
-      level++;
-      Object.keys(data.properties).forEach(field => {
-        const schema = data.properties[field];
-        schemaWalker(schema, field, requiredList);
-      });
-    } else if (data.items) {
-      const distObj = data.items.length ? data.items[0] : data.items;
-      walker(distObj);
-    } else {
-      return [];
-    }
-    return res;
-  };
-  /**
-   pass the root schema
-   {
-    "type": "object",
-    "properties": {
-      "success": {
-        "type": "boolean",
-        "description": "",
-        "properties": {
-        }
-      }
-    }
-   */
-  return walker(data);
+  if (data.type === 'object') { // Object
+    result.schema = getSchemaChildren(data.properties, data.required, result);
+  } else if (data.type === 'array') { // Array
+    const isArrayObj = data.items.type === 'object';
+    const rootKey = guid();
+
+    result.expandedRowKeys.push(rootKey);
+
+    result.schema = [{
+      key: rootKey,
+      field: 'root(virtual)',
+      type: `Array<{${data.items.type || 'String'}}>`,
+      description: 'Array',
+      required: false,
+      children: isArrayObj
+        ? getSchemaChildren(data.items.properties, data.items.required, result)
+        : null,
+    }];
+  }
+  return result;
 };
 
 const queryParse = url => {
@@ -139,11 +138,13 @@ const jsonToSchema = jsonData => {
         }
         contextSchema = {
           type: 'array',
+          description: '',
           items: jsonToSchema(data),
         };
       } else {
         contextSchema = {
           type: 'object',
+          description: '',
           properties: {},
           required: [],
         };
@@ -159,94 +160,6 @@ const jsonToSchema = jsonData => {
     }
   }
   return contextSchema;
-};
-
-const genApiList = (schemaData, paramsData) => {
-  if (!paramsData.schemaData || !schemaData.length) {
-    return [];
-  }
-  const paramsMap = _.groupBy(genSchemaList(paramsData.schemaData), 'level');
-  const json = {};
-  schemaData.forEach(item => {
-    try {
-      const o = item.data;
-      _.mergeWith(json, o, (obj, src) => {
-        if (_.isArray(obj)) {
-          return obj.concat(src);
-        }
-      });
-    } catch (e) {
-      console.log(e.message);
-    }
-  });
-
-  const res = [];
-  let level = -1;
-
-  const walker = (data) => {
-    level++;
-
-    const keys = Object.keys(data);
-
-    keys.forEach(key => {
-      const value = data[key];
-      const map = {
-        title: key,
-        type: typeDetect(value),
-        level,
-        key: `${_.guid()}`,
-      };
-
-      const paramsList = paramsMap[level];
-
-      if (paramsList && paramsList.length) {
-        paramsList.forEach(item => {
-          if (item.title === map.title) {
-            map.description = item.description;
-            map.required = item.required;
-          }
-        });
-      }
-
-      res.push(map);
-
-      if (_.isPlainObject(value)) {
-        const keys = Object.keys(value);
-        if (keys.length) {
-          walker(value);
-          level--;
-        }
-      } else if (_.isArray(value)) {
-        if (!value.length) {
-          return;
-        }
-
-        const first = value[0];
-
-        if (_.isObject(first)) {
-          const json = {};
-          value.forEach(item => {
-            if (!_.isObject(first)) {
-              console.log('data ignore', first);
-              return;
-            }
-            _.mergeWith(json, item, (obj, src) => {
-              if (_.isArray(obj)) {
-                return obj.concat(src);
-              }
-            });
-          });
-          res[res.length - 1].type = `${res[res.length - 1].type}<{${typeDetect(first)}}>`;
-          walker(json);
-          level--;
-        } else {
-          res[res.length - 1].type = `${res[res.length - 1].type}<{${typeDetect(first)}}>`;
-        }
-      }
-    });
-    return res;
-  };
-  return walker(json);
 };
 
 const getExperimentConfig = () => {
@@ -284,7 +197,6 @@ _.genSchemaList = genSchemaList;
 _.queryParse = queryParse;
 _.serialize = serialize;
 _.jsonToSchema = jsonToSchema;
-_.genApiList = genApiList;
 _.throttle = throttle;
 _.compareServerVersion = compareServerVersion;
 
@@ -294,7 +206,6 @@ export {
   queryParse,
   serialize,
   jsonToSchema,
-  genApiList,
   getExperimentConfig,
   setExperimentConfig,
   throttle,

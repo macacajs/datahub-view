@@ -19,8 +19,22 @@ class InterfaceSchema extends Component {
   state = {
     schemaFormVisible: false,
     schemaFormLoading: false,
+    expandedAllRowKeysForResponse: false,
+    expandedAllRowKeysForRequest: false,
     stageData: null,
     schemaFormType: null,
+  }
+
+  changeExpandedAllRowKeysForResponse = checked => {
+    this.setState({
+      expandedAllRowKeysForResponse: checked,
+    });
+  }
+
+  changeExpandedAllRowKeysForRequest = checked => {
+    this.setState({
+      expandedAllRowKeysForRequest: checked,
+    });
   }
 
   formatMessage = id => this.props.intl.formatMessage({ id });
@@ -50,10 +64,7 @@ class InterfaceSchema extends Component {
       dataIndex: 'field',
       width: '30%',
       key: 'field',
-      render: (text, record) =>
-        <span style={{marginLeft: `${record.level * 15}px`}}>
-          {text}
-        </span>,
+      render: (text, record) => <span>{text}</span>,
     }, {
       title: this.props.intl.formatMessage({id: 'schemaData.type'}),
       dataIndex: 'type',
@@ -117,6 +128,9 @@ class InterfaceSchema extends Component {
     const columns = this.getColumns();
     const enableRequestSchemaValidation = this.isValidationEnabled('request');
     const enableResponseSchemaValidation = this.isValidationEnabled('response');
+    const requestSchemaData = this.getDataSource('request');
+    const responseSchemaData = this.getDataSource('response');
+
     return <section>
 
       <div className="api-schema-req">
@@ -127,6 +141,12 @@ class InterfaceSchema extends Component {
         >
           {this.formatMessage('schemaData.enableValidation')}
         </Checkbox>}
+        {!unControlled && <Checkbox
+          checked={this.state.expandedAllRowKeysForRequest}
+          onChange={e => this.changeExpandedAllRowKeysForRequest(e.target.checked)}
+        >
+          {this.formatMessage('schemaData.enableExpandedAllRowKeys')}
+        </Checkbox>}
         {!unControlled && <Button
           type="primary"
           size="small"
@@ -135,13 +155,24 @@ class InterfaceSchema extends Component {
           onClick={() => this.showSchemaForm('request')}
         > {this.formatMessage('schemaData.edit')}
         </Button>}
-        <Table
-          size="small"
-          pagination={false}
-          dataSource={this.getDataSource('request')}
-          bordered
-          columns={columns}
-        />
+        {requestSchemaData && requestSchemaData.schema && this.state.expandedAllRowKeysForRequest
+          ? <div>
+            <Table
+              size="small"
+              pagination={false}
+              defaultExpandedRowKeys={requestSchemaData.expandedRowKeys}
+              dataSource={requestSchemaData.schema}
+              bordered
+              columns={columns}
+            />
+          </div>
+          : <Table
+            size="small"
+            pagination={false}
+            dataSource={requestSchemaData.schema}
+            bordered
+            columns={columns}
+          />}
       </div>
 
       <div className="api-schema-res">
@@ -154,6 +185,12 @@ class InterfaceSchema extends Component {
         >
           {this.formatMessage('schemaData.enableValidation')}
         </Checkbox>}
+        {!unControlled && <Checkbox
+          checked={this.state.expandedAllRowKeysForResponse}
+          onChange={e => this.changeExpandedAllRowKeysForResponse(e.target.checked)}
+        >
+          {this.formatMessage('schemaData.enableExpandedAllRowKeys')}
+        </Checkbox>}
         {!unControlled && <Button
           type="primary"
           size="small"
@@ -162,13 +199,24 @@ class InterfaceSchema extends Component {
           onClick={() => this.showSchemaForm('response')}
         > {this.formatMessage('schemaData.edit')}
         </Button>}
-        <Table
-          size="small"
-          pagination={false}
-          dataSource={this.getDataSource('response')}
-          bordered
-          columns={columns}
-        />
+        {responseSchemaData && responseSchemaData.schema && this.state.expandedAllRowKeysForResponse
+          ? <div>
+            <Table
+              size="small"
+              pagination={false}
+              defaultExpandedRowKeys={responseSchemaData.expandedRowKeys}
+              dataSource={responseSchemaData.schema}
+              bordered
+              columns={columns}
+            />
+          </div>
+          : <Table
+            size="small"
+            pagination={false}
+            dataSource={responseSchemaData.schema}
+            bordered
+            columns={columns}
+          />}
       </div>
 
       <SchemaForm
