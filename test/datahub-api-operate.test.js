@@ -185,6 +185,8 @@ describe('test/datahub-api-operate.test.js', () => {
         .getUrl(`${BASE_URL}/doc/datahubview#api=init`)
         .waitForElementByCss('.api-schema-req tbody > tr:nth-child(1) > td:nth-child(1)')
         .hasText('success')
+        .waitForElementByCss('.api-schema-res tbody > tr:nth-child(2) > td:nth-child(1) > div')
+        .click()
         .waitForElementByCss('.api-schema-res tbody > tr:nth-child(6) > td:nth-child(1)')
         .hasText('address');
     });

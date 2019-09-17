@@ -17,32 +17,30 @@ export const schemaData = {
         'name',
         'address',
       ],
-      items: [
-        {
-          type: 'object',
-          required: [
-            'name',
-          ],
-          properties: {
-            key: {
-              type: 'string',
-              description: 'key description',
-            },
-            name: {
-              type: 'string',
-              description: 'name description',
-            },
-            age: {
-              type: 'number',
-              description: 'age description',
-            },
-            address: {
-              type: 'string',
-              description: 'address description',
-            },
+      items: {
+        type: 'object',
+        required: [
+          'name',
+        ],
+        properties: {
+          key: {
+            type: 'string',
+            description: 'key description',
+          },
+          name: {
+            type: 'string',
+            description: 'name description',
+          },
+          age: {
+            type: 'number',
+            description: 'age description',
+          },
+          address: {
+            type: 'string',
+            description: 'address description',
           },
         },
-      ],
+      },
     },
     errorMessage: {
       type: 'string',
