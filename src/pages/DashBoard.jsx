@@ -99,7 +99,7 @@ class DashBoard extends Component {
       this.setState({
         listData: res.data || [],
       });
-    })
+    });
   }
 
   updateProject = async value => {
