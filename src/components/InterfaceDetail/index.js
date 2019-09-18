@@ -57,7 +57,11 @@ class InterfaceDetail extends React.Component {
     location.hash = `#/?${serialize(params)}`;
 
     await this.updateSceneFetch(value.sceneName);
-    await this.updateInterFaceAndScene();
+
+    const selectedScene = this.state.sceneList.filter(i => i.sceneName === value.sceneName)[0];
+    this.setState({
+      selectedScene,
+    });
   }
 
   fetchSceneList = async () => {
