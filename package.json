@@ -1,6 +1,6 @@
 {
   "name": "datahub-view",
-  "version": "2.4.4",
+  "version": "2.4.7",
   "description": "view layer for DataHub",
   "eggPlugin": {
     "name": "dataHubView"
@@ -49,6 +49,7 @@
     "css-loader": "^0.28.11",
     "datahub-proxy-middleware": "2",
     "debug": "^3.1.0",
+    "deepmerge": "^4.0.0",
     "eslint": "^4.5.0",
     "eslint-config-antife": "^1.0.0",
     "eslint-plugin-react": "^7.2.1",
@@ -68,6 +69,7 @@
     "react-codemirror2": "^5.1.0",
     "react-dom": "^16",
     "react-flexbox-grid": "^2.1.2",
+    "react-ga": "^2.7.0",
     "react-github-button": "0.1.11",
     "react-intl": "^2.4.0",
     "react-syntax-highlighter": "^5.6.3",
@@ -75,15 +77,12 @@
     "style-loader": "^0.21.0",
     "stylelint": "^9.3.0",
     "stylelint-config-antife": "^1.0.0",
-    "type-detect": "^4.0.8",
-    "uglifyjs-webpack-plugin": "^2.0.1",
     "url-loader": "^1.0.1",
     "webpack": "^4.10.0",
     "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cli": "^3.0.1",
     "webpack-dev-server": "^3.1.4",
-    "whatwg-fetch": "^2.0.3",
-    "xutil": "1"
+    "whatwg-fetch": "^2.0.3"
   },
   "husky": {
     "hooks": {

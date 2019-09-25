@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import ReactGA from 'react-ga';
 import ReactDom from 'react-dom';
 
 import {
@@ -41,6 +42,11 @@ const Content = Layout.Content;
 
 const pkg = require('../package.json');
 localStorage.debug = ('datahub*');
+
+window.addEventListener('load', () => {
+  ReactGA.initialize('UA-49226133-2');
+  ReactGA.pageview(window.location.pathname + window.location.search);
+});
 
 class App extends React.Component {
   // Should use react context in the future

@@ -8,7 +8,6 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const pkg = require('./package');
 
-
 const DataHub = require('macaca-datahub');
 const datahubProxyMiddle = require('datahub-proxy-middleware');
 
@@ -132,17 +131,6 @@ module.exports = (env, argv) => {
 
   if (isProduction) {
     webpackConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
-    webpackConfig.optimization = {
-      minimizer: [
-        new UglifyJsPlugin({
-          uglifyOptions: {
-            compress: {
-              collapse_vars: false, // for https://github.com/visionmedia/debug/issues/547
-            },
-          },
-        }),
-      ],
-    };
   }
 
   if (process.env.npm_config_report) {

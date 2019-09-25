@@ -7,7 +7,7 @@
   ],
   "rules": {
     "max-len": ["error", {
-       "code": 300
+      "code": 300
     }],
     "semi": [ "error", "always" ],
     "react/jsx-uses-vars": "error",
