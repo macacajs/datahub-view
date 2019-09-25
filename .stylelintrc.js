@@ -7,4 +7,4 @@ module.exports = {
     'function-whitespace-after': null,
     'function-name-case': null,
   }
-}
+};

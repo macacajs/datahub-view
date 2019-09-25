@@ -2,12 +2,11 @@
 
 const path = require('path');
 const webpack = require('webpack');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const traceFragment = require('macaca-ecosystem/lib/trace-fragment');
 
 const pkg = require('./package');
-
 
 const DataHub = require('macaca-datahub');
 const datahubProxyMiddle = require('datahub-proxy-middleware');
@@ -112,6 +111,10 @@ module.exports = (env, argv) => {
         filename: '[name].css',
         chunkFilename: '[name].css',
       }),
+      new webpack.DefinePlugin({
+        'process.env.VERSION': JSON.stringify(pkg.version),
+        'process.env.traceFragment': traceFragment,
+      }),
     ],
     devServer: {
       hot: true,
@@ -132,17 +135,6 @@ module.exports = (env, argv) => {
 
   if (isProduction) {
     webpackConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
-    webpackConfig.optimization = {
-      minimizer: [
-        new UglifyJsPlugin({
-          uglifyOptions: {
-            compress: {
-              collapse_vars: false, // for https://github.com/visionmedia/debug/issues/547
-            },
-          },
-        }),
-      ],
-    };
   }
 
   if (process.env.npm_config_report) {
