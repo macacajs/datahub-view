@@ -15,7 +15,7 @@ import {
 import InterfaceSceneList from './InterfaceSceneList';
 import InterfaceProxyConfig from './InterfaceProxyConfig';
 import InterfaceSchema from './InterfaceSchema';
-import deepMerge from '../../common/deepmerge';
+import deepMerge from 'deepmerge';
 
 import './index.less';
 
@@ -85,7 +85,7 @@ class InterfaceDetail extends React.Component {
       return;
     }
 
-    const obj = sceneData.length > 1 ? deepMerge(sceneData) : sceneData[0];
+    const obj = sceneData.length > 1 ? deepMerge.all(sceneData) : sceneData[0];
     const schema = jsonToSchema(obj);
     const result = {
       type: 'response',
@@ -98,7 +98,7 @@ class InterfaceDetail extends React.Component {
     if (resIndex === -1) {
       schemaData.push(result);
     } else {
-      schemaData[resIndex] = deepMerge([result, schemaData[resIndex]]);
+      schemaData[resIndex] = deepMerge(result, schemaData[resIndex]);
     }
   }
 

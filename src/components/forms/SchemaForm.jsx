@@ -15,7 +15,7 @@ import {
 } from 'react-intl';
 
 import '../../common/jsonlint';
-import { genSchemaList, throttle } from '../../common/helper';
+import { genSchemaList } from '../../common/helper';
 
 import {
   UnControlled as CodeMirror,
