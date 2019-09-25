@@ -2,8 +2,7 @@
 
 import lodash from 'lodash';
 import semver from 'semver';
-import typeDetect from 'type-detect';
-import deepMerge from './deepmerge';
+import deepMerge from 'deepmerge';
 
 const _ = lodash.merge({}, lodash);
 
@@ -134,7 +133,7 @@ const jsonToSchema = jsonData => {
         let data = jsonData[0];
 
         if (typeof jsonData[0] === 'object') {
-          data = jsonData.length > 1 ? deepMerge(jsonData) : jsonData[0];
+          data = jsonData.length > 1 ? deepMerge.all(jsonData) : jsonData[0];
         }
         contextSchema = {
           type: 'array',
