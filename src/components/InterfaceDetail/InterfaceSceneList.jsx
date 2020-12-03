@@ -19,6 +19,7 @@ import {
   injectIntl,
   FormattedMessage,
 } from 'react-intl';
+import classnames from 'classnames';
 
 import SceneForm from '../forms/SceneForm';
 import { sceneService } from '../../service';
@@ -174,15 +175,23 @@ class InterfaceSceneList extends Component {
       showResInfo = responseDelay && responseDelay.toString() !== '0' || responseStatus && responseStatus.toString() !== '200' || responseHeaders && JSON.stringify(responseHeaders) !== '{}';
     }
 
+    const enablePreviewLink = ['GET', 'ALL'].includes(this.props.interfaceData.method);
     return (
       <section>
-        <h1><FormattedMessage id='sceneList.title' /></h1>
+        <h1>
+          <FormattedMessage id='sceneList.title' />
+        </h1>
         {
-          ['GET', 'ALL'].includes(this.props.interfaceData.method)
-            ? <a href={this.props.previewLink} target="_blank">{formatMessage('interfaceDetail.previewData')}{`/${window.context.projectName}/${this.props.interfaceData.pathname}`}</a>
-            : ''
+          enablePreviewLink ? (
+            <a href={this.props.previewLink} target="_blank">
+              {formatMessage('interfaceDetail.previewData')}{`/${window.context.projectName}/${this.props.interfaceData.pathname}`}
+            </a>
+          ) : (
+            <>
+              {formatMessage('interfaceDetail.previewData')}{`/${window.context.projectName}/${this.props.interfaceData.pathname}`}
+            </>           
+          )
         }
-
         {contextConfig && showResInfo
           ? <div>
             <div className="res-header-info">
