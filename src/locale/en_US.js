@@ -9,6 +9,7 @@ const enUS = {
   'common.slogan': 'Continuous data provider for development, testing, staging and production.',
   'common.issue': 'Issues',
   'common.input.invalid': 'Please correct the input',
+  'common.removeTip': 'remove from this scene group?',
 
   'home.go': 'GO NOW',
 
@@ -35,7 +36,8 @@ const enUS = {
   'topNav.projectConfig': 'Project config',
   'topNav.realtimeList': 'Realtime snapshot',
   'topNav.documentation': 'Documentation',
-
+  
+  'project.sceneGroup': 'Scene Group list',
   'project.interfaceList': 'API list',
   'project.realtimeList': 'Realtime snapshot',
   'project.createApi': 'Please add API',
@@ -49,6 +51,16 @@ const enUS = {
   'project.globalProxy': 'Global proxy',
   'project.globalProxy.invalid': 'Please input URL',
 
+  'sceneGroupList.addSceneGroup': 'Add group',
+  'sceneGroupList.updateSceneGroup': 'Update scene group',
+  'sceneGroupList.sceneGroupNameInput': 'Scene group name',
+  'sceneGroupList.invalidSceneGroupName': 'Please input name',
+  'sceneGroupList.sceneGroupDescription': 'Scene group description',
+  'sceneGroupList.invalidDescription': 'Please input description',
+  'sceneGroupList.searchSceneGroup': 'Search scene group',
+  'sceneGroupList.selectInterface': 'Select interface',
+  'sceneGroupList.switchSceneGroup': 'Switch scene group success',
+
   'interfaceList.addInterface': 'Add API',
   'interfaceList.updateInterface': 'Update API',
   'interfaceList.searchInterface': 'Search API',
@@ -57,6 +69,8 @@ const enUS = {
   'interfaceList.interfaceMethod': 'Please select API method',
   'interfaceList.invalidPathname': 'Please input pathname',
   'interfaceList.invalidDescription': 'Please input description',
+  'interfaceList.invalidSelectInterface': 'Please select interface',
+  'interfaceList.noInterface': 'Please select interface',
 
   'interfaceDetail.contextConfig': 'Rewrite response',
   'interfaceDetail.previewData': 'Preview scene data: ',

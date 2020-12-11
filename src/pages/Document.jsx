@@ -170,7 +170,7 @@ class Document extends React.Component {
             selectedInterface={this.state.selectedInterface}
             setSelectedInterface={this.setSelectedInterface}
             experimentConfig={this.props.experimentConfig}
-            interfaceList={this.state.interfaceList}
+            actualInterfaceList={this.state.interfaceList}
           />
         </Sider>
         <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280 }}>

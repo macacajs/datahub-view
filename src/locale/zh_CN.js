@@ -9,6 +9,7 @@ const zhCN = {
   'common.slogan': '全周期数据环境解决方案，提供命令行工具，支持场景管理，多端接入',
   'common.issue': '问题反馈',
   'common.input.invalid': '请修改输入的内容',
+  'common.removeTip': '确认从该场景组移除？',
 
   'home.go': '立即开始',
 
@@ -35,7 +36,8 @@ const zhCN = {
   'topNav.projectConfig': '项目配置',
   'topNav.realtimeList': '实时快照',
   'topNav.documentation': '接口文档',
-
+  
+  'project.sceneGroup': '场景组列表',
   'project.interfaceList': '接口列表',
   'project.realtimeList': '实时快照',
   'project.createApi': '请添加接口',
@@ -48,6 +50,16 @@ const zhCN = {
   'project.add': '添加项目',
   'project.globalProxy': '全局项目代理',
   'project.globalProxy.invalid': '请输入 URL',
+  
+  'sceneGroupList.addSceneGroup': '新增场景组',
+  'sceneGroupList.updateSceneGroup': '更新场景组配置',
+  'sceneGroupList.sceneGroupNameInput': '场景组名称',
+  'sceneGroupList.invalidSceneGroupName': '请输入名称',
+  'sceneGroupList.sceneGroupDescription': '场景组描述',
+  'sceneGroupList.invalidDescription': '请输入描述',
+  'sceneGroupList.searchSceneGroup': '名称/描述',
+  'sceneGroupList.selectInterface': '选择接口',
+  'sceneGroupList.switchSceneGroup': '项目场景切换成功',
 
   'interfaceList.addInterface': '添加接口',
   'interfaceList.updateInterface': '修改接口',
@@ -57,6 +69,8 @@ const zhCN = {
   'interfaceList.interfaceMethod': '请选择请求方法',
   'interfaceList.invalidPathname': '请输入 pathname',
   'interfaceList.invalidDescription': '请输入接口描述',
+  'interfaceList.invalidSelectInterface': '请选择接口',
+  'interfaceList.noInterface': '请选择至少一个接口',
 
   'interfaceDetail.contextConfig': 'Rewrite response',
   'interfaceDetail.previewData': '预览场景数据：',

@@ -1,0 +1,87 @@
+.scene-group-list {
+  .scene-filter-row {
+    padding: 20px 6px;
+  }
+
+  ul {
+    padding: 0;
+    height: calc(100vh - 100px);
+    overflow-y: auto;
+    padding-bottom: 110px;
+
+    li {
+      cursor: pointer;
+      position: relative;
+      padding: 12px 20px 12px 16px;
+      border-top: 1px solid rgba(0, 0, 0, .05);
+      min-height: 80px;
+      overflow: hidden;
+
+      &:last-child {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      &:hover {
+        .sceneGroup-control {
+          opacity: 1;
+        }
+      }
+
+      .sceneGroup-item {
+        position: relative;
+      }
+
+      .sceneGroup-control {
+        position: absolute;
+        bottom: 10px;
+        right: 14px;
+        transition: opacity .5s linear;
+        opacity: 0;
+        margin-right: 5px;
+      }
+    }
+
+    .clicked {
+      .sceneGroup-control {
+        opacity: 1;
+      }
+      background: linear-gradient(
+        to right, #1890ff 0, #1890ff 6px, #fff 4px, #fff 100%
+      ) no-repeat;
+    }
+
+    .default-scene-group {
+      font-weight: bold;
+      color: #888;
+    }
+
+    h3 {
+      display: inline-block;
+      font-size: 14px;
+      font-weight: 400;
+      margin-left: 10px;
+      margin-bottom: 14px;
+      word-wrap: break-word;
+      color: #1890ff;
+    }
+
+    p {
+      color: #888;
+      margin: 0;
+      word-wrap: break-word;
+    }
+  }
+
+  .setting-icon,
+  .delete-icon,
+  .download-icon,
+  .upload-icon {
+    margin-right: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .scene-group-list-collapsed {
+    visibility: hidden;
+  }
+}

@@ -8,6 +8,7 @@ import {
   Button,
   Tooltip,
   Popconfirm,
+  Message,
 } from 'antd';
 
 import {
@@ -19,7 +20,6 @@ import {
   injectIntl,
   FormattedMessage,
 } from 'react-intl';
-import classnames from 'classnames';
 
 import SceneForm from '../forms/SceneForm';
 import { sceneService } from '../../service';
@@ -58,11 +58,9 @@ class InterfaceSceneList extends Component {
     });
   }
 
-  confirmSceneForm = async ({ sceneName, contextConfig, data }) => {
+  saveValue = async ({ sceneName, contextConfig, data }) => {
     const { uniqId: interfaceUniqId } = this.props.interfaceData;
-    this.setState({
-      sceneFormLoading: true,
-    });
+
     const apiName = this.state.stageData
       ? 'updateScene'
       : 'createScene';
@@ -74,6 +72,15 @@ class InterfaceSceneList extends Component {
       contextConfig,
       data,
     });
+
+    return res;
+  }
+
+  confirmSceneForm = async ({ sceneName, contextConfig, data }) => {
+    this.setState({
+      sceneFormLoading: true,
+    });
+    const res = await this.saveValue({ sceneName, contextConfig, data });
     this.setState({
       sceneFormLoading: false,
     });
@@ -81,6 +88,14 @@ class InterfaceSceneList extends Component {
       this.setState({
         sceneFormVisible: false,
       }, this.postCreate);
+    }
+  }
+
+  saveSceneForm = async ({ sceneName, contextConfig, data }) => {
+    const res = await this.saveValue({ sceneName, contextConfig, data });
+    if (res.success) {
+      this.postCreate();
+      Message.success('保存成功');
     }
   }
 
@@ -102,7 +117,7 @@ class InterfaceSceneList extends Component {
     lg: 3,
   }
 
-  renderSceneList = () => {
+  renderSceneList = (isDefault) => {
     const formatMessage = this.formatMessage;
     const { sceneList, selectedScene } = this.props;
     const disabled = this.props.disabled;
@@ -127,7 +142,7 @@ class InterfaceSceneList extends Component {
               <div className={classNames.join(' ')}>
                 <div className="common-list-item-name"
                   title={`${formatMessage('sceneList.sceneName')} ${value.sceneName}`}
-                  onClick={() => !disabled && this.props.changeSelectedScene(value)}
+                  onClick={() => !disabled && this.props.changeSelectedScene(value, isDefault)}
                 >
                   {value.sceneName}
                 </div>
@@ -138,17 +153,20 @@ class InterfaceSceneList extends Component {
                         onClick={() => this.showUpdateForm(value)}
                       />
                     </Tooltip>
-                    <Tooltip title={this.formatMessage('sceneList.deleteScene')}>
-                      <Popconfirm
-                        placement="right"
-                        title={formatMessage('common.deleteTip')}
-                        onConfirm={() => this.props.deleteScene(value)}
-                        okText={formatMessage('common.confirm')}
-                        cancelText={formatMessage('common.cancel')}
-                      >
-                        <Icon type="delete"/>
-                      </Popconfirm>
-                    </Tooltip>
+                    {
+                      isDefault &&
+                      <Tooltip title={this.formatMessage('sceneList.deleteScene')}>
+                        <Popconfirm
+                          placement="right"
+                          title={formatMessage('common.deleteTip')}
+                          onConfirm={() => this.props.deleteScene(value)}
+                          okText={formatMessage('common.confirm')}
+                          cancelText={formatMessage('common.cancel')}
+                        >
+                          <Icon type="delete"/>
+                        </Popconfirm>
+                      </Tooltip>
+                    }
                   </div>
                 }
               </div>
@@ -163,6 +181,7 @@ class InterfaceSceneList extends Component {
     const formatMessage = this.formatMessage;
     const disabled = this.props.disabled;
     const selectedScene = this.props.selectedScene;
+    const isDefault = this.props.isDefaultSceneGroup;
     const contextConfig = selectedScene && selectedScene.contextConfig;
 
     let showResInfo = false;
@@ -175,23 +194,20 @@ class InterfaceSceneList extends Component {
       showResInfo = responseDelay && responseDelay.toString() !== '0' || responseStatus && responseStatus.toString() !== '200' || responseHeaders && JSON.stringify(responseHeaders) !== '{}';
     }
 
-    const enablePreviewLink = ['GET', 'ALL'].includes(this.props.interfaceData.method);
     return (
       <section>
-        <h1>
-          <FormattedMessage id='sceneList.title' />
-        </h1>
+        <h1><FormattedMessage id='sceneList.title' /></h1>
         {
-          enablePreviewLink ? (
-            <a href={this.props.previewLink} target="_blank">
-              {formatMessage('interfaceDetail.previewData')}{`/${window.context.projectName}/${this.props.interfaceData.pathname}`}
-            </a>
-          ) : (
-            <>
-              {formatMessage('interfaceDetail.previewData')}{`/${window.context.projectName}/${this.props.interfaceData.pathname}`}
-            </>           
-          )
+          ['GET', 'ALL'].includes(this.props.interfaceData.method)
+            ? <span>
+              <a href={this.props.previewLink} target="_blank">
+                {formatMessage('interfaceDetail.previewData')}{`/${window.context.projectName}/${this.props.interfaceData.pathname}`}
+                <Icon style={{color: '#1890ff', marginLeft: '5px', fontSize: '20px', verticalAlign: 'sub'}} type="eye" />
+              </a>
+            </span>
+            : ''
         }
+
         {contextConfig && showResInfo
           ? <div>
             <div className="res-header-info">
@@ -218,15 +234,18 @@ class InterfaceSceneList extends Component {
             />
           </Col>
           <Col {...this.defaultColProps}>
-            <Button
-              disabled={disabled}
-              type="primary"
-              data-accessbilityid="project-api-scene-add-btn"
-              onClick={this.showSceneForm}
-            >
-              <Icon type="plus-circle-o" />
-              {formatMessage('sceneList.createScene')}
-            </Button>
+            {
+              isDefault &&
+              <Button
+                disabled={disabled}
+                type="primary"
+                data-accessbilityid="project-api-scene-add-btn"
+                onClick={this.showSceneForm}
+              >
+                <Icon type="plus-circle-o" />
+                {formatMessage('sceneList.createScene')}
+              </Button>
+            }
           </Col>
         </Row>
 
@@ -235,7 +254,7 @@ class InterfaceSceneList extends Component {
             ? <FormattedMessage id='sceneList.switchSceneDisabledHint'/>
             : <FormattedMessage id='sceneList.switchSceneHint'/> }
         </div>
-        { this.renderSceneList() }
+        { this.renderSceneList(isDefault) }
 
         <SceneForm
           visible={this.state.sceneFormVisible}
@@ -243,6 +262,7 @@ class InterfaceSceneList extends Component {
           onOk={this.confirmSceneForm}
           confirmLoading={this.state.sceneFormLoading}
           stageData={this.state.stageData}
+          onSave={this.saveSceneForm}
         />
       </section>
     );

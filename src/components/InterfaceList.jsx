@@ -11,7 +11,7 @@ import {
   Input,
   Upload,
   Button,
-  message,
+  Message,
   Tooltip,
   Popconfirm,
 } from 'antd';
@@ -22,21 +22,28 @@ import {
 } from 'react-intl';
 
 import InterfaceForm from './forms/InterfaceForm';
+import InterfaceSelectForm from './forms/InterfaceSelectForm';
 
-import { interfaceService } from '../service';
+import {
+  interfaceService,
+  sceneGroupService,
+} from '../service';
 
 import './InterfaceList.less';
 
 const Search = Input.Search;
 
-const globalProxy = window.context && window.context.globalProxy;
-
 class InterfaceList extends Component {
-  state = {
-    interfaceFormVisible: false,
-    interfaceFormLoading: false,
-    filterString: '',
-    stageData: null,
+  constructor (props) {
+    super(props);
+    this.state = {
+      interfaceFormVisible: false,
+      interfaceFormLoading: false,
+      interfaceSelectFormVisible: false,
+      interfaceSelectFormLoading: false,
+      filterString: '',
+      stageData: null,
+    };
   }
 
   formatMessage = id => this.props.intl.formatMessage({ id });
@@ -61,7 +68,7 @@ class InterfaceList extends Component {
     });
   }
 
-  confirmInterfaceForm = async ({ pathname, description, method }) => {
+  confirmInterfaceForm = async ({ pathname, description, method, mockConfig }) => {
     this.setState({
       interfaceFormLoading: true,
     });
@@ -73,24 +80,8 @@ class InterfaceList extends Component {
       pathname,
       description,
       method,
+      mockConfig,
     });
-
-    // Add Global Proxy
-    if (res.data &&
-      res.data.uniqId &&
-      apiName === 'createInterface' &&
-      globalProxy
-    ) {
-      await interfaceService.updateInterface({
-        uniqId: res.data.uniqId,
-        proxyConfig: {
-          enabled: false,
-          proxyList: [{
-            proxyUrl: globalProxy,
-          }],
-        },
-      });
-    }
 
     this.setState({
       interfaceFormLoading: false,
@@ -126,16 +117,73 @@ class InterfaceList extends Component {
       onChange (info) {
         if (info.file.status === 'done') {
           if (info.file.response.success) {
-            message.success(`${info.file.name} file uploaded successfully`);
+            Message.success(`${info.file.name} file uploaded successfully`);
             location.reload();
           } else {
-            message.error(info.file.response.message);
+            Message.error(info.file.response.message);
           }
         } else if (info.file.status === 'error') {
-          message.error(`${info.file.name} file upload failed.`);
+          Message.error(`${info.file.name} file upload failed.`);
         }
       },
     };
+  }
+
+  showInterfaceSelectForm = async () => {
+    this.setState({
+      interfaceSelectFormVisible: true,
+    });
+  }
+
+  closeInterfaceSelectForm = async () => {
+    this.setState({
+      interfaceSelectFormVisible: false,
+    });
+  }
+
+  // 给项目场景添加接口
+  addInterface = async (interfaceListSelected) => {
+    this.setState({
+      interfaceSelectFormLoading: true,
+    });
+    const interfaceListToAdd = this.props.interfaceList.filter(item => interfaceListSelected.includes(item.pathname)).map(item => {
+      return {
+        interfacePathname: item.pathname,
+        interfaceMethod: item.method,
+        scene: item.currentScene,
+      };
+    });
+    const interfaceListToUpdate = this.props.selectedSceneGroup.interfaceList.concat(interfaceListToAdd);
+    const res = await sceneGroupService.updateSceneGroup({
+      uniqId: this.props.selectedSceneGroup.uniqId,
+      interfaceList: interfaceListToUpdate,
+    });
+    this.setState({
+      interfaceSelectFormLoading: false,
+    });
+    if (res.success) {
+      this.setState({
+        interfaceSelectFormVisible: false,
+      }, async () => {
+        await this.props.updateSceneGroupList();
+        await this.props.updateInterfaceList();
+      });
+    }
+  }
+
+  deleteInterfaceInSceneGroup = async (pathname, method) => {
+    const index = this.props.selectedSceneGroup.interfaceList.findIndex(item => {
+      return (item.interfacePathname === pathname &&
+        item.interfaceMethod === method);
+    });
+    const interfaceListToUpdate = this.props.selectedSceneGroup.interfaceList;
+    interfaceListToUpdate.splice(index, 1);
+    await sceneGroupService.updateSceneGroup({
+      uniqId: this.props.selectedSceneGroup.uniqId,
+      interfaceList: interfaceListToUpdate,
+    });
+    await this.props.updateSceneGroupList();
+    await this.props.updateInterfaceList();
   }
 
   filterInterface = (e) => {
@@ -145,22 +193,21 @@ class InterfaceList extends Component {
     });
   }
 
-  renderInterfaceList = () => {
+  renderInterfaceList = (isDefault, actualInterfaceList) => {
     const unControlled = this.props.unControlled;
     const formatMessage = this.formatMessage;
-    const { interfaceList } = this.props;
-    return interfaceList.filter(value =>
+
+    return actualInterfaceList.filter(value =>
       value.pathname.toLowerCase().includes(this.state.filterString) ||
-      value.description.toLowerCase().includes(this.state.filterString)
-    ).map((value, index) => {
+      value.description.toLowerCase().includes(this.state.filterString))
+      .map((value, index) => {
       const isSelected = value.uniqId === this.props.selectedInterface.uniqId;
-      const isOpenCompactView = this.props.experimentConfig.isOpenCompactView;
 
       return (
         <li
           key={index}
           data-accessbilityid={`project-add-api-list-${index}`}
-          className={[isSelected ? 'clicked' : '', isOpenCompactView ? 'is-compact-view' : ''].join(' ')}
+          className={[isSelected ? 'clicked' : ''].join(' ')}
           onClick={() => this.props.setSelectedInterface(value.uniqId)}
         >
           <div className="interface-item">
@@ -172,26 +219,32 @@ class InterfaceList extends Component {
             </p>
           </div>
           {!unControlled && <div className="interface-control" style={{fontSize: '16px'}}>
-            {this.props.experimentConfig.isOpenDownloadAndUpload ? <span>
-              <Upload name={ value.uniqId } {...this.uploadProps()}>
-                <Icon className="upload-icon" type="upload" />
-              </Upload>
-              <Icon
-                type="download"
-                className="download-icon"
-                onClick={() => this.downloadInterface(value)}
-              />
-            </span> : null}
-            <Tooltip title={formatMessage('interfaceList.updateInterface')}>
-              <Icon
-                type="setting"
-                className="setting-icon"
-                onClick={() => this.showUpdateForm(value)}
-              />
-            </Tooltip>
+            {
+              isDefault &&
+              <span>
+                <Upload name={ value.uniqId } {...this.uploadProps()}>
+                  <Icon className="upload-icon" type="upload" />
+                </Upload>
+                <Icon
+                  type="download"
+                  className="download-icon"
+                  onClick={() => this.downloadInterface(value)}
+                />
+                <Tooltip title={formatMessage('interfaceList.updateInterface')}>
+                  <Icon
+                    type="setting"
+                    className="setting-icon"
+                    onClick={() => this.showUpdateForm(value)}
+                  />
+                </Tooltip>
+              </span>
+            }
             <Popconfirm
-              title={formatMessage('common.deleteTip')}
-              onConfirm={() => this.deleteInterface(value.uniqId)}
+              title={formatMessage(isDefault ? 'common.deleteTip' : 'common.removeTip')}
+              onConfirm={() => {
+                isDefault ? this.deleteInterface(value.uniqId)
+                  : this.deleteInterfaceInSceneGroup(value.pathname, value.method);
+              }}
               okText={formatMessage('common.confirm')}
               cancelText={formatMessage('common.cancel')}
             >
@@ -204,33 +257,39 @@ class InterfaceList extends Component {
   }
 
   render () {
+    const { interfaceList = [], actualInterfaceList = [] } = this.props;
+    const selectedSceneGroup = this.props.selectedSceneGroup || {};
+    const isDefault = !selectedSceneGroup.uniqId;
+
     const formatMessage = this.formatMessage;
     const unControlled = this.props.unControlled;
     const interfaceListClassNames = ['interface-list'];
     if (unControlled) interfaceListClassNames.push('uncontrolled');
     return (
       <div className={`${interfaceListClassNames.join(' ')}`}>
-        {!unControlled && <Row className="interface-filter-row">
-          <Col span={15}>
-            <Search
-              data-accessbilityid="project-search-api"
-              placeholder={formatMessage('interfaceList.searchInterface')}
-              onChange={this.filterInterface}
-            />
-          </Col>
-          <Col span={8} offset={1}>
-            <Button
-              type="primary"
-              data-accessbilityid="project-add-api-list-btn"
-              onClick={this.showCreateForm}
-            >
-              <FormattedMessage id="interfaceList.addInterface" />
-            </Button>
-          </Col>
-        </Row>}
-
-        <ul>
-          { this.renderInterfaceList() }
+        {
+          !unControlled &&
+          <Row className="interface-filter-row">
+            <Col span={15}>
+              <Search
+                data-accessbilityid="project-search-api"
+                placeholder={formatMessage('interfaceList.searchInterface')}
+                onChange={this.filterInterface}
+              />
+            </Col>
+            <Col span={8} offset={1}>
+              <Button
+                type="primary"
+                data-accessbilityid="project-add-api-list-btn"
+                onClick={isDefault ? this.showCreateForm : this.showInterfaceSelectForm}
+              >
+                <FormattedMessage id="interfaceList.addInterface" />
+              </Button>
+            </Col>
+          </Row>
+        }
+        <ul className="interface-list-container">
+          { this.renderInterfaceList(isDefault, actualInterfaceList) }
         </ul>
 
         <InterfaceForm
@@ -239,6 +298,15 @@ class InterfaceList extends Component {
           onOk={this.confirmInterfaceForm}
           confirmLoading={this.state.interfaceFormLoading}
           stageData={this.state.stageData}
+        />
+
+        <InterfaceSelectForm
+          visible={this.state.interfaceSelectFormVisible}
+          onCancel={this.closeInterfaceSelectForm}
+          onOk={this.addInterface}
+          interfaceList={interfaceList}
+          actualInterfaceList={actualInterfaceList}
+          confirmLoading={this.state.interfaceSelectFormLoading}
         />
       </div>
     );

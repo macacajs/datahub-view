@@ -13,18 +13,16 @@ import {
 } from 'antd';
 
 import InterfaceSceneList from './InterfaceSceneList';
-import InterfaceProxyConfig from './InterfaceProxyConfig';
 import InterfaceSchema from './InterfaceSchema';
 import deepMerge from 'deepmerge';
 
 import './index.less';
 
-const projectName = window.context.projectName;
-
 import {
   sceneService,
   schemaService,
   interfaceService,
+  sceneGroupService,
 } from '../../service';
 
 import {
@@ -33,6 +31,7 @@ import {
   jsonToSchema,
 } from '../../common/helper';
 
+const projectName = window.context && window.context.projectName;
 
 class InterfaceDetail extends React.Component {
   state = {
@@ -50,14 +49,27 @@ class InterfaceDetail extends React.Component {
       uniqId: this.props.selectedInterface.uniqId,
       currentScene: scene,
     });
+    await this.updateInterFaceAndScene();
   }
 
-  changeSelectedScene = async (value) => {
-    const params = queryParse(location.hash);
-    location.hash = `#/?${serialize(params)}`;
+  changeSelectedScene = async (value, isDefault) => {
+    if (isDefault) {
+      const params = queryParse(location.hash);
+      location.hash = `#/?${serialize(params)}`;
 
-    await this.updateSceneFetch(value.sceneName);
-
+      await this.updateSceneFetch(value.sceneName);
+    } else {
+      const selectedSceneGroup = this.props.selectedSceneGroup;
+      const index = selectedSceneGroup.interfaceList.findIndex(item => {
+        return (item.interfacePathname === this.props.selectedInterface.pathname &&
+          item.interfaceMethod === this.props.selectedInterface.method);
+      });
+      selectedSceneGroup.interfaceList[index].scene = value.sceneName;
+      await sceneGroupService.updateSceneGroup({
+        uniqId: this.props.selectedSceneGroup.uniqId,
+        interfaceList: selectedSceneGroup.interfaceList,
+      });
+    }
     const selectedScene = this.state.sceneList.filter(i => i.sceneName === value.sceneName)[0];
     this.setState({
       selectedScene,
@@ -84,7 +96,6 @@ class InterfaceDetail extends React.Component {
     if (!sceneData || !sceneData.length) {
       return;
     }
-
     const obj = sceneData.length > 1 ? deepMerge.all(sceneData) : sceneData[0];
     const schema = jsonToSchema(obj);
     const result = {
@@ -130,8 +141,19 @@ class InterfaceDetail extends React.Component {
       }
     }
 
+    // 默认场景和其他项目场景取各自的currentScene
+    const selectedSceneGroup = this.props.selectedSceneGroup;
+    const isDefaultSceneGroup = !selectedSceneGroup.uniqId;
     return data.find(value => {
-      return value.sceneName === this.props.selectedInterface.currentScene;
+      if (isDefaultSceneGroup) {
+        return value.sceneName === this.props.selectedInterface.currentScene;
+      } else {
+        const index = selectedSceneGroup.interfaceList.findIndex(item => {
+          return (item.interfacePathname === this.props.selectedInterface.pathname &&
+            item.interfaceMethod === this.props.selectedInterface.method);
+        });
+        return value.sceneName === selectedSceneGroup.interfaceList[index].scene;
+      }
     }) || {};
   }
 
@@ -143,70 +165,9 @@ class InterfaceDetail extends React.Component {
   }
 
   updateInterFaceAndScene = async () => {
+    await this.props.updateSceneGroupList();
     await this.props.updateInterfaceList();
     await this.fetchSceneList();
-  }
-
-  toggleProxy = async () => {
-    const { enabled = false } = this.props.selectedInterface.proxyConfig;
-    const flag = !enabled;
-    const selectedInterface = this.props.selectedInterface;
-    await interfaceService.updateInterface({
-      uniqId: this.props.selectedInterface.uniqId,
-      proxyConfig: {
-        ...selectedInterface.proxyConfig,
-        enabled: flag,
-      },
-    });
-    await this.props.updateInterfaceList();
-  }
-
-  toggleGlobalProxy = async () => {
-    const enabled = !this.props.globalProxyEnabled;
-    await interfaceService.updateAllProxy({
-      projectUniqId: window.context.uniqId,
-      enabled,
-    });
-    await this.props.updateInterfaceList();
-  }
-
-  changeProxyList = async newList => {
-    const selectedInterface = this.props.selectedInterface;
-    const payload = {
-      uniqId: selectedInterface.uniqId,
-      proxyConfig: {
-        ...selectedInterface.proxyConfig,
-        proxyList: newList,
-      },
-    };
-    await interfaceService.updateInterface(payload);
-    await this.props.updateInterfaceList();
-  }
-
-  deleteProxy = async index => {
-    const selectedInterface = this.props.selectedInterface;
-    const { proxyList = [] } = selectedInterface.proxyConfig;
-    proxyList.splice(index, 1);
-    await this.changeProxyList(proxyList);
-  }
-
-  addProxy = async value => {
-    const selectedInterface = this.props.selectedInterface;
-    const { proxyList = [] } = selectedInterface.proxyConfig;
-    proxyList.push(value);
-    await this.changeProxyList(proxyList);
-  }
-
-  selectProxy = async index => {
-    const selectedInterface = this.props.selectedInterface;
-    await interfaceService.updateInterface({
-      uniqId: selectedInterface.uniqId,
-      proxyConfig: {
-        ...selectedInterface.proxyConfig,
-        activeIndex: index,
-      },
-    });
-    await this.props.updateInterfaceList();
   }
 
   toggleValidation = async (type, value) => {
@@ -238,6 +199,8 @@ class InterfaceDetail extends React.Component {
   render () {
     const { selectedInterface } = this.props;
     const previewLink = `//${location.host}/data/${projectName}/${this.props.selectedInterface.pathname}`;
+    const isDefault = !this.props.selectedSceneGroup.uniqId;
+
     return (
       <div className="interface-detail">
         <div className="interface-detail-navigation">
@@ -263,7 +226,6 @@ class InterfaceDetail extends React.Component {
             <FormattedMessage id="topNav.documentation"/>
           </Button>
           <InterfaceSceneList
-            disabled={selectedInterface.proxyConfig.enabled}
             previewLink={previewLink}
             sceneList={this.state.sceneList}
             selectedScene={this.state.selectedScene}
@@ -271,18 +233,10 @@ class InterfaceDetail extends React.Component {
             deleteScene={this.deleteScene}
             changeSelectedScene={this.changeSelectedScene}
             updateInterFaceAndScene={this.updateInterFaceAndScene}
-          />
-          <InterfaceProxyConfig
-            proxyConfig={this.props.selectedInterface.proxyConfig}
-            selectedInterface={this.props.selectedInterface}
-            globalProxyEnabled={this.props.globalProxyEnabled}
-            toggleProxy={this.toggleProxy}
-            toggleGlobalProxy={this.toggleGlobalProxy}
-            deleteProxy={this.deleteProxy}
-            addProxy={this.addProxy}
-            selectProxy={this.selectProxy}
+            isDefaultSceneGroup={isDefault}
           />
           <InterfaceSchema
+            isDefault={isDefault}
             toggleValidation={this.toggleValidation}
             schemaData={this.state.schemaData}
             updateSchemaData={this.updateSchemaData}
