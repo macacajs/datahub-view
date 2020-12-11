@@ -13,6 +13,7 @@ import {
 } from 'antd';
 
 import InterfaceSceneList from './InterfaceSceneList';
+import InterfaceProxyConfig from './InterfaceProxyConfig';
 import InterfaceSchema from './InterfaceSchema';
 import deepMerge from 'deepmerge';
 
@@ -170,6 +171,68 @@ class InterfaceDetail extends React.Component {
     await this.fetchSceneList();
   }
 
+  toggleProxy = async () => {
+    const { enabled = false } = this.props.selectedInterface.proxyConfig;
+    const flag = !enabled;
+    const selectedInterface = this.props.selectedInterface;
+    await interfaceService.updateInterface({
+      uniqId: this.props.selectedInterface.uniqId,
+      proxyConfig: {
+        ...selectedInterface.proxyConfig,
+        enabled: flag,
+      },
+    });
+    await this.props.updateInterfaceList();
+  }
+
+  toggleGlobalProxy = async () => {
+    const enabled = !this.props.globalProxyEnabled;
+    await interfaceService.updateAllProxy({
+      projectUniqId: window.context.uniqId,
+      enabled,
+    });
+    await this.props.updateInterfaceList();
+  }
+
+  changeProxyList = async newList => {
+    const selectedInterface = this.props.selectedInterface;
+    const payload = {
+      uniqId: selectedInterface.uniqId,
+      proxyConfig: {
+        ...selectedInterface.proxyConfig,
+        proxyList: newList,
+      },
+    };
+    await interfaceService.updateInterface(payload);
+    await this.props.updateInterfaceList();
+  }
+
+  deleteProxy = async index => {
+    const selectedInterface = this.props.selectedInterface;
+    const { proxyList = [] } = selectedInterface.proxyConfig;
+    proxyList.splice(index, 1);
+    await this.changeProxyList(proxyList);
+  }
+
+  addProxy = async value => {
+    const selectedInterface = this.props.selectedInterface;
+    const { proxyList = [] } = selectedInterface.proxyConfig;
+    proxyList.push(value);
+    await this.changeProxyList(proxyList);
+  }
+
+  selectProxy = async index => {
+    const selectedInterface = this.props.selectedInterface;
+    await interfaceService.updateInterface({
+      uniqId: selectedInterface.uniqId,
+      proxyConfig: {
+        ...selectedInterface.proxyConfig,
+        activeIndex: index,
+      },
+    });
+    await this.props.updateInterfaceList();
+  }
+
   toggleValidation = async (type, value) => {
     const selectedInterface = this.props.selectedInterface;
     const res = await schemaService.updateSchema({
@@ -226,6 +289,7 @@ class InterfaceDetail extends React.Component {
             <FormattedMessage id="topNav.documentation"/>
           </Button>
           <InterfaceSceneList
+            disabled={selectedInterface.proxyConfig.enabled}
             previewLink={previewLink}
             sceneList={this.state.sceneList}
             selectedScene={this.state.selectedScene}
@@ -234,6 +298,17 @@ class InterfaceDetail extends React.Component {
             changeSelectedScene={this.changeSelectedScene}
             updateInterFaceAndScene={this.updateInterFaceAndScene}
             isDefaultSceneGroup={isDefault}
+          />
+          <InterfaceProxyConfig
+            isDefault={isDefault}
+            proxyConfig={this.props.selectedInterface.proxyConfig}
+            selectedInterface={this.props.selectedInterface}
+            globalProxyEnabled={this.props.globalProxyEnabled}
+            toggleProxy={this.toggleProxy}
+            toggleGlobalProxy={this.toggleGlobalProxy}
+            deleteProxy={this.deleteProxy}
+            addProxy={this.addProxy}
+            selectProxy={this.selectProxy}
           />
           <InterfaceSchema
             isDefault={isDefault}
