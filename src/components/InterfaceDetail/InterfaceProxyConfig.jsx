@@ -63,7 +63,7 @@ class InterfaceProxyConfig extends Component {
   }
 
   renderProxyList = () => {
-    const disabled = !this.props.selectedInterface.proxyConfig.enabled || !this.props.isDefault;
+    const disabled = !this.props.selectedInterface.proxyConfig.enabled || !this.props.isDefaultSceneGroup;
     const { proxyList = [], activeIndex = 0 } = this.props.proxyConfig;
     return <Row>
       {proxyList.map((value, index) => {
@@ -124,7 +124,7 @@ class InterfaceProxyConfig extends Component {
               data-accessbilityid="project-api-solo-switch"
               {...switchProps}
               onChange={props.toggleProxy}
-              disabled={!props.isDefault}
+              disabled={!props.isDefaultSceneGroup}
             />
             <span style={{marginLeft: '10px', verticalAlign: 'middle'}}>
               {formatMessage(`proxyConfig.enable.${enabled || false}`)}
@@ -133,7 +133,7 @@ class InterfaceProxyConfig extends Component {
           <Col {...this.defaultColProps} >
             <Button
               data-accessbilityid="project-api-add-proxy-btn"
-              disabled={!props.isDefault || disabled}
+              disabled={!props.isDefaultSceneGroup || disabled}
               type="primary"
               onClick={this.showProxyForm}
             >
@@ -145,7 +145,7 @@ class InterfaceProxyConfig extends Component {
               data-accessbilityid="project-api-global-switch"
               {...globalSwitchProps}
               onChange={props.toggleGlobalProxy}
-              disabled={!props.isDefault}
+              disabled={!props.isDefaultSceneGroup}
             />
             <span style={{marginLeft: '10px', verticalAlign: 'middle'}}>
               {formatMessage(`proxyConfig.globalEnable.${props.globalProxyEnabled || false}`)}

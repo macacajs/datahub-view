@@ -117,7 +117,7 @@ class InterfaceSceneList extends Component {
     lg: 3,
   }
 
-  renderSceneList = (isDefault) => {
+  renderSceneList = (isDefaultSceneGroup) => {
     const formatMessage = this.formatMessage;
     const { sceneList, selectedScene } = this.props;
     const disabled = this.props.disabled;
@@ -142,7 +142,7 @@ class InterfaceSceneList extends Component {
               <div className={classNames.join(' ')}>
                 <div className="common-list-item-name"
                   title={`${formatMessage('sceneList.sceneName')} ${value.sceneName}`}
-                  onClick={() => !disabled && this.props.changeSelectedScene(value, isDefault)}
+                  onClick={() => !disabled && this.props.changeSelectedScene(value, isDefaultSceneGroup)}
                 >
                   {value.sceneName}
                 </div>
@@ -154,7 +154,7 @@ class InterfaceSceneList extends Component {
                       />
                     </Tooltip>
                     {
-                      isDefault &&
+                      isDefaultSceneGroup &&
                       <Tooltip title={this.formatMessage('sceneList.deleteScene')}>
                         <Popconfirm
                           placement="right"
@@ -181,7 +181,7 @@ class InterfaceSceneList extends Component {
     const formatMessage = this.formatMessage;
     const disabled = this.props.disabled;
     const selectedScene = this.props.selectedScene;
-    const isDefault = this.props.isDefaultSceneGroup;
+    const isDefaultSceneGroup = this.props.isDefaultSceneGroup;
     const contextConfig = selectedScene && selectedScene.contextConfig;
 
     let showResInfo = false;
@@ -235,7 +235,7 @@ class InterfaceSceneList extends Component {
           </Col>
           <Col {...this.defaultColProps}>
             {
-              isDefault &&
+              isDefaultSceneGroup &&
               <Button
                 disabled={disabled}
                 type="primary"
@@ -254,7 +254,7 @@ class InterfaceSceneList extends Component {
             ? <FormattedMessage id='sceneList.switchSceneDisabledHint'/>
             : <FormattedMessage id='sceneList.switchSceneHint'/> }
         </div>
-        { this.renderSceneList(isDefault) }
+        { this.renderSceneList(isDefaultSceneGroup) }
 
         <SceneForm
           visible={this.state.sceneFormVisible}

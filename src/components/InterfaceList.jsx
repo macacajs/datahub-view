@@ -33,6 +33,8 @@ import './InterfaceList.less';
 
 const Search = Input.Search;
 
+const globalProxy = window.context && window.context.globalProxy;
+
 class InterfaceList extends Component {
   constructor (props) {
     super(props);
@@ -82,6 +84,23 @@ class InterfaceList extends Component {
       method,
       mockConfig,
     });
+
+    // Add Global Proxy	
+    if (res.data &&	
+      res.data.uniqId &&	
+      apiName === 'createInterface' &&	
+      globalProxy	
+    ) {	
+      await interfaceService.updateInterface({	
+        uniqId: res.data.uniqId,	
+        proxyConfig: {	
+          enabled: false,	
+          proxyList: [{	
+            proxyUrl: globalProxy,	
+          }],	
+        },	
+      });	
+    }
 
     this.setState({
       interfaceFormLoading: false,
@@ -193,7 +212,7 @@ class InterfaceList extends Component {
     });
   }
 
-  renderInterfaceList = (isDefault, actualInterfaceList) => {
+  renderInterfaceList = (isDefaultSceneGroup, actualInterfaceList) => {
     const unControlled = this.props.unControlled;
     const formatMessage = this.formatMessage;
 
@@ -220,7 +239,7 @@ class InterfaceList extends Component {
             </div>
             {!unControlled && <div className="interface-control" style={{fontSize: '16px'}}>
               {
-                isDefault &&
+                isDefaultSceneGroup &&
               <span>
                 <Upload name={ value.uniqId } {...this.uploadProps()}>
                   <Icon className="upload-icon" type="upload" />
@@ -240,9 +259,9 @@ class InterfaceList extends Component {
               </span>
               }
               <Popconfirm
-                title={formatMessage(isDefault ? 'common.deleteTip' : 'common.removeTip')}
+                title={formatMessage(isDefaultSceneGroup ? 'common.deleteTip' : 'common.removeTip')}
                 onConfirm={() => {
-                  isDefault ? this.deleteInterface(value.uniqId)
+                  isDefaultSceneGroup ? this.deleteInterface(value.uniqId)
                     : this.deleteInterfaceInSceneGroup(value.pathname, value.method);
                 }}
                 okText={formatMessage('common.confirm')}
@@ -259,7 +278,7 @@ class InterfaceList extends Component {
   render () {
     const { interfaceList = [], actualInterfaceList = [] } = this.props;
     const selectedSceneGroup = this.props.selectedSceneGroup || {};
-    const isDefault = !selectedSceneGroup.uniqId;
+    const isDefaultSceneGroup = !selectedSceneGroup.uniqId;
 
     const formatMessage = this.formatMessage;
     const unControlled = this.props.unControlled;
@@ -281,7 +300,7 @@ class InterfaceList extends Component {
               <Button
                 type="primary"
                 data-accessbilityid="project-add-api-list-btn"
-                onClick={isDefault ? this.showCreateForm : this.showInterfaceSelectForm}
+                onClick={isDefaultSceneGroup ? this.showCreateForm : this.showInterfaceSelectForm}
               >
                 <FormattedMessage id="interfaceList.addInterface" />
               </Button>
@@ -289,7 +308,7 @@ class InterfaceList extends Component {
           </Row>
         }
         <ul className="interface-list-container">
-          { this.renderInterfaceList(isDefault, actualInterfaceList) }
+          { this.renderInterfaceList(isDefaultSceneGroup, actualInterfaceList) }
         </ul>
 
         <InterfaceForm

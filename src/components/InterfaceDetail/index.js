@@ -53,8 +53,8 @@ class InterfaceDetail extends React.Component {
     await this.updateInterFaceAndScene();
   }
 
-  changeSelectedScene = async (value, isDefault) => {
-    if (isDefault) {
+  changeSelectedScene = async (value, isDefaultSceneGroup) => {
+    if (isDefaultSceneGroup) {
       const params = queryParse(location.hash);
       location.hash = `#/?${serialize(params)}`;
 
@@ -262,7 +262,7 @@ class InterfaceDetail extends React.Component {
   render () {
     const { selectedInterface } = this.props;
     const previewLink = `//${location.host}/data/${projectName}/${this.props.selectedInterface.pathname}`;
-    const isDefault = !this.props.selectedSceneGroup.uniqId;
+    const isDefaultSceneGroup = !this.props.selectedSceneGroup.uniqId;
 
     return (
       <div className="interface-detail">
@@ -297,10 +297,10 @@ class InterfaceDetail extends React.Component {
             deleteScene={this.deleteScene}
             changeSelectedScene={this.changeSelectedScene}
             updateInterFaceAndScene={this.updateInterFaceAndScene}
-            isDefaultSceneGroup={isDefault}
+            isDefaultSceneGroup={isDefaultSceneGroup}
           />
           <InterfaceProxyConfig
-            isDefault={isDefault}
+            isDefaultSceneGroup={isDefaultSceneGroup}
             proxyConfig={this.props.selectedInterface.proxyConfig}
             selectedInterface={this.props.selectedInterface}
             globalProxyEnabled={this.props.globalProxyEnabled}
@@ -311,7 +311,7 @@ class InterfaceDetail extends React.Component {
             selectProxy={this.selectProxy}
           />
           <InterfaceSchema
-            isDefault={isDefault}
+            isDefaultSceneGroup={isDefaultSceneGroup}
             toggleValidation={this.toggleValidation}
             schemaData={this.state.schemaData}
             updateSchemaData={this.updateSchemaData}

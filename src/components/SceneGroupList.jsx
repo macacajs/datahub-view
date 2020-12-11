@@ -185,7 +185,7 @@ class SceneGroupList extends Component {
 
     render () {
       const formatMessage = this.formatMessage;
-      const isDefault = !this.props.selectedSceneGroup.uniqId;
+      const isDefaultSceneGroup = !this.props.selectedSceneGroup.uniqId;
 
       return (
         <div className={['scene-group-list', this.props.collapsed ? 'scene-group-collapsed' : ''].join(' ')}>
@@ -207,7 +207,7 @@ class SceneGroupList extends Component {
           </Row>
           <ul>
             <li
-              className={['default-scene-group', isDefault ? 'clicked' : ''].join(' ')}
+              className={['default-scene-group', isDefaultSceneGroup ? 'clicked' : ''].join(' ')}
               onClick={() => this.props.viewSceneGroup()}
             >
                 default

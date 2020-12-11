@@ -135,19 +135,19 @@ class InterfaceSchema extends Component {
 
       <div className="api-schema-req">
         <h1>{this.formatMessage('interfaceDetail.requestSchema')}</h1>
-        {!unControlled && this.props.isDefault && <Checkbox
+        {!unControlled && this.props.isDefaultSceneGroup && <Checkbox
           checked={enableRequestSchemaValidation}
           onChange={e => props.toggleValidation('request', e.target.checked)}
         >
           {this.formatMessage('schemaData.enableValidation')}
         </Checkbox>}
-        {!unControlled && this.props.isDefault && <Checkbox
+        {!unControlled && this.props.isDefaultSceneGroup && <Checkbox
           checked={this.state.expandedAllRowKeysForRequest}
           onChange={e => this.changeExpandedAllRowKeysForRequest(e.target.checked)}
         >
           {this.formatMessage('schemaData.enableExpandedAllRowKeys')}
         </Checkbox>}
-        {!unControlled && this.props.isDefault && <Button
+        {!unControlled && this.props.isDefaultSceneGroup && <Button
           type="primary"
           size="small"
           style={{marginBottom: '5px'}}
