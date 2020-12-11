@@ -85,21 +85,21 @@ class InterfaceList extends Component {
       mockConfig,
     });
 
-    // Add Global Proxy	
-    if (res.data &&	
-      res.data.uniqId &&	
-      apiName === 'createInterface' &&	
-      globalProxy	
-    ) {	
-      await interfaceService.updateInterface({	
-        uniqId: res.data.uniqId,	
-        proxyConfig: {	
-          enabled: false,	
-          proxyList: [{	
-            proxyUrl: globalProxy,	
-          }],	
-        },	
-      });	
+    // Add Global Proxy
+    if (res.data &&
+      res.data.uniqId &&
+      apiName === 'createInterface' &&
+      globalProxy
+    ) {
+      await interfaceService.updateInterface({
+        uniqId: res.data.uniqId,
+        proxyConfig: {
+          enabled: false,
+          proxyList: [{
+            proxyUrl: globalProxy,
+          }],
+        },
+      });
     }
 
     this.setState({
