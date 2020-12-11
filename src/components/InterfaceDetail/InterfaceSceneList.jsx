@@ -91,14 +91,6 @@ class InterfaceSceneList extends Component {
     }
   }
 
-  saveSceneForm = async ({ sceneName, contextConfig, data }) => {
-    const res = await this.saveValue({ sceneName, contextConfig, data });
-    if (res.success) {
-      this.postCreate();
-      Message.success('保存成功');
-    }
-  }
-
   postCreate = async value => {
     await this.props.updateInterFaceAndScene();
   }
@@ -262,7 +254,6 @@ class InterfaceSceneList extends Component {
           onOk={this.confirmSceneForm}
           confirmLoading={this.state.sceneFormLoading}
           stageData={this.state.stageData}
-          onSave={this.saveSceneForm}
         />
       </section>
     );
