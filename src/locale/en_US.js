@@ -36,7 +36,7 @@ const enUS = {
   'topNav.projectConfig': 'Project config',
   'topNav.realtimeList': 'Realtime snapshot',
   'topNav.documentation': 'Documentation',
-  
+
   'project.sceneGroup': 'Scene Group list',
   'project.interfaceList': 'API list',
   'project.realtimeList': 'Realtime snapshot',

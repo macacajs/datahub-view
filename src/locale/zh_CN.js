@@ -36,7 +36,7 @@ const zhCN = {
   'topNav.projectConfig': '项目配置',
   'topNav.realtimeList': '实时快照',
   'topNav.documentation': '接口文档',
-  
+
   'project.sceneGroup': '场景组列表',
   'project.interfaceList': '接口列表',
   'project.realtimeList': '实时快照',
@@ -50,7 +50,7 @@ const zhCN = {
   'project.add': '添加项目',
   'project.globalProxy': '全局项目代理',
   'project.globalProxy.invalid': '请输入 URL',
-  
+
   'sceneGroupList.addSceneGroup': '新增场景组',
   'sceneGroupList.updateSceneGroup': '更新场景组配置',
   'sceneGroupList.sceneGroupNameInput': '场景组名称',

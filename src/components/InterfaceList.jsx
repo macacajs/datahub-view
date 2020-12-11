@@ -201,26 +201,26 @@ class InterfaceList extends Component {
       value.pathname.toLowerCase().includes(this.state.filterString) ||
       value.description.toLowerCase().includes(this.state.filterString))
       .map((value, index) => {
-      const isSelected = value.uniqId === this.props.selectedInterface.uniqId;
+        const isSelected = value.uniqId === this.props.selectedInterface.uniqId;
 
-      return (
-        <li
-          key={index}
-          data-accessbilityid={`project-add-api-list-${index}`}
-          className={[isSelected ? 'clicked' : ''].join(' ')}
-          onClick={() => this.props.setSelectedInterface(value.uniqId)}
-        >
-          <div className="interface-item">
-            <h3 className="interface-item-title" title={value.pathname}>{value.pathname}</h3>
-            <p className="interface-item-desc" title={value.description}>{value.description}</p>
-            <p className="interface-item-method">
-              <span className="interface-item-method-name">method: </span>
-              <span className="interface-item-method-value">{value.method}</span>
-            </p>
-          </div>
-          {!unControlled && <div className="interface-control" style={{fontSize: '16px'}}>
-            {
-              isDefault &&
+        return (
+          <li
+            key={index}
+            data-accessbilityid={`project-add-api-list-${index}`}
+            className={[isSelected ? 'clicked' : ''].join(' ')}
+            onClick={() => this.props.setSelectedInterface(value.uniqId)}
+          >
+            <div className="interface-item">
+              <h3 className="interface-item-title" title={value.pathname}>{value.pathname}</h3>
+              <p className="interface-item-desc" title={value.description}>{value.description}</p>
+              <p className="interface-item-method">
+                <span className="interface-item-method-name">method: </span>
+                <span className="interface-item-method-value">{value.method}</span>
+              </p>
+            </div>
+            {!unControlled && <div className="interface-control" style={{fontSize: '16px'}}>
+              {
+                isDefault &&
               <span>
                 <Upload name={ value.uniqId } {...this.uploadProps()}>
                   <Icon className="upload-icon" type="upload" />
@@ -238,22 +238,22 @@ class InterfaceList extends Component {
                   />
                 </Tooltip>
               </span>
-            }
-            <Popconfirm
-              title={formatMessage(isDefault ? 'common.deleteTip' : 'common.removeTip')}
-              onConfirm={() => {
-                isDefault ? this.deleteInterface(value.uniqId)
-                  : this.deleteInterfaceInSceneGroup(value.pathname, value.method);
-              }}
-              okText={formatMessage('common.confirm')}
-              cancelText={formatMessage('common.cancel')}
-            >
-              <Icon style={{color: '#f5222d'}} className="delete-icon" type="delete" />
-            </Popconfirm>
-          </div>}
-        </li>
-      );
-    });
+              }
+              <Popconfirm
+                title={formatMessage(isDefault ? 'common.deleteTip' : 'common.removeTip')}
+                onConfirm={() => {
+                  isDefault ? this.deleteInterface(value.uniqId)
+                    : this.deleteInterfaceInSceneGroup(value.pathname, value.method);
+                }}
+                okText={formatMessage('common.confirm')}
+                cancelText={formatMessage('common.cancel')}
+              >
+                <Icon style={{color: '#f5222d'}} className="delete-icon" type="delete" />
+              </Popconfirm>
+            </div>}
+          </li>
+        );
+      });
   }
 
   render () {
