@@ -116,6 +116,7 @@ const zhCN = {
   'experiment.description': '显示一些功能',
   'experiment.downloadAndUpload': '上传和下载功能：',
   'experiment.compactView': '紧凑模式：',
+  'experiment.runJsMode': '动态执行脚本',
   'experiment.open': '开',
   'experiment.close': '关',
   'experiment.tips1': '全局设置',

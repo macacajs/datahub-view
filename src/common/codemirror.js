@@ -56,7 +56,7 @@ export const jsCodeMirrorOptions = {
   styleActiveLine: true,
   autoCloseBrackets: true,
   showTrailingSpace: true,
-  placeholder: '// Input Javascript code here\n',
+  placeholder: '// Input Javascript code here\nctx.body = { time: Date.now() };\n',
   scrollbarStyle: 'overlay',
   gutters: [
     'CodeMirror-lint-markers',

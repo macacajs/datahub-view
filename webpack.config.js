@@ -72,25 +72,56 @@ module.exports = (env, argv) => {
           exclude: /node_modules/,
         }, {
           test: /\.less$/,
+          exclude(filePath) {
+            return filePath.endsWith('.module.less');
+          },
           use: [
             {
-              loader: 'style-loader',
+              loader: MiniCssExtractPlugin.loader,
             },
             {
               loader: 'css-loader',
             },
             {
-              loader: 'postcss-loader',
-            },
-            {
               loader: 'less-loader',
+              options: {
+                lessOptions: {
+                  javascriptEnabled: true,
+                },
+              },
             },
           ],
         }, {
-          test: /\.css$/,
+          test: /\.module\.less$/,
           use: [
-            MiniCssExtractPlugin.loader,
-            'css-loader',
+            {
+              loader: MiniCssExtractPlugin.loader,
+            },
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true,
+                localIdentName: '[name]_[local]_[hash:base64:5]',
+              },
+            },
+            {
+              loader: 'less-loader',
+              options: {
+                lessOptions: {
+                  javascriptEnabled: true,
+                },
+              },
+            },
+          ],
+        }, {
+          test: /.css$/,
+          use: [
+            {
+              loader: MiniCssExtractPlugin.loader,
+            },
+            {
+              loader: 'css-loader',
+            },
           ],
         },
         {

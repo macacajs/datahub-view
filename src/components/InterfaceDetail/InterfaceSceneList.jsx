@@ -235,6 +235,7 @@ class InterfaceSceneList extends Component {
         </div>
         { this.renderSceneList() }
         <SceneForm
+          experimentConfig={this.props.experimentConfig}
           visible={this.state.sceneFormVisible}
           onCancel={this.hideSceneForm}
           onOk={this.confirmSceneForm}

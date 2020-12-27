@@ -264,6 +264,7 @@ class InterfaceDetail extends React.Component {
             <FormattedMessage id="topNav.documentation"/>
           </Button>
           <InterfaceSceneList
+            experimentConfig={this.props.experimentConfig}
             disabled={selectedInterface.proxyConfig.enabled}
             previewLink={previewLink}
             sceneList={this.state.sceneList}

@@ -62,6 +62,7 @@ class SceneFormComponent extends Component {
       form,
       confirmLoading,
       stageData,
+      experimentConfig,
     } = this.props;
     const {
       getFieldDecorator,
@@ -77,6 +78,7 @@ class SceneFormComponent extends Component {
       } = stageData.contextConfig;
       showResInfo = responseDelay && `${responseDelay}` !== '0' || responseStatus && `${responseStatus}` !== '200' || responseHeaders && JSON.stringify(responseHeaders) !== '{}';
     }
+    const isOpenRunJsMode = experimentConfig && experimentConfig.isOpenRunJsMode;
 
     return (
       <Modal
@@ -129,23 +131,25 @@ class SceneFormComponent extends Component {
               <Input style={{display: 'inline'}} />
             )}
           </FormItem>
-          <FormItem className="res-format" label={formatMessage('sceneList.sceneFormat')}>
-            {getFieldDecorator('sceneFormat', {})(
-              <>
-                {stageData.uniqId ? (
-                  stageData.format
-                ) : (
-                  <Radio.Group
-                    onChange={e => onChangeMode(e.target.value)}
-                    defaultValue={stageData.format || 'json'}
-                  >
-                    <Radio value="json">JSON</Radio>
-                    <Radio value="javascript">JavaScript</Radio>
-                  </Radio.Group>
-                )}
-              </>
-            )}
-          </FormItem>
+          {isOpenRunJsMode && (
+            <FormItem className="res-format" label={formatMessage('sceneList.sceneFormat')}>
+              {getFieldDecorator('sceneFormat', {})(
+                <>
+                  {stageData.uniqId ? (
+                    stageData.format
+                  ) : (
+                    <Radio.Group
+                      onChange={e => onChangeMode(e.target.value)}
+                      defaultValue={stageData.format || 'json'}
+                    >
+                      <Radio value="json">JSON</Radio>
+                      <Radio value="javascript">JavaScript</Radio>
+                    </Radio.Group>
+                  )}
+                </>
+              )}
+            </FormItem>
+          )}
           {stageData.format !== 'javascript' && (
             <Collapse defaultActiveKey={showResInfo ? '0' : ''}>
               <Panel header={formatMessage('sceneList.rewriteResponse')} key="0">

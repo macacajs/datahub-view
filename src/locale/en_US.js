@@ -116,6 +116,7 @@ const enUS = {
   'experiment.description': 'Show something here:',
   'experiment.downloadAndUpload': 'Download and Upload: ',
   'experiment.compactView': 'Compact View: ',
+  'experiment.runJsMode': 'Run JavaScript in current context',
   'experiment.open': 'Open',
   'experiment.close': 'Close',
   'experiment.tips1': 'Global Settings',

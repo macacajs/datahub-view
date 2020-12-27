@@ -212,6 +212,7 @@ class Project extends React.Component {
             this.state.interfaceList.length
               ? this.state.subRouter === interfaceTabSymbol &&
                 <InterfaceDetail
+                  experimentConfig={this.props.experimentConfig}
                   selectedInterface={this.state.selectedInterface}
                   updateInterfaceList={this.updateInterfaceList}
                   globalProxyEnabled={globalProxyEnabled}
