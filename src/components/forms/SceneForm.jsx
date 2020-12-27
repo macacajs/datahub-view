@@ -134,7 +134,7 @@ class SceneFormComponent extends Component {
           {isOpenRunJsMode && (
             <FormItem className="res-format" label={formatMessage('sceneList.sceneFormat')}>
               {getFieldDecorator('sceneFormat', {})(
-                <>
+                <span>
                   {stageData.uniqId ? (
                     stageData.format
                   ) : (
@@ -146,7 +146,7 @@ class SceneFormComponent extends Component {
                       <Radio value="javascript">JavaScript</Radio>
                     </Radio.Group>
                   )}
-                </>
+                </span>
               )}
             </FormItem>
           )}

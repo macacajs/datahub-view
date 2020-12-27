@@ -185,9 +185,9 @@ class InterfaceSceneList extends Component {
               {formatMessage('interfaceDetail.previewData')}{`/${window.context.projectName}/${this.props.interfaceData.pathname}`}
             </a>
           ) : (
-            <>
+            <span>
               {formatMessage('interfaceDetail.previewData')}{`/${window.context.projectName}/${this.props.interfaceData.pathname}`}
-            </>
+            </span>
           )
         }
         {contextConfig && showResInfo

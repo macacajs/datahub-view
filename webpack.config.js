@@ -72,7 +72,7 @@ module.exports = (env, argv) => {
           exclude: /node_modules/,
         }, {
           test: /\.less$/,
-          exclude(filePath) {
+          exclude (filePath) {
             return filePath.endsWith('.module.less');
           },
           use: [
