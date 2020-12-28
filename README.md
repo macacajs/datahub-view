@@ -5,13 +5,13 @@
 [![Test coverage][codecov-image]][codecov-url]
 [![npm download][download-image]][download-url]
 
-[npm-image]: https://img.shields.io/npm/v/datahub-view.svg?style=flat-square&logo=npm
+[npm-image]: https://img.shields.io/npm/v/datahub-view.svg?logo=npm
 [npm-url]: https://npmjs.org/package/datahub-view
-[travis-image]: https://img.shields.io/travis/macacajs/datahub-view.svg?style=flat-square&logo=travis
+[travis-image]: https://img.shields.io/travis/macacajs/datahub-view.svg?logo=travis
 [travis-url]: https://travis-ci.org/macacajs/datahub-view
-[codecov-image]: https://img.shields.io/codecov/c/github/macacajs/datahub-view.svg?style=flat-square&logo=javascript
+[codecov-image]: https://img.shields.io/codecov/c/github/macacajs/datahub-view.svg?logo=javascript
 [codecov-url]: https://codecov.io/gh/macacajs/datahub-view
-[download-image]: https://img.shields.io/npm/dm/datahub-view.svg?style=flat-square&logo=npm
+[download-image]: https://img.shields.io/npm/dm/datahub-view.svg?logo=npm
 [download-url]: https://npmjs.org/package/datahub-view
 
 ---

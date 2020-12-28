@@ -211,22 +211,25 @@ class Project extends React.Component {
           {
             this.state.interfaceList.length
               ? this.state.subRouter === interfaceTabSymbol &&
-            <InterfaceDetail
-              selectedInterface={this.state.selectedInterface}
-              updateInterfaceList={this.updateInterfaceList}
-              globalProxyEnabled={globalProxyEnabled}
-              key={this.state.selectedInterface.uniqId}
-            />
-              : <div className="interface-detail">
-                <Alert
-                  className="add-api-hint"
-                  message={this.props.intl.formatMessage({
-                    id: 'project.createApi',
-                  })}
-                  type="info"
-                  showIcon
+                <InterfaceDetail
+                  experimentConfig={this.props.experimentConfig}
+                  selectedInterface={this.state.selectedInterface}
+                  updateInterfaceList={this.updateInterfaceList}
+                  globalProxyEnabled={globalProxyEnabled}
+                  key={this.state.selectedInterface.uniqId}
                 />
-              </div>
+              : (
+                <div className="interface-detail">
+                  <Alert
+                    className="add-api-hint"
+                    message={this.props.intl.formatMessage({
+                      id: 'project.createApi',
+                    })}
+                    type="info"
+                    showIcon
+                  />
+                </div>
+              )
           }
           {
             this.state.subRouter === realTimeTabSymbol &&

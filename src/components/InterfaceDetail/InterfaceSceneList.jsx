@@ -1,25 +1,13 @@
-import React, {
-  Component,
-} from 'react';
-
+import React, { Component } from 'react';
 import {
-  Icon,
-  Input,
-  Button,
-  Tooltip,
-  Popconfirm,
+  Icon, Input, Button,
+  Tooltip, Popconfirm,
 } from 'antd';
-
-import {
-  Row,
-  Col,
-} from 'react-flexbox-grid';
-
+import { Row, Col } from 'react-flexbox-grid';
 import {
   injectIntl,
   FormattedMessage,
 } from 'react-intl';
-import classnames from 'classnames';
 
 import SceneForm from '../forms/SceneForm';
 import { sceneService } from '../../service';
@@ -31,7 +19,7 @@ class InterfaceSceneList extends Component {
     sceneFormVisible: false,
     sceneFormLoading: false,
     filterString: '',
-    stageData: null,
+    stageData: {},
   }
 
   formatMessage = id => this.props.intl.formatMessage({ id })
@@ -39,7 +27,7 @@ class InterfaceSceneList extends Component {
   showSceneForm = () => {
     this.setState({
       formType: 'create',
-      stageData: null,
+      stageData: {},
       sceneFormVisible: true,
     });
   }
@@ -58,22 +46,24 @@ class InterfaceSceneList extends Component {
     });
   }
 
-  confirmSceneForm = async ({ sceneName, contextConfig, data }) => {
+  confirmSceneForm = async ({ sceneName, contextConfig, data, format }) => {
     const { uniqId: interfaceUniqId } = this.props.interfaceData;
     this.setState({
       sceneFormLoading: true,
     });
-    const apiName = this.state.stageData
+    const apiName = this.state.stageData.uniqId
       ? 'updateScene'
       : 'createScene';
 
-    const res = await sceneService[apiName]({
-      uniqId: this.state.stageData && this.state.stageData.uniqId,
+    const params = {
+      uniqId: this.state.stageData.uniqId,
       interfaceUniqId,
       sceneName,
       contextConfig,
       data,
-    });
+      format,
+    };
+    const res = await sceneService[apiName](params);
     this.setState({
       sceneFormLoading: false,
     });
@@ -82,6 +72,14 @@ class InterfaceSceneList extends Component {
         sceneFormVisible: false,
       }, this.postCreate);
     }
+  }
+
+  onChangeMode = (value) => {
+    const { stageData } = this.state;
+    const newData = Object.assign(stageData, { format: value });
+    this.setState({
+      stageData: newData,
+    });
   }
 
   postCreate = async value => {
@@ -187,9 +185,9 @@ class InterfaceSceneList extends Component {
               {formatMessage('interfaceDetail.previewData')}{`/${window.context.projectName}/${this.props.interfaceData.pathname}`}
             </a>
           ) : (
-            <>
+            <span>
               {formatMessage('interfaceDetail.previewData')}{`/${window.context.projectName}/${this.props.interfaceData.pathname}`}
-            </>           
+            </span>
           )
         }
         {contextConfig && showResInfo
@@ -236,11 +234,12 @@ class InterfaceSceneList extends Component {
             : <FormattedMessage id='sceneList.switchSceneHint'/> }
         </div>
         { this.renderSceneList() }
-
         <SceneForm
+          experimentConfig={this.props.experimentConfig}
           visible={this.state.sceneFormVisible}
           onCancel={this.hideSceneForm}
           onOk={this.confirmSceneForm}
+          onChangeMode={this.onChangeMode}
           confirmLoading={this.state.sceneFormLoading}
           stageData={this.state.stageData}
         />

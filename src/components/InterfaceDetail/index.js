@@ -33,7 +33,6 @@ import {
   jsonToSchema,
 } from '../../common/helper';
 
-
 class InterfaceDetail extends React.Component {
   state = {
     selectedScene: {},
@@ -103,7 +102,9 @@ class InterfaceDetail extends React.Component {
   }
 
   fetchSchema = async () => {
-    const sceneData = this.state.sceneList.map(item => item.data);
+    const sceneData = this.state.sceneList
+      .filter(item => item.format === 'json')
+      .map(item => item.data);
     const res = await schemaService.getSchema({ interfaceUniqId: this.props.selectedInterface.uniqId });
     const schemaData = res.data || [];
 
@@ -263,6 +264,7 @@ class InterfaceDetail extends React.Component {
             <FormattedMessage id="topNav.documentation"/>
           </Button>
           <InterfaceSceneList
+            experimentConfig={this.props.experimentConfig}
             disabled={selectedInterface.proxyConfig.enabled}
             previewLink={previewLink}
             sceneList={this.state.sceneList}
